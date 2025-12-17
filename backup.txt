@@ -1,0 +1,255 @@
+                {/* Teams */}
+                <AdminItemContainer>
+                    <Label main>Leadership Members</Label>
+
+                    <div className="p-5 rounded-md flex flex-col gap-5">
+                        {peopleFields.map((field, i) => (
+                            <div key={field.id} className="grid grid-cols-2 gap-5 relative border-b pb-5 last:border-b-0">
+                                <RiDeleteBinLine
+                                    className="absolute top-2 right-2 cursor-pointer text-red-600"
+                                    onClick={() => removePerson(i)}
+                                />
+
+                                {/* Image */}
+                                <div>
+                                    <Controller
+                                        name={`secondSection.items.${i}.image`}
+                                        control={control}
+                                        rules={{ required: "Image is required" }}
+                                        render={({ field }) => (
+                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                        )}
+                                    />
+                                    <FormError error={errors.secondSection?.items?.[i]?.image?.message} />
+                                </div>
+
+                                {/* Details */}
+                                <div className="flex flex-col gap-3">
+                                    <div>
+                                        <Label className="font-bold">Name</Label>
+                                        <Input {...register(`secondSection.items.${i}.name_ar`)} />
+                                    </div>
+
+                                    <div>
+                                        <Label className="font-bold">Designation</Label>
+                                        <Input {...register(`secondSection.items.${i}.designation_ar`)} />
+                                    </div>
+
+                                    <div>
+                                        <Label className="font-bold">Department</Label>
+                                        <select
+                                            className="border rounded-md px-3 py-2"
+                                            {...register(`secondSection.items.${i}.department`)}
+                                        >
+                                            <option value="">Select Department</option>
+                                            {departmentFields.map((d) => (
+                                                <option key={d.id} value={d.name}>
+                                                    {d.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <Label className="font-bold">Social Link</Label>
+                                        <Input {...register(`secondSection.items.${i}.socialLink`)} />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className="flex justify-end">
+                            <Button
+                                type="button"
+                                addItem
+                                onClick={() =>
+                                    addPerson({
+                                        image: "",
+                                        imageAlt: "",
+                                        name: "",
+                                        name_ar: "",
+                                        designation: "",
+                                        designation_ar: "",
+                                        department: "",
+                                        socialLink: "",
+                                    })
+                                }
+                            >
+                                Add Person
+                            </Button>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+
+
+
+                                {/* Departments */}
+                <AdminItemContainer>
+                    <Label main>Departments</Label>
+
+                    <div className="p-5 rounded-md flex flex-col gap-3">
+                        {departmentFields.map((field, i) => (
+                            <div key={field.id}>
+                                <div className="flex gap-2 items-center">
+                                    <Input
+                                        placeholder={
+                                            departmentFields[i]?.name
+                                              ? `Arabic for: ${departmentFields[i].name}`
+                                              : "Arabic department name"
+                                          }
+                                          
+                                        {...register(`secondSection.departments.${i}.name_ar`)}
+                                    />
+
+                                    <RiDeleteBinLine
+                                        className="cursor-pointer text-red-600"
+                                        onClick={() => removeDepartment(i)}
+                                    />
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className="flex justify-end">
+                            <Button type="button" addItem onClick={() => addDepartment({ name: "" })}>
+                                Add Department
+                            </Button>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+
+
+                                {/* Departments */}
+                <AdminItemContainer>
+                    <Label main>Departments</Label>
+
+                    <div className="p-5 rounded-md flex flex-col gap-3">
+                        {departmentFields.map((field, i) => (
+                            <div key={field.id}>
+                                <div className="flex gap-2 items-center">
+                                    <Input
+                                        placeholder="Department name"
+                                        {...register(`secondSection.departments.${i}.name`, {
+                                            required: "Department name is required",
+                                        })}
+                                    />
+
+                                    <RiDeleteBinLine
+                                        className="cursor-pointer text-red-600"
+                                        onClick={() => removeDepartment(i)}
+                                    />
+                                </div>
+
+                                <FormError error={errors.secondSection?.departments?.[i]?.name?.message} />
+                            </div>
+                        ))}
+
+                        <div className="flex justify-end">
+                            <Button type="button" addItem onClick={() => addDepartment({ name: "" })}>
+                                Add Department
+                            </Button>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+                {/* Teams */}
+                <AdminItemContainer>
+                    <Label main>Leadership Members</Label>
+
+                    <div className="p-5 rounded-md flex flex-col gap-5">
+                        {peopleFields.map((field, i) => (
+                            <div key={field.id} className="grid grid-cols-2 gap-5 relative border-b pb-5 last:border-b-0">
+                                <RiDeleteBinLine
+                                    className="absolute top-2 right-2 cursor-pointer text-red-600"
+                                    onClick={() => removePerson(i)}
+                                />
+
+                                {/* Image */}
+                                <div>
+                                    <Controller
+                                        name={`secondSection.items.${i}.image`}
+                                        control={control}
+                                        rules={{ required: "Image is required" }}
+                                        render={({ field }) => (
+                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                        )}
+                                    />
+                                    <FormError error={errors.secondSection?.items?.[i]?.image?.message} />
+                                </div>
+
+                                {/* Details */}
+                                <div className="flex flex-col gap-3">
+                                    <div>
+                                        <Label className="font-bold">Name</Label>
+                                        <Input
+                                            {...register(`secondSection.items.${i}.name`, {
+                                                required: "Name is required",
+                                            })}
+                                        />
+                                        <FormError error={errors.secondSection?.items?.[i]?.name?.message} />
+                                    </div>
+
+                                    <div>
+                                        <Label className="font-bold">Designation</Label>
+                                        <Input
+                                            {...register(`secondSection.items.${i}.designation`, {
+                                                required: "Designation is required",
+                                            })}
+                                        />
+                                        <FormError error={errors.secondSection?.items?.[i]?.designation?.message} />
+                                    </div>
+
+                                    <div>
+                                        <Label className="font-bold">Department</Label>
+                                        <select
+                                            className="border rounded-md px-3 py-2"
+                                            {...register(`secondSection.items.${i}.department`, {
+                                                required: "Department is required",
+                                            })}
+                                        >
+                                            <option value="">Select Department</option>
+                                            {departmentFields.map((d) => (
+                                                <option key={d.id} value={d.name}>
+                                                    {d.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <FormError error={errors.secondSection?.items?.[i]?.department?.message} />
+                                    </div>
+
+                                    <div>
+                                        <Label className="font-bold">Social Link</Label>
+                                        <Input
+                                            {...register(`secondSection.items.${i}.socialLink`, {
+                                                required: "Social link is required",
+                                            })}
+                                        />
+                                        <FormError error={errors.secondSection?.items?.[i]?.socialLink?.message} />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className="flex justify-end">
+                            <Button
+                                type="button"
+                                addItem
+                                onClick={() =>
+                                    addPerson({
+                                        image: "",
+                                        imageAlt: "",
+                                        name: "",
+                                        name_ar: "",
+                                        designation: "",
+                                        designation_ar: "",
+                                        department: "",
+                                        socialLink: "",
+                                    })
+                                }
+                            >
+                                Add Person
+                            </Button>
+                        </div>
+                    </div>
+                </AdminItemContainer>

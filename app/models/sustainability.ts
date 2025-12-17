@@ -60,6 +60,12 @@ const sustainabilitySchema = new mongoose.Schema({
         },
         videoPosterImage: {
             type: String
+        },
+        videoPosterImageAlt: {
+            type: String
+        },
+        videoPosterImageAlt_ar: {
+            type: String
         }
     },
     secondSection: {
@@ -76,25 +82,37 @@ const sustainabilitySchema = new mongoose.Schema({
         },
         imageAlt: {
             type: String,
+            required: true
         },
         imageAlt_ar: {
             type: String,
+            required: true
         },
         items: [{
             title: {
                 type: String,
+                required: true
             },
             title_ar: {
                 type: String,
             },
             description: {
                 type: String,
+                required: true
             },
             description_ar: {
                 type: String,
             },
             icon: {
                 type: String
+            },
+            iconAlt: {
+                type: String,
+                required: true
+            },
+            iconAlt_ar: {
+                type: String,
+                required: true
             }
         }]
     },
@@ -121,6 +139,12 @@ const sustainabilitySchema = new mongoose.Schema({
             },
             image: {
                 type: String
+            },
+            imageAlt: {
+                type: String
+            },
+            imageAlt_ar: {
+                type: String
             }
         }]
     },
@@ -132,11 +156,11 @@ const sustainabilitySchema = new mongoose.Schema({
         title_ar: {
             type: String,
         },
-        items: [{
-            description: {
+        itemsOne: [{
+            title: {
                 type: String,
             },
-            description_ar: {
+            title_ar: {
                 type: String,
             },
             icon: {
@@ -149,6 +173,22 @@ const sustainabilitySchema = new mongoose.Schema({
                 type: String
             }
         }],
+        itemsTwo: [{
+            value: {
+                type: String,
+                required: true
+            },
+            value_ar: {
+                type: String,
+            },
+            key: {
+                type: String,
+                required: true
+            },
+            key_ar: {
+                type: String,
+            }
+        }]
     },
     fifthSection: {
         title: {
@@ -156,22 +196,51 @@ const sustainabilitySchema = new mongoose.Schema({
             required: true
         },
         title_ar: {
-            type: String
-        },
-        buttonText: {
-            type: String,
-            required: true
-        },
-        buttonText_ar: {
             type: String,
         },
-        buttonLink: {
-            type: String,
-            required: true
-        },
-        buttonLink_ar: {
-            type: String,
-        }
+        items: [{
+            title: {
+                type: String,
+                required: true
+            },
+            title_ar: {
+                type: String,
+            },
+            icon: {
+                type: String,
+                required: true
+            },
+            iconAlt: {
+                type: String,
+                required: true
+            },
+            iconAlt_ar: {
+                type: String,
+                required: true
+            },
+            description: {
+                type: String,
+                required: true
+            },
+            description_ar: {
+                type: String,
+                required: true
+            },
+            image: {
+                type: String,
+                required: true
+            },
+            imageAlt: {
+                type: String,
+                required: true
+            },
+            imageAlt_ar: {
+                type: String,
+                required: true
+            }
+
+        }]
+
     }
 })
 
