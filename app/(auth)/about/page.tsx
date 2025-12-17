@@ -132,9 +132,9 @@ const AboutPage = () => {
                 setValue("secondSection", data.data.secondSection);
                 setValue("thirdSection",data.data.thirdSection)
                 setValue("thirdSection.items",data.data.thirdSection.items)
-                setValue("fourthSection",data.data.thirdSection)
-                setValue("fourthSection.items",data.data.thirdSection.items)
-                setValue("fifthSection",data.data.thirdSection)
+                setValue("fourthSection",data.data.fourthSection)
+                setValue("fourthSection.items",data.data.fourthSection.items)
+                setValue("fifthSection",data.data.fifthSection)
             } else {
                 const data = await response.json();
                 alert(data.message);
@@ -421,9 +421,9 @@ const AboutPage = () => {
                             <div className='flex flex-col gap-2'>
                                 <div className='flex flex-col gap-2'>
                                     <Label className='font-bold'>Description</Label>
-                                    <Textarea placeholder='Description' {...register(`fourthSection.items.${index}.description`, {
-                                        required: "Value is required"
-                                    })} />
+                                    <Controller name={`fourthSection.items.${index}.description`} control={control} render={({ field }) => {
+                                return <Textarea value={field.value} onChange={field.onChange} />
+                            }} />
                                     {errors.fourthSection?.items?.[index]?.description && <p className='text-red-500'>{errors.fourthSection?.items?.[index]?.description.message}</p>}
                                 </div>
                             </div>
@@ -740,7 +740,9 @@ const AboutPage = () => {
                             <div className='flex flex-col gap-2'>
                                 <div className='flex flex-col gap-2'>
                                     <Label className='font-bold'>Description</Label>
-                                    <Textarea placeholder='Description' {...register(`fourthSection.items.${index}.description`)} />
+                                    <Controller name={`fourthSection.items.${index}.description_ar`} control={control} render={({ field }) => {
+                                return <Textarea value={field.value} onChange={field.onChange} />
+                            }} />
                                 </div>
                             </div>
                             </div>
