@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { FormError } from "@/app/components/common/FormError";
 import { RiEditLine, RiDeleteBinLine } from "react-icons/ri";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { toast } from "sonner";
 
 interface LeadershipFormProps {
     metaTitle: string;
@@ -148,14 +149,11 @@ const LeadershipAdminPage = () => {
 
     const [editingDepartment, setEditingDepartment] = useState<number | null>(null);
     const [editingPerson, setEditingPerson] = useState<number | null>(null);
-    const [isNewDepartment, setIsNewDepartment] = useState(false);
-    const [isNewPerson, setIsNewPerson] = useState(false);
 
     /* ---------- Field Arrays ---------- */
 
     const {
         fields: departmentFields,
-        append: addDepartment,
         update: updateDepartment,
         remove: removeDepartment,
         replace: replaceDepartments,
@@ -166,7 +164,6 @@ const LeadershipAdminPage = () => {
 
     const {
         fields: peopleFields,
-        append: addPerson,
         update: updatePerson,
         remove: removePerson,
         replace: replacePeople,
@@ -178,23 +175,54 @@ const LeadershipAdminPage = () => {
     /* ================= SUBMIT ================= */
 
     const onSubmit = async (data: LeadershipFormProps) => {
-        await fetch("/api/admin/leadership", {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        });
+        try {
+            toast.loading("Saving leadership...", { id: "leadership-submit" });
 
-        alert("Leadership updated");
+            const res = await fetch("/api/admin/leadership", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => null);
+                throw new Error(err?.message || "Failed to update leadership");
+            }
+
+            toast.success("Leadership updated successfully", {
+                id: "leadership-submit",
+            });
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Something went wrong";
+            toast.error(message, { id: "leadership-submit" });
+        }
     };
 
     const saveToAPI = async () => {
-        const data = getValues();
+        try {
+            const data = getValues();
 
-        await fetch("/api/admin/leadership", {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        });
+            toast.loading("Saving changes...", { id: "leadership-autosave" });
+
+            const res = await fetch("/api/admin/leadership", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => null);
+                throw new Error(err?.message || "Auto-save failed");
+            }
+
+            toast.success("Changes saved", {
+                id: "leadership-autosave",
+                duration: 2000,
+            });
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Something went wrong";
+            toast.error(message, { id: "leadership-autosave" });
+        }
     };
 
     /* ================= FETCH ================= */
@@ -593,7 +621,6 @@ const LeadershipAdminPage = () => {
                     onOpenChange={() => {
                         // resetField(`secondSection.departments.${editingDepartment}`);
                         setEditingDepartment(null);
-                        setIsNewDepartment(false);
                     }}
                 >
                     <DialogContent>
@@ -634,7 +661,6 @@ const LeadershipAdminPage = () => {
                                     await saveToAPI();
 
                                     setEditingDepartment(null);
-                                    setIsNewDepartment(false);
                                 }}
                             >
                                 Save
@@ -652,7 +678,6 @@ const LeadershipAdminPage = () => {
                         if (!open && editingPerson !== null) {
                             // resetField(`secondSection.items.${editingPerson}`);
                             setEditingPerson(null);
-                            setIsNewPerson(false);
                         }
                     }}
                 >
@@ -793,7 +818,6 @@ const LeadershipAdminPage = () => {
                                 await saveToAPI();
 
                                 setEditingPerson(null);
-                                setIsNewPerson(false);
                             }}
                         >
                             Save
@@ -810,7 +834,6 @@ const LeadershipAdminPage = () => {
                     <DepartmentList
                         departments={departmentFields}
                         onEdit={(i) => {
-                            setIsNewDepartment(false);
                             setEditingDepartment(i);
                         }}
                         onDelete={async (i) => {
@@ -818,7 +841,6 @@ const LeadershipAdminPage = () => {
                             await saveToAPI();
                         }}
                         onAdd={() => {
-                            setIsNewDepartment(true);
                             setValue(`secondSection.departments.${departmentFields.length}`, {
                                 name: "",
                                 name_ar: "",
@@ -834,7 +856,6 @@ const LeadershipAdminPage = () => {
                     <PeopleList
                         people={peopleFields}
                         onEdit={(i) => {
-                            setIsNewPerson(false);
                             setEditingPerson(i);
                         }}
                         onDelete={async (i) => {
@@ -842,7 +863,6 @@ const LeadershipAdminPage = () => {
                             await saveToAPI();
                         }}
                         onAdd={() => {
-                            setIsNewPerson(true);
                             setValue(`secondSection.items.${peopleFields.length}`, {
                                 image: "",
                                 name: "",
