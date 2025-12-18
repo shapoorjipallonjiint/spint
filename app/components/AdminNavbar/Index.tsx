@@ -49,7 +49,7 @@ const AdminNavbar = () => {
         // ] },
         { name: "Projects", href: "/projects", icon: Workflow },
         { name: "News", href: "/admin/news", icon: NewspaperIcon },
-        { name: "Gallery", href: "/admin/gallery", icon: GalleryThumbnails },
+        { name: "Gallery", href: "/gallery", icon: GalleryThumbnails },
         { name: "Awards", href: "/admin/awards", icon:AwardIcon },
         { name: "Leadership & Team", href: "/leadership", icon:UserGroupIcon },
         { name: "Careers", href: "####", icon:BriefcaseIcon,hasChild:true,children: [
