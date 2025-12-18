@@ -49,9 +49,9 @@ const AdminNavbar = () => {
         // ] },
         { name: "Projects", href: "/projects", icon: Workflow },
         { name: "News", href: "/news", icon: NewspaperIcon },
-        { name: "Gallery", href: "/admin/gallery", icon: GalleryThumbnails },
+        { name: "Gallery", href: "/gallery", icon: GalleryThumbnails },
         { name: "Awards", href: "/admin/awards", icon:AwardIcon },
-        { name: "Team", href: "/admin/team", icon:UserGroupIcon },
+        { name: "Leadership & Team", href: "/leadership", icon:UserGroupIcon },
         { name: "Careers", href: "####", icon:BriefcaseIcon,hasChild:true,children: [
           { name: "Main Page", href: "/admin/careers" },
           {name:"Enquiries",href:"/admin/careers/enquiries"}
@@ -62,7 +62,7 @@ const AdminNavbar = () => {
         ] },
         { name: "Quality", href: "/admin/quality", icon: ThumbsUp },
         { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
-        { name: "Sustainability", href: "/admin/sustainability", icon: LeafIcon },
+        { name: "Sustainability", href: "/sustainability", icon: LeafIcon },
         { name: "Settings", href: "/admin/settings", icon: Settings},
       ];
 

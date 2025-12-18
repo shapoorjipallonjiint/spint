@@ -117,12 +117,12 @@ export function ImageUploader({ value, onChange, className, deleteAfterUpload = 
     <div className={cn("space-y-4 w-full", className)}>
       {displayUrl && isUploadComplete ? (
         <div className={`relative w-full max-w-[300px] aspect-[4/3] overflow-hidden rounded-lg border ${isLogo ? "max-w-[100px] h-[100px] bg-black" : "max-w-[300px]"}`}>
-          <Image src={value ? value : displayUrl} alt="Uploaded image" className={isLogo ? "object-contain p-2" : "object-cover"} fill />
+          <Image src={value ? value : displayUrl} alt="Uploaded image" className={isLogo ? "object-contain p-2 bg-white" : "object-cover"} fill />
           <Button
             type="button"
             variant="destructive"
             size="icon"
-            className="absolute right-2 top-2 z-10 bg-red-500"
+            className="absolute right-2 top-2"
             onClick={removeImage}
           >
             <X className="h-4 w-4" />
@@ -142,12 +142,12 @@ export function ImageUploader({ value, onChange, className, deleteAfterUpload = 
           {isUploading ? (
             <>
               <Loader2 className="h-10 w-10 animate-spin text-gray-400" />
-              <p className="text-sm text-gray-600">Uploading...</p>
+              <p className=" text-gray-600">Uploading...</p>
             </>
           ) : (
             <>
               <Upload className="h-10 w-10 text-gray-400" />
-              <p className="text-sm text-gray-600">
+              <p className="text-gray-600">
                 {isDragActive ? "Drop the image here" : "Drag & drop an image here, or click to select"}
               </p>
             </>
