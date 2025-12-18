@@ -60,7 +60,7 @@ const AdminNavbar = () => {
           { name: "Main Page", href: "/admin/contact" },
           {name:"Enquiries",href:"/admin/contact/enquiries"}
         ] },
-        { name: "Quality", href: "/admin/quality", icon: ThumbsUp },
+        { name: "Quality", href: "/quality", icon: ThumbsUp },
         { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
         { name: "Sustainability", href: "/sustainability", icon: LeafIcon },
         { name: "Settings", href: "/admin/settings", icon: Settings},
