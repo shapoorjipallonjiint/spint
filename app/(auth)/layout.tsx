@@ -1,12 +1,17 @@
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import ClientSideLink from "../client-side-link";
 import AdminNavbar from "@/app/components/AdminNavbar/Index";
-
+import Image from "next/image";
+import { Toaster } from "sonner";
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex h-screen bg-gray-100">
+            <Toaster />
             {/* Sidebar */}
             <aside className="w-64 bg-white shadow-md flex flex-col h-screen overflow-y-auto">
+                <div className="flex items-center w-full pt-10 pb-2 justify-center">
+                    <Image src="/main-logo.svg" alt="Logo" width={150} height={150} />
+                </div>
                 <div className="flex-1 px-3 py-4">
                     <div className="mb-6 px-4 flex flex-col gap-2">
                         {/* <div className="flex items-center">

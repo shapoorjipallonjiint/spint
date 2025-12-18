@@ -66,10 +66,10 @@ const AdminNavbar = () => {
           {name:"Enquiries",href:"/admin/careers/enquiries"}
         ] },
         { name: "Contact", href: "###", icon: EnvelopeIcon,hasChild:true,children: [
-          { name: "Main Page", href: "/admin/contact" },
-          {name:"Enquiries",href:"/admin/contact/enquiries"}
+          { name: "Main Page", href: "/contact" },
+          {name:"Enquiries",href:"/contact/enquiries"}
         ] },
-        { name: "Quality", href: "/admin/quality", icon: ThumbsUp },
+        { name: "Quality", href: "/quality", icon: ThumbsUp },
         { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
         { name: "Sustainability", href: "/sustainability", icon: LeafIcon },
         { name: "Settings", href: "/admin/settings", icon: Settings},
