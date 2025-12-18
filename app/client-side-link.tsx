@@ -60,7 +60,7 @@ function ClientSideLink({
         className={cn(
           "flex items-center px-4 py-2 text-[16px] font-medium rounded-md transition-colors justify-between",
           "hover:bg-gray-50 hover:text-primary",
-          isActive ? "bg-gray-50 text-gray-700" : "text-gray-700",
+          isActive ? "bg-gray-100 text-primary" : "text-gray-700",
           className
         )}
       >
