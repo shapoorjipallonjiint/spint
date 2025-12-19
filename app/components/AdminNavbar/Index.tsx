@@ -9,6 +9,7 @@ import {
     EnvelopeIcon,
     BriefcaseIcon,
     GlobeAltIcon,
+    UsersIcon
   } from "@heroicons/react/24/outline";
 import { AwardIcon, GalleryThumbnails, HeartHandshake, LeafIcon, Settings, ThumbsUp, Workflow } from 'lucide-react';
 import { useEffect } from 'react';
@@ -70,6 +71,7 @@ const AdminNavbar = () => {
           {name:"Enquiries",href:"/contact/enquiries"}
         ] },
         { name: "Quality", href: "/quality", icon: ThumbsUp },
+        { name: "Community Engagement", href: "/community-engagement", icon: UsersIcon },
         { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
         { name: "Sustainability", href: "/sustainability", icon: LeafIcon },
         { name: "Settings", href: "/admin/settings", icon: Settings},
