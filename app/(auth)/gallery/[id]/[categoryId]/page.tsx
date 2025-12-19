@@ -2,7 +2,7 @@
 
 import { ImageUploader } from "@/components/ui/image-uploader";
 import { Label } from "@radix-ui/react-label";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useRouter, useParams } from "next/navigation";
