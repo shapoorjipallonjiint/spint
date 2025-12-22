@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const mepSchema = new mongoose.Schema({
+const integratedFacilityManagementSchema = new mongoose.Schema({
     metaTitle:{
         type:String,
         required:true
@@ -64,6 +64,13 @@ const mepSchema = new mongoose.Schema({
         title_ar:{
             type:String,
         },
+        description:{
+            type:String,
+            required:true
+        },
+        description_ar:{
+            type:String,
+        },
         items:[
             {
                 image:{
@@ -82,6 +89,13 @@ const mepSchema = new mongoose.Schema({
                 },
                 title_ar:{
                     type:String
+                },
+                description:{
+                    type:String,
+                    required:true
+                },
+                description_ar:{
+                    type:String,
                 }
             }
         ]
@@ -94,24 +108,34 @@ const mepSchema = new mongoose.Schema({
         title_ar:{
             type:String,
         },
-        items:[{
-            title:{
-                type:String,
-            },
-            title_ar:{
-                type:String,
-            },
-            image:{
-                type:String,
-                required:true
-            },
-            imageAlt:{
-                type:String
-            },
-            imageAlt_ar:{
-                type:String
+        items:[
+            {
+                image:{
+                    type:String,
+                    required:true
+                },
+                imageAlt:{
+                    type:String
+                },
+                imageAlt_ar:{
+                    type:String
+                },
+                title:{
+                    type:String,
+                    required:true
+                },
+                title_ar:{
+                    type:String
+                },
+                description:{
+                    type:String,
+                    required:true
+                },
+                description_ar:{
+                    type:String,
+                }
             }
-        }]
+        ]
     },
     fourthSection:{
         title:{
@@ -121,56 +145,32 @@ const mepSchema = new mongoose.Schema({
         title_ar:{
             type:String,
         },
-        items:[{
-            image:{
-                type:String,
-            },
-            imageAlt:{
-                type:String,
-            },
-            imageAlt_ar:{
-                type:String,
-            },
-            title:{
-                type:String,
-            },
-            title_ar:{
-                type:String,
-            }, 
-        }],
-    },
-    fifthSection:{
-        title:{
+        description:{
             type:String,
             required:true
         },
-        title_ar:{
+        description_ar:{
             type:String,
         },
-        items:[{
-            image:{
-                type:String,
-            },
-            imageAlt:{
-                type:String,
-            },
-            imageAlt_ar:{
-                type:String,
-            },
-            title:{
-                type:String,
-            },
-            title_ar:{
-                type:String,
-            }, 
-            description:{
-                type:String,
-            },
-            description_ar:{
-                type:String,
-            },  
-        }],
+        items:[
+            {
+                title:{
+                    type:String,
+                    required:true
+                },
+                title_ar:{
+                    type:String
+                },
+                description:{
+                    type:String,
+                    required:true
+                },
+                description_ar:{
+                    type:String,
+                }
+            }
+        ]
     }
 })
 
-export default mongoose.models.Mep || mongoose.model("Mep", mepSchema);
+export default mongoose.models.IntegratedFacilityManagement || mongoose.model("IntegratedFacilityManagement", integratedFacilityManagementSchema);
