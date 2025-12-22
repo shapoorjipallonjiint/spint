@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Career from "@/app/models/career";
+import Career from "@/app/models/Career";
 import { verifyAdmin } from "@/lib/verifyAdmin";
 
 
