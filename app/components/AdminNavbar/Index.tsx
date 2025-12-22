@@ -71,8 +71,8 @@ const AdminNavbar = () => {
             icon: BriefcaseIcon,
             hasChild: true,
             children: [
-                { name: "Main Page", href: "/admin/careers" },
-                { name: "Enquiries", href: "/admin/careers/enquiries" },
+                { name: "Main Page", href: "/careers" },
+                { name: "Enquiries", href: "/careers/enquiries" },
             ],
         },
         {
