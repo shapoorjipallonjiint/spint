@@ -60,7 +60,7 @@ export default function Projects() {
   const [projectList, setProjectList] = useState<{_id:string,firstSection:{title:string,description:string}}[]>([]);
   const [countryList, setCountryList] = useState<{ _id: string, name: string, name_ar:string }[]>([]);
   const [sectorList, setSectorList] = useState<{ _id: string, name: string, name_ar:string }[]>([]);
-  const [serviceList, setServiceList] = useState<{ _id: string, name: string, name_ar:string }[]>([]);
+  const [serviceList, setServiceList] = useState<{ _id: string, pageTitle: string, name_ar:string }[]>([]);
 
   const router = useRouter();
 
@@ -161,29 +161,29 @@ export default function Projects() {
   }
 
 
-  const handleAddService = async () => {
-    try {
-      const response = await fetch("/api/admin/project/service", {
-        method: "POST",
-        body: JSON.stringify({ name: service,name_ar:service_ar }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setService("");
-        toast.success(data.message);
-        handleFetchService();
-      } else {
-        const data = await response.json();
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log("Error adding service", error);
-    }
-  }
+  // const handleAddService = async () => {
+  //   try {
+  //     const response = await fetch("/api/admin/project/service", {
+  //       method: "POST",
+  //       body: JSON.stringify({ name: service,name_ar:service_ar }),
+  //     });
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setService("");
+  //       toast.success(data.message);
+  //       handleFetchService();
+  //     } else {
+  //       const data = await response.json();
+  //       toast.error(data.message);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error adding service", error);
+  //   }
+  // }
 
   const handleFetchService = async () => {
     try {
-      const response = await fetch("/api/admin/project/service");
+      const response = await fetch("/api/admin/services");
       if (response.ok) {
         const data = await response.json();
         setServiceList(data.data);
@@ -196,43 +196,43 @@ export default function Projects() {
     }
   }
 
-  const handleEditService = async (id: string) => {
-    try {
-      const response = await fetch(`/api/admin/project/service?id=${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ name: service,name_ar:service_ar }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        toast.success(data.message);
-        handleFetchService();
-        setService("");
-      } else {
-        const data = await response.json();
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log("Error editing service", error);
-    }
-  }
+  // const handleEditService = async (id: string) => {
+  //   try {
+  //     const response = await fetch(`/api/admin/project/service?id=${id}`, {
+  //       method: "PATCH",
+  //       body: JSON.stringify({ name: service,name_ar:service_ar }),
+  //     });
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       toast.success(data.message);
+  //       handleFetchService();
+  //       setService("");
+  //     } else {
+  //       const data = await response.json();
+  //       toast.error(data.message);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error editing service", error);
+  //   }
+  // }
 
-  const handleDeleteService = async (id: string) => {
-    try {
-      const response = await fetch(`/api/admin/project/service?id=${id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        toast.success(data.message);
-        handleFetchService();
-      } else {
-        const data = await response.json();
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log("Error deleting service", error);
-    }
-  }
+  // const handleDeleteService = async (id: string) => {
+  //   try {
+  //     const response = await fetch(`/api/admin/project/service?id=${id}`, {
+  //       method: "DELETE",
+  //     });
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       toast.success(data.message);
+  //       handleFetchService();
+  //     } else {
+  //       const data = await response.json();
+  //       toast.error(data.message);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error deleting service", error);
+  //   }
+  // }
 
 
   const handleFetchCountry = async () => {
@@ -596,69 +596,15 @@ export default function Projects() {
           <div className="h-1/2 w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
             <div className="flex justify-between border-b-2 pb-2">
               <Label className="text-sm font-bold">Service</Label>
-              <Dialog>
-                <DialogTrigger className="bg-black text-white px-2 py-1 rounded-md" onClick={() => {setService("");setServiceAr("")}}>Add Service</DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Add Service</DialogTitle>
-                    <DialogDescription className="flex flex-col gap-3">
-                      <Label>Service Name (English)</Label>
-                      <Input type="text" placeholder="Service Name" value={service} onChange={(e) => setService(e.target.value)} />
 
-                      <Label>Service Name (Arabic)</Label>
-                      <Input type="text" placeholder="Service Name" value={service_ar} onChange={(e) => setServiceAr(e.target.value)} />
-
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogClose className="bg-black text-white px-2 py-1 rounded-md" onClick={handleAddService}>Save</DialogClose>
-                </DialogContent>
-
-              </Dialog>
             </div>
             <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[80%]">
               {serviceList.map((item) => (
                 <div className="flex justify-between border p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300" key={item._id}>
                   <div className="text-[16px]">
-                    {item.name}
+                    {item.pageTitle}
                   </div>
-                  <div className="flex gap-5">
-                    <Dialog>
-                      <DialogTrigger onClick={() => { setService(item.name);setServiceAr(item.name_ar)}}><MdEdit /></DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Edit Service</DialogTitle>
-                          <DialogDescription>
-                            <Label>Sector Name (English)</Label>
-                            <Input type="text" placeholder="Sector Name" value={service} onChange={(e) => setService(e.target.value)} />
-
-                            <Label>Sector Name (Arabic)</Label>
-                            <Input type="text" placeholder="Sector Name" value={service_ar} onChange={(e) => setServiceAr(e.target.value)} />
-
-                          </DialogDescription>
-                        </DialogHeader>
-                        <DialogClose className="bg-black text-white px-2 py-1 rounded-md" onClick={() => handleEditService(item._id)}>Save</DialogClose>
-                      </DialogContent>
-
-                    </Dialog>
-
-
-
-                    <Dialog>
-                      <DialogTrigger><MdDelete /></DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Are you sure?</DialogTitle>
-                        </DialogHeader>
-                        <div className="flex gap-2">
-                          <DialogClose className="bg-black text-white px-2 py-1 rounded-md">No</DialogClose>
-                          <DialogClose className="bg-black text-white px-2 py-1 rounded-md" onClick={() => handleDeleteService(item._id)}>Yes</DialogClose>
-                        </div>
-
-                      </DialogContent>
-
-                    </Dialog>
-
-                  </div>
+                  
                 </div>
               ))}
 

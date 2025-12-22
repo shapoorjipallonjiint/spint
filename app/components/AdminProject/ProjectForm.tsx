@@ -97,7 +97,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
 
     const [sectorList, setSectorList] = useState<{_id: string; name: string; name_ar: string }[]>([]);
     const [locationList, setLocationList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
-    const [serviceList, setServiceList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
+    const [serviceList, setServiceList] = useState<{ _id: string; pageTitle: string; pageTitle_ar: string }[]>([]);
     const [reorderMode, setReorderMode] = useState(false);
 
     const { register, handleSubmit, setValue, watch, control, formState: { errors } } = useForm<ProjectFormProps>();
@@ -136,11 +136,12 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
             const response = await fetch(`/api/admin/project?id=${id}`);
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 setValue("secondSection", {
                     ...data.data.secondSection,
                     sector: data.data.secondSection.sector?._id || "",
                     location: data.data.secondSection.location?._id || "",
-                    service: data.data.secondSection.service?._id || "",
+                    service: data.data.secondSection.service._id || "",
                   });
                   setValue("firstSection", data.data.firstSection);
                 setValue("secondSection.items", data.data.secondSection.items);
@@ -194,7 +195,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
 
         const fetchService = async () => {
         try {
-            const response = await fetch("/api/admin/project/service");
+            const response = await fetch("/api/admin/services");
             if (response.ok) {
                 const data = await response.json();
                 setServiceList(data.data);
@@ -438,7 +439,7 @@ useEffect(() => {
                                         <SelectContent>
                                             {serviceList.map((item, index) => (
                                                 <SelectItem key={index} value={item._id}>
-                                                    {item.name}
+                                                    {item.pageTitle}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -854,9 +855,9 @@ useEffect(() => {
                                         <SelectContent>
                                             {serviceList.map((item, index) => (
                                                 <SelectItem key={index} value={item._id}>
-                                                    {item.name_ar?.trim()
-                              ? `${item.name_ar} (${item.name})`
-                              : `${item.name}`}
+                                                    {item.pageTitle_ar?.trim()
+                              ? `${item.pageTitle_ar} (${item.pageTitle})`
+                              : `${item.pageTitle}`}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
