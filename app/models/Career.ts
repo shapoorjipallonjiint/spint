@@ -50,9 +50,9 @@ const careerSchema = new mongoose.Schema({
         button: {
             text: { type: String, required: true },
             text_ar: { type: String },
-            link: { type: String, required: true }
+            link: { type: String }
         },
-        images: [{
+        items: [{
             image: { type: String }
         }]
     },
@@ -87,8 +87,8 @@ const careerSchema = new mongoose.Schema({
             type: String,
         },
         items: [{
-            text: { type: String, required: true },
-            text_ar: { type: String },
+            title: { type: String, required: true },
+            title_ar: { type: String },
             image: { type: String, required: true },
             imageAlt: { type: String, required: true },
             imageAlt_ar: { type: String },

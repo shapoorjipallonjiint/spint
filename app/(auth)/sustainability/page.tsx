@@ -13,6 +13,7 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
+import { FormError } from "@/app/components/common/FormError";
 
 interface SustainabilityFormProps {
     metaTitle: string;
@@ -240,7 +241,7 @@ const SustainabilityPage = () => {
                                 control={control}
                                 render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                             />
-                            {errors.banner && <p className="text-red-500">{errors.banner?.message}</p>}
+                            <FormError error={errors.banner?.message} />
                         </div>
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
@@ -268,9 +269,7 @@ const SustainabilityPage = () => {
                                         required: "Title is required",
                                     })}
                                 />
-                                {errors.firstSection?.title && (
-                                    <p className="text-red-500">{errors.firstSection?.title?.message}</p>
-                                )}
+                                <FormError error={errors.firstSection?.title?.message} />
                             </div>
                             <div>
                                 <Label className="text-sm font-bold">Description</Label>
@@ -296,14 +295,10 @@ const SustainabilityPage = () => {
                                             )}
                                         />
                                     </div>
-                                    {errors.firstSection?.video && (
-                                        <p className="text-red-500">{errors.firstSection?.video?.message}</p>
-                                    )}
+                                    <FormError error={errors.firstSection?.video?.message} />
                                     <Label className="font-bold">Video Alt Tag</Label>
                                     <Input type="text" placeholder="Alt Tag" {...register("firstSection.videoAlt")} />
-                                    {errors.firstSection?.videoAlt && (
-                                        <p className="text-red-500">{errors.firstSection?.videoAlt?.message}</p>
-                                    )}
+                                    <FormError error={errors.firstSection?.videoAlt?.message} />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <Label className="font-bold">Video Poster Image</Label>
@@ -315,18 +310,14 @@ const SustainabilityPage = () => {
                                             <ImageUploader value={field.value} onChange={field.onChange} />
                                         )}
                                     />
-                                    {errors.firstSection?.videoPosterImage && (
-                                        <p className="text-red-500">{errors.firstSection?.videoPosterImage?.message}</p>
-                                    )}
+                                    <FormError error={errors.firstSection?.videoPosterImage?.message} />
                                     <Label className="font-bold">Video Poster Image Alt Tag</Label>
                                     <Input
                                         type="text"
                                         placeholder="Alt Tag"
                                         {...register("firstSection.videoPosterImageAlt")}
                                     />
-                                    {errors.firstSection?.videoPosterImageAlt && (
-                                        <p className="text-red-500">{errors.firstSection?.videoPosterImageAlt?.message}</p>
-                                    )}
+                                    <FormError error={errors.firstSection?.videoPosterImageAlt?.message} />
                                 </div>
                             </div>
                         </div>
@@ -347,9 +338,7 @@ const SustainabilityPage = () => {
                                             required: "Title is required",
                                         })}
                                     />
-                                    {errors.secondSection?.title && (
-                                        <p className="text-red-500">{errors.secondSection?.title?.message}</p>
-                                    )}
+                                    <FormError error={errors.secondSection?.title?.message} />
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <Label className="font-bold">Image</Label>
@@ -361,14 +350,10 @@ const SustainabilityPage = () => {
                                             <ImageUploader value={field.value} onChange={field.onChange} />
                                         )}
                                     />
-                                    {errors.secondSection?.image && (
-                                        <p className="text-red-500">{errors.secondSection?.image?.message}</p>
-                                    )}
+                                    <FormError error={errors.secondSection?.image?.message} />
                                     <Label className="font-bold">Alt Tag</Label>
                                     <Input type="text" placeholder="Alt Tag" {...register("secondSection.imageAlt")} />
-                                    {errors.secondSection?.imageAlt && (
-                                        <p className="text-red-500">{errors.secondSection?.imageAlt?.message}</p>
-                                    )}
+                                    <FormError error={errors.secondSection?.imageAlt?.message} />
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
@@ -401,11 +386,11 @@ const SustainabilityPage = () => {
                                                                 required: "Description is required",
                                                             })}
                                                         />
-                                                        {errors.secondSection?.items?.[index]?.description && (
-                                                            <p className="text-red-500">
-                                                                {errors.secondSection?.items?.[index]?.description?.message}
-                                                            </p>
-                                                        )}
+                                                        <FormError
+                                                            error={
+                                                                errors.secondSection?.items?.[index]?.description?.message
+                                                            }
+                                                        />
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col gap-2">
@@ -418,22 +403,18 @@ const SustainabilityPage = () => {
                                                             <ImageUploader value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
-                                                    {errors.secondSection?.items?.[index]?.icon && (
-                                                        <p className="text-red-500">
-                                                            {errors.secondSection?.items?.[index]?.icon?.message}
-                                                        </p>
-                                                    )}
+                                                    <FormError
+                                                        error={errors.secondSection?.items?.[index]?.icon?.message}
+                                                    />
                                                     <Label className="font-bold">Icon Alt Tag</Label>
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
                                                         {...register(`secondSection.items.${index}.iconAlt`)}
                                                     />
-                                                    {errors.secondSection?.items?.[index]?.iconAlt && (
-                                                        <p className="text-red-500">
-                                                            {errors.secondSection?.items?.[index]?.iconAlt?.message}
-                                                        </p>
-                                                    )}
+                                                    <FormError
+                                                        error={errors.secondSection?.items?.[index]?.iconAlt?.message}
+                                                    />
                                                 </div>
                                             </div>
                                         ))}
@@ -477,9 +458,7 @@ const SustainabilityPage = () => {
                                         required: "Value is required",
                                     })}
                                 />
-                                {errors.thirdSection?.title && (
-                                    <p className="text-red-500">{errors.thirdSection?.title?.message}</p>
-                                )}
+                                <FormError error={errors.thirdSection?.title?.message} />
                             </div>
                         </div>
 
@@ -505,6 +484,7 @@ const SustainabilityPage = () => {
                                                 placeholder="Title"
                                                 {...register(`thirdSection.items.${index}.title`)}
                                             />
+                                            <FormError error={errors.thirdSection?.items?.[index]?.title?.message} />
                                         </div>
                                     </div>
                                     <div>
@@ -523,6 +503,8 @@ const SustainabilityPage = () => {
                                                     );
                                                 }}
                                             />
+
+                                            <FormError error={errors.thirdSection?.items?.[index]?.description?.message} />
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-2">
@@ -535,22 +517,14 @@ const SustainabilityPage = () => {
                                                 <ImageUploader value={field.value} onChange={field.onChange} />
                                             )}
                                         />
-                                        {errors.thirdSection?.items?.[index]?.image && (
-                                            <p className="text-red-500">
-                                                {errors.thirdSection?.items?.[index]?.image?.message}
-                                            </p>
-                                        )}
+                                        <FormError error={errors.thirdSection?.items?.[index]?.image?.message} />
                                         <Label className="font-bold">Image Alt Tag</Label>
                                         <Input
                                             type="text"
                                             placeholder="Alt Tag"
                                             {...register(`thirdSection.items.${index}.imageAlt`)}
                                         />
-                                        {errors.thirdSection?.items?.[index]?.imageAlt && (
-                                            <p className="text-red-500">
-                                                {errors.thirdSection?.items?.[index]?.imageAlt?.message}
-                                            </p>
-                                        )}
+                                        <FormError error={errors.thirdSection?.items?.[index]?.imageAlt?.message} />
                                     </div>
                                 </div>
                             ))}
@@ -590,9 +564,7 @@ const SustainabilityPage = () => {
                                         required: "Title is required",
                                     })}
                                 />
-                                {errors.fourthSection?.title && (
-                                    <p className="text-red-500">{errors.fourthSection?.title?.message}</p>
-                                )}
+                                <FormError error={errors.fourthSection?.title?.message} />
                             </div>
                         </div>
 
@@ -622,11 +594,9 @@ const SustainabilityPage = () => {
                                                             required: "Value is required",
                                                         })}
                                                     />
-                                                    {errors.fourthSection?.itemsOne?.[index]?.title && (
-                                                        <p className="text-red-500">
-                                                            {errors.fourthSection?.itemsOne?.[index]?.title?.message}
-                                                        </p>
-                                                    )}
+                                                    <FormError
+                                                        error={errors.fourthSection?.itemsOne?.[index]?.title?.message}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-2">
@@ -639,11 +609,7 @@ const SustainabilityPage = () => {
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
-                                                {errors.fourthSection?.itemsOne?.[index]?.icon && (
-                                                    <p className="text-red-500">
-                                                        {errors.fourthSection?.itemsOne?.[index]?.icon?.message}
-                                                    </p>
-                                                )}
+                                                <FormError error={errors.fourthSection?.itemsOne?.[index]?.icon?.message} />
                                             </div>
 
                                             <div className="flex flex-col gap-2">
@@ -656,11 +622,9 @@ const SustainabilityPage = () => {
                                                             required: "Value is required",
                                                         })}
                                                     />
-                                                    {errors.fourthSection?.itemsOne?.[index]?.iconAlt && (
-                                                        <p className="text-red-500">
-                                                            {errors.fourthSection?.itemsOne?.[index]?.iconAlt?.message}
-                                                        </p>
-                                                    )}
+                                                    <FormError
+                                                        error={errors.fourthSection?.itemsOne?.[index]?.iconAlt?.message}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -711,11 +675,9 @@ const SustainabilityPage = () => {
                                                             required: "Value is required",
                                                         })}
                                                     />
-                                                    {errors.fourthSection?.itemsTwo?.[index]?.value && (
-                                                        <p className="text-red-500">
-                                                            {errors.fourthSection?.itemsTwo?.[index]?.value?.message}
-                                                        </p>
-                                                    )}
+                                                    <FormError
+                                                        error={errors.fourthSection?.itemsTwo?.[index]?.value?.message}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-2">
@@ -727,11 +689,7 @@ const SustainabilityPage = () => {
                                                         required: "Value is required",
                                                     })}
                                                 />
-                                                {errors.fourthSection?.itemsTwo?.[index]?.key && (
-                                                    <p className="text-red-500">
-                                                        {errors.fourthSection?.itemsTwo?.[index]?.key?.message}
-                                                    </p>
-                                                )}
+                                                <FormError error={errors.fourthSection?.itemsTwo?.[index]?.key?.message} />
                                             </div>
                                         </div>
                                     </div>
@@ -770,9 +728,7 @@ const SustainabilityPage = () => {
                                         required: "Title is required",
                                     })}
                                 />
-                                {errors.fifthSection?.title && (
-                                    <p className="text-red-500">{errors.fifthSection?.title?.message}</p>
-                                )}
+                                <FormError error={errors.fifthSection?.title?.message} />
                             </div>
                         </div>
                         <div>
@@ -801,11 +757,9 @@ const SustainabilityPage = () => {
                                                             required: "Value is required",
                                                         })}
                                                     />
-                                                    {errors.fifthSection?.items?.[index]?.title && (
-                                                        <p className="text-red-500">
-                                                            {errors.fifthSection?.items?.[index]?.title?.message}
-                                                        </p>
-                                                    )}
+                                                    <FormError
+                                                        error={errors.fifthSection?.items?.[index]?.title?.message}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-2">
@@ -818,22 +772,14 @@ const SustainabilityPage = () => {
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.icon && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.icon?.message}
-                                                    </p>
-                                                )}
+                                                <FormError error={errors.fifthSection?.items?.[index]?.icon?.message} />
                                                 <Label className="font-bold">Icon Alt Tag</Label>
                                                 <Input
                                                     type="text"
                                                     placeholder="Alt Tag"
                                                     {...register(`fifthSection.items.${index}.iconAlt`)}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.iconAlt && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.iconAlt?.message}
-                                                    </p>
-                                                )}
+                                                <FormError error={errors.fifthSection?.items?.[index]?.iconAlt?.message} />
                                             </div>
                                             <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Description</Label>
@@ -843,11 +789,9 @@ const SustainabilityPage = () => {
                                                         required: "Description is required",
                                                     })}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.description && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.description?.message}
-                                                    </p>
-                                                )}
+                                                <FormError
+                                                    error={errors.fifthSection?.items?.[index]?.description?.message}
+                                                />
                                             </div>
                                             <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Image</Label>
@@ -859,22 +803,14 @@ const SustainabilityPage = () => {
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.image && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.image?.message}
-                                                    </p>
-                                                )}
+                                                <FormError error={errors.fifthSection?.items?.[index]?.image?.message} />
                                                 <Label className="font-bold">Image Alt Tag</Label>
                                                 <Input
                                                     type="text"
                                                     placeholder="Alt Tag"
                                                     {...register(`fifthSection.items.${index}.imageAlt`)}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.imageAlt && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.imageAlt?.message}
-                                                    </p>
-                                                )}
+                                                <FormError error={errors.fifthSection?.items?.[index]?.imageAlt?.message} />
                                             </div>
                                         </div>
                                     </div>
@@ -930,7 +866,6 @@ const SustainabilityPage = () => {
                                 rules={{ required: "Banner is required" }}
                                 render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                             />
-                            {errors.banner && <p className="text-red-500">{errors.banner.message}</p>}
                         </div>
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
@@ -951,14 +886,7 @@ const SustainabilityPage = () => {
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register("firstSection.title_ar")}
-                                />
-                                {errors.firstSection?.title_ar && (
-                                    <p className="text-red-500">{errors.firstSection?.title_ar.message}</p>
-                                )}
+                                <Input type="text" placeholder="Title" {...register("firstSection.title_ar")} />
                             </div>
                             <div>
                                 <Label className="text-sm font-bold">Description</Label>
@@ -987,9 +915,6 @@ const SustainabilityPage = () => {
                                     )}
                                     <Label className="font-bold">Video Alt Tag</Label>
                                     <Input type="text" placeholder="Alt Tag" {...register("firstSection.videoAlt_ar")} />
-                                    {errors.firstSection?.videoAlt_ar && (
-                                        <p className="text-red-500">{errors.firstSection?.videoAlt_ar.message}</p>
-                                    )}
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <Label className="font-bold">Video Poster Image</Label>
@@ -1000,18 +925,12 @@ const SustainabilityPage = () => {
                                             <ImageUploader value={field.value} onChange={field.onChange} />
                                         )}
                                     />
-                                    {errors.firstSection?.videoPosterImage && (
-                                        <p className="text-red-500">{errors.firstSection?.videoPosterImage.message}</p>
-                                    )}
                                     <Label className="font-bold">Video Poster Image Alt Tag</Label>
                                     <Input
                                         type="text"
                                         placeholder="Alt Tag"
                                         {...register("firstSection.videoPosterImageAlt_ar")}
                                     />
-                                    {errors.firstSection?.videoPosterImageAlt_ar && (
-                                        <p className="text-red-500">{errors.firstSection?.videoPosterImageAlt_ar.message}</p>
-                                    )}
                                 </div>
                             </div>
                         </div>
@@ -1025,14 +944,7 @@ const SustainabilityPage = () => {
                             <div className="grid grid-cols-1 gap-2">
                                 <div className="flex flex-col gap-1">
                                     <Label className="font-bold">Title</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Title"
-                                        {...register("secondSection.title_ar")}
-                                    />
-                                    {errors.secondSection?.title_ar && (
-                                        <p className="text-red-500">{errors.secondSection?.title_ar.message}</p>
-                                    )}
+                                    <Input type="text" placeholder="Title" {...register("secondSection.title_ar")} />
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <Label className="font-bold">Image</Label>
@@ -1048,9 +960,6 @@ const SustainabilityPage = () => {
                                     )}
                                     <Label className="font-bold">Alt Tag</Label>
                                     <Input type="text" placeholder="Alt Tag" {...register("secondSection.imageAlt_ar")} />
-                                    {errors.secondSection?.imageAlt_ar && (
-                                        <p className="text-red-500">{errors.secondSection?.imageAlt_ar.message}</p>
-                                    )}
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
@@ -1081,11 +990,6 @@ const SustainabilityPage = () => {
                                                             placeholder="Description"
                                                             {...register(`secondSection.items.${index}.description_ar`)}
                                                         />
-                                                        {errors.secondSection?.items?.[index]?.description_ar && (
-                                                            <p className="text-red-500">
-                                                                {errors.secondSection?.items?.[index]?.description_ar?.message}
-                                                            </p>
-                                                        )}
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col gap-2">
@@ -1097,22 +1001,12 @@ const SustainabilityPage = () => {
                                                             <ImageUploader value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
-                                                    {errors.secondSection?.items?.[index]?.icon && (
-                                                        <p className="text-red-500">
-                                                            {errors.secondSection?.items?.[index]?.icon?.message}
-                                                        </p>
-                                                    )}
                                                     <Label className="font-bold">Icon Alt Tag</Label>
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
                                                         {...register(`secondSection.items.${index}.iconAlt_ar`)}
                                                     />
-                                                    {errors.secondSection?.items?.[index]?.iconAlt_ar && (
-                                                        <p className="text-red-500">
-                                                            {errors.secondSection?.items?.[index]?.iconAlt_ar?.message}
-                                                        </p>
-                                                    )}
                                                 </div>
                                             </div>
                                         ))}
@@ -1149,14 +1043,7 @@ const SustainabilityPage = () => {
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-2">
                                 <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register(`thirdSection.title_ar`)}
-                                />
-                                {errors.thirdSection?.title_ar && (
-                                    <p className="text-red-500">{errors.thirdSection?.title_ar.message}</p>
-                                )}
+                                <Input type="text" placeholder="Title" {...register(`thirdSection.title_ar`)} />
                             </div>
                         </div>
 
@@ -1211,22 +1098,12 @@ const SustainabilityPage = () => {
                                                 <ImageUploader value={field.value} onChange={field.onChange} />
                                             )}
                                         />
-                                        {errors.thirdSection?.items?.[index]?.image && (
-                                            <p className="text-red-500">
-                                                {errors.thirdSection?.items?.[index]?.image?.message}
-                                            </p>
-                                        )}
                                         <Label className="font-bold">Image Alt Tag</Label>
                                         <Input
                                             type="text"
                                             placeholder="Alt Tag"
                                             {...register(`thirdSection.items.${index}.imageAlt_ar`)}
                                         />
-                                        {errors.thirdSection?.items?.[index]?.imageAlt_ar && (
-                                            <p className="text-red-500">
-                                                {errors.thirdSection?.items?.[index]?.imageAlt_ar?.message}
-                                            </p>
-                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -1259,14 +1136,7 @@ const SustainabilityPage = () => {
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register("fourthSection.title_ar")}
-                                />
-                                {errors.fourthSection?.title_ar && (
-                                    <p className="text-red-500">{errors.fourthSection?.title_ar.message}</p>
-                                )}
+                                <Input type="text" placeholder="Title" {...register("fourthSection.title_ar")} />
                             </div>
                         </div>
 
@@ -1294,11 +1164,6 @@ const SustainabilityPage = () => {
                                                         placeholder="Title"
                                                         {...register(`fourthSection.itemsOne.${index}.title_ar`)}
                                                     />
-                                                    {errors.fourthSection?.itemsOne?.[index]?.title_ar && (
-                                                        <p className="text-red-500">
-                                                            {errors.fourthSection?.itemsOne?.[index]?.title_ar?.message}
-                                                        </p>
-                                                    )}
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-2">
@@ -1310,11 +1175,6 @@ const SustainabilityPage = () => {
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
-                                                {errors.fourthSection?.itemsOne?.[index]?.icon && (
-                                                    <p className="text-red-500">
-                                                        {errors.fourthSection?.itemsOne?.[index]?.icon?.message}
-                                                    </p>
-                                                )}
                                             </div>
 
                                             <div className="flex flex-col gap-2">
@@ -1325,11 +1185,6 @@ const SustainabilityPage = () => {
                                                         placeholder="Alt Tag"
                                                         {...register(`fourthSection.itemsOne.${index}.iconAlt_ar`)}
                                                     />
-                                                    {errors.fourthSection?.itemsOne?.[index]?.iconAlt_ar && (
-                                                        <p className="text-red-500">
-                                                            {errors.fourthSection?.itemsOne?.[index]?.iconAlt_ar?.message}
-                                                        </p>
-                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -1378,11 +1233,6 @@ const SustainabilityPage = () => {
                                                         placeholder="Value"
                                                         {...register(`fourthSection.itemsTwo.${index}.value_ar`)}
                                                     />
-                                                    {errors.fourthSection?.itemsTwo?.[index]?.value_ar && (
-                                                        <p className="text-red-500">
-                                                            {errors.fourthSection?.itemsTwo?.[index]?.value_ar?.message}
-                                                        </p>
-                                                    )}
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-2">
@@ -1392,11 +1242,6 @@ const SustainabilityPage = () => {
                                                     placeholder="Value"
                                                     {...register(`fourthSection.itemsTwo.${index}.key_ar`)}
                                                 />
-                                                {errors.fourthSection?.itemsTwo?.[index]?.key_ar && (
-                                                    <p className="text-red-500">
-                                                        {errors.fourthSection?.itemsTwo?.[index]?.key_ar?.message}
-                                                    </p>
-                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -1428,14 +1273,7 @@ const SustainabilityPage = () => {
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register("fifthSection.title_ar")}
-                                />
-                                {errors.fifthSection?.title_ar && (
-                                    <p className="text-red-500">{errors.fifthSection?.title_ar.message}</p>
-                                )}
+                                <Input type="text" placeholder="Title" {...register("fifthSection.title_ar")} />
                             </div>
                         </div>
                         <div>
@@ -1462,11 +1300,6 @@ const SustainabilityPage = () => {
                                                         placeholder="Value"
                                                         {...register(`fifthSection.items.${index}.title_ar`)}
                                                     />
-                                                    {errors.fifthSection?.items?.[index]?.title_ar && (
-                                                        <p className="text-red-500">
-                                                            {errors.fifthSection?.items?.[index]?.title_ar?.message}
-                                                        </p>
-                                                    )}
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-2">
@@ -1478,22 +1311,12 @@ const SustainabilityPage = () => {
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.icon && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.icon?.message}
-                                                    </p>
-                                                )}
                                                 <Label className="font-bold">Icon Alt Tag</Label>
                                                 <Input
                                                     type="text"
                                                     placeholder="Alt Tag"
                                                     {...register(`fifthSection.items.${index}.iconAlt_ar`)}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.iconAlt_ar && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.iconAlt_ar?.message}
-                                                    </p>
-                                                )}
                                             </div>
                                             <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Description</Label>
@@ -1501,11 +1324,6 @@ const SustainabilityPage = () => {
                                                     placeholder="Description"
                                                     {...register(`fifthSection.items.${index}.description_ar`)}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.description_ar && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.description_ar?.message}
-                                                    </p>
-                                                )}
                                             </div>
                                             <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Image</Label>
@@ -1516,22 +1334,12 @@ const SustainabilityPage = () => {
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.image && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.image?.message}
-                                                    </p>
-                                                )}
                                                 <Label className="font-bold">Image Alt Tag</Label>
                                                 <Input
                                                     type="text"
                                                     placeholder="Alt Tag"
                                                     {...register(`fifthSection.items.${index}.imageAlt_ar`)}
                                                 />
-                                                {errors.fifthSection?.items?.[index]?.imageAlt_ar && (
-                                                    <p className="text-red-500">
-                                                        {errors.fifthSection?.items?.[index]?.imageAlt_ar?.message}
-                                                    </p>
-                                                )}
                                             </div>
                                         </div>
                                     </div>
