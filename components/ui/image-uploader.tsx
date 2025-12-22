@@ -116,13 +116,13 @@ export function ImageUploader({ value, onChange, className, deleteAfterUpload = 
   return (
     <div className={cn("space-y-4 w-full", className)}>
       {displayUrl && isUploadComplete ? (
-        <div className={`relative w-full max-w-[300px] aspect-[4/3] overflow-hidden rounded-lg border ${isLogo ? "max-w-[100px] h-[100px] bg-black" : "max-w-[300px]"}`}>
-          <Image src={value ? value : displayUrl} alt="Uploaded image" className={isLogo ? "object-contain p-2 bg-white" : "object-cover"} fill />
+        <div className={` relative w-full max-w-[300px] aspect-[4/3] overflow-hidden rounded-lg border ${isLogo ? "max-w-[100px] h-[100px] bg-black" : "max-w-[300px]"}`}>
+          <Image src={value ? value : displayUrl} alt="Uploaded image" className={isLogo ? "object-contain p-2 bg-black" : "object-cover"} fill />
           <Button
             type="button"
             variant="destructive"
             size="icon"
-            className="absolute right-2 top-2"
+            className="absolute right-2 top-2  bg-red-500"
             onClick={removeImage}
           >
             <X className="h-4 w-4" />
