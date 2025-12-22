@@ -323,7 +323,9 @@ const CommunityPage = () => {
                                 <FormError error={errors.firstSection?.description?.message} />
                             </div>
                         </div>
-                        <Label className="text-primary font-medium">NB: The image layout is at the bottom of this page.</Label>
+                        <Label className="text-primary font-medium">
+                            NB: The image layout is at the bottom of this page.
+                        </Label>
                     </div>
                 </AdminItemContainer>
 
@@ -693,7 +695,7 @@ const CommunityPage = () => {
             </div>
 
             {/*Arabic Version */}
-                        <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5">
                 <AdminItemContainer>
                     <Label className="" main>
                         Banner
@@ -715,18 +717,18 @@ const CommunityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Page Title"
-                                    {...register("pageTitle", { required: "Page title is required" })}
+                                    {...register("pageTitle_ar", { required: "Page title is required" })}
                                 />
-                                <FormError error={errors.pageTitle?.message} />
+                                <FormError error={errors.pageTitle_ar?.message} />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Alt Tag</Label>
                                 <Input
                                     type="text"
                                     placeholder="Alt Tag"
-                                    {...register("bannerAlt", { required: "Alt tag is required" })}
+                                    {...register("bannerAlt_ar", { required: "Alt tag is required" })}
                                 />
-                                <FormError error={errors.bannerAlt?.message} />
+                                <FormError error={errors.bannerAlt_ar?.message} />
                             </div>
                         </div>
                     </div>
@@ -741,26 +743,28 @@ const CommunityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register("firstSection.title", {
+                                    {...register("firstSection.title_ar", {
                                         required: "Title is required",
                                     })}
                                 />
-                                <FormError error={errors.firstSection?.title?.message} />
+                                <FormError error={errors.firstSection?.title_ar?.message} />
                             </div>
                             <div>
                                 <Label className="text-sm font-bold">Description</Label>
                                 <Controller
-                                    name="firstSection.description"
+                                    name="firstSection.description_ar"
                                     control={control}
                                     rules={{ required: "Description is required" }}
                                     render={({ field }) => {
                                         return <Textarea value={field.value} onChange={field.onChange} />;
                                     }}
                                 />
-                                <FormError error={errors.firstSection?.description?.message} />
+                                <FormError error={errors.firstSection?.description_ar?.message} />
                             </div>
                         </div>
-                        <Label className="text-primary font-medium">NB: The image layout is at the bottom of this page.</Label>
+                        <Label className="text-primary font-medium">
+                            NB: The image layout is at the bottom of this page.
+                        </Label>
                     </div>
                 </AdminItemContainer>
 
@@ -774,11 +778,11 @@ const CommunityPage = () => {
                                     <Input
                                         type="text"
                                         placeholder="Title"
-                                        {...register("secondSection.title", {
+                                        {...register("secondSection.title_ar", {
                                             required: "Title is required",
                                         })}
                                     />
-                                    <FormError error={errors.secondSection?.title?.message} />
+                                    <FormError error={errors.secondSection?.title_ar?.message} />
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
@@ -797,10 +801,10 @@ const CommunityPage = () => {
                                                         <Input
                                                             type="text"
                                                             placeholder="title"
-                                                            {...register(`secondSection.items.${index}.title`)}
+                                                            {...register(`secondSection.items.${index}.title_ar`)}
                                                         />
                                                         <FormError
-                                                            error={errors.secondSection?.items?.[index]?.title?.message}
+                                                            error={errors.secondSection?.items?.[index]?.title_ar?.message}
                                                         />
                                                     </div>
                                                 </div>
@@ -810,13 +814,13 @@ const CommunityPage = () => {
                                                         <Input
                                                             type="text"
                                                             placeholder="Description"
-                                                            {...register(`secondSection.items.${index}.description`, {
+                                                            {...register(`secondSection.items.${index}.description_ar`, {
                                                                 required: "Description is required",
                                                             })}
                                                         />
                                                         <FormError
                                                             error={
-                                                                errors.secondSection?.items?.[index]?.description?.message
+                                                                errors.secondSection?.items?.[index]?.description_ar?.message
                                                             }
                                                         />
                                                     </div>
@@ -831,22 +835,15 @@ const CommunityPage = () => {
                                                             <ImageUploader value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
-                                                    {errors.secondSection?.items?.[index]?.icon && (
-                                                        <p className="text-red-500">
-                                                            {errors.secondSection?.items?.[index]?.icon?.message}
-                                                        </p>
-                                                    )}
+                                                            <FormError error={errors.secondSection?.items?.[index]?.icon?.message} />
+                                                
                                                     <Label className="font-bold">Icon Alt Tag</Label>
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
-                                                        {...register(`secondSection.items.${index}.iconAlt`)}
+                                                        {...register(`secondSection.items.${index}.iconAlt_ar`)}
                                                     />
-                                                    {errors.secondSection?.items?.[index]?.iconAlt && (
-                                                        <p className="text-red-500">
-                                                            {errors.secondSection?.items?.[index]?.iconAlt?.message}
-                                                        </p>
-                                                    )}
+                                                    <FormError error={errors.secondSection?.items?.[index]?.iconAlt_ar?.message} />
                                                 </div>
                                                 <div className="flex flex-col gap-2">
                                                     <Label className="font-bold">Image</Label>
@@ -865,10 +862,10 @@ const CommunityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
-                                                        {...register(`secondSection.items.${index}.imageAlt`)}
+                                                        {...register(`secondSection.items.${index}.imageAlt_ar`)}
                                                     />
                                                     <FormError
-                                                        error={errors.secondSection?.items?.[index]?.imageAlt?.message}
+                                                        error={errors.secondSection?.items?.[index]?.imageAlt_ar?.message}
                                                     />
                                                 </div>
                                             </div>
@@ -914,11 +911,11 @@ const CommunityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register(`thirdSection.title`, {
+                                    {...register(`thirdSection.title_ar`, {
                                         required: "Value is required",
                                     })}
                                 />
-                                <FormError error={errors.thirdSection?.title?.message} />
+                                <FormError error={errors.thirdSection?.title_ar?.message} />
                             </div>
                         </div>
 
@@ -942,22 +939,22 @@ const CommunityPage = () => {
                                             <Input
                                                 type="text"
                                                 placeholder="Title"
-                                                {...register(`thirdSection.items.${index}.title`)}
+                                                {...register(`thirdSection.items.${index}.title_ar`)}
                                             />
-                                            <FormError error={errors.thirdSection?.items?.[index]?.title?.message} />
+                                            <FormError error={errors.thirdSection?.items?.[index]?.title_ar?.message} />
                                         </div>
                                     </div>
                                     <div>
                                         <div className="flex flex-col gap-2">
                                             <Label className="pl-3 font-bold">Description</Label>
                                             <Controller
-                                                name={`thirdSection.items.${index}.description`}
+                                                name={`thirdSection.items.${index}.description_ar`}
                                                 control={control}
                                                 render={({ field }) => (
                                                     <Textarea value={field.value} onChange={field.onChange} />
                                                 )}
                                             />
-                                            <FormError error={errors.thirdSection?.items?.[index]?.description?.message} />
+                                            <FormError error={errors.thirdSection?.items?.[index]?.description_ar?.message} />
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-2">
@@ -975,9 +972,9 @@ const CommunityPage = () => {
                                         <Input
                                             type="text"
                                             placeholder="Alt Tag"
-                                            {...register(`thirdSection.items.${index}.imageAlt`)}
+                                            {...register(`thirdSection.items.${index}.imageAlt_ar`)}
                                         />
-                                        <FormError error={errors.thirdSection?.items?.[index]?.imageAlt?.message} />
+                                        <FormError error={errors.thirdSection?.items?.[index]?.imageAlt_ar?.message} />
                                     </div>
                                 </div>
                             ))}
@@ -1013,11 +1010,11 @@ const CommunityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register("fourthSection.title", {
+                                    {...register("fourthSection.title_ar", {
                                         required: "Title is required",
                                     })}
                                 />
-                                <FormError error={errors.fourthSection?.title?.message} />
+                                <FormError error={errors.fourthSection?.title_ar?.message} />
                             </div>
                         </div>
 
@@ -1041,12 +1038,12 @@ const CommunityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Title"
-                                                        {...register(`fourthSection.items.${index}.title`, {
+                                                        {...register(`fourthSection.items.${index}.title_ar`, {
                                                             required: "Title is required",
                                                         })}
                                                     />
                                                     <FormError
-                                                        error={errors.fourthSection?.items?.[index]?.title?.message}
+                                                        error={errors.fourthSection?.items?.[index]?.title_ar?.message}
                                                     />
                                                 </div>
 
@@ -1085,12 +1082,12 @@ const CommunityPage = () => {
                                                 <Input
                                                     type="text"
                                                     placeholder="Alt Tag"
-                                                    {...register(`fourthSection.items.${index}.imageAlt`, {
+                                                    {...register(`fourthSection.items.${index}.imageAlt_ar`, {
                                                         required: "Alt tag is required",
                                                     })}
                                                 />
                                                 <FormError
-                                                    error={errors.fourthSection?.items?.[index]?.imageAlt?.message}
+                                                    error={errors.fourthSection?.items?.[index]?.imageAlt_ar?.message}
                                                 />
                                             </div>
                                         </div>
@@ -1121,14 +1118,13 @@ const CommunityPage = () => {
 
                 <div className="flex flex-col gap-2">
                     <Label className="pl-3 font-bold">Meta Title</Label>
-                    <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
+                    <Input type="text" placeholder="Meta Title" {...register("metaTitle_ar")} />
                 </div>
                 <div className="flex flex-col gap-2">
                     <Label className="pl-3 font-bold">Meta Description</Label>
-                    <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
+                    <Input type="text" placeholder="Meta Description" {...register("metaDescription_ar")} />
                 </div>
             </div>
-
 
             {/*First Section Image Layout */}
             <div className="col-span-2">
