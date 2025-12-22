@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const projectSchema = new mongoose.Schema({
     metaTitle: {
@@ -138,5 +138,7 @@ const projectSchema = new mongoose.Schema({
     },
   }]
 })
+
+export type ProjectType = InferSchemaType<typeof projectSchema>;
 
 export default mongoose.models.Project || mongoose.model("Project", projectSchema);
