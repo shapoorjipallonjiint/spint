@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
-import ClientSideLink from '@/app/client-side-link';
-import React, { useState } from 'react'
+import ClientSideLink from "@/app/client-side-link";
+import React, { useEffect, useState } from "react";
+
 import {
     HomeIcon,
     NewspaperIcon,
@@ -9,27 +10,23 @@ import {
     EnvelopeIcon,
     BriefcaseIcon,
     GlobeAltIcon,
-    UsersIcon
-  } from "@heroicons/react/24/outline";
-import { AwardIcon, GalleryThumbnails, HeartHandshake, LeafIcon, Settings, ThumbsUp, Workflow } from 'lucide-react';
-import { useEffect } from 'react';
-
-
+    UsersIcon,
+} from "@heroicons/react/24/outline";
+import { AwardIcon, GalleryThumbnails, HeartHandshake, LeafIcon, Settings, ThumbsUp, Workflow } from "lucide-react";
 
 const AdminNavbar = () => {
-
     const [openLink, setOpenLink] = useState<string | null>(null);
-    
+    const [countries, setCountries] = useState([]);
+
+    const fetchCountries = async () => {
+        const response = await fetch("/api/admin/global-presence");
+        const data = await response.json();
+        setCountries(data.data?.thirdSection?.countries);
+    };
+
     useEffect(() => {
-      fetchCountries()
-  },[])
-  
-  const [countries, setCountries] = useState([])
-  const fetchCountries = async () => {
-      const response = await fetch("/api/admin/global-presence");
-      const data = await response.json();
-      setCountries(data.data.thirdSection.countries)
-  }
+        fetchCountries();
+    }, []);
 
     const navItems = [
         { name: "Home", href: "/home", icon: HomeIcon },
@@ -50,51 +47,68 @@ const AdminNavbar = () => {
         // ] },
         { name: "Projects", href: "/projects", icon: Workflow },
         { name: "News", href: "/news", icon: NewspaperIcon },
-        { name: "Services", href: "##", icon:BriefcaseIcon,hasChild:true,children: [
-          {name:"Engineering & Construction",href:"/services/engineering-and-construction"},
-          {name:"MEP",href:"/services/mep"},
-          {name:"Design Studio",href:"/services/design-studio"},
-          {name:"Interior Design",href:"/services/interior-design"},
-          {name:"Façade",href:"/services/facade"},
-          {name:"Integrated Facility Management",href:"/services/integrated-facility-management"},
-          {name:"Water",href:"/services/water"},
-        ] },
+        {
+            name: "Services",
+            href: "##",
+            icon: BriefcaseIcon,
+            hasChild: true,
+            children: [
+                { name: "Engineering & Construction", href: "/services/engineering-and-construction" },
+                { name: "MEP", href: "/services/mep" },
+                { name: "Design Studio", href: "/services/design-studio" },
+                { name: "Interior Design", href: "/services/interior-design" },
+                { name: "Façade", href: "/services/facade" },
+                { name: "Integrated Facility Management", href: "/services/integrated-facility-management" },
+                { name: "Water", href: "/services/water" },
+            ],
+        },
         { name: "Gallery", href: "/gallery", icon: GalleryThumbnails },
-        { name: "Awards", href: "/admin/awards", icon:AwardIcon },
-        { name: "Leadership & Team", href: "/leadership", icon:UserGroupIcon },
-        { name: "Careers", href: "####", icon:BriefcaseIcon,hasChild:true,children: [
-          { name: "Main Page", href: "/admin/careers" },
-          {name:"Enquiries",href:"/admin/careers/enquiries"}
-        ] },
-        { name: "Contact", href: "###", icon: EnvelopeIcon,hasChild:true,children: [
-          { name: "Main Page", href: "/contact" },
-          {name:"Enquiries",href:"/contact/enquiries"}
-        ] },
+        { name: "Awards", href: "/admin/awards", icon: AwardIcon },
+        { name: "Leadership & Team", href: "/leadership", icon: UserGroupIcon },
+        {
+            name: "Careers",
+            href: "####",
+            icon: BriefcaseIcon,
+            hasChild: true,
+            children: [
+                { name: "Main Page", href: "/admin/careers" },
+                { name: "Enquiries", href: "/admin/careers/enquiries" },
+            ],
+        },
+        {
+            name: "Contact",
+            href: "###",
+            icon: EnvelopeIcon,
+            hasChild: true,
+            children: [
+                { name: "Main Page", href: "/contact" },
+                { name: "Enquiries", href: "/contact/enquiries" },
+            ],
+        },
         { name: "Quality", href: "/quality", icon: ThumbsUp },
+        { name: "Global Presence", href: "/global-presence", icon: GlobeAltIcon },
         { name: "Community Engagement", href: "/community-engagement", icon: UsersIcon },
         { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
         { name: "Sustainability", href: "/sustainability", icon: LeafIcon },
-        { name: "Settings", href: "/admin/settings", icon: Settings},
-      ];
+        { name: "Settings", href: "/admin/settings", icon: Settings },
+    ];
 
-  return (
-    navItems.map((item) => {
+    return navItems.map((item) => {
         const Icon = item.icon;
         return (
-          <ClientSideLink
-            key={item.href}
-            href={item.href}
-            name={item.name}
-            icon={<Icon className="h-5 w-5" />}
-            isOpen={openLink === item.href}
-            setOpenLink={setOpenLink}
-            hasChild={item.hasChild}
-          >
-            {item.children}
-          </ClientSideLink>
+            <ClientSideLink
+                key={item.href}
+                href={item.href}
+                name={item.name}
+                icon={<Icon className="h-5 w-5" />}
+                isOpen={openLink === item.href}
+                setOpenLink={setOpenLink}
+                hasChild={item.hasChild}
+            >
+                {item.children}
+            </ClientSideLink>
         );
-      })
-  )
-}
+    });
+};
 
-export default AdminNavbar
+export default AdminNavbar;
