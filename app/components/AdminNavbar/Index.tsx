@@ -29,8 +29,8 @@ const AdminNavbar = () => {
     }, []);
 
     const navItems = [
-        { name: "Home", href: "/home", icon: HomeIcon },
-        { name: "About", href: "/about", icon: UserGroupIcon },
+        { name: "Home", href: "/admin/home", icon: HomeIcon },
+        { name: "About", href: "/admin/about", icon: UserGroupIcon },
         // { name: "Clients", href: "/admin/clients", icon: PresentationChartBarIcon },
         // { name: "Services", href: "#", icon: EnvelopeIcon,hasChild:true,children: [
         //     { name: "Engineering", href: "/admin/services/engineering" },
@@ -45,34 +45,34 @@ const AdminNavbar = () => {
         //     { name: country.title, href: `/admin/global-presence/${country._id}` }
         //   )),
         // ] },
-        { name: "Projects", href: "/projects", icon: Workflow },
-        { name: "News", href: "/news", icon: NewspaperIcon },
+        { name: "Projects", href: "/admin/projects", icon: Workflow },
+        { name: "News", href: "/admin/news", icon: NewspaperIcon },
         {
             name: "Services",
             href: "##",
             icon: BriefcaseIcon,
             hasChild: true,
             children: [
-                { name: "Engineering & Construction", href: "/services/engineering-and-construction" },
-                { name: "MEP", href: "/services/mep" },
-                { name: "Design Studio", href: "/services/design-studio" },
-                { name: "Interior Design", href: "/services/interior-design" },
-                { name: "Façade", href: "/services/facade" },
-                { name: "Integrated Facility Management", href: "/services/integrated-facility-management" },
-                { name: "Water", href: "/services/water" },
+                { name: "Engineering & Construction", href: "/admin/services/engineering-and-construction" },
+                { name: "MEP", href: "/admin/services/mep" },
+                { name: "Design Studio", href: "/admin/services/design-studio" },
+                { name: "Interior Design", href: "/admin/services/interior-design" },
+                { name: "Façade", href: "/admin/services/facade" },
+                { name: "Integrated Facility Management", href: "/admin/services/integrated-facility-management" },
+                { name: "Water", href: "/admin/services/water" },
             ],
         },
-        { name: "Gallery", href: "/gallery", icon: GalleryThumbnails },
+        { name: "Gallery", href: "/admin/gallery", icon: GalleryThumbnails },
         { name: "Awards", href: "/admin/awards", icon: AwardIcon },
-        { name: "Leadership & Team", href: "/leadership", icon: UserGroupIcon },
+        { name: "Leadership & Team", href: "/admin/leadership", icon: UserGroupIcon },
         {
             name: "Careers",
             href: "####",
             icon: BriefcaseIcon,
             hasChild: true,
             children: [
-                { name: "Main Page", href: "/careers" },
-                { name: "Enquiries", href: "/careers/enquiries" },
+                { name: "Main Page", href: "/admin/careers" },
+                { name: "Enquiries", href: "/admin/careers/enquiries" },
             ],
         },
         {
@@ -81,15 +81,15 @@ const AdminNavbar = () => {
             icon: EnvelopeIcon,
             hasChild: true,
             children: [
-                { name: "Main Page", href: "/contact" },
-                { name: "Enquiries", href: "/contact/enquiries" },
+                { name: "Main Page", href: "/admin/contact" },
+                { name: "Enquiries", href: "/admin/contact/enquiries" },
             ],
         },
-        { name: "Quality", href: "/quality", icon: ThumbsUp },
-        { name: "Global Presence", href: "/global-presence", icon: GlobeAltIcon },
-        { name: "Community Engagement", href: "/community-engagement", icon: UsersIcon },
+        { name: "Quality", href: "/admin/quality", icon: ThumbsUp },
+        { name: "Global Presence", href: "/admin/global-presence", icon: GlobeAltIcon },
+        { name: "Community Engagement", href: "/admin/community-engagement", icon: UsersIcon },
         { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
-        { name: "Sustainability", href: "/sustainability", icon: LeafIcon },
+        { name: "Sustainability", href: "/admin/sustainability", icon: LeafIcon },
         { name: "Settings", href: "/admin/settings", icon: Settings },
     ];
 

@@ -1,7 +1,7 @@
 "use client"
 
 import  { useRef, useState } from 'react'
-import HeaderTw from '../HeaderTw'
+import HeaderTw from '../../HeaderTw'
 import SlideScrollThree from '../home/SlideScrollThree'
 
 const IndexV2 = () => {
