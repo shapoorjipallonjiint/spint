@@ -1,5 +1,5 @@
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
-import ClientSideLink from "../client-side-link";
+import ClientSideLink from "../../admin/client-side-link";
 import AdminNavbar from "@/app/components/AdminNavbar/Index";
 import Image from "next/image";
 import { Toaster } from "sonner";

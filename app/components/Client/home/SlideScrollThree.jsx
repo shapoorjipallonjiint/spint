@@ -14,9 +14,9 @@ gsap.registerPlugin(DrawSVGPlugin);
 import { motion, AnimatePresence } from "framer-motion";
 
 import { aboutData } from "./data";
-import { moveUp } from "../motionVarients.ts";
-import CountUp from "../CountUp.jsx";
-import { useFirstTimeDelay } from "../../../hooks/useDelayTimer.jsx";
+import { moveUp } from "../../motionVarients.ts";
+import CountUp from "../../CountUp.jsx";
+import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
 
 const cities = [
   {
