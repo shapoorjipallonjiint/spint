@@ -88,6 +88,15 @@ const homeSchema = new mongoose.Schema({
         videoAlt_ar: {
             type: String
         },
+        videoPosterImage: {
+            type: String
+        },
+        videoPosterImageAlt: {
+            type: String
+        },
+        videoPosterImageAlt_ar: {
+            type: String
+        },
         items: [{
             key: { type: String },
             key_ar: { type: String },
@@ -111,6 +120,9 @@ const homeSchema = new mongoose.Schema({
             type: String,
         },
         link: {
+            type: String
+        },
+        link_ar: {
             type: String
         },
         image: {
@@ -168,7 +180,6 @@ const homeSchema = new mongoose.Schema({
             dedicatedEmployees: { type: String }
         }]
     },
-
     seventhSection: {
         title: { type: String },
         title_ar: { type: String },
@@ -186,7 +197,13 @@ const homeSchema = new mongoose.Schema({
             title_ar: { type: String },
             description: { type: String },
             description_ar: { type: String }
-        }]
+        }],
+        button: {
+            text: { type: String },
+            text_ar: { type: String },
+            link: { type: String },
+            link_ar: { type: String }
+        }
     }
 
 })
