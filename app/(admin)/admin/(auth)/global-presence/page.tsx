@@ -9,7 +9,7 @@ import { ImageUploader } from "@/components/ui/image-uploader";
 import { Textarea } from "@/components/ui/textarea";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
-import SecondSectionItem from "../../components/GlobalPresence/SecondSectionItems";
+import SecondSectionItem from "@/app/components/GlobalPresence/SecondSectionItems";
 import { toast } from "sonner";
 
 interface GlobalPresenceFormProps {

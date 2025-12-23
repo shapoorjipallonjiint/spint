@@ -1,7 +1,7 @@
 "use client";
 
-import ClientSideLink from "@/app/client-side-link";
-import React, { useEffect, useState } from "react";
+import ClientSideLink from "@/app/(admin)/admin/client-side-link";
+import { useEffect, useState } from "react";
 
 import {
     HomeIcon,
