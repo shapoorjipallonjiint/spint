@@ -5,6 +5,9 @@ import { verifyAdmin } from "@/lib/verifyAdmin";
 import "@/app/models/Sector";
 import "@/app/models/Country";
 import "@/app/models/Service";
+import { getServiceMap } from '../../../../helpers/getServiceMap'
+import type { ProjectType } from "@/app/models/Project";
+
 
 
 export async function GET(request: NextRequest) {
@@ -12,20 +15,53 @@ export async function GET(request: NextRequest) {
         await connectDB();
         const id = request.nextUrl.searchParams.get("id");
         const slug = request.nextUrl.searchParams.get("slug");
+
+        const serviceMap = await getServiceMap();
+
+
         if (id) {
-            const project = await Project.findOne({}).populate("projects.secondSection.service", "name name_ar _id").populate("projects.secondSection.sector", "name name_ar _id").populate("projects.secondSection.location", "name name_ar _id");
-            const foundProject = project?.projects.find((project: { _id: string }) => project._id.toString() === id);
+            const project = await Project.findOne({}).populate("projects.secondSection.sector", "name name_ar _id").populate("projects.secondSection.location", "name name_ar _id").lean<ProjectType>();
+            const foundProject = project?.projects.find((project) => project._id.toString() === id);
             if (!foundProject) {
                 return NextResponse.json({ message: "Project not found" }, { status: 404 });
+            } else {
+                const serviceId = foundProject.secondSection?.service?.toString();
+
+                const service =
+                    serviceId ? serviceMap.get(serviceId) : undefined;
+
+                if (!service) {
+                    return NextResponse.json(
+                        { message: "Service not found" },
+                        { status: 404 }
+                    );
+                }
+
+                const responseProject = {
+                    ...foundProject,
+                    secondSection: {
+                        ...foundProject.secondSection,
+                        service, // ✅ ServiceLean here
+                    },
+                };
+
+                return NextResponse.json(
+                    { data: responseProject, message: "Project fetched successfully" },
+                    { status: 200 }
+                );
             }
-            return NextResponse.json({ data: foundProject, message: "Project fetched successfully" }, { status: 200 });
         } else if (slug) {
             const project = await Project.findOne({}).populate("projects.secondSection.service", "name name_ar _id").populate("projects.secondSection.sector", "name name_ar _id").populate("projects.secondSection.location", "name name_ar _id");
             const foundProject = project.projects.find((project: { slug: string }) => project.slug === slug);
             if (!foundProject) {
                 return NextResponse.json({ message: "Project not found" }, { status: 404 });
+            } else {
+                const serviceId = foundProject.secondSection.service.toString();
+                if (serviceId && serviceMap.has(serviceId)) {
+                    foundProject.secondSection.service = serviceMap.get(serviceId);
+                }
+                return NextResponse.json({ data: foundProject, message: "Project fetched successfully" }, { status: 200 });
             }
-            return NextResponse.json({ data: foundProject, message: "Project fetched successfully" }, { status: 200 });
         } else {
             const project = await Project.findOne({}).populate("projects.secondSection.service", "name name_ar _id").populate("projects.secondSection.sector", "name name_ar _id").populate("projects.secondSection.location", "name name_ar _id");
             if (!project) {
