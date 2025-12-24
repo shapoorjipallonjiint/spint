@@ -685,7 +685,7 @@ const SustainabilityPage = () => {
                                                 <Input
                                                     type="text"
                                                     placeholder="Value"
-                                                    {...register(`fourthSection.itemsTwo.${index}.value`, {
+                                                    {...register(`fourthSection.itemsTwo.${index}.key`, {
                                                         required: "Value is required",
                                                     })}
                                                 />

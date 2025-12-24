@@ -152,11 +152,13 @@ body::-webkit-scrollbar {
 }
 
 h1{
-  letter-spacing: -2px;
+  letter-spacing: -3.7px;
+  font-weight: 400;
 }
 
 h2{
-  letter-spacing: -1px;
+  letter-spacing: -3px;
+  font-weight: 400;
 }
 
 .activebfr::before {
