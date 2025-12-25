@@ -1,0 +1,118 @@
+"use client";
+
+import { useRef, useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectFade, Autoplay, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/navigation";
+import { motion } from "framer-motion";
+import { moveUp } from "../../../motionVarients";
+import H2Title from "../../../common/H2Title";
+import Image from 'next/image'
+
+const EmployeeInvolvementSlider = ({ data }) => {
+
+  const MotionImage = motion.create(Image)
+  const swiperRef = useRef(null);
+  const containerRef = useRef(null);
+  const targetRef = useRef(null);
+
+  useEffect(() => {
+    const containerEl = containerRef.current;
+    const targetEl = targetRef.current;
+
+    if (!containerEl || !targetEl) return;
+
+    const updateMargin = () => {
+      if (window.innerWidth > 768) {
+        // Only apply margin-left on screens wider than 768px
+        const computedStyle = window.getComputedStyle(containerEl);
+        const marginLeft = computedStyle.marginLeft;
+        targetEl.style.marginLeft = marginLeft;
+      } else {
+        // Reset for mobile
+        targetEl.style.marginLeft = "0px";
+      }
+    };
+
+    // Initial call
+    updateMargin();
+
+    // Watch for resize
+    window.addEventListener("resize", updateMargin);
+    return () => window.removeEventListener("resize", updateMargin);
+  }, []);
+
+  return (
+    <section className="pt-text30 pb30 relative bg-f5f5 overflow-hidden">
+      <div className="px-[15px] md:pe-0 relative">
+        {/* Counter + Arrows */}
+        <div className="container" ref={containerRef}>
+          <div className="flex justify-between items-center mb-50px">
+            <div className="text-lg font-semibold text-black flex items-center gap-1">
+              <H2Title titleText={data.title} titleColor="black" marginClass="mb-0" />
+            </div>
+          </div>
+        </div>
+        {/* Swiper */}
+        <div className="flex flex-col md:flex-row gap-3   md:pe-0" >
+          <div className="container">
+            <Swiper
+              ref={swiperRef}
+              modules={[EffectFade, Autoplay, Navigation]}
+              spaceBetween={5}
+              slidesPerView={1}
+              loop={true}
+              loopedSlides={6}
+              centeredSlides={false}
+              navigation={{
+                prevEl: ".custom-prev",
+                nextEl: ".custom-next",
+              }}
+              // onSlideChange={(swiper) =>
+              //   setCurrentSlide((swiper.realIndex % engineeringData.featuredProjectsData.items.length) + 1)
+              // }
+              speed={800}
+              autoplay={{
+                delay: 4000,
+                disableOnInteraction: false,
+              }}
+              breakpoints={{
+
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                1224: {
+                  slidesPerView: 3,
+                  spaceBetween: 10,
+                },
+              }}
+              className="!overflow-visible"
+            >
+              {[...data.items, ...data.items].map((item, i) => (
+                <SwiperSlide key={i}>
+                  <div className="overflow-hidden ">
+                    <div className="after:h-full after:w-full  after:bg-[linear-gradient(180deg,rgba(0,0,0,0)_42.43%,rgba(0,0,0,0.75)_91.64%)] after:absolute after:top-0 after:left-0 after:right-0 after:bottom-0">
+                      <MotionImage variants={moveUp(0.1 * i)} height={900} width={1000} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} src={item.image} alt={item.imageAlt} className="w-full h-[350px] md:h-[400px] 2xl:h-auto object-cover" />
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 px-5 lg:px-8 3xl:px-12">
+                      <div className=" pb-5 lg:pb-8 3xl:pb-[42px]">
+                        <p className="text-19  mb-2 3xl:mb-[18px] leading-[1.344827586206897] font-light text-white">{item.date}</p>
+                        <h3 className="text-[20px] md:text-29 leading-[1.1] 2xl:leading-[1.2] 3xl:leading-[1.344827586206897] font-light text-white">{item.title}</h3>
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+export default EmployeeInvolvementSlider;

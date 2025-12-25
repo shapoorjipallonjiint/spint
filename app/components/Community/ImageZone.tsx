@@ -27,9 +27,9 @@ export function ImageZone<TFieldValues extends FieldValues>({ label, zoneKey, fi
 
                 <Button
                     type="button"
-                    className="text-white text-2xl w-6 h-8 flex items-center justify-center"
+                    className="text-white bg-black text-2xl w-6 h-8 pb-3 flex items-center justify-center"
                     variant="outline"
-                    onClick={() => router.push(`/community-engagement/images?zone=${zoneKey}`)}
+                    onClick={() => router.push(`/admin/community-engagement/images?zone=${zoneKey}`)}
                 >
                     +
                 </Button>

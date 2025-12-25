@@ -22,17 +22,44 @@ export async function PATCH(request: NextRequest) {
     try {
         const body = await request.json();
         const isAdmin = await verifyAdmin(request);
+
         if (!isAdmin) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
+
         await connectDB();
-        const community = await Community.findOneAndUpdate({}, body, { upsert: true, new: true });
-        if (!community) {
-            return NextResponse.json({ message: "Community not found" }, { status: 404 });
-        }
-        return NextResponse.json({ data: community, message: "Community updated successfully" }, { status: 200 });
+
+        const existing = await Community.findOne({});
+
+        const merged = {
+            ...existing?.toObject(),
+            ...body,
+
+            firstSection: {
+                ...existing?.firstSection,
+                ...body.firstSection,
+
+                items: {
+                    ...existing?.firstSection?.items,
+                    ...body.firstSection?.items,
+                },
+            },
+        };
+
+        const community = await Community.findOneAndUpdate(
+            {},
+            merged,
+            { upsert: true, new: true }
+        );
+
+        return NextResponse.json(
+            { data: community, message: "Community updated successfully" },
+            { status: 200 }
+        );
     } catch (error) {
         console.log(error);
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
+
+
