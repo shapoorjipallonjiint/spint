@@ -235,7 +235,7 @@ const IndiGallery = () => {
                                         </DialogContent>
                                     </Dialog>
 
-                                    <Link href={`/gallery/${id}/${item._id}`}>
+                                    <Link href={`/admin/gallery/${id}/${item._id}`}>
                                         <IoIosImages className="cursor-pointer text-3xl" />
                                     </Link>
 

@@ -136,7 +136,7 @@ const Banner = ({ title, image, imageAlt }) => {
       <div ref={imgRef} className="absolute inset-0 w-full h-full z-0">
         <Image
           src={image}
-          alt={imageAlt}
+          alt={imageAlt ? imageAlt : title}
           fill
           className="object-cover object-top"
           priority
