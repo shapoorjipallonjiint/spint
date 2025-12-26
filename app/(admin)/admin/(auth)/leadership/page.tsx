@@ -117,7 +117,7 @@ const PeopleList = ({ people, onEdit, onDelete, onAdd }: PeopleListProps) => (
         {people.map((person, i) => (
             <div key={person.id} className="flex items-center justify-between p-2 border rounded-md hover:bg-muted">
                 <div className="flex items-center gap-3 cursor-pointer" onClick={() => onEdit(i)}>
-                    <img src={person.image} className="w-10 h-10 rounded-full object-cover" />
+                    <Image height={40} width={40} src={person.image} className="w-10 h-10 rounded-full object-cover" />
                     <span className="font-medium">{person.name || "Unnamed Member"}</span>
                 </div>
 

@@ -4,7 +4,6 @@ import LeadersBox from "./sections/LeadersBox";
 import CoreLeardershipTeam from "./sections/CoreLeardershipTeam";
 
 const Leadership = ({data}) => {
-  console.log(data, "klead")
   return ( 
     <>
       <Banner title={data?.pageTitle} subTitle={data?.pageSubTitle} description={data?.pageDescription} />
