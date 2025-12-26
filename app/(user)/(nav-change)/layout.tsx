@@ -5,6 +5,13 @@ import MainNavbar from "../../components/common/MainNavbar";
 import Footer from "../../components/common/Footer";
 
 
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900', '1000'],
+  style: ['normal', 'italic'],
+  variable: '--font-dm-sans',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: "Shapoorji Pallonji",
@@ -19,7 +26,7 @@ export default async function RootLayout({
 
 
   return (
-    <html lang="en">
+    <html lang="en" className={dmSans.variable}>
      <body>
         <MainNavbar/>
         {children}

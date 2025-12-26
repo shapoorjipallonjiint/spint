@@ -152,11 +152,17 @@ body::-webkit-scrollbar {
 }
 
 h1{
-  letter-spacing: -2px;
+  letter-spacing: -3.7px;
+  font-weight: 400;
 }
 
 h2{
-  letter-spacing: -1px;
+  letter-spacing: -3px;
+  font-weight: 400;
+}
+
+.noLetterSpacing {
+  letter-spacing: 0 !important;
 }
 
 .activebfr::before {
@@ -800,11 +806,11 @@ h2{
 }
 
 .pt25 {
-  @apply pt-8 md:pt-11 xl:pt-15 2xl:pt-22 3xl:pt-25;
+  @apply pt-8 md:pt-11 xl:pt-15 2xl:pt-22 3xl:pt-40;
 }
 
 .pb25 {
-  @apply pb-8 md:pb-11 xl:pb-15 2xl:pb-22 3xl:pb-25;
+  @apply pb-8 md:pb-11 xl:pb-15 2xl:pb-22 3xl:pb-40;
 }
 
 .py25 {

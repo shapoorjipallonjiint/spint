@@ -6,11 +6,12 @@ import SmoothScroll from "../components/common/SmoothScroll";
 
 
 const dmSans = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-dm-sans",
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900', '1000'],
+  style: ['normal', 'italic'],
+  variable: '--font-dm-sans',
+  display: 'swap',
+})
 
 
 export const metadata: Metadata = {
