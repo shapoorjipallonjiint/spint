@@ -11,17 +11,19 @@ type ServiceLean = {
   _id: Types.ObjectId;
   pageTitle: string;
   pageTitle_ar?: string;
+  title: 1;
+  title_ar:1
 };
 
 export async function getServiceMap() {
   const services = await Promise.all([
-    DesignStudio.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1 }).lean<ServiceLean[]>(),
-    Engineering.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1 }).lean<ServiceLean[]>(),
-    Facade.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1 }).lean<ServiceLean[]>(),
-    IntegratedFacilityManagement.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1 }).lean<ServiceLean[]>(),
-    InteriorDesign.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1 }).lean<ServiceLean[]>(),
-    Mep.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1 }).lean<ServiceLean[]>(),
-    Water.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1 }).lean<ServiceLean[]>(),
+    DesignStudio.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1,title: 1, title_ar:1 }).lean<ServiceLean[]>(),
+    Engineering.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1,title: 1, title_ar:1 }).lean<ServiceLean[]>(),
+    Facade.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1,title: 1, title_ar:1 }).lean<ServiceLean[]>(),
+    IntegratedFacilityManagement.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1,title: 1, title_ar:1 }).lean<ServiceLean[]>(),
+    InteriorDesign.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1,title: 1, title_ar:1 }).lean<ServiceLean[]>(),
+    Mep.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1,title: 1, title_ar:1 }).lean<ServiceLean[]>(),
+    Water.find({}, { _id: 1, pageTitle: 1, pageTitle_ar: 1,title: 1, title_ar:1 }).lean<ServiceLean[]>(),
   ]);
 
   const serviceMap = new Map<string, ServiceLean>();

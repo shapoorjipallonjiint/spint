@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-const Banner = ({ title, image }) => {
+const Banner = ({ title, image,imageAlt }) => {
   const sectionRef = useRef(null);
   const imgRef = useRef(null);
   const overlayRef = useRef(null);
@@ -54,7 +54,7 @@ const Banner = ({ title, image }) => {
 <img
   ref={imgRef}
   src={image}
-  alt={title}
+  alt={imageAlt ? imageAlt : title}
   className="absolute inset-0 w-full h-full object-cover object-top z-0"
 />
 

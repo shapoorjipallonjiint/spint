@@ -14,13 +14,13 @@ export async function GET() {
     await connectDB();
 
     const collections = await Promise.all([
-      DesignStudio.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1 }).lean(),
-      Engineering.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1 }).lean(),
-      Facade.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1 }).lean(),
-      IntegratedFacilityManagement.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1 }).lean(),
-      InteriorDesign.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1 }).lean(),
-      Mep.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1 }).lean(),
-      Water.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1 }).lean(),
+      DesignStudio.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1,title: 1, title_ar:1 }).lean(),
+      Engineering.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1,title: 1, title_ar:1 }).lean(),
+      Facade.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1,title: 1, title_ar:1 }).lean(),
+      IntegratedFacilityManagement.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1,title: 1, title_ar:1 }).lean(),
+      InteriorDesign.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1,title: 1, title_ar:1 }).lean(),
+      Mep.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1,title: 1, title_ar:1 }).lean(),
+      Water.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1,title: 1, title_ar:1 }).lean(),
     ]);
 
     const types = [
@@ -37,6 +37,7 @@ export async function GET() {
       items.map((item) => ({
         _id: item._id,
         pageTitle: item.pageTitle,
+        title: item.title,
         type: types[index],
       }))
     );

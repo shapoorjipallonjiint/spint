@@ -6,9 +6,10 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp, moveLeft } from "../../../motionVarients";
 import  Link from "next/link";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
+import Image from "next/image";
 gsap.registerPlugin(ScrollTrigger);
 
-const Trusted = () => {
+const Trusted = ({data}) => {
   const titleRef = useRef(null);
   const sectionRef = useRef(null);
   const { scrollYProgress: shapeProgress } = useScroll({
@@ -16,6 +17,7 @@ const Trusted = () => {
     offset: ["start end", "end start"]
   });
   const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
+  const MotionImage = motion(Image)
 
   useEffect(() => {
     const el = titleRef.current;
@@ -50,13 +52,13 @@ const Trusted = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-[84px] lg:gap-[104px]">
           {/* ✅ Add class name for GSAP animation */}
           <h2 ref={titleRef} className="trusted-title text-60 max-w-[18.14ch] font-light leading-[1.18] text-black mb-5 lg:mb-0" >
-            <SplitTextAnimation children={"Your Trusted Construction Partner for Quality and Innovation"} staggerDelay={0.1} animationDuration={0.8} delay={0.8} />
+            <SplitTextAnimation children={data.title} staggerDelay={0.1} animationDuration={0.8} delay={0.8} />
           </h2> 
-       <Link href="/Projects">
+       <Link href={data.buttonLink}>
           <div className="flex flex-col justify-end items-end sdsd">
-            <motion.img variants={moveUp(1)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} src="../assets/images/about-us/toarrow.svg" width={71} height={71} alt="arrow" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 xl:w-[71px] xl:h-[71px]" />
+            <MotionImage variants={moveUp(1)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} src="../assets/images/about-us/toarrow.svg" width={71} height={71} alt="arrow" className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 xl:w-[71px] xl:h-[71px]" />
             <p className="text-16 font-light leading-[1.474] text-paragraph uppercase pt-3">
-              View projects
+              {data.buttonText}
             </p>
           </div>
           </Link>

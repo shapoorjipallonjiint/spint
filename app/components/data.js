@@ -12,7 +12,7 @@ export const navData = {
       title: "Our Services",
       href: "#",
       submenu: [
-        { label: "Engineering & Construction", href: "/engineering-construction" },
+        { label: "Engineering & Construction", href: "/services/engineering-construction" },
         { label: "MEP", href: "/mep" },
         { label: "Interior Fit-out", href: "/interior-design" },
         { label: "Façade", href: "/facade" },

@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
                 );
             }
         } else if (slug) {
-            const project = await Project.findOne({}).populate("projects.secondSection.service", "name name_ar _id").populate("projects.secondSection.sector", "name name_ar _id").populate("projects.secondSection.location", "name name_ar _id");
+            const project = await Project.findOne({}).populate("projects.secondSection.sector", "name name_ar _id").populate("projects.secondSection.location", "name name_ar _id");
             const foundProject = project.projects.find((project: { slug: string }) => project.slug === slug);
             if (!foundProject) {
                 return NextResponse.json({ message: "Project not found" }, { status: 404 });
@@ -59,15 +59,54 @@ export async function GET(request: NextRequest) {
                 const serviceId = foundProject.secondSection.service.toString();
                 if (serviceId && serviceMap.has(serviceId)) {
                     foundProject.secondSection.service = serviceMap.get(serviceId);
+
                 }
-                return NextResponse.json({ data: foundProject, message: "Project fetched successfully" }, { status: 200 });
+                const index = project.projects.findIndex(
+                    (p:{slug:string}) => p.slug === slug
+                );
+            
+                if (index === -1) {
+                    return NextResponse.json({ message: "Project not found" }, { status: 404 });
+                }
+
+                const nextProjectRaw =
+                project.projects[index + 1] ?? project.projects[0];
+
+                return NextResponse.json({ data: foundProject, nextProject:nextProjectRaw,message: "Project fetched successfully" }, { status: 200 });
             }
         } else {
-            const project = await Project.findOne({}).populate("projects.secondSection.service", "name name_ar _id").populate("projects.secondSection.sector", "name name_ar _id").populate("projects.secondSection.location", "name name_ar _id");
+            const project = await Project.findOne({})
+                .populate("projects.secondSection.sector", "name name_ar _id")
+                .populate("projects.secondSection.location", "name name_ar _id")
+                .lean<ProjectType>();
+        
             if (!project) {
                 return NextResponse.json({ message: "Project not found" }, { status: 404 });
             }
-            return NextResponse.json({ data: project, message: "Project fetched successfully" }, { status: 200 });
+        
+            const mappedProjects = project.projects.map((p) => {
+                const serviceId = p.secondSection?.service?.toString();
+                const service = serviceId ? serviceMap.get(serviceId) : undefined;
+        
+                return {
+                    ...p,
+                    secondSection: {
+                        ...p.secondSection,
+                        service: service ?? null,
+                    },
+                };
+            });
+        
+            return NextResponse.json(
+                {
+                    data: {
+                        ...project,
+                        projects: mappedProjects,
+                    },
+                    message: "Projects fetched successfully",
+                },
+                { status: 200 }
+            );
         }
 
     } catch (error) {

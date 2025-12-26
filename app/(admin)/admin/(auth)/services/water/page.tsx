@@ -26,6 +26,8 @@ interface WaterProps {
     bannerAlt_ar: string;
     pageTitle: string;
     pageTitle_ar: string;
+    title: string;
+    title_ar: string;
     firstSection: {
         title: string;
         title_ar: string;
@@ -111,6 +113,8 @@ const WaterPage = () => {
                 setValue("bannerAlt_ar", data.data.bannerAlt_ar);
                 setValue("pageTitle", data.data.pageTitle);
                 setValue("pageTitle_ar", data.data.pageTitle_ar);
+                setValue("title", data.data.title);
+                setValue("title_ar", data.data.title_ar);
                 setValue("metaTitle", data.data.metaTitle);
                 setValue("metaTitle_ar", data.data.metaTitle_ar);
                 setValue("metaDescription", data.data.metaDescription);
@@ -170,6 +174,10 @@ const WaterPage = () => {
                                 <Label className='font-bold'>Page Title</Label>
                                 <Input type='text' placeholder='Page Title' {...register("pageTitle")} />
                             </div>
+                            <div className='flex flex-col gap-1'>
+                        <Label className='font-bold'>Title (for home and project page selector)</Label>
+                        <Input type='text' placeholder='Title' {...register("title")} />
+                    </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -495,6 +503,10 @@ const WaterPage = () => {
                                 <Label className='font-bold'>Page Title</Label>
                                 <Input type='text' placeholder='Page Title' {...register("pageTitle_ar")} />
                             </div>
+                            <div className='flex flex-col gap-1'>
+                        <Label className='font-bold'>Title (for home and project page selector)</Label>
+                        <Input type='text' placeholder='Title' {...register("title_ar")} />
+                    </div>
                         </div>
                     </div>
                 </AdminItemContainer>

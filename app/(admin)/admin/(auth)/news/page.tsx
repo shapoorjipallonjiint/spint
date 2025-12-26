@@ -16,11 +16,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation";
 import AdminItemContainer from '@/app/components/common/AdminItemContainer';
-import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { ImageUploader } from '@/components/ui/image-uploader'
-import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { RiDeleteBinLine } from "react-icons/ri";
 
 
 
@@ -353,7 +350,7 @@ export default function Projects() {
         <div className="h-screen w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
           <div className="flex justify-between border-b-2 pb-2">
             <Label className="text-sm font-bold">News</Label>
-            <Button className="bg-black text-white" onClick={() => router.push("/news/add")}>Add News</Button>
+            <Button className="bg-black text-white" onClick={() => router.push("/admin/news/add")}>Add News</Button>
           </div>
           <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
             {newsList.map((item) => (
@@ -362,7 +359,7 @@ export default function Projects() {
                   {item.title}
                 </div>
                 <div className="flex gap-5">
-                  <MdEdit onClick={() => router.push(`/news/edit/${item._id}`)} />
+                  <MdEdit onClick={() => router.push(`/admin/news/edit/${item._id}`)} />
 
                   <Dialog>
                     <DialogTrigger><MdDelete /></DialogTrigger>

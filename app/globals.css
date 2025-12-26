@@ -1048,3 +1048,29 @@ h2{
     font-size: clamp();
   }
 } */
+
+.our-values-about {
+ ol{
+  @apply text-sm xl:text-19 leading-[1.85] max-w-[50ch] ps-6 lg:ps-12 py-[11px]
+ }
+
+ li{
+  @apply relative before:content-[''] before:absolute before:-left-6 before:top-[14px] before:w-[7px] before:h-[7px] before:bg-secondary before:rounded-none font-light text-paragraph
+ }
+}
+
+.our-expertise-item-desc{
+  h3{
+    @apply text-29 leading-[1.344827586206897] font-light mb-3 xl:mb-5
+  }
+  ol{
+    @apply space-y-2
+  }
+  li{
+    @apply text-white/80 text-19 flex 
+  }
+  li::before {
+    content: "• ";
+    @apply text-white mr-2;
+  }
+}

@@ -43,6 +43,8 @@ const newsSchema = new mongoose.Schema({
             ref:"Topic",
             required:true
         },
+        date: { type: Date },
+        date_ar: { type: Date },
         content:{
             type:String,
             required:true

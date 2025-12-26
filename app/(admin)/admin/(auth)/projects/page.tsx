@@ -768,7 +768,7 @@ export default function Projects() {
         <div className="h-screen w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
           <div className="flex justify-between border-b-2 pb-2">
             <Label className="text-sm font-bold">Projects</Label>
-            <Button className="bg-black text-white" onClick={() => router.push("/projects/add")}>Add Project</Button>
+            <Button className="bg-black text-white" onClick={() => router.push("/admin/projects/add")}>Add Project</Button>
           </div>
           <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
             {projectList.map((item) => (
@@ -777,7 +777,7 @@ export default function Projects() {
                   {item.firstSection.title}
                 </div>
                 <div className="flex gap-5">
-                  <MdEdit onClick={() => router.push(`/projects/edit/${item._id}`)} />
+                  <MdEdit onClick={() => router.push(`/admin/projects/edit/${item._id}`)} />
 
                   <Dialog>
                     <DialogTrigger><MdDelete /></DialogTrigger>

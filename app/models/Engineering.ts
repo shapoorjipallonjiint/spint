@@ -32,6 +32,13 @@ const engineeringSchema = new mongoose.Schema({
     pageTitle_ar:{
         type:String,
     },
+    title:{
+        type:String,
+        required:true
+    },
+    title_ar:{
+        type:String,
+    },
     firstSection:{
         title:{
             type:String,
@@ -88,6 +95,18 @@ const engineeringSchema = new mongoose.Schema({
                     required:true
                 },
                 description_ar:{
+                    type:String
+                },
+                title:{
+                    type:String
+                },
+                title_ar:{
+                    type:String
+                },
+                subTitle:{
+                    type:String
+                },
+                subTitle_ar:{
                     type:String
                 }
             }

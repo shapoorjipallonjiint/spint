@@ -29,6 +29,8 @@ interface ProjectFormProps {
     coverImageAlt: string;
     coverImageAlt_ar: string;
     topic: string;
+    date:string;
+    date_ar:string;
     content: string;
     content_ar: string;
     slug: string;
@@ -87,6 +89,8 @@ const NewsForm = ({ editMode }: { editMode?: boolean }) => {
                 setValue("metaDescription", data.data.metaDescription);
                 setValue("metaDescription_ar", data.data.metaDescription_ar);
                 setValue("slug", data.data.slug);
+                const isoDate = new Date(data.data.date).toISOString().split("T")[0];
+                setValue("date", isoDate);
             } else {
                 const data = await response.json();
                 toast.error(data.message);
@@ -135,6 +139,15 @@ const NewsForm = ({ editMode }: { editMode?: boolean }) => {
             .replace(/^-+|-+$/g, ''); // remove leading/trailing dashes
         setValue("slug", slug);
     };
+
+
+    const date = watch("date");
+
+useEffect(() => {
+  if (date) {
+    setValue("date_ar", date);
+  }
+}, [date, setValue]);
 
 
 
@@ -198,6 +211,13 @@ const NewsForm = ({ editMode }: { editMode?: boolean }) => {
                             {errors.topic && <p className="text-red-500">{errors.topic.message}</p>}
 
                         </div>
+
+
+                        <div>
+                    <Label className=''>Date</Label>
+                    <Input type='date' placeholder='Date' max={new Date().toISOString().split("T")[0]} {...register("date", { required: "Date is required" })} />
+                    {errors.date && <p className='text-red-500'>{errors.date.message}</p>}
+                </div>
 
 
 
@@ -326,6 +346,11 @@ const NewsForm = ({ editMode }: { editMode?: boolean }) => {
                             {errors.topic && <p className="text-red-500">{errors.topic.message}</p>}
 
                         </div>
+
+                        <div>
+                    <Label className=''>Date</Label>
+                    <Input disabled type='date' placeholder='Date' max={new Date().toISOString().split("T")[0]} {...register("date_ar")} />
+                </div>
 
                         <div className='grid grid-cols-1 gap-2'>
                             <div>
