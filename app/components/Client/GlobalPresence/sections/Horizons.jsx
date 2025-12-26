@@ -10,7 +10,7 @@ const Horizons = ({ data }) => {
     return (
         <section className="relative overflow-hidden pt-text90 pb30 bg-f5f5">
             <div className="container">
-                <H2Title titleText={data.title} titleColor="black" marginClass="mb-50px" />
+                <H2Title titleText={data.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-50px"/>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-6 lg:gap-y-10 xl:gap-y-[120px]">
                     {data.items.map((item, index) => (
                         <motion.div
@@ -21,7 +21,7 @@ const Horizons = ({ data }) => {
                             viewport={{ amount: 0.2, once: true }}
                             className="group border-l border-black/20 border-t-cmnbdr lg:border-t-transparent border-y lg:border-y-2 lg:border-y-transparent bdrrst hover:border-y-2 hover:border-y-[#30B6F9]"
                         >
-                            <h3 className="text-29 font-light leading-[1.311] mb-4 lg:mb-[22px]  px-3 lg:px-10 pt-4 lg:pt-7">
+                            <h3 className="text-20 xl:text-24 2xl:text-29 font-light leading-[1.311] mb-4 lg:mb-[22px]  px-3 lg:px-10 pt-4 lg:pt-7">
                                 {item.name}
                             </h3>
                             <div className="relative">
@@ -65,13 +65,13 @@ const Horizons = ({ data }) => {
                             <div className="p-4 lg:p-7 2xl:p-10  2xl:pb-[35px]">
                                 <div className="flex gap-5 lg:gap-[45px]   max-w-[413px]">
                                     <div className="w-[185px]">
-                                        <p className="text-[30px] xl:text-40 leading-[1.3] font-light mb-[2px]">
+                                        <p className="text-20 2xl:text-32 3xl:text-40 leading-[1.3] font-light mb-[2px]">
                                             <InsideCounter value={item.projects} delay={10} />+
                                         </p>
                                         <p className="text-19 font-light text-black/70">Projects</p>
                                     </div>
                                     <div>
-                                        <p className="text-[30px] xl:text-40 leading-[1.1] font-light mb-[2px]">
+                                        <p className="text-20 2xl:text-32 3xl:text-40 leading-[1.1] font-light mb-[2px]">
                                             <InsideCounter
                                                 value={item.country}
                                                 delay={10}
@@ -82,9 +82,9 @@ const Horizons = ({ data }) => {
                                         <p className="text-19 font-light text-black/70">Countries</p>
                                     </div>
                                 </div>
-                                <ul className="flex flex-wrap gap-2 ulst pt-3 lg:pt-5 2xl:pt-[35px] mt-3 lg:mt-5 2xl:mt-[35px] border-t border-black/20">
+                                <ul className="flex flex-wrap gap-1 ulst pt-3 lg:pt-5 2xl:pt-[35px] mt-3 lg:mt-5 2xl:mt-[35px] border-t border-black/20">
                                     {item.countries.map((country, i) => (
-                                        <li key={i} className="text-19 text-paragraph font-light ">
+                                        <li key={i} className="text-16 2xl:text-19 text-paragraph font-light ">
                                             {country.name}
                                             <span className="text-[#30B6F9] pl-2 laststs">|</span>{" "}
                                         </li>

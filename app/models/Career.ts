@@ -90,6 +90,8 @@ const careerSchema = new mongoose.Schema({
         items: [{
             title: { type: String, required: true },
             title_ar: { type: String },
+            description: { type: String },
+            description_ar: { type: String },
             image: { type: String, required: true },
             imageAlt: { type: String, required: true },
             imageAlt_ar: { type: String },

@@ -68,6 +68,8 @@ interface CareerFormProps {
         items: {
             title: string;
             title_ar?: string;
+            description: string;
+            description_ar?: string;
             image: string;
             imageAlt: string;
             imageAlt_ar?: string;
@@ -494,6 +496,16 @@ const SustainabilityPage = () => {
                                             <FormError error={errors.thirdSection?.items?.[index]?.title?.message} />
                                         </div>
                                     </div>
+                                    <div>
+                                        <div className="flex flex-col gap-2">
+                                            <Label className="pl-3 font-bold">Description</Label>
+                                            <Textarea
+                                                placeholder="Description"
+                                                {...register(`thirdSection.items.${index}.description`)}
+                                            />
+                                            <FormError error={errors.thirdSection?.items?.[index]?.description?.message} />
+                                        </div>
+                                    </div>
                                     <div className="flex flex-col gap-2">
                                         <Label className="font-bold">Image</Label>
                                         <Controller
@@ -524,6 +536,8 @@ const SustainabilityPage = () => {
                                     thirdSectionAppend({
                                         title: "",
                                         title_ar: "",
+                                        description: "",
+                                        description_ar: "",
                                         image: "",
                                         imageAlt: "",
                                         imageAlt_ar: "",
@@ -740,6 +754,19 @@ const SustainabilityPage = () => {
                                 <Label className="text-sm font-bold">Button Link</Label>
                                 <Input type="text" placeholder="Button Link" {...register("sixthSection.button.btnLink")} />
                             </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Image</Label>
+                            <Controller
+                                name={`sixthSection.image`}
+                                control={control}
+                                rules={{ required: "Image is required" }}
+                                render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                            />
+                            <FormError error={errors.sixthSection?.image?.message} />
+                            <Label className="font-bold">Image Alt Tag</Label>
+                            <Input type="text" placeholder="Alt Tag" {...register(`sixthSection.imageAlt`)} />
+                            <FormError error={errors.sixthSection?.imageAlt?.message} />
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -978,6 +1005,15 @@ const SustainabilityPage = () => {
                                             />
                                         </div>
                                     </div>
+                                    <div>
+                                        <div className="flex flex-col gap-2">
+                                            <Label className="pl-3 font-bold">Description</Label>
+                                            <Textarea
+                                                placeholder="Description"
+                                                {...register(`thirdSection.items.${index}.description_ar`)}
+                                            />
+                                        </div>
+                                    </div>
                                     <div className="flex flex-col gap-2">
                                         <Label className="font-bold">Image</Label>
                                         <Controller
@@ -1007,6 +1043,8 @@ const SustainabilityPage = () => {
                                     thirdSectionAppend({
                                         title: "",
                                         title_ar: "",
+                                        description: "",
+                                        description_ar: "",
                                         image: "",
                                         imageAlt: "",
                                         imageAlt_ar: "",
@@ -1156,24 +1194,17 @@ const SustainabilityPage = () => {
                     </div>
                 </AdminItemContainer>
 
-                                <AdminItemContainer>
+                <AdminItemContainer>
                     <Label main>Sixth Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-2">
                         <div className="flex flex-col gap-1">
                             <Label className="font-bold">Title</Label>
-                            <Input
-                                type="text"
-                                placeholder="Title"
-                                {...register("sixthSection.title_ar")}
-                            />
+                            <Input type="text" placeholder="Title" {...register("sixthSection.title_ar")} />
                             <FormError error={errors.sixthSection?.title_ar?.message} />
                         </div>
                         <div className="flex flex-col gap-1">
                             <Label className="font-bold">Description</Label>
-                            <Textarea
-                                placeholder="Description"
-                                {...register("sixthSection.description_ar")}
-                            />
+                            <Textarea placeholder="Description" {...register("sixthSection.description_ar")} />
                             <FormError error={errors.sixthSection?.description_ar?.message} />
                         </div>
                         <div className="flex w-full gap-2">
@@ -1183,8 +1214,23 @@ const SustainabilityPage = () => {
                             </div>
                             <div className="w-1/2">
                                 <Label className="text-sm font-bold">Button Link</Label>
-                                <Input type="text" placeholder="Button Link" {...register("sixthSection.button.btnLink_ar")} />
+                                <Input
+                                    type="text"
+                                    placeholder="Button Link"
+                                    {...register("sixthSection.button.btnLink_ar")}
+                                />
                             </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Image</Label>
+                            <Controller
+                                name={`sixthSection.image`}
+                                control={control}
+                                rules={{ required: "Image is required" }}
+                                render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                            />
+                            <Label className="font-bold">Image Alt Tag</Label>
+                            <Input type="text" placeholder="Alt Tag" {...register(`sixthSection.imageAlt_ar`)} />
                         </div>
                     </div>
                 </AdminItemContainer>

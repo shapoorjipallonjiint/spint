@@ -5,8 +5,7 @@ import Certifications from "./sections/Certifications";
 import SaftySlider from "./sections/SaftySlider";
 import ImgPointsComponent from "../../common/ImgPointsComponent";
 
-const QualitySafety = ({data}) => {
-  console.log(data, "ds")
+const Index = ({ data }) => {
     return (
         <>
             <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
@@ -18,4 +17,4 @@ const QualitySafety = ({data}) => {
     );
 };
 
-export default QualitySafety;
+export default Index;
