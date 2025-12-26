@@ -1,0 +1,294 @@
+export const contactData = { 
+  image:"/assets/images/qualitysafety/qmain.jpg",
+  title: "Contact",
+  name:"SP International",
+  address:"Al Hudaiba Mall, Al Mina Street Dubai, UAE P.O. Box No. 118219, Office 307, 3rd Floor Dubai, UAE",
+  phone:"+971-42156222",
+  email:"info@spinternational.com",
+  location:"",
+
+
+ };  
+ 
+ export const regionalData = { 
+  title: "Regional Offices",
+  offices:[
+    {
+      name:"Shapoorji Pallonji Mideast LLC",
+  address:"Office 307, Al Hudaiba Mall,<br> Al Mina Road,Satwa, PO Box 118219<br> Dubai, UAE ",
+  phone:["+971 4 2156222"],
+  fax:"+971 4 2690335",
+  location:"",
+    },
+    {
+      name:"Shapoorji Pallonji Mideast LLC – Abu Dhabi Branch",
+  address:"Office No. 607 Lamar Tower<br> Al Nahyan Camp, Delma Street, PO Box 38149,<br> Abu Dhabi, UAE",
+  phone:["+971 2 4434358"],
+  fax:"+971 2 4434396",
+  location:"",
+    },
+    {
+      name:"Shapoorji Pallonji International FZE",
+  address:"Dubai Airport Free Zone (DAFZA)<br> Building 5WA, Office #212, 2nd Floor, PO Box<br> 54449, Dubai, UAE",
+  phone: ["+971 4 2993880"],
+  fax:"+971 4 2993881",
+  location:"",
+    },
+    {
+      name:"Qatar-Shapoorji Pallonji Qatar WLL",
+  address:"Al Emadi Financial Square<br> Building 2, 1st Floor, Office No. 05, C-Ring Road,<br> PO Box 22587, Doha, Qatar",
+  phone: ["+974 44566024/26"],
+  fax:"+974 44566025",
+  location:"",
+    },
+    {
+      name:"Shapoorji Pallonji Mideast LLC MEP Division",
+  address:"City Business Bay Center,<br> Abu Hail, Office-202, Hor Al Anz East,<br> Dubai, UAE",
+  phone: ["+971 4 2869327"],
+  fax:"",
+  location:"",
+    },
+    {
+      name:"Saudi Arabia-Shapoorji Pallonji Mideast LLC –KSA",
+  address:"Rahmaniah District, Takhassusi St.<br> Building No. 7069, Unit No. 16, P.O.Box: 300587,<br> Postal Code: 11372, Riyadh – KSA",
+  phone: ["+966 11 407 9550"],
+  fax:"",
+  location:"",
+    },
+    {
+      name:"Shapoorji Pallonji Mideast LLC Façade Division",
+  address:"Office 307, Al Hudaiba Mall,<br> Al Mina Road, Satwa, PO Box 118219<br> Dubai, UAE",
+  phone: ["+971 4 2156222"],
+  fax:"",
+  location:"",
+    },
+    {
+      name:"Saudi Arabia-Shapoorji Pallonji Mideast L.L.C.MEP - Division",
+  address:"Rahmaniah District, Takhassusi St.<br> Building No. 7069, Unit No. 16, PO Box 300587,<br> Riyadh 11372, Riyadh – KSA", 
+   phone:["+966 11 464 2487"],
+  fax:"+966 11 279 1928",
+  location:"",
+    },
+    {
+      name:"KUWAIT-Shapoorji Pallonji Kuwait WL",
+  address:"Area: Qibla, Block: 06, Al Awtad Building<br> Building No: 66, Floor: 02 Office: 03<br> Salmiya, 22097, PO Box 9669, Kuwait ",
+  phone:["+965 22054700","+965 22054703"],
+  fax:"+965 22054798",
+  location:"",
+    },
+    {
+      name:"NIGERIA-Shapoorji Pallonji Nigeria Ltd.",
+  address:"Plot 634, Eleganza Plaza, Suite 15, 5th Floor,<br> Alakija Adeyemo St., Victoria Island,<br> Postal Code: 10241, Lagos, Nigeria",
+  phone: ["+234 88052294779"],
+  fax:"",
+  location:"",
+    },
+    {
+      name:"OMAN-Oman Shapoorji Company LLC - (OSCO) Oman Branch",
+  address:"Ghala Industrial Area, Office No. 504, Way: 6605,<br> Al Omran St., P.O.BOX: 2156, Postal Code: 130<br> Muscat, Sultanate of Oman",
+  phone: ["+968 240 35650/51"],
+  fax:"",
+  location:"",
+    },
+    {
+      name:"BAHRAIN-Shapoorji Pallonji Mideast LLC",
+  address:"Lehmedeh Tower, Office 23, Building 2317,<br> Road 2830, Block 428, Seef Area, Bahrain",
+  phone:"",
+  fax:"",
+  location:"",
+    },
+    {
+      name:"SRI LANKA-Shapoorji Pallonji Lanka Pvt. Ltd.",
+  address:"Geethanjali Place,<br> 4 - 1/1, 02nd Floor,<br> Colombo – 03, Sri Lanka",
+  phone: ["94 112 508 246"],
+  fax:"",
+  location:"",
+    },
+    {
+      name:"ALGERIA-Shapoorji Pallonji and Company Private Ltd.",
+  address:"Sidi Abderrahmen, D 01 Groupe-865<br> Texraine, Birkhadem, Algiers-161000, Algeria.",
+  phone: ["+213 23460401/415"],
+  fax:"+ 213 23460400",
+  location:"",
+    },
+    {
+      name:"IRAQ-Shapoorji Pallonji Mideast LLC - Al Basra, Iraq",
+  address:"Villa No. 03, Area Name: Manawi Basha (BASRA)<br> Street Name: Manawi Basha, Landmark: Near Manawi Basha, Child School, Al Basra, Iraq",
+  phone:"",
+  fax:"",
+  location:"",
+    },
+    {
+      name:"Gambia-Shapoorji Pallonji Mideast L.L.C.",
+  address:"University of The Gambia (UTG) Campus, <br>Block “B” Faraba Banta, P.O Box: 1977, Kombo East,  <br>West Coast Region, Republic of The Gambia",
+  phone:[" +220 336 0022"],
+  fax:"",
+  location:"",
+    },
+    {
+      name:"GHANA-Shapoorji Pallonji Ghana Limited",
+  address:"Flat No. 1, IROKO B, Sethi Nyame Dua Apartments <br> Community 26, Tema, Post Code: GK-0077-0729<br>Ghana",
+  phone:["+233 539 944 807"],
+  fax:"",
+  location:"",
+    },
+    {
+      name:"Zimbabwe-Oman Shapoorji Company LLC",
+  address:"Zimbabwe Branch, Unit D&H Block 1, Celestial Park,<br> Borrowdale Road, Harare, Zimbabwe",
+  phone:"",
+  fax:"",
+  location:"",
+    },
+     
+  ]
+
+ };
+
+ export const coreValueData = { 
+  image:"/assets/images/qualitysafety/qmain.jpg",
+  title: "Safety and Quality – Our Core Values",
+  description:
+    "At Shapoorji Pallonji, quality and safety are at the heart of everything we do. We adhere to the highest international standards, ensuring every project is executed with precision, care, and a strong commitment to the well-being of our workforce.",
+};
+export const CertificationsData = { 
+  title: "International Certifications",
+  description:
+    "Our management systems are certified under globally recognized standards, demonstrating our commitment to operational excellence and environmental stewardship.",
+certificates:[
+  {
+    title:"EN ISO 9001",
+    image:"/assets/images/qualitysafety/ce1.jpg"
+  },
+  {
+    title:"BS OHSAS 14001",
+    image:"/assets/images/qualitysafety/ce2.jpg"
+  },
+  {
+    title:"EN ISO 45001",
+    image:"/assets/images/qualitysafety/ce3.jpg"
+  }, 
+]
+  };
+
+ export const sliderImages = [
+    "/assets/images/qualitysafety/slide1.jpg",
+    "/assets/images/qualitysafety/slide2.jpg",
+    "/assets/images/qualitysafety/slide3.jpg",
+    "/assets/images/qualitysafety/slide4.jpg", 
+  ];
+  export const saftyData = {
+    title:"Our Safety Prowess in Numbers",
+    counts:[
+      {
+        title:"Qualified Safety Professionals",
+        count:"200+"
+      },
+      {
+        title:"Safety Workforce",
+        count:"300+"
+      },
+      {
+        title:"Workforces Inducted Annually",
+        count:"100k"
+      },
+    ]
+  }
+export const empowerData = {
+  svgSrc: "/assets/images/svg/svsv.svg",
+  heading: "Empowering People, Enabling Excellence",
+  description:
+    "Our workforce is our greatest asset. With individuals from varied backgrounds, experiences, and expertise, we come together to create a culture of innovation, resilience, and excellence. Every employee plays a key role in shaping SP’s legacy.",
+  stats: [
+    {
+      value: "1500+",
+      label: "Nationalities",
+    },
+    {
+      value: "85%",
+      label: "Languages Spoken",
+    },
+    {
+      value: "300+",
+      label: "Projects Delivered by Cross-Functional Teams",
+    },
+  ],
+};
+
+export const EnsuringSafetyData = {
+  heading: "Ensuring Safety at Every Step",
+  image: "/assets/images/qualitysafety/safty.jpg",
+  points: [
+    "Rigorous training and induction programs for all personnel",
+    "Comprehensive risk assessments before project execution",
+    "Regular audits and continuous improvement measures",
+    "Use of latest safety technologies and equipment",
+  ],
+};
+
+// src/data/valuesData.js
+export const valuesData = {
+  title: "Our Values Through People",
+  description:
+    "At Shapoorji Pallonji, every employee brings their unique strengths, perspectives, and talents to drive our vision forward. Together, we innovate, collaborate, and deliver excellence across projects and communities.",
+  image: "/assets/images/careers/our-values/left-svg.svg",
+  rightImage: "/assets/images/careers/our-values/right-image.jpg",
+};
+
+export const cultureData = {
+  title: "Be Part of Our People–First Culture",
+  description:
+    "If you are passionate, driven, and eager to make an impact, we’d love to have you on board. Explore our opportunities and start your journey with SP.",
+  buttonText: "Explore Opportunities",
+  backgroundImage: "/assets/images/careers/partofus/bg-image.jpg",
+};
+
+export const journeyData = {
+  title: "Journeys That Inspire",
+  slides: [
+    {
+      image: "/assets/images/careers/journey-slider/1.jpg",
+      name: "Hadley Vaughn",
+      designation: "Designer",
+    },
+    {
+      image: "/assets/images/careers/journey-slider/2.jpg",
+      name: "Michael Rivera",
+      designation: "Manager",
+    },
+    {
+      image: "/assets/images/careers/journey-slider/3.jpg",
+      name: "Liam Carter",
+      designation: "Engineer",
+    },
+    {
+      image: "/assets/images/careers/journey-slider/4.jpg",
+      name: "Sophia Turner",
+      designation: "Developer",
+    },
+    {
+      image: "/assets/images/careers/journey-slider/5.jpg",
+      name: "Ava Martinez",
+      designation: "Analyst",
+    },
+    {
+      image: "/assets/images/careers/journey-slider/1.jpg",
+      name: "Hadley Vaughn",
+      designation: "Designer",
+    },
+    {
+      image: "/assets/images/careers/journey-slider/2.jpg",
+      name: "Michael Rivera",
+      designation: "Manager",
+    },
+    {
+      image: "/assets/images/careers/journey-slider/3.jpg",
+      name: "Liam Carter",
+      designation: "Engineer",
+    },
+    {
+      image: "/assets/images/careers/journey-slider/4.jpg",
+      name: "Sophia Turner",
+      designation: "Developer",
+    },
+  ],
+};

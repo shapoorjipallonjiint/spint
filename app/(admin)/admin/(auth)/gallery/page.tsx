@@ -334,7 +334,7 @@ const AdminGallery = () => {
                                         </DialogContent>
                                     </Dialog>
 
-                                    <Link href={`/gallery/${item._id}`}>
+                                    <Link href={`/admin/gallery/${item._id}`}>
                                         <IoIosImages className="text-3xl cursor-pointer" />
                                     </Link>
 

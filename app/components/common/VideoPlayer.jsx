@@ -5,11 +5,11 @@ export default function VideoPlayer({ src, poster }) {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-
+ 
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
-
+ 
     if (video.paused) {
       video.play();
       setIsPlaying(true);
@@ -18,7 +18,7 @@ export default function VideoPlayer({ src, poster }) {
       setIsPlaying(false);
     }
   };
-
+ 
   return (
     <div
       className="relative w-full xl:w-[1000px] 3xl:xl:w-[1180px] xl:max-w-[1180px] h-[200px] md:h-[300px] xl:h-[400px] 2xl:h-[450px] 3xl:h-[523px] mx-auto cursor-pointer group"

@@ -1,23 +1,33 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { moveUp } from "../../motionVarients";
+import { moveUp } from "../motionVarients";
 import H2Title from "./H2Title";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FALLBACK_IMAGE = "/assets/images/placeholder.jpg";
 
 const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
-  const heading = data?.heading ?? "";
-  const points = data?.points ?? [];
+  const MotionImage = motion.create(Image);
 
   const isMob = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+
+  /* ================= BACKEND DATA NORMALIZATION ================= */
+  const heading = data?.title ?? "";
+  const points =
+    data?.points ??
+    data?.items?.map((item) => ({
+      text: item.title,
+      image: item.image,
+    })) ??
+    [];
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoverIndex, setHoverIndex] = useState(null);
@@ -27,27 +37,28 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
   const imageRef = useRef(null);
 
+  /* ================= MOUNT CHECK ================= */
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  /* ================= RESPONSIVE CHECK ================= */
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const check = () =>
       setIsMobile(window.matchMedia("(max-width: 767px)").matches);
-
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  /* ================= INITIAL IMAGE ================= */
   useEffect(() => {
     if (points.length) {
-      setActiveImage(points[0].image);
+      setActiveImage(points[0].image ?? FALLBACK_IMAGE);
     }
   }, [points]);
 
+  /* ================= SCROLL PARALLAX ================= */
   const imageOffset = isMob ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
 
   const { scrollYProgress } = useScroll(
@@ -58,13 +69,14 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
   const imageY = useTransform(scrollYProgress ?? 0, [0, 1], imageOffset);
 
-  const updateImage = (index) => {
+  /* ================= IMAGE UPDATE ================= */
+  const updateImage = (index ) => {
     if (points[index]?.image) {
       setActiveImage(points[index].image);
     }
   };
 
-  const isActive = (index) =>
+  const isActive = (index ) =>
     isMobile
       ? activeIndex === index
       : hoverIndex === index || activeIndex === index;
@@ -74,6 +86,7 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
   return (
     <section className={`w-full ${bgColor} text-black ${sectionSpacing}`}>
       <div className="container">
+        {/* ================= TITLE ================= */}
         <motion.div
           variants={moveUp(0.2)}
           initial="hidden"
@@ -93,10 +106,12 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
             ref={imageRef}
             className="hidden md:block relative h-[250px] md:h-full overflow-hidden"
           >
-            <motion.img
+            <MotionImage
               key={activeImage}
               src={activeImage}
               alt=""
+              width={1920}
+              height={1000}
               style={{ y: imageY }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -153,9 +168,11 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
                 {/* ================= MOBILE IMAGE ================= */}
                 {isMobile && isActive(index) && (
-                  <motion.img
+                  <MotionImage
                     src={item.image}
                     alt=""
+                    width={800}
+                    height={400}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35 }}
