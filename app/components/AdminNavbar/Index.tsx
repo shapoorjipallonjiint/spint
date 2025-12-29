@@ -12,7 +12,7 @@ import {
     GlobeAltIcon,
     UsersIcon,
 } from "@heroicons/react/24/outline";
-import { GalleryThumbnails, LeafIcon, Settings, ThumbsUp, Workflow } from "lucide-react";
+import { GalleryThumbnails, HeartHandshake, LeafIcon, Settings, ThumbsUp, Workflow } from "lucide-react";
 
 const AdminNavbar = () => {
     const [openLink, setOpenLink] = useState<string | null>(null);
@@ -88,7 +88,7 @@ const AdminNavbar = () => {
         { name: "Quality", href: "/admin/quality", icon: ThumbsUp },
         { name: "Global Presence", href: "/admin/global-presence", icon: GlobeAltIcon },
         { name: "Community Engagement", href: "/admin/community-engagement", icon: UsersIcon },
-        // { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
+        { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
         { name: "Sustainability", href: "/admin/sustainability", icon: LeafIcon },
         { name: "Settings", href: "/admin/settings", icon: Settings },
     ];
