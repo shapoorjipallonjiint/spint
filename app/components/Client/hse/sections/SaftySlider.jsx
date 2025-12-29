@@ -89,7 +89,7 @@ const SaftySlider = ({data}) => {
                                         viewport={{ amount: 0.2, once: true }}
                                         className="text-40 font-light leading-[1.02] text-paragraph mb-3 lg:mb-[18px] "
                                     >
-                                        <InsideCounter value={item?.value} delay={100} />
+                                        <InsideCounter value={item?.value} delay={100} suffix={index === 2 ? "K" : "+"} />
                                     </motion.p>
                                     <motion.p
                                         variants={moveLeft(0.3 * index)}
