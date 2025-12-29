@@ -1054,3 +1054,58 @@ h2{
     font-size: clamp();
   }
 } */
+
+.our-values-about {
+ ol{
+  @apply text-sm xl:text-19 leading-[1.85] max-w-[50ch] ps-6 lg:ps-12 py-[11px]
+ }
+
+ li{
+  @apply relative before:content-[''] before:absolute before:-left-6 before:top-[14px] before:w-[7px] before:h-[7px] before:bg-secondary before:rounded-none font-light text-paragraph
+ }
+}
+
+.our-expertise-item-desc{
+  h3{
+    @apply text-29 leading-[1.344827586206897] font-light mb-3 xl:mb-5
+  }
+  ol{
+    @apply space-y-2
+  }
+  li{
+    @apply text-white/80 text-19 flex 
+  }
+  li::before {
+    content: "• ";
+    @apply text-white mr-2;
+  }
+}
+
+.tab-style1-description{
+  p{
+    @apply text-19 font-extralight
+  }
+  ol{
+    @apply space-y-2 mt-4 xl:mt-[25px]
+  }
+  li{
+    @apply flex items-start gap-2 font-extralight
+  }
+  li::before {
+    content: "";
+    @apply mt-[7px] h-[7px] w-[7px] bg-secondary;
+  }
+}
+
+.water-our-expertise div{
+   @apply mt-4 xl:mt-5 border-t border-white/20 pt-4 xl:pt-[28px]
+}
+
+.water-our-expertise{
+  ol{
+    @apply list-disc max-w-[45.5ch] ml-[18px]
+  }
+  li{
+    @apply text-19 font-light
+  }
+}

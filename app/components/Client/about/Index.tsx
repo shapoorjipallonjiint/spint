@@ -7,7 +7,7 @@ import Legacy from "./sections/Legacy";
 // import MainNavbar from "../../MainLayout/MainNavbar";
 // import Footer from "../../MainLayout/Footer";
 
-const Index = () => {
+const Index = ({data}:{data:any}) => {
   return (
     <>
       {/* <header>
@@ -15,15 +15,15 @@ const Index = () => {
       </header> */}
       <main>
         <Banner
-          title="About SP International"
-          image="/assets/images/about-us/about-banner.jpg"
-          imageAlt=""
+          title={data.pageTitle}
+          image={data.banner}
+          imageAlt={data.bannerAlt}
         />
-        <About />
-        <VisionMission />
-        <OurValues />
-        <Legacy />
-        <Trusted />
+        <About data={data.firstSection}/>
+        <VisionMission data={data.secondSection}/>
+        <OurValues data={data.thirdSection}/>
+        <Legacy data={data.fourthSection}/>
+        <Trusted data={data.fifthSection}/>
       </main>
       {/* <footer>
         <Footer />

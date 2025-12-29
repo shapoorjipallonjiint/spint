@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const MainNavbar = () => {
     const [isSticky, setIsSticky] = useState(false);
@@ -44,13 +45,13 @@ const MainNavbar = () => {
         {
             name: "Services",
             submenu: [
-                { name: "Engineering & Construction", href: "/engineering-construction" },
-                { name: "MEP", href: "/mep" },
-                { name: "Design Studio", href: "/design-studio" },
-                { name: "Interior Fit-out", href: "/interior-design" },
-                { name: "Facade", href: "/facade" },
-                { name: "Facilities Management", href: "/integrated-facility-management" },
-                { name: "Water", href: "/water" },
+                { name: "Engineering & Construction", href: "/services/engineering-construction" },
+                { name: "MEP", href: "/services/mep" },
+                { name: "Design Studio", href: "/services/design-studio" },
+                { name: "Interior Fit-out", href: "/services/interior-design" },
+                { name: "Facade", href: "/services/facade" },
+                { name: "Facilities Management", href: "/services/integrated-facility-management" },
+                { name: "Water", href: "/services/water" },
             ],
         },
         { name: "Global Presence", submenu: null, href: "/global-presence" },
@@ -167,8 +168,10 @@ const MainNavbar = () => {
                         <div className="flex items-center gap-[10px] z-[60]">
                             <Link href="/">
                                 {" "}
-                                <img
-                                    src="./assets/images/main-logo.svg"
+                                <Image
+                               width={0}
+                               height={0}
+                                    src="/assets/images/main-logo.svg"
                                     alt="logo"
                                     className="w-[101px] lg:w-[80px] xl:w-[101px]"
                                 />
@@ -300,8 +303,10 @@ const MainNavbar = () => {
                                     </button>
                                 </div>
                                 <button className="cursor-pointer bg-[#000000CC] rounded-full p-[2px] w-[30px] h-[30px]  2xl:w-[45px] 2xl:h-[45px] flex items-center justify-center ml-3 xl:ml-5 transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] group">
-                                    <img
-                                        src="./assets/images/icons/search-icon.svg"
+                                    <Image
+                                    width={0}
+                                    height={0}
+                                        src="/assets/images/icons/search-icon.svg"
                                         alt="search"
                                         className="group-hover:scale-[1.1] transition-all duration-300 w-[12px] h-[12px] 2xl:w-[18px] 2xl:h-[18px]"
                                     />

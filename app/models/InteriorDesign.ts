@@ -32,6 +32,13 @@ const interiorDesignSchema = new mongoose.Schema({
     pageTitle_ar:{
         type:String,
     },
+    title:{
+        type:String,
+        required:true
+    },
+    title_ar:{
+        type:String,
+    },
     firstSection:{
         title:{
             type:String,

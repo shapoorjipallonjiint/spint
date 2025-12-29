@@ -32,6 +32,13 @@ const mepSchema = new mongoose.Schema({
     pageTitle_ar:{
         type:String,
     },
+    title:{
+        type:String,
+        required:true
+    },
+    title_ar:{
+        type:String,
+    },
     firstSection:{
         title:{
             type:String,
@@ -131,12 +138,27 @@ const mepSchema = new mongoose.Schema({
             imageAlt_ar:{
                 type:String,
             },
+            logo:{
+                type:String,
+            },
+            logoAlt:{
+                type:String,
+            },
+            logoAlt_ar:{
+                type:String,
+            },
             title:{
                 type:String,
             },
             title_ar:{
                 type:String,
             }, 
+            description:{
+                type:String
+            },
+            description_ar:{
+                type:String
+            }
         }],
     },
     fifthSection:{

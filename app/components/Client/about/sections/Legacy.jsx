@@ -45,7 +45,7 @@ const legacyData = [
     image: "/assets/images/about-us/slide1.jpg",
   },
 ];
-const Legacy = () => {
+const Legacy = ({data}) => {
   const [imageSwiper, setImageSwiper] = useState(null);
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -54,6 +54,7 @@ const Legacy = () => {
   const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const imageContainerRefTwo = useRef(null);
+  const MotionImage = motion.create(Image)
 
   // Parallax for main image container
   const { scrollYProgress: imageProgress } = useScroll({
@@ -69,7 +70,7 @@ const Legacy = () => {
             {/* <motion.h2 variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-60 font-light leading-[1.18] text-white">
               Legacy
             </motion.h2> */}
-            <H2Title titleText="Legacy" titleColor="white" marginClass="md:mb-4 lg:mb-8 xl:mb-15" />
+            <H2Title titleText={data.title} titleColor="white" marginClass="md:mb-4 lg:mb-8 xl:mb-15" />
 
             <div className="flex flex-col-reverse md:flex-row gap-7 md:gap-5 2xl:gap-[20%]  3xl:gap-[23.3%] justify-between md:items-end">
               {/* LEFT: Vertical Year Thumbs */}
@@ -94,7 +95,7 @@ const Legacy = () => {
                   }}
                   className="legacy-main-swiper"
                 >
-                  {legacyData.map((item, i) => (
+                  {data.items.map((item, i) => (
                     <SwiperSlide key={i}>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-7 lg:gap-15 2xl:gap-[137px] items-center">
                         <div>
@@ -117,9 +118,9 @@ const Legacy = () => {
 
                           </div>
                           <p className="text-29 text-white font-light leading-[1] mb-3 xl:mb-5">{item.year}</p>
-                          <p className="text-19 font-light leading-[1.474] text-white">{item.text}</p></div>
+                          <p className="text-19 font-light leading-[1.474] text-white">{item.description}</p></div>
                         <div className="relative overflow-hidden" ref={imageContainerRefTwo}>
-                          <motion.img style={{ y: imageY }} src={item.image} alt={item.title} className="w-full object-cover scale-110 w-full h-[305px] 
+                          <MotionImage width={1500} height={1000} style={{ y: imageY }} src={item.image} alt={item.imageAlt} className="w-full object-cover scale-110 w-full h-[305px] 
                           md:w-full xl:w-[795px] xl:h-[505px]" /></div>
                       </div>
                     </SwiperSlide>

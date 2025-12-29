@@ -1,9 +1,11 @@
 "use client";
 import { fadeIn, moveUp, paragraphItem } from "../motionVarients";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import  Link from "next/link";
 
 const Footer = () => {
+  const MotionImage = motion.create(Image)
   return (
     <div className="bg-[#191919] pt-10 md:pt-12 lg:pt-10 xl:pt-15  2xl:pt-20 3xl:pt-[153px] text-white ">
       <div className="container">
@@ -16,7 +18,7 @@ const Footer = () => {
         </div>
         <div className="border-b border-white/30 grid gap-6 lg:gap-0 grid-cols-1 lg:grid-cols-[350px_auto] xl:grid-cols-[549px_auto]">
           <div className="lg:border-r border-white/30">
-            <motion.img variants={fadeIn(0.5)} initial="hidden" animate="show" src="./assets/images/logo.svg" alt="logo" className="w-[169px] h-auto" />
+            <MotionImage width={0} height={0} variants={fadeIn(0.5)} initial="hidden" animate="show" src="/assets/images/logo.svg" alt="logo" className="w-[169px] h-auto" />
           </div>
           <div className="lg:pl-20 xl:pl-20 2xl:pl-[107px] pb-6 md:pb-9 lg:pb-15 xl:pb-20">
             <motion.p variants={moveUp(0.2)} initial="hidden" animate="show" className="text-19 font-extralight leading-[1.578947368421053] text-white/70 mb-[22px] max-w-[35ch]">Al Hudaiba Mall, Al Mina Street <br />P.O. Box No. 118219 Dubai, UAE <br />Office 307, 3rd Floor </motion.p>
@@ -29,17 +31,17 @@ const Footer = () => {
               
                 <li className="relative p-[2px] rounded-full bg-[linear-gradient(90deg,#30B6F9,#1E45A2,#30B6F9)] bg-[length:200%_200%] animate-[gradient_3s_linear_infinite] inline-flex items-center justify-center transition-all duration-300 hover:scale-[1.08]">
                   <Link href="#" className="w-[34px] h-[34px] rounded-full bg-black flex items-center justify-center">
-                    <img src="./assets/images/icons/insta.svg" alt="insta" className="invert-100 w-[16px]" />
+                    <Image width={17} height={17} src="/assets/images/icons/insta.svg" alt="insta" className="invert-100 w-[16px]" />
                   </Link>
                 </li>
                 <li className="relative p-[2px] rounded-full bg-[linear-gradient(90deg,#30B6F9,#1E45A2,#30B6F9)] bg-[length:200%_200%] animate-[gradient_3s_linear_infinite] inline-flex items-center justify-center transition-all duration-300 hover:scale-[1.08]">
                   <Link href="#" className="w-[34px] h-[34px] rounded-full bg-black flex items-center justify-center">
-                    <img src="./assets/images/icons/linked-in.svg" alt="linked-in" />
+                    <Image width={17} height={17} src="/assets/images/icons/linked-in.svg" alt="linked-in" />
                   </Link>
                 </li>
                 <li className="relative p-[2px] rounded-full bg-[linear-gradient(90deg,#30B6F9,#1E45A2,#30B6F9)] bg-[length:200%_200%] animate-[gradient_3s_linear_infinite] inline-flex items-center justify-center transition-all duration-300 hover:scale-[1.08]">
                   <Link href="#" className="w-[34px] h-[34px] rounded-full bg-black flex items-center justify-center">
-                    <img src="./assets/images/icons/youtube.svg" alt="youtube" />
+                    <Image width={17} height={17} src="/assets/images/icons/youtube.svg" alt="youtube" />
                   </Link>
                 </li>
               </motion.ul>

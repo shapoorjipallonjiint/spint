@@ -54,15 +54,19 @@ export async function PATCH(request: NextRequest) {
             if (!foundNews) {
                 return NextResponse.json({ message: "News not found" }, { status: 404 });
             }
-            foundNews.firstSection = body.firstSection;
-            foundNews.secondSection = body.secondSection;
-            foundNews.thirdSection = body.thirdSection;
-            foundNews.fourthSection = body.fourthSection;
-            foundNews.bannerSection = body.bannerSection;
-            foundNews.images = body.images;
+            console.log(body)
+            foundNews.title = body.title;
+            foundNews.title_ar = body.title_ar;
             foundNews.slug = body.slug;
+            foundNews.date = body.date;
+            foundNews.topic = body.topic;
+            foundNews.content = body.content;
+            foundNews.coverImage = body.coverImage;
+            foundNews.coverImageAlt = body.coverImageAlt;
+            foundNews.coverImageAlt_ar = body.coverImageAlt_ar;
             foundNews.thumbnail = body.thumbnail;
             foundNews.thumbnailAlt = body.thumbnailAlt;
+            foundNews.thumbnailAlt_ar = body.thumbnailAlt_ar;
             foundNews.metaTitle = body.metaTitle;
             foundNews.metaDescription = body.metaDescription;
             await news.save();

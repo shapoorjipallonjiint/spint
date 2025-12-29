@@ -26,6 +26,8 @@ interface EngineeringAndConstructionFormProps {
     bannerAlt_ar: string;
     pageTitle: string;
     pageTitle_ar: string;
+    title:string;
+    title_ar:string;
     firstSection: {
         title: string;
         title_ar:string;
@@ -45,6 +47,10 @@ interface EngineeringAndConstructionFormProps {
             imageAlt_ar:string;
             description:string;
             description_ar:string;
+            title:string;
+            title_ar:string;
+            subTitle:string;
+            subTitle_ar:string;
         }[]
     };
     thirdSection: {
@@ -122,6 +128,8 @@ const EngineeringAndConstructionPage = () => {
                 setValue("bannerAlt_ar", data.data.bannerAlt);
                 setValue("pageTitle", data.data.pageTitle);
                 setValue("pageTitle_ar", data.data.pageTitle);
+                setValue("title", data.data.title);
+                setValue("title_ar", data.data.title_ar);
                 setValue("metaTitle", data.data.metaTitle);
                 setValue("metaTitle_ar", data.data.metaTitle);
                 setValue("metaDescription", data.data.metaDescription);
@@ -182,6 +190,10 @@ const EngineeringAndConstructionPage = () => {
                     <div className='flex flex-col gap-1'>
                         <Label className='font-bold'>Page Title</Label>
                         <Input type='text' placeholder='Page Title' {...register("pageTitle")} />
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                        <Label className='font-bold'>Title (for home and project page selector)</Label>
+                        <Input type='text' placeholder='Title' {...register("title")} />
                     </div>
                     </div>
                 </div>
@@ -321,6 +333,23 @@ const EngineeringAndConstructionPage = () => {
                             </div>
 
                             <div className='flex flex-col gap-2'>
+
+                            <div className='flex flex-col gap-2'>
+                                    <Label className='font-bold'>Title</Label>
+                                    <Input type='text' placeholder='Title' {...register(`secondSection.items.${index}.title`, {
+                                        required: "Title is required"
+                                    })} />
+                                    {errors.secondSection?.items?.[index]?.title && <p className='text-red-500'>{errors.secondSection?.items?.[index]?.title.message}</p>}
+                                </div>
+
+                                <div className='flex flex-col gap-2'>
+                                    <Label className='font-bold'>Sub Title</Label>
+                                    <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.subTitle`, {
+                                        required: "Sub Title is required"
+                                    })} />
+                                    {errors.secondSection?.items?.[index]?.subTitle && <p className='text-red-500'>{errors.secondSection?.items?.[index]?.subTitle.message}</p>}
+                                </div>
+
                             <div className='flex flex-col gap-2'>
                                 <div className='flex flex-col gap-2'>
                                     <Label className='font-bold'>Description</Label>
@@ -339,7 +368,7 @@ const EngineeringAndConstructionPage = () => {
 
                 </div>
                 <div className='flex justify-end mt-2'>
-                        <Button type='button' addItem onClick={() => secondSectionAppend({ description: "", image: "", imageAlt: "", description_ar: "", imageAlt_ar: "" })}>Add Item</Button>
+                        <Button type='button' addItem onClick={() => secondSectionAppend({ description: "", image: "", imageAlt: "", description_ar: "", imageAlt_ar: "",title:"",title_ar:"",subTitle:"",subTitle_ar:"" })}>Add Item</Button>
                     </div>
                 </div>
 
@@ -562,6 +591,10 @@ const EngineeringAndConstructionPage = () => {
                         <Label className='font-bold'>Page Title</Label>
                         <Input type='text' placeholder='Page Title' {...register("pageTitle_ar")} />
                     </div>
+                    <div className='flex flex-col gap-1'>
+                        <Label className='font-bold'>Title (for home and project page selector)</Label>
+                        <Input type='text' placeholder='Title' {...register("title_ar")} />
+                    </div>
                     </div>
                 </div>
                 </AdminItemContainer>
@@ -689,6 +722,18 @@ const EngineeringAndConstructionPage = () => {
                             </div>
 
                             <div className='flex flex-col gap-2'>
+
+                            <div className='flex flex-col gap-2'>
+                                    <Label className='font-bold'>Title</Label>
+                                    <Input type='text' placeholder='Title' {...register(`secondSection.items.${index}.title_ar`)} />
+                                </div>
+
+                                <div className='flex flex-col gap-2'>
+                                    <Label className='font-bold'>Sub Title</Label>
+                                    <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.subTitle_ar`)} />
+                                </div>
+
+
                             <div className='flex flex-col gap-2'>
                                 <div className='flex flex-col gap-2'>
                                     <Label className='font-bold'>Description</Label>
@@ -706,7 +751,7 @@ const EngineeringAndConstructionPage = () => {
 
                 </div>
                 <div className='flex justify-end mt-2'>
-                        <Button type='button' addItem onClick={() => secondSectionAppend({ description: "", image: "", imageAlt: "", description_ar: "", imageAlt_ar: "" })}>Add Item</Button>
+                        <Button type='button' addItem onClick={() => secondSectionAppend({ description: "", image: "", imageAlt: "", description_ar: "", imageAlt_ar: "",title:"",title_ar:"",subTitle:"",subTitle_ar:"" })}>Add Item</Button>
                     </div>
                 </div>
 
