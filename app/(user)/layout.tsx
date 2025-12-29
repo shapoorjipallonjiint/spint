@@ -27,6 +27,8 @@ export default async function RootLayout({
 
 
   return (
+    <html>
+      <body>
     <div lang="en">
      <div className={`${dmSans.variable} font-sans antialiased`}>
       <SmoothScroll/>
@@ -34,5 +36,7 @@ export default async function RootLayout({
         {children}
       </div>
     </div>
+    </body>
+    </html>
   );
 }

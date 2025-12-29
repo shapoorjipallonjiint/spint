@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import H2Title from "@/app/components/common/H2Title";
 import { assets } from "@/app/assets";
 import { moveUp, moveLeft } from "@/app/components/motionVarients";
+import Image from "next/image";
 
 
 const InnovationSustainability = ({data}) => {
@@ -13,6 +14,7 @@ const InnovationSustainability = ({data}) => {
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
   const [activeIndex, setActiveIndex] = useState(1);
   const imageRef = useRef < HTMLDivElement | null > (null);
+  const MotionImage = motion.create(Image)
 
   const sectionRef = useRef(null);
   const imageContainerRef = useRef(null);
@@ -62,7 +64,7 @@ const InnovationSustainability = ({data}) => {
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden pt-text30 pb30 bg-gradient-to-br from-slate-50 to-blue-50">
-      <motion.img style={{y:shapeY}} src={assets.mainShape2} alt="" className="absolute bottom-50 lg:bottom-3 right-0 lg:left-0  2xl:left-[-40px]  3xl:left-0 w-[152px] lg:w-[30%] 2xl:w-[430px] 3xl:w-[460px] lg:bottom-40   2xl:bottom-50  3xl:bottom-80  h-auto object-contain" />
+      <MotionImage width={1500} height={1000} style={{y:shapeY}} src={assets.mainShape2} alt="" className="absolute bottom-50 lg:bottom-3 right-0 lg:left-0  2xl:left-[-40px]  3xl:left-0 w-[152px] lg:w-[30%] 2xl:w-[430px] 3xl:w-[460px] lg:bottom-40   2xl:bottom-50  3xl:bottom-80  h-auto object-contain" />
       <div className="container mx-auto px-4">
         <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{amount:0.6, once:true}} >
           <H2Title titleText={data.title} titleColor="black" marginClass="mb-5 lg:mb-10 xl:mb-50px 3xl:mb-18" />
@@ -73,18 +75,18 @@ const InnovationSustainability = ({data}) => {
             {/* Vertical line – perfectly centered with circles */}
             <div className="pointer-events-none absolute top-0 bottom-0 left-4 w-px bg-gradient-to-b from-primary to-secondary" />
             <div className="flex flex-col justify-center h-full">
-              {data.accordionData.map((item, index) => (
+              {data.items.map((item, index) => (
                 <motion.div
                   key={item.id}
                   className="flex"
                   style={{
                     marginBottom:
-                      index < data.accordionData.length - 1 ? getSpacing(index) : "0",
+                      index < data.items.length - 1 ? getSpacing(index) : "0",
                   }}
                   initial={false}
                   animate={{
                     marginBottom: 
-                      index < data.accordionData.length - 1 ? isMobile ? "30px": getSpacing(index) : "0",
+                      index < data.items.length - 1 ? isMobile ? "30px": getSpacing(index) : "0",
                   }}
                   transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 >
@@ -105,14 +107,16 @@ const InnovationSustainability = ({data}) => {
                       >
                         <AnimatePresence mode="wait">
                           {activeIndex === index && (
-                            <motion.img
+                            <MotionImage
+                            width={20}
+                            height={20}
                               key="icon"
                               initial={{ opacity: 0, scale: 0.5 }}
                               animate={{ opacity: 1, scale: 1 }}
                               exit={{ opacity: 0, scale: 0.5 }}
                               transition={{ duration: 0.3 }}
-                              src={item.icon}
-                              alt={item.title}
+                              src={item.logo}
+                              alt={item.logoAlt}
                               className="w-5 md:w-6 xl:w-[32px] h-auto object-contain"
                             />
                           )}
@@ -151,7 +155,7 @@ const InnovationSustainability = ({data}) => {
                     </motion.button>
 
                     <AnimatePresence initial={false}>
-                      {activeIndex === index && item.content && (
+                      {activeIndex === index && item.description && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
@@ -169,7 +173,7 @@ const InnovationSustainability = ({data}) => {
                             transition={{ duration: 0.4 }}
                             className="text-16 2xl:text-19 leading-[1.473684210526316] text-paragraph font-light pr-8 mt-4 2xl:mt-[25px] max-w-full xl:max-w-[37ch]"
                           >
-                            {item.content}
+                            {item.description}
                           </motion.p>
                         </motion.div>
                       )}
@@ -187,11 +191,13 @@ const InnovationSustainability = ({data}) => {
               className="relative overflow-hidden xl:aspect-[4/3]" >
               <div ref={imageContainerRef}>
               <AnimatePresence mode="wait">
-                <motion.img
+                <MotionImage
+                width={1000}
+                height={1000}
                 style={{ y: imageY }}
                   key={activeIndex}
-                  src={data.accordionData[activeIndex]?.image}
-                  alt={data.accordionData[activeIndex]?.title}
+                  src={data.items[activeIndex]?.image}
+                  alt={data.items[activeIndex]?.title}
                   className="w-full h-[200px] sm:h-[250px] md:h-[350px] lg:h-[450px] xl:h-[500px] 2xl:h-[706px] object-cover scale-125 lg:scale-100"
                   initial={{ opacity: 0, scale: 1.1 }}
                   animate={{ opacity: 1, scale: 1 }}

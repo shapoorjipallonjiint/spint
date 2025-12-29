@@ -1,8 +1,8 @@
-import Index from '@/app/components/Client/services/mep/Index'
+import Index from '@/app/components/Client/services/facade/Index'
 import React from 'react'
 
 const page = async() => {
-  const response = await fetch(`${process.env.BASE_URL}/api/admin/services/mep`, { next: { revalidate: 60 } });
+    const response = await fetch(`${process.env.BASE_URL}/api/admin/services/facade`, { next: { revalidate: 60 } });
   const data = await response.json();
 
   const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project`, { next: { revalidate: 60 } });

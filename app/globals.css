@@ -1080,3 +1080,32 @@ h2{
     @apply text-white mr-2;
   }
 }
+
+.tab-style1-description{
+  p{
+    @apply text-19 font-extralight
+  }
+  ol{
+    @apply space-y-2 mt-4 xl:mt-[25px]
+  }
+  li{
+    @apply flex items-start gap-2 font-extralight
+  }
+  li::before {
+    content: "";
+    @apply mt-[7px] h-[7px] w-[7px] bg-secondary;
+  }
+}
+
+.water-our-expertise div{
+   @apply mt-4 xl:mt-5 border-t border-white/20 pt-4 xl:pt-[28px]
+}
+
+.water-our-expertise{
+  ol{
+    @apply list-disc max-w-[45.5ch] ml-[18px]
+  }
+  li{
+    @apply text-19 font-light
+  }
+}

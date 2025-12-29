@@ -62,8 +62,13 @@ interface MEPFormProps {
             image: string;
             imageAlt:string;
             imageAlt_ar:string;
+            logo: string;
+            logoAlt:string;
+            logoAlt_ar:string;
             title: string;
             title_ar: string;
+            description:string;
+            description_ar:string;
         }[];
     };
     fifthSection: {
@@ -501,13 +506,52 @@ const MEPPage = () => {
                             </div>
 
                             <div className='flex flex-col gap-2'>
+                                <div className='flex flex-col gap-2'>
+                                    <Label className='font-bold'>Logo</Label>
+                                    <Controller
+                                        name={`fourthSection.items.${index}.logo`}
+                                        control={control}
+                                        rules={{ required: "Logo is required" }}
+                                        render={({ field }) => (
+                                            <ImageUploader
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        )}
+                                    />
+                                    {errors.fourthSection?.items?.[index]?.logo && (
+                                        <p className="text-red-500">{errors.fourthSection?.items?.[index]?.logo.message}</p>
+                                    )}
+                                </div>
+
+                                <div className='flex flex-col gap-2'>
+                                <div className='flex flex-col gap-2'>
+                                    <Label className='font-bold'>Alt Tag</Label>
+                                    <Input type='text' placeholder='Alt Tag' {...register(`fourthSection.items.${index}.logoAlt`, {
+                                        required: "Value is required"
+                                    })} />
+                                    {errors.fourthSection?.items?.[index]?.logoAlt && <p className='text-red-500'>{errors.fourthSection?.items?.[index]?.logoAlt.message}</p>}
+                                </div>
+                            </div>
+
+
+                            </div>
+
+                            <div className='col-span-2 gap-2'>
                             <div className='flex flex-col gap-2'>
                                 <div className='flex flex-col gap-2'>
                                     <Label className='font-bold'>Title</Label>
                                     <Input type='text' placeholder='Title' {...register(`fourthSection.items.${index}.title`, {
-                                        required: "Value is required"
+                                        required: "Title is required"
                                     })} />
                                     {errors.fourthSection?.items?.[index]?.title && <p className='text-red-500'>{errors.fourthSection?.items?.[index]?.title.message}</p>}
+                                </div>
+                                <div className='flex flex-col gap-2'>
+                                    <Label className='font-bold'>Description</Label>
+                                    <Textarea placeholder='Description' {...register(`fourthSection.items.${index}.description`, {
+                                        required: "Description is required"
+                                    })} />
+                                    {errors.fourthSection?.items?.[index]?.description && <p className='text-red-500'>{errors.fourthSection?.items?.[index]?.description.message}</p>}
                                 </div>
                             </div>
 
@@ -520,7 +564,7 @@ const MEPPage = () => {
 
                 </div>
                 <div className='flex justify-end mt-2'>
-                        <Button type='button' addItem onClick={() => fourthSectionAppend({ title: "",image:"", imageAlt:"",imageAlt_ar:"", title_ar: "" })}>Add Item</Button>
+                        <Button type='button' addItem onClick={() => fourthSectionAppend({ title: "",image:"", imageAlt:"",imageAlt_ar:"", title_ar: "",logo:"", logoAlt:"",logoAlt_ar:"",description:"",description_ar:"" })}>Add Item</Button>
                     </div>
                 </div>
                     
@@ -946,11 +990,46 @@ const MEPPage = () => {
                         </div>
 
                         <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-2'>
+                                <Label className='font-bold'>Logo</Label>
+                                <Controller
+                                    name={`fourthSection.items.${index}.logo`}
+                                    control={control}
+                                    rules={{ required: "Logo is required" }}
+                                    render={({ field }) => (
+                                        <ImageUploader
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                        />
+                                    )}
+                                />
+                                {errors.fourthSection?.items?.[index]?.logo && (
+                                    <p className="text-red-500">{errors.fourthSection?.items?.[index]?.logo.message}</p>
+                                )}
+                            </div>
+
+                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-2'>
+                                <Label className='font-bold'>Alt Tag</Label>
+                                <Input type='text' placeholder='Alt Tag' {...register(`fourthSection.items.${index}.logoAlt_ar`)} />
+                            </div>
+                        </div>
+
+
+                        </div>
+
+                        <div className='col-span-2 gap-2'>
                         <div className='flex flex-col gap-2'>
                             <div className='flex flex-col gap-2'>
                                 <Label className='font-bold'>Title</Label>
                                 <Input type='text' placeholder='Title' {...register(`fourthSection.items.${index}.title_ar`)} />
                             </div>
+
+                            <div className='flex flex-col gap-2'>
+                                <Label className='font-bold'>Description</Label>
+                                <Textarea placeholder='Description' {...register(`fourthSection.items.${index}.description_ar`)} />
+                            </div>
+
                         </div>
 
                         </div>
@@ -962,7 +1041,7 @@ const MEPPage = () => {
 
                 </div>
                 <div className='flex justify-end mt-2'>
-                        <Button type='button' addItem onClick={() => fourthSectionAppend({ title: "",image: "", title_ar: "",imageAlt_ar: "",imageAlt:"" })}>Add Item</Button>
+                        <Button type='button' addItem onClick={() => fourthSectionAppend({ title: "",image: "", title_ar: "",imageAlt_ar: "",imageAlt:"",logo:"", logoAlt:"",logoAlt_ar:"",description:"",description_ar:"" })}>Add Item</Button>
                     </div>
                 </div>
                     

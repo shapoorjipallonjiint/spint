@@ -51,7 +51,8 @@ const H2Title = ({
       >
         {words.map((word, wordIndex) => (
           <span key={wordIndex}>
-            <span className="overflow-hidden inline-block align-top">
+            {/* <span className="overflow-hidden inline-block align-top"> */}
+            <span className="inline-block align-top">
               <motion.span
                 variants={child}
                 className="inline-block"

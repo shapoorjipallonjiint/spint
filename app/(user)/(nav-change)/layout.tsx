@@ -26,12 +26,10 @@ export default async function RootLayout({
 
 
   return (
-    <html lang="en" className={dmSans.variable}>
-     <body>
+    <div>
         <MainNavbar/>
         {children}
         <Footer/>
-      </body>
-    </html>
+    </div>
   );
 }

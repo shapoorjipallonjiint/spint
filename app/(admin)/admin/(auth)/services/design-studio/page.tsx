@@ -312,7 +312,7 @@ const DesignStudioPage = () => {
 
                                                     <div>
                                                         <Label className="text-sm font-bold">Description</Label>
-                                                        <Controller name="secondSection.description" control={control} rules={{ required: "Description is required" }} render={({ field }) => {
+                                                        <Controller name={`secondSection.items.${index}.description`} control={control} rules={{ required: "Description is required" }} render={({ field }) => {
                                                             return <Textarea value={field.value} onChange={field.onChange} />
                                                         }} />
                                                     </div>

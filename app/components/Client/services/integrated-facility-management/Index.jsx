@@ -3,24 +3,23 @@ import Banner from "@/app/components/common/Banner";
 // import Footer from "../../MainLayout/Footer";
 import VdoSection from "@/app/components/common/VdoSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
-// import OurApproach from "./sections/OurApproach";
+import OurApproach from "./sections/OurApproach";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
-import WhyChooseSec from "@/app/components/common/ImgPointsComponent";
-import InnovationSustainability from "./sections/InnovationSustainability";
-// import { mepData } from "./data";
-const MEP = ({data,projectData}) => {
+import WhyChooseSec from "./sections/WhyChooseSec";
+import { ifmData } from "./data";
+const IntegratedFacilityManagement = ({data,projectData}) => {
   return (
     <>
       {/* <header className="">
-        <MainNavbar /> 
+        <MainNavbar />
+        <img src="./assets/images/shape-right.svg" alt="" className="absolute top-0 right-0 z-[-1]" />
       </header> */}
       <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
-      <VdoSection data={data.firstSection} maxW="max-w-[18ch]" />
+      <VdoSection data={data.firstSection} />
       <ExpertiseSec data={data.secondSection} />
-      <WhyChooseSec data={data.thirdSection} bgColor="white" sectionSpacing="pt-text30 pb30" />
+      <OurApproach data={data.thirdSection}/>
       <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} />
-      <InnovationSustainability data={data.fourthSection} />
-      {/* <OurApproach data={mepData.approachesData}/> */}
+      <WhyChooseSec data={data.fourthSection} />
       {/* <footer>
         <Footer />
       </footer> */}
@@ -28,4 +27,4 @@ const MEP = ({data,projectData}) => {
   );
 }
 
-export default MEP;
+export default IntegratedFacilityManagement;

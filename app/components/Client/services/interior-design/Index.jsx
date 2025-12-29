@@ -2,25 +2,25 @@ import Banner from "@/app/components/common/Banner";
 // import MainNavbar from "../../MainLayout/MainNavbar";
 // import Footer from "../../MainLayout/Footer";
 import VdoSection from "@/app/components/common/VdoSection";
+import SecondSection from "./sections/SecondSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
-// import OurApproach from "./sections/OurApproach";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
-import WhyChooseSec from "@/app/components/common/ImgPointsComponent";
-import InnovationSustainability from "./sections/InnovationSustainability";
-// import { mepData } from "./data";
-const MEP = ({data,projectData}) => {
+import WhyChooseSec from "./sections/WhyChooseSec";
+import { interiorData } from "./data";
+import SectorsSec from "./sections/SectorsSec";
+const InteriorDesign = ({data,projectData}) => {
   return (
     <>
-      {/* <header className="">
+      {/* <header>
         <MainNavbar /> 
       </header> */}
       <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
-      <VdoSection data={data.firstSection} maxW="max-w-[18ch]" />
-      <ExpertiseSec data={data.secondSection} />
-      <WhyChooseSec data={data.thirdSection} bgColor="white" sectionSpacing="pt-text30 pb30" />
+      <VdoSection data={data.firstSection} />
+      <SecondSection data={data.secondSection}/>
+      <ExpertiseSec data={data.thirdSection}/>
+      <SectorsSec data={data.fourthSection}/>
       <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} />
-      <InnovationSustainability data={data.fourthSection} />
-      {/* <OurApproach data={mepData.approachesData}/> */}
+      <WhyChooseSec data={data.fifthSection} />
       {/* <footer>
         <Footer />
       </footer> */}
@@ -28,4 +28,4 @@ const MEP = ({data,projectData}) => {
   );
 }
 
-export default MEP;
+export default InteriorDesign;
