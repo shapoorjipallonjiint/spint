@@ -40,9 +40,10 @@ export const navData = {
     {
       id: 5,
       title: "Our Commitments",
-      href: "/commitments",
+      href: "#",
       submenu: [
         { label: "Sustainability", href: "/sustainability" },
+        { label: "Community Engagement", href: "/community-engagement" },
         { label: "Health safety & environmental", href: "/hse" },
         { label: "Quality", href: "/quality" }
       ]
