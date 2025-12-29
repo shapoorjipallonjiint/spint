@@ -27,12 +27,12 @@ export default async function RootLayout({
 
 
   return (
-    <html lang="en">
-     <body className={`${dmSans.variable} font-sans antialiased`}>
+    <div lang="en">
+     <div className={`${dmSans.variable} font-sans antialiased`}>
       <SmoothScroll/>
      <ScrollToTop />
         {children}
-      </body>
-    </html>
+      </div>
+    </div>
   );
 }
