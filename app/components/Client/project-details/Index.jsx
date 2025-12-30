@@ -13,9 +13,9 @@ const Index = ({data,nextProject}) => {
       </header> */}
       <main>
         <Banner firstSection={data.firstSection} secondSection={data.secondSection}/>
-        <KeyFacts data={data.thirdSection}/>
+        {data.thirdSection.items?.length > 0 && <KeyFacts data={data.thirdSection}/>}
         <MoreDetrails data={data.fourthSection}/>
-        <ProjectSlider data={data.images}/>
+        {data.images?.length > 0 && <ProjectSlider data={data.images}/>}
         <InquireToday data={data.sixthSection}/>
         <NextProject slug={nextProject.slug} title={nextProject.firstSection.title} thumbnail={nextProject.thumbnail}/>
         
