@@ -160,6 +160,20 @@ const homeSchema = new mongoose.Schema({
         title_ar: {
             type: String,
         },
+        items:[{
+            image: String,
+            imageAlt: String,
+            imageAlt_ar: String,
+            logo: String,
+            logoAlt: String,
+            logoAlt_ar: String,
+            completedProjects: String,
+            ongoingProjects: String,
+            completedProjects_ar: String,
+            ongoingProjects_ar: String,
+            title: String,
+            title_ar: String,
+        }]
     },
     sixthSection: {
         title: {
