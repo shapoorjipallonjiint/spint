@@ -3,8 +3,10 @@ export const navData = {
     {
       id: 1,
       title: "About Us",
-      href: "/about-us",
+      href: "#",
       submenu: [
+        {label: "Overview", href: "/about-us"},
+        {label: "Leadership", href: "/leadership"}
       ]
     },
     {
