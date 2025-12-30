@@ -15,7 +15,7 @@ const Strength = ({ data }) => {
         const updateLeft = () => {
             if (containerRef.current) {
                 const rect = containerRef.current.getBoundingClientRect();
-                setLeftPos(rect.left);
+                setLeftPos(rect.left + 10);
             }
         };
 
@@ -112,39 +112,42 @@ const Strength = ({ data }) => {
                                 style={{ left: leftPos + "px" }}
                             >
                                 {/* SVG Gradient Border */}
-                                <svg
-                                    width="223"
-                                    height="45"
-                                    viewBox="0 0 223 45"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-[223px] h-[37px]"
-                                >
-                                    <rect
-                                        x="0.5"
-                                        y="0.5"
-                                        width="222"
-                                        height="43"
-                                        rx="22"
-                                        ry="22"
-                                        fill="white"
-                                        stroke="url(#gradient)"
-                                        strokeWidth="1"
-                                    />
-                                    <defs>
-                                        <linearGradient id="gradient" x1="222" y1="0" x2="0" y2="0">
-                                            <stop stopColor="#1E45A2" />
-                                            <stop offset="1" stopColor="#30B6F9" />
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
+                        <svg
+                            width="223"
+                            height="45"
+                            viewBox="0 0 223 45"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-[223px] h-[45px]"
+                        >
+                            <rect
+                                x="0.5"
+                                y="0.5"
+                                width="222"
+                                height="43"
+                                rx="22"
+                                ry="22"
+                                fill="white"
+                                stroke="url(#gradient)"
+                                strokeWidth="1"
+                            />
+                            <defs>
+                                <linearGradient id="gradient" x1="222" y1="0" x2="0" y2="0" gradientUnits="userSpaceOnUse">
+                                    <stop stopColor="#1E45A2" />
+                                    <stop offset="1" stopColor="#30B6F9" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
 
-                                {/* Center Text */}
-                                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black text-[14px] leading-[1.75] font-light hover:opacity-[0.8] cursor-pointer w-full text-center">
-                                    {data.button.text}
-                                </span>
+                        {/* Center Text */}
+                        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black text-16 leading-[1.75] font-light hover:opacity-[0.8] transition-all duration-300 ease-in-out cursor-pointer w-full text-center">
+                            {data.button.text}
+                        </span>
 
-                                {/* Hover Fill Layer */}
-                                <span className="absolute inset-0 rounded-full bg-[#0055A5] opacity-0 hover:opacity-100" />
+                        {/* Hover Fill Layer */}
+                        <span
+                            className="absolute inset-0 rounded-full bg-[#0055A5] opacity-0 hover:opacity-100 transition-all duration-300 ease-in-out"
+                            style={{ zIndex: -1 }}
+                        ></span>
                             </motion.div>
                         )}
                     </AnimatePresence>
