@@ -361,7 +361,7 @@ useEffect(() => {
                         </div>
 
                         <div className='flex flex-col gap-2'>
-                            <Label className=''>Location</Label>
+                            <Label className=''>Country</Label>
                             <Controller
                                 name="secondSection.location"
                                 control={control}
