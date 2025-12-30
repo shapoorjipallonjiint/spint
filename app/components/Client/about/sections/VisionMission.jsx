@@ -71,7 +71,7 @@ const VisionMission = ({data}) => {
                       {/* <h3 className='text-60 font-light leading-[1.18] text-black mb-1 lg:mb-2 2xl:mb-6'>
                         {item.title}
                       </h3> */}
-                      <H2Title titleText={"Vision"} marginClass={"mb-1 lg:mb-2 2xl:mb-6"} />
+                      <H2Title titleText={"IMPACT"} marginClass={"mb-1 lg:mb-2 2xl:mb-6"} />
                       <p className='text-19 font-light leading-[1.474] text-paragraph'>{data.vision}</p>
                     </motion.div>
 
@@ -79,8 +79,8 @@ const VisionMission = ({data}) => {
                       {/* <h3 className='text-60 font-light leading-[1.18] text-black mb-1 lg:mb-2 2xl:mb-6'>
                         {item.title}
                       </h3> */}
-                      <H2Title titleText={"Mission"} marginClass={"mb-1 lg:mb-2 2xl:mb-6"} />
-                      <p className='text-19 font-light leading-[1.474] text-paragraph'>{data.mission}</p>
+                      {/* <H2Title titleText={"Mission"} marginClass={"mb-1 lg:mb-2 2xl:mb-6"} /> */}
+                      {/* <p className='text-19 font-light leading-[1.474] text-paragraph'>{data.mission}</p> */}
                     </motion.div>
 
                 </div>
