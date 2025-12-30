@@ -25,6 +25,12 @@ interface FacadeProps {
     pageTitle_ar: string;
     title: string;
     title_ar: string;
+    description: string;
+    description_ar: string;
+    homeImage: string;
+    homeImageAlt: string;
+    homeImageAlt_ar: string;
+    link:string;
     firstSection: {
         title: string;
         title_ar: string;
@@ -117,6 +123,12 @@ const FacadePage = () => {
                 setValue("pageTitle_ar", data.data.pageTitle_ar);
                 setValue("title", data.data.title);
                 setValue("title_ar", data.data.title_ar);
+                setValue("description", data.data.description);
+                setValue("description_ar", data.data.description_ar);
+                setValue("homeImage", data.data.homeImage);
+                setValue("homeImageAlt", data.data.homeImageAlt);
+                setValue("homeImageAlt_ar", data.data.homeImageAlt_ar);
+                setValue("link", data.data.link);
                 setValue("metaTitle", data.data.metaTitle);
                 setValue("metaTitle_ar", data.data.metaTitle_ar);
                 setValue("metaDescription", data.data.metaDescription);
@@ -181,6 +193,47 @@ const FacadePage = () => {
                         <Label className='font-bold'>Title (for home and project page selector)</Label>
                         <Input type='text' placeholder='Title' {...register("title")} />
                     </div>
+                    <div className='flex flex-col gap-1'>
+                        <Label className='font-bold'>Description (for home)</Label>
+                        <Textarea {...register("description")} />
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <Label className='font-bold'>Home Image</Label>
+                                                    <Controller
+                                                        name={`homeImage`}
+                                                        control={control}
+                                                        rules={{ required: "Image is required" }}
+                                                        render={({ field }) => (
+                                                            <ImageUploader
+                                                                value={field.value}
+                                                                onChange={field.onChange}
+                                                            />
+                                                        )}
+                                                    />
+                                                    {errors.homeImage && (
+                                                        <p className="text-red-500">{errors.homeImage.message}</p>
+                                                    )}
+                                                </div>
+
+                                                <div className='flex flex-col gap-2'>
+                                                    <div className='flex flex-col gap-2'>
+                                                        <Label className='font-bold'>Home Image Alt Tag</Label>
+                                                        <Input type='text' placeholder='Alt Tag' {...register(`homeImageAlt`, {
+                                                            required: "Value is required"
+                                                        })} />
+                                                        {errors.homeImageAlt && <p className='text-red-500'>{errors.homeImageAlt.message}</p>}
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div className='flex flex-col gap-1'>
+                        <Label className='font-bold'>Link (for home)</Label>
+                        <Input type='text' placeholder='Link' {...register("link")} />
+                    </div>
+
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -519,6 +572,43 @@ const FacadePage = () => {
                         <Label className='font-bold'>Title (for home and project page selector)</Label>
                         <Input type='text' placeholder='Title' {...register("title_ar")} />
                     </div>
+                    <div className='flex flex-col gap-1'>
+                        <Label className='font-bold'>Description (for home)</Label>
+                        <Textarea {...register("description_ar")} />
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                                                <div className='flex flex-col gap-2'>
+                                                    <Label className='font-bold'>Home Image</Label>
+                                                    <Controller
+                                                        name={`homeImage`}
+                                                        control={control}
+                                                        rules={{ required: "Image is required" }}
+                                                        render={({ field }) => (
+                                                            <ImageUploader
+                                                                value={field.value}
+                                                                onChange={field.onChange}
+                                                            />
+                                                        )}
+                                                    />
+                                                    {errors.homeImage && (
+                                                        <p className="text-red-500">{errors.homeImage.message}</p>
+                                                    )}
+                                                </div>
+
+                                                <div className='flex flex-col gap-2'>
+                                                    <div className='flex flex-col gap-2'>
+                                                        <Label className='font-bold'>Home Image Alt Tag</Label>
+                                                        <Input type='text' placeholder='Alt Tag' {...register(`homeImageAlt_ar`)} />
+                                                    </div>
+                                                </div>
+
+                                                <div className='flex flex-col gap-1'>
+                        <Label className='font-bold'>Link (for home)</Label>
+                        <Input type='text' disabled placeholder='Link' />
+                    </div>
+
+
+                                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
