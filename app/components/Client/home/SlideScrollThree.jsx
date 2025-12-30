@@ -444,34 +444,9 @@ const cities = cityGroups.flatMap((group) =>
     }))
 );
 
-const items = [
-    {
-        id: 1,
-        title: "Global Workforce",
-        desc:
-            "We bring together professionals from over 20 nationalities, combining diverse skills, experiences, and perspectives to deliver projects with innovation and global impact.",
-    },
-    {
-        id: 2,
-        title: "Inclusive Culture",
-        desc:
-            "We nurture an open, respectful, and friendly environment where every voice is valued, encouraging collaboration, creativity, and meaningful connections across teams.",
-    },
-    {
-        id: 3,
-        title: "People-First Approach",
-        desc:
-            "Wellbeing, safety, and growth are prioritised, with leadership building strong bonds through daily collaboration and informal team engagement.",
-    },
-    {
-        id: 4,
-        title: "Celebrating Talent",
-        desc:
-            "Learning, recognition, and development initiatives empower individuals to grow, contribute, and excel, shaping a skilled, motivated, and high-performing workforce. ",
-    },
-];
 
-const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll }) => {
+
+const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll }) => {
     const containerRef = useRef(null);
     const scrollBlock = useRef(false);
     const timeoutRef = useRef(null);
@@ -581,6 +556,17 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
 
     const bubbleRef = useRef(null);
     const containersRef = useRef(null);
+
+    const items = [
+        ...data.seventhSection.items.map((item)=>{
+            return     {
+                id: item._id,
+                title: item.title,
+                desc:
+                    item.description
+            }
+        })
+    ];
 
     useEffect(() => {
         if (window.innerWidth >= 1024) {
@@ -1732,55 +1718,15 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
     const sectors = [
-        {
-            name: "Commercial",
-            icon: "../assets/images/sectors/icons/Commercial.svg",
-            image: "../assets/images/sectors/commercial.jpg",
-            projectsCompleted: "320+",
-            ongoingProjects: "30+",
-        },
-        {
-            name: "Healthcare",
-            icon: "../assets/images/sectors/icons/Healthcare.svg",
-            image: "../assets/images/sectors/health-care.jpg",
-            projectsCompleted: "150+",
-            ongoingProjects: "20+",
-        },
-        {
-            name: "Hospitality",
-            icon: "../assets/images/sectors/icons/industrial.svg",
-            image: "../assets/images/sectors/hospitality2.jpg",
-            projectsCompleted: "275+",
-            ongoingProjects: "25+",
-        },
-        {
-            name: "Industrial",
-            icon: "../assets/images/sectors/icons/hospitality-icon.svg",
-            image: "../assets/images/sectors/industrial.jpg",
-            projectsCompleted: "180+",
-            ongoingProjects: "15+",
-        },
-        {
-            name: "Infrastructure",
-            icon: "../assets/images/sectors/icons/infrastructure.svg",
-            image: "../assets/images/sectors/infrastructure.jpg",
-            projectsCompleted: "95+",
-            ongoingProjects: "12+",
-        },
-        {
-            name: "Residential",
-            icon: "../assets/images/sectors/icons/Residential.svg",
-            image: "../assets/images/sectors/residential.jpg",
-            projectsCompleted: "450+",
-            ongoingProjects: "40+",
-        },
-        {
-            name: "Water",
-            icon: "../assets/images/sectors/icons/Water.svg",
-            image: "../assets/images/sectors/Water.jpg",
-            projectsCompleted: "95+",
-            ongoingProjects: "12+",
-        },
+        ...data.fifthSection.items.map((item)=>{
+            return {
+                name: item.title,
+                icon: item.logo,
+                image: item.image,
+                projectsCompleted: item.completedProjects,
+                ongoingProjects: item.ongoingProjects,
+            }
+        })
     ];
     const [activeIndex, setActiveIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
@@ -1963,7 +1909,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
 
                 <div className="h-full absolute top-0 left-0 w-full bg-amber-50">
                     <video
-                        src="../assets/videos/home.mp4"
+                        src={data.firstSection.video}
                         autoPlay
                         loop
                         muted
@@ -2000,7 +1946,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                         <div className="h-screen w-full relative overflow-hidden z-10">
                             {/* One single video playing in background */}
                             <video
-                                src="../assets/videos/home.mp4"
+                                src={data.firstSection.video}
                                 autoPlay
                                 loop
                                 muted
@@ -2040,7 +1986,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                     ref={titleOneRef}
                                 >
                                     <h1 className="text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[20ch] leading-[1.15] lg:leading-[80px] pe-2">
-                                        Trusted Legacy of Engineering Excellence
+                                        {data.firstSection.title}
                                     </h1>
                                 </div>
                             </div>
@@ -2053,7 +1999,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                     ref={subtitleRef}
                                 >
                                     <h2 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.5] lg:max-w-[14ch]">
-                                        Changing Skylines Since 1865
+                                        {data.firstSection.subTitle.text}
                                     </h2>
                                     <img
                                         src="../assets/images/arrowbl.svg"
@@ -2108,8 +2054,8 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                             <div className="absolute top-0 w-full z-10 h-full right-0 " ref={leftBgRef}>
                                 <div className="absolute top-0 left-0 z-20 w-full h-full bg-gradient-to-l from-black/30 from-0% to-black/80 to-100%"></div>
                                 <img
-                                    src={aboutData.leftBgImage}
-                                    alt=""
+                                    src={data.secondSection.image}
+                                    alt={data.secondSection.imageAlt}
                                     width={2000}
                                     height={1500}
                                     className="w-full h-full object-cover object-right"
@@ -2124,7 +2070,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                             <div className="absolute top-0 w-full z-10 h-full right-0 opacity-0" ref={videoBgRef}>
                                 <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/85 from-0% via-black/65 via-75% to-black/60 to-100% "></div>
                                 <video
-                                    src="../assets/videos/hero.mp4"
+                                    src={data.secondSection.video}
                                     autoPlay
                                     loop
                                     muted
@@ -2137,15 +2083,18 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                 ref={title2Ref}
                             >
                                 <h1 className="text-[36px] lg:text-48 3xl:text-60 font-light leading-[1.166666666666667] mb-[15px] lg:mb-3 3xl:mb-[25px]">
-                                    {aboutData.title}
+                                    {data.secondSection.title}
                                 </h1>
-                                <h3 className="text-[20px] lg:text-18 xl:text-24 font-light max-w-xl mb-[33px] lg:mb-0">
+                                <div dangerouslySetInnerHTML={{ __html: data.secondSection.subTitle }}>
+
+                                </div>
+                                {/* <h3 className="text-[20px] lg:text-18 xl:text-24 font-light max-w-xl mb-[33px] lg:mb-0">
                                     With a legacy of over{" "}
                                     <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
                                         160 years
                                     </span>{" "}
                                     delivering iconic projects worldwide
-                                </h3>
+                                </h3> */}
                             </div>
 
                             <div className="relative z-40 mt-auto ml-auto">
@@ -2158,7 +2107,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                         className="bg-primary ovrbx w-full h-full absolute left-0 right-0 bottom-0 z-[-1]"
                                     ></div>
                                     <p ref={descriptionRef} className="text-16 xl:text-18 font-light leading-[1.5]">
-                                        {aboutData.description}
+                                        {data.secondSection.description}
                                     </p>
                                 </div>
                             </div>
@@ -2168,16 +2117,19 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                 ref={statsRef}
                             >
                                 <hr ref={brdrsRef} className="border-t border-white/30 absolute top-0 w-full my-0" />
-                                <div>
-                                    <h3 className="text-24 xl:text-40 font-light leading-[auto] mb-[5px]">
-                                        <CountUp value={160} trigger={currentVisibleSlide === "section2"} />+
-                                    </h3>
+                                {data.secondSection.items.map((item, index) => (
+                                    <div key={index}>
+                                        <h3 className="text-24 xl:text-40 font-light leading-[auto] mb-[5px]">
+                                            <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />+
+                                        </h3>
 
-                                    <p className="text-16 xl:text-18 font-light leading-[1.555555555555556]">
-                                        Years of Legacy
-                                    </p>
-                                </div>
-                                <div>
+                                        <p className="text-16 xl:text-18 font-light leading-[1.555555555555556]">
+                                            {item.key}
+                                        </p>
+                                    </div>
+                                ))}
+
+                                {/* <div>
                                     <h3 className="text-24 xl:text-40 font-light leading-[auto] mb-[5px]">
                                         <CountUp value={33000} trigger={currentVisibleSlide === "section2"} />+
                                     </h3>
@@ -2192,22 +2144,25 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                     <p className="text-16 xl:text-18 font-light leading-[1.555555555555556]">
                                         Countries Globally Reached
                                     </p>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div
                             className=" grid grid-cols-2  relative  pt-[33px] xl:pt-[30px]  text-black lg:hidden px-5 bg-white"
                             ref={mobileStatsRef}
                         >
-                            <div className="border-b border-[#0a000020] lg:border-b-0 pb-5 mb-5">
-                                <h3 className="text-26 md:text-40 xl:text-40 font-light leading-[auto] mb-[5px]">
-                                    <CountUp value={160} trigger={currentVisibleSlide === "section2"} />+
-                                </h3>
-                                <p className="text-[14px] md:text-[18px]  font-light leading-[1.555555555555556]">
-                                    Years of Legacy
-                                </p>
-                            </div>
-                            <div className="border-b border-[#00000020] lg:border-b-0 pb-5 mb-5">
+                            {data.secondSection.items.map((item, index) => (
+                                <div className="border-b border-[#0a000020] lg:border-b-0 pb-5 mb-5" key={index}>
+                                    <h3 className="text-26 md:text-40 xl:text-40 font-light leading-[auto] mb-[5px]">
+                                        <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />+
+                                    </h3>
+                                    <p className="text-[14px] md:text-[18px]  font-light leading-[1.555555555555556]">
+                                        {item.key}
+                                    </p>
+                                </div>
+                            ))}
+
+                            {/* <div className="border-b border-[#00000020] lg:border-b-0 pb-5 mb-5">
                                 <h3 className="text-26 md:text-40 xl:text-40 font-light leading-[auto] mb-[5px]">
                                     <CountUp value={35000} trigger={currentVisibleSlide === "section2"} />+
                                 </h3>
@@ -2222,7 +2177,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                 <p className="text-[14px] md:text-[18px]  font-light leading-[1.555555555555556]">
                                     Countries Globally Reached
                                 </p>
-                            </div>
+                            </div> */}
                         </div>
                         {/* <div className="block lg:hidden   ">
                             <img
@@ -2248,15 +2203,15 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                         <div className="lftblc relative right-0 h-[52.6dvh] lg:h-auto" ref={splftimng}>
                             <div className="bg-primary absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
                             <img
-                                src={"../assets/images/abut-sp.jpg"}
-                                alt=""
+                                src={data.thirdSection.image}
+                                alt={data.thirdSection.imageAlt}
                                 width={2000}
                                 height={1500}
                                 className="w-full h-full object-cover absolute object-right hidden lg:block"
                             />
                             <img
-                                src={"../assets/images/home/imgbn3.jpg"}
-                                alt=""
+                                src={data.thirdSection.image}
+                                alt={data.thirdSection.imageAlt}
                                 width={2000}
                                 height={1500}
                                 className="w-full h-full object-cover absolute object-center lg:hidden"
@@ -2282,18 +2237,17 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                     ref={sptitle}
                                     className="text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] lg:max-w-[8ch] font-light mb-[15px] lg:mb-8 xl:mb-[25px] text-black lg:text-white"
                                 >
-                                    About SP International
+                                    {data.thirdSection.title}
                                 </h1>
                                 <p
                                     ref={spdscrpt}
                                     className="text-[14px] lg:text-18 text-[#464646] lg:text-white font-light leading-[1.5] lg:max-w-[90%]  3xl:max-w-[75%] mb-[7dvh] lg:mb-[30px]"
                                 >
-                                    Shapoorji Pallonji International (SPINT) is the international arm of Shapoorji Pallonji
-                                    Engineering & Construction (SP E&C) for its construction operations outside India.
+                                    {data.thirdSection.description}
                                 </p>
                                 <a
                                     ref={spbtn}
-                                    href={"/"}
+                                    href={data.thirdSection.link}
                                     className="text-[14px] lg:text-16 leading-[1.75] font-light text-[#464646] lg:text-white uppercase flex items-center gap-2 cursor-pointer group "
                                 >
                                     <span>READ MORE</span>
@@ -2328,16 +2282,19 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                     className="border-white opacity-20 absolute top-[55%] left-[-30%] right-0"
                                 />
                                 <div className="hidden lg:grid grid-cols-3 " ref={spStats}>
-                                    <div className="text-white">
-                                        <h1 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
-                                            <CountUp value={350} trigger={currentVisibleSlide === "section3"} delay={300} />
-                                            +
-                                        </h1>
-                                        <p className="text-16 xl:text-18 opacity-70 font-light leading-[1.555555555555556]">
-                                            Iconic Projects
-                                        </p>
-                                    </div>
-                                    <div className="text-white">
+                                    {data.thirdSection.items.map((item, index) => (
+                                        <div className="text-white" key={index}>
+                                            <h1 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
+                                                <CountUp value={item.value} trigger={currentVisibleSlide === "section3"} delay={300} />
+                                                +
+                                            </h1>
+                                            <p className="text-16 xl:text-18 opacity-70 font-light leading-[1.555555555555556]">
+                                                {item.key}
+                                            </p>
+                                        </div>
+                                    ))}
+
+                                    {/* <div className="text-white">
                                         <h1 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
                                             <CountUp
                                                 value={4000}
@@ -2358,7 +2315,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                         <p className="text-16 xl:text-18 opacity-70 font-light leading-[1.555555555555556]">
                                             Happy Clients
                                         </p>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -2550,22 +2507,21 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                       </p> */}
                                         </div>
                                         <div className=" flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden   border-b border-[#ffffff20]  mb-5 lg:mb-0 pt-[4dvh] lg:pt-18 lg:pb-21 3xl:pt-14 3xl:pb-21 pr-2">
-                                            {content.map((service, index) => (
+                                            {serviceData.map((service, index) => (
                                                 <div
                                                     key={index}
                                                     className={`flex items-center gap-3 cursor-pointer group w-fit`}
                                                     ref={(el) => (textItemsRef.current[index] = el)}
                                                 >
-                                                    <Link href={service.link}>
+                                                    <Link href={`services/${service.link}`}>
                                                         <p
-                                                            className={`${
-                                                                activeServiceIndex === index
+                                                            className={`${activeServiceIndex === index
                                                                     ? "text-white lg:text-black font-bold bo "
                                                                     : "text-white/70 lg:text-black font-light"
-                                                            } text-14px lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9]  2xl:leading-[1.70]  3xl:leading-[1.607142857142857]  cursor-pointer group-hover:text-black group-hover:font-bold`}
+                                                                } text-14px lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9]  2xl:leading-[1.70]  3xl:leading-[1.607142857142857]  cursor-pointer group-hover:text-black group-hover:font-bold`}
                                                             onMouseOver={() => [
                                                                 setActiveService({
-                                                                    image: service.image,
+                                                                    image: service.homeImage,
                                                                     title: service.title,
                                                                     description: service.description,
                                                                     index,
@@ -2748,7 +2704,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                         ref={talenttitle}
                                         className="text-[36px] lg:text-34 xl:text-48 3xl:text-60 font-light gradient-text leading-[1.166666666666667] max-w-[13ch]"
                                     >
-                                        Shaping Diverse Sectors
+                                        {data.fifthSection.title}
                                     </h1>
                                     <div
                                         ref={talentlist}
@@ -2788,9 +2744,8 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                                     return (
                                                         <div
                                                             key={`${sector.originalIndex}-${sector.position}`}
-                                                            className={`flex items-center gap-5 cursor-pointer ${
-                                                                isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
-                                                            }`}
+                                                            className={`flex items-center gap-5 cursor-pointer ${isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
+                                                                }`}
                                                             style={{
                                                                 opacity: opacity,
                                                                 transform: `scale(${scale})`,
@@ -2819,11 +2774,10 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                                             )}
 
                                                             <h3
-                                                                className={`hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
-                                                                    isActive
+                                                                className={`hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${isActive
                                                                         ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
                                                                         : "text-[14px] lg:text-19 leading-[1.842105263157895]"
-                                                                }`}
+                                                                    }`}
                                                                 style={{
                                                                     transition: "all 0.5s ease-out",
                                                                     willChange: "font-size, font-weight",
@@ -3031,11 +2985,10 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                                 // className={` absolute   transition-all duration-300 flex items-center justify-center    w-[480px] h-[480px] ${
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
-                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
-                                                    activeDot === city.id && city.groupId === "sp-international"
+                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${activeDot === city.id && city.groupId === "sp-international"
                                                         ? "z-[999]"
                                                         : "z-[1]"
-                                                }`}
+                                                    }`}
                                                 style={{ left: city.left, top: city.top }}
                                             >
                                                 <div
@@ -3060,15 +3013,14 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                                     //     ? "bg-[#30F955] shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
                                                     //     : "bg-[#30B6F9]   border border-[#97DCFF] scale-85"
                                                     // }`}
-                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${
-                                                        city.groupId === "sp-group"
+                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${city.groupId === "sp-group"
                                                             ? activeDot === city.id
                                                                 ? "bg-primary/40 shadow-[0_0_35px_rgba(239,68,68,0.9),0_0_50px_rgba(239,68,68,0.6)] border border-white scale-full"
                                                                 : "bg-primary border border-white scale-85"
                                                             : activeDot === city.id
-                                                            ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
-                                                            : "bg-[#30B6F9] border border-[#97DCFF] scale-85"
-                                                    }`}
+                                                                ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
+                                                                : "bg-[#30B6F9] border border-[#97DCFF] scale-85"
+                                                        }`}
                                                 ></div>
                                                 {/* <span
                       className={`relative   -left-1 border border-[#30F95533] min-w-[110px] text-center backdrop-blur-[10px] uppercase bg-[#0015FF99] text-white text-[14px] font-bold px-2 py-[2px] rounded-full opacity-0 
@@ -3184,9 +3136,8 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                                                 {/* Bubble 1 */}
                                                                 <div
                                                                     className={`bubble bg-[#00C8FF80] transition-all duration-500 delay-100 border border-[#00C8FF26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
-            absolute left-[0%] top-[21%] ${
-                activeDot === city.id ? "opacity-100 scale-full float-bubble1" : "scale-80 opacity-0"
-            }`}
+            absolute left-[0%] top-[21%] ${activeDot === city.id ? "opacity-100 scale-full float-bubble1" : "scale-80 opacity-0"
+                                                                        }`}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
                                                                         <CountUp
@@ -3224,9 +3175,8 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                                                 {/* Bubble 3 */}
                                                                 <div
                                                                     className={`bubble bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
-            absolute left-[51%] top-[55%] ${
-                activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
-            } transition-all duration-500 delay-300`}
+            absolute left-[51%] top-[55%] ${activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
+                                                                        } transition-all duration-500 delay-300`}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
                                                                         <CountUp
@@ -3247,11 +3197,10 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
 
                                                             {/* Ring */}
                                                             <div
-                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${
-                                                                    activeDot === city.id
+                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${activeDot === city.id
                                                                         ? "opacity-100 scale-full"
                                                                         : "opacity-0"
-                                                                } transition-all duration-500 delay-300`}
+                                                                    } transition-all duration-500 delay-300`}
                                                                 style={{
                                                                     backgroundImage: `url(../assets/images/ring3.svg)`,
                                                                     backgroundSize: "cover",
@@ -3278,11 +3227,10 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                         <div
                                             // className={`me-2 bubble  bg-[#0015FF66] transition-all duration-500 delay-100 border  border-[#0015FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full
                                             className={`me-2 bubble transition-all duration-500 delay-100 backdrop-blur-sm bg-[#00C8FF80] border border-[#00C8FF26]  text-white text-center p-3 rounded-full  
-                                lg:absolute left-[0%] top-[21%] ${
-                                    activeDot === selectedCity.id
-                                        ? "opacity-100 scale-full float-bubble1"
-                                        : "scale-80 opacity-0 "
-                                }   `}
+                                lg:absolute left-[0%] top-[21%] ${activeDot === selectedCity.id
+                                                    ? "opacity-100 scale-full float-bubble1"
+                                                    : "scale-80 opacity-0 "
+                                                }   `}
                                         >
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.pjtcompleted}
@@ -3305,11 +3253,10 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                         </div> */}
                                         <div
                                             className={`bubble  bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm  text-white text-center p-3 rounded-full 
-                                lg:absolute left-[51%] top-[55%] ${
-                                    activeDot === selectedCity.id
-                                        ? "opacity-100 scale-full float-bubble3"
-                                        : "scale-80 opacity-0 "
-                                }   transition-all duration-500 delay-300`}
+                                lg:absolute left-[51%] top-[55%] ${activeDot === selectedCity.id
+                                                    ? "opacity-100 scale-full float-bubble3"
+                                                    : "scale-80 opacity-0 "
+                                                }   transition-all duration-500 delay-300`}
                                         >
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.dedicatedemployees}
@@ -3319,9 +3266,8 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                     </div>
 
                                     <div
-                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${
-                                            activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
-                                        }   transition-all duration-500 delay-300`}
+                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
+                                            }   transition-all duration-500 delay-300`}
                                         style={{
                                             backgroundImage: `url(../assets/images/ring3.svg)`,
                                             backgroundSize: "cover",
@@ -3349,8 +3295,8 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                     <figure ref={cutltimg} className="absolute w-full h-full z-[-1] mx-auto my-0 left-0 right-0">
                         <img
                             className="absolute object-cover w-full h-full z-0"
-                            src="../assets/images/driven_force.jpg"
-                            alt=""
+                            src={data.seventhSection.image}
+                            alt={data.seventhSection.imageAlt}
                         />
                         <div
                             className="bg-[linear-gradient(180deg,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.75)_82.45%)] 
@@ -3368,7 +3314,10 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                     ref={cutltttl}
                                     className="max-w-[14ch] text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] font-light mb-8 xl:mb-[25px] text-white"
                                 >
-                                    Driven by Talent. <br /> Defined by Culture.
+                                    {/* Driven by Talent. <br /> Defined by Culture. */}
+                                    {data.seventhSection.title.split('/n').map((item)=>(
+                                        item
+                                    ))}
                                 </h1>
                                 <div className="mb-[35%] md:mb-[15%] lg:mb-0">
                                     {/* <div  className="max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0  before:content-[''] before:absolute before:right-[50px]   before:bg-primary before:w-full before:h-full ">
@@ -3461,19 +3410,17 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
     lg:pb-1 transition-all duration-300 `}
                                                     >
                                                         <div
-                                                            className={`py-1 lg:py-0  ${
-                                                                activeItem.id === item.id
+                                                            className={`py-1 lg:py-0  ${activeItem.id === item.id
                                                                     ? "   bg-[linear-gradient(90deg,rgba(30,69,162,0.35)_0%,rgba(48,182,249,0)_100%)] lg:bg-none"
                                                                     : ""
-                                                            }`}
+                                                                }`}
                                                         >
                                                             <div
                                                                 className={`text-[15px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px]  text-white/80 leading-[1.473684210526316] 
-                    transition-all duration-300 cursor-pointer  ${
-                        activeItem.id === item.id
-                            ? "font-bold text-white border-l-[2px] border-secondary lg:border-l-0  ps-2 lg:ps-0 "
-                            : "hover:font-bold hover:text-white font-light "
-                    }`}
+                    transition-all duration-300 cursor-pointer  ${activeItem.id === item.id
+                                                                        ? "font-bold text-white border-l-[2px] border-secondary lg:border-l-0  ps-2 lg:ps-0 "
+                                                                        : "hover:font-bold hover:text-white font-light "
+                                                                    }`}
                                                             >
                                                                 {item.title.split(" ").map((word, i) => (
                                                                     <span key={i}>
@@ -3482,7 +3429,7 @@ const SlideScrollThree = ({ setActiveSection, indexToScroll, setIndexToScroll })
                                                                     </span>
                                                                 ))}
                                                             </div>
-                                                          </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             ))}

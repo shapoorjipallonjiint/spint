@@ -39,6 +39,25 @@ const mepSchema = new mongoose.Schema({
     title_ar:{
         type:String,
     },
+    description:{
+        type:String,
+        required:true
+    },
+    description_ar:{
+        type:String,
+    },
+    homeImage:{
+        type:String
+    },
+    homeImageAlt:{
+        type:String
+    },
+    homeImageAlt_ar:{
+        type:String
+    },
+    link:{
+        type:String
+    },
     firstSection:{
         title:{
             type:String,
