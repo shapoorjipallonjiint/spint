@@ -41,7 +41,7 @@ const MainNavbar = () => {
     const [openSubmenu, setOpenSubmenu] = useState(null);
 
     const menuItems = [
-        { name: "About", href: "/about-us", submenu: null },
+        { name: "About", submenu: [{name: "Overview", href: "/about-us"}, {name: "Leadership", href: "/leadership"}] },
         {
             name: "Services",
             submenu: [
