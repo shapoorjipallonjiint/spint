@@ -14,7 +14,7 @@ import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 gsap.registerPlugin(DrawSVGPlugin);
 import { motion, AnimatePresence } from "framer-motion";
 
-import { aboutData } from "./data";
+// import { aboutData } from "./data";
 import { moveUp } from "../../motionVarients.ts";
 import CountUp from "../../CountUp.jsx";
 import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
@@ -1596,9 +1596,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         }, 2500); // 600ms exit + 2000ms entry delay
     };
 
-    const handleMenuClick = (index) => {
-        updateSlides(index);
-    };
+    // const handleMenuClick = (index) => {
+    //     updateSlides(index);
+    // };
 
     useEffect(() => {
         if (currentIndex !== indexToScroll) {
@@ -1657,64 +1657,65 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         };
     }, []);
 
-    const content = [
-        {
-            image: "/assets/images/services/engineering-construction.jpg",
-            title: "Engineering & Construction",
-            link: "/engineering-construction",
-            description:
-                "Spanning 20 countries, we transform complex visions into major projects. From iconic stadiums and theme parks to advanced healthcare and commercial facilities, we deliver innovative, high-quality projects designed to meet every client’s needs.",
-        },
-        {
-            image: "/assets/images/services/mep.jpg",
-            title: "MEP",
-            link: "/mep",
-            description:
-                "Our MEP division forms the backbone of major structures. We design, install, and manage fully integrated mechanical, electrical, and plumbing systems that ensure reliable, long-term operation.",
-        },
-        {
-            image: "/assets/images/services/interior-fit-out.jpg",
-            title: "Interior Fit-out",
-            link: "/interior-design",
-            description:
-                "SPINT’s Interior Division (SPID) delivers turnkey interior solutions across sectors, blending thoughtful design, uncompromising quality, and punctual execution to create spaces that truly inspire.",
-        },
-        {
-            image: "/assets/images/services/Facade.jpg",
-            title: "Facade",
-            link: "/facade",
-            description:
-                "From concept to completion, we combine the art and science of facades for complex structures. We design, engineer, and deliver custom, high-performance building for landmark projects worldwide.",
-        },
-        {
-            image: "/assets/images/services/Facility-Management.jpg",
-            title: "Facility Management",
-            link: "/integrated-facility-management",
-            description:
-                "We provide fully integrated FM solutions, combining global expertise with local insight. This ensures smooth operations, optimised asset performance, and improved occupant experiences across every property.",
-        },
-        {
-            image: "/assets/images/services/Water.jpg",
-            title: "Water",
-            link: "/water",
-            description:
-                "We deliver essential water infrastructure, from urban pipelines to complex desalination plants. Our expertise ensures every project is executed safely, efficiently, and to the highest standards.",
-        },
-        {
-            image: "/assets/images/services/servicemain.jpg",
-            title: "Design Studio",
-            link: "/design-studio",
-            description:
-                "We drive complex civil projects with advanced digital design and BIM. From integrated Design & Build to expert standalone services, we develop visionary structures with precision and expertise.",
-        },
-    ];
+    // const content = [
+    //     {
+    //         image: "/assets/images/services/engineering-construction.jpg",
+    //         title: "Engineering & Construction",
+    //         link: "/engineering-construction",
+    //         description:
+    //             "Spanning 20 countries, we transform complex visions into major projects. From iconic stadiums and theme parks to advanced healthcare and commercial facilities, we deliver innovative, high-quality projects designed to meet every client’s needs.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/mep.jpg",
+    //         title: "MEP",
+    //         link: "/mep",
+    //         description:
+    //             "Our MEP division forms the backbone of major structures. We design, install, and manage fully integrated mechanical, electrical, and plumbing systems that ensure reliable, long-term operation.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/interior-fit-out.jpg",
+    //         title: "Interior Fit-out",
+    //         link: "/interior-design",
+    //         description:
+    //             "SPINT’s Interior Division (SPID) delivers turnkey interior solutions across sectors, blending thoughtful design, uncompromising quality, and punctual execution to create spaces that truly inspire.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/Facade.jpg",
+    //         title: "Facade",
+    //         link: "/facade",
+    //         description:
+    //             "From concept to completion, we combine the art and science of facades for complex structures. We design, engineer, and deliver custom, high-performance building for landmark projects worldwide.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/Facility-Management.jpg",
+    //         title: "Facility Management",
+    //         link: "/integrated-facility-management",
+    //         description:
+    //             "We provide fully integrated FM solutions, combining global expertise with local insight. This ensures smooth operations, optimised asset performance, and improved occupant experiences across every property.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/Water.jpg",
+    //         title: "Water",
+    //         link: "/water",
+    //         description:
+    //             "We deliver essential water infrastructure, from urban pipelines to complex desalination plants. Our expertise ensures every project is executed safely, efficiently, and to the highest standards.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/servicemain.jpg",
+    //         title: "Design Studio",
+    //         link: "/design-studio",
+    //         description:
+    //             "We drive complex civil projects with advanced digital design and BIM. From integrated Design & Build to expert standalone services, we develop visionary structures with precision and expertise.",
+    //     },
+    // ];
 
     const [activeService, setActiveService] = useState({
-        image: content[0].image,
-        title: content[0].title,
-        description: content[0].description,
+        image: serviceData[0].image,
+        title: serviceData[0].title,
+        description: serviceData[0].description,
         index: 0,
     });
+ 
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
     const sectors = [
@@ -2845,7 +2846,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         }}
                                     ></div>
                                     <div className=" lg:hidden tlnits p-5 group cursor-pointer absolute bottom-0 left-0">
-                                        <a
+                                        <Link
                                             href="/projects"
                                             className="flex items-center gap-2 uppercase font-light text-[14px] text-white"
                                         >
@@ -2855,7 +2856,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 alt="arrow right"
                                                 className="group-hover:translate-x-2 transition-all duration-300"
                                             />
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                                 {/* hear the absolute positioned box with project details */}
