@@ -1,7 +1,7 @@
 
 export const metadata = {
-  title: "Assent | Backend Console",
-  description: "Assent",
+  title: "Shapoorji Pallonji | Backend Console",
+  description: "Shapoorji Pallonji",
 };
 
 import '../../../../app/globals.css'
