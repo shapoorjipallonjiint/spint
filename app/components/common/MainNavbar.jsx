@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -41,17 +41,23 @@ const MainNavbar = () => {
     const [openSubmenu, setOpenSubmenu] = useState(null);
 
     const menuItems = [
-        { name: "About", submenu: [{name: "Overview", href: "/about-us"}, {name: "Leadership", href: "/leadership"}] },
+        {
+            name: "About",
+            submenu: [
+                { name: "Overview", href: "/about-us" },
+                { name: "Leadership", href: "/leadership" },
+            ],
+        },
         {
             name: "Services",
             submenu: [
                 { name: "Engineering & Construction", href: "/services/engineering-construction" },
                 { name: "MEP", href: "/services/mep" },
-                { name: "Design Studio", href: "/services/design-studio" },
                 { name: "Interior Fit-out", href: "/services/interior-design" },
                 { name: "Facade", href: "/services/facade" },
                 { name: "Facilities Management", href: "/services/integrated-facility-management" },
                 { name: "Water", href: "/services/water" },
+                { name: "Design Studio", href: "/services/design-studio" },
             ],
         },
         { name: "Global Presence", submenu: null, href: "/global-presence" },
@@ -170,8 +176,8 @@ const MainNavbar = () => {
                             <Link href="/">
                                 {" "}
                                 <Image
-                               width={0}
-                               height={0}
+                                    width={0}
+                                    height={0}
                                     src="/assets/images/main-logo.svg"
                                     alt="logo"
                                     className="w-[101px] lg:w-[80px] xl:w-[101px]"
@@ -183,11 +189,22 @@ const MainNavbar = () => {
                         <ul className="hidden lg:flex items-center gap-2 xl:gap-4 2xl:gap-4 3xl:gap-[35px]">
                             {menuItems.map((item, index) => (
                                 // <li key={index} className="relative group">
-                                <li key={index} className="relative group" onMouseEnter={() => setOpenSubmenu(index)} onMouseLeave={() => setOpenSubmenu(null)}>
-                                   
-                                    <Link href={item.href || "#"} className="flex items-center gap-1 text-[11px] md:text-11 2xl:text-[12px] 3xl:text-16 leading-[1.75] font-300 uppercase hover:font-bold active:font-bold focus-within:font-bold transition-all duration-300">
+                                <li
+                                    key={index}
+                                    className="relative group"
+                                    onMouseEnter={() => setOpenSubmenu(index)}
+                                    onMouseLeave={() => setOpenSubmenu(null)}
+                                >
+                                    <Link
+                                        href={item.href || "#"}
+                                        className="flex items-center gap-1 text-[11px] md:text-11 2xl:text-[12px] 3xl:text-16 leading-[1.75] font-300 uppercase hover:font-bold active:font-bold focus-within:font-bold transition-all duration-300"
+                                    >
                                         <span className="relative inline-block group">
-                                            <span className={`font-bold  opacity-0 transition-all duration-300 ${item.submenu != null ? 'mr-[16px]' : ''}`}>
+                                            <span
+                                                className={`font-bold  opacity-0 transition-all duration-300 ${
+                                                    item.submenu != null ? "mr-[16px]" : ""
+                                                }`}
+                                            >
                                                 {item.name}
                                             </span>
 
@@ -305,8 +322,8 @@ const MainNavbar = () => {
                                 </div>
                                 <button className="cursor-pointer bg-[#000000CC] rounded-full p-[2px] w-[30px] h-[30px]  2xl:w-[45px] 2xl:h-[45px] flex items-center justify-center ml-3 xl:ml-5 transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] group">
                                     <Image
-                                    width={0}
-                                    height={0}
+                                        width={0}
+                                        height={0}
                                         src="/assets/images/icons/search-icon.svg"
                                         alt="search"
                                         className="group-hover:scale-[1.1] transition-all duration-300 w-[12px] h-[12px] 2xl:w-[18px] 2xl:h-[18px]"

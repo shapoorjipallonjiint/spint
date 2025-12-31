@@ -5,8 +5,8 @@ export const navData = {
       title: "About Us",
       href: "#",
       submenu: [
-        {label: "Overview", href: "/about-us"},
-        {label: "Leadership", href: "/leadership"}
+        { label: "Overview", href: "/about-us" },
+        { label: "Leadership", href: "/leadership" }
       ]
     },
     {
@@ -14,13 +14,14 @@ export const navData = {
       title: "Our Services",
       href: "#",
       submenu: [
-        { label: "Engineering & Construction", href: "/services/engineering-construction" },
-        { label: "MEP", href: "/services/mep" },
-        { label: "Interior Fit-out", href: "/services/interior-fit-out" },
-        { label: "Façade", href: "/services/facade" },
-        { label: "Facilities Management", href: "/services/integrated-facility-management" },
-        { label: "Water", href: "/services/water" }
-      ]
+        { name: "Engineering & Construction", href: "/services/engineering-construction" },
+        { name: "MEP", href: "/services/mep" },
+        { name: "Interior Fit-out", href: "/services/interior-design" },
+        { name: "Facade", href: "/services/facade" },
+        { name: "Facilities Management", href: "/services/integrated-facility-management" },
+        { name: "Water", href: "/services/water" },
+        { name: "Design Studio", href: "/services/design-studio" },
+      ],
     },
     {
       id: 3,

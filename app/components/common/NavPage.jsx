@@ -58,21 +58,16 @@ const NavPage = ({ isOpen }) => {
                                     className="relative group inline-flex items-center justify-between gap-2 cursor-pointer"
                                 >
                                     {/* MAIN TEXT */}
-<a href={item.href}>
-    <span
-        className={`
+                                    <a href={item.href}>
+                                        <span
+                                            className={`
             text-36 3xl:text-40 font-light transition-all duration-300
-            ${
-                activeMenu === item.id
-                    ? "text-white"
-                    : "text-white/25 group-hover:text-white"
-            }
+            ${activeMenu === item.id ? "text-white" : "text-white/25 group-hover:text-white"}
         `}
-    >
-        {item.title}
-    </span>
-</a>
-
+                                        >
+                                            {item.title}
+                                        </span>
+                                    </a>
 
                                     {/* RIGHT ARROW */}
                                     <span
@@ -140,14 +135,11 @@ const NavPage = ({ isOpen }) => {
                                         variants={moveRight(i * 0.14)}
                                         className="mb-5 last:mb-0"
                                     >
-<a href={sub.href}>
-    <p
-        className="text-29 font-light hover:font-semibold hover:translate-x-1 transition-all duration-300"
-    >
-        {sub.label}
-    </p>
-</a>
-
+                                        <a href={sub.href}>
+                                            <p className="text-29 font-light hover:font-semibold hover:translate-x-1 transition-all duration-300">
+                                                {sub.label}
+                                            </p>
+                                        </a>
                                     </motion.div>
                                 ))}
                         </motion.div>
