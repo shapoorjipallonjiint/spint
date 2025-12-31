@@ -19,6 +19,7 @@ import { moveUp } from "../../motionVarients.ts";
 import CountUp from "../../CountUp.jsx";
 import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
 import { mapBackendCitiesToMapCities } from "../../../../lib/mapDataHelper";
+import Image from "next/image";
 
 // const cityGroups = [
 //     {
@@ -1577,7 +1578,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
     const delayProjects = useFirstTimeDelay(
         currentVisibleSlide === "section5",
-        3000, // FIRST TIME delay
+        1000, // FIRST TIME delay
         10 // LATER delay when clicking items
     );
 
@@ -1609,18 +1610,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     //   };
     // }, [currentVisibleSlide, activeIndex, isAnimating]);
 
-
     const [mapCities, setMapCities] = useState([]);
 
     useEffect(() => {
-  if (data?.sixthSection?.cities) {
-    setMapCities(
-      mapBackendCitiesToMapCities(data.sixthSection.cities)
-    );
-  }
-}, [data]);
-
-
+        if (data?.sixthSection?.cities) {
+            setMapCities(mapBackendCitiesToMapCities(data.sixthSection.cities));
+        }
+    }, [data]);
 
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
@@ -2012,7 +2008,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 >
                                     {data.thirdSection.description}
                                 </p>
-                                <a
+                                <Link
                                     ref={spbtn}
                                     href={data.thirdSection.link}
                                     className="text-[14px] lg:text-16 leading-[1.75] font-light text-[#464646] lg:text-white uppercase flex items-center gap-2 cursor-pointer group "
@@ -2041,7 +2037,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </a>
+                                </Link>
                             </div>
                             <div className="mt-auto relative">
                                 <hr
@@ -2296,6 +2292,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                     image: service.homeImage,
                                                                     title: service.title,
                                                                     description: service.description,
+                                                                    link: service.link,
                                                                     index,
                                                                 }),
 
@@ -2325,7 +2322,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         </div>
                         {/* left */}
 
-                        <div className="relative w-full   lg:h-[100vh] z-[-1]" ref={srvsRghtBx}>
+                        {/* <div className="relative w-full lg:h-[100vh] z-[-1]" ref={srvsRghtBx}> */}
+                        <div className="relative w-full   lg:h-[100vh]" ref={srvsRghtBx}>
                             {/* <div className="lg:absolute h-full w-full" ref={srvsImgRef}>
                               <div className="lg:absolute z-10 top-0 left-0 w-full lg:h-full lg:bg-gradient-to-r lg:from-black/60 from-0% lg:via-black/60 via-52% lg:to-black/60 to-100%"></div>
 
@@ -2364,7 +2362,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             </div>
 
                             <div className="hidden lg:block lg:absolute bottom-0 right-0  w-[40%] " ref={srvsVct}>
-                                <img
+                                <Image
                                     src="../assets/images/svg/srv-vct.svg"
                                     alt="Logo"
                                     className="h-full w-full"
@@ -2389,7 +2387,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         className="flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10 w-7 h-7"
                                         ref={srvsArrw}
                                     >
-                                        <img
+                                        <Image
                                             src="../assets/images/services/icn1.svg"
                                             alt="Arrow"
                                             className=""
@@ -2410,7 +2408,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         className=" lg:hidden    bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
                                         ref={srvsArrw}
                                     >
-                                        <img
+                                        <Image
                                             src="../assets/images/services/thickarrow.svg"
                                             alt="Arrow"
                                             className=""
@@ -2431,18 +2429,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </motion.p>
                                 </div>
                             </div>
-                            <div
-                                className="hidden lg:block absolute bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
-                                ref={srvsArrw}
-                            >
-                                <img
-                                    src="../assets/images/services/arrow-up.svg"
-                                    alt="Arrow"
-                                    className=""
-                                    width={71}
-                                    height={71}
-                                />
-                            </div>
+                            <Link href={`/services/${activeService?.link}`}>
+                                <div
+                                    className="hidden lg:block absolute bottom-10 cursor-pointer 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
+                                    ref={srvsArrw}
+                                >
+                                    <Image
+                                        src="../assets/images/services/arrow-up.svg"
+                                        alt="Arrow"
+                                        className=""
+                                        width={71}
+                                        height={71}
+                                    />
+                                </div>
+                            </Link>
                         </div>
                         {/* right */}
                         {/* <div ref={brdonRef} className=""></div> */}
@@ -2695,14 +2695,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             </div>
                                         </div>
                                         <div className="hidden lg:block tlnits px-15 py-6 xl:pt-[42px] xl:pb-[49px] group cursor-pointer">
-                                            <a href="/sectors" className="flex items-center gap-2">
+                                            <Link href="/projects" className="flex items-center gap-2">
                                                 View All Projects
                                                 <img
                                                     src="../assets/images/icons/arrow-right.svg"
                                                     alt="arrow right"
                                                     className="group-hover:translate-x-2 transition-all duration-300"
                                                 />
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

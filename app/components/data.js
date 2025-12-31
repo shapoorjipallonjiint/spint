@@ -46,8 +46,12 @@ export const navData = {
     },
     {
       id: 6,
-      title: "Newsroom",
-      href: "/press-releases",
+      title: "Media",
+      href: "#",
+      submenu: [
+        { label: "Press Releases", href: "/press-releases" },
+        { label: "Gallery", href: "/gallery" },
+      ]
     },
     {
       id: 7,
