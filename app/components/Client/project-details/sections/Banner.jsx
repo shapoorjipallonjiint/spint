@@ -1,16 +1,15 @@
 'use client';
 import { useMediaQuery } from "react-responsive";
-import { projectdetails } from "../data";
+// import { projectdetails } from "../data";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { fadeIn, moveDown, moveUp, paragraphItem } from "../../../motionVarients";
+import { fadeIn, moveUp, paragraphItem } from "../../../motionVarients";
 import { useRef } from "react";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
 import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Banner = ({ firstSection, secondSection }) => {
-  const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
   const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
@@ -32,7 +31,9 @@ const Banner = ({ firstSection, secondSection }) => {
         <div className="container relative   z-[2]">
           <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-3 lg:gap-0 ">
             <motion.div variants={paragraphItem} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} >
-              <Image onClick={() => router.back()} src={"/assets/images/icons/arrow-right.svg"} width={26} height={26} alt={"left"} className="w-8 h-8 mb-5 rotate-180"/>
+              <Link href={"/projects"}>
+                <Image src={"/assets/images/icons/arrow-right.svg"} width={26} height={26} alt={"left"} className="w-8 h-8 mb-5 rotate-180"/>
+              </Link>
               <h1 className="text-40 2xl:text-70 font-light leading-[1.07] mb-3 lg:mb-5">
                 <SplitTextAnimation children={firstSection.title} staggerDelay={0.2} animationDuration={0.8} delay={0.3} />
               </h1>

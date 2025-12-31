@@ -15,11 +15,11 @@ export const navData = {
       href: "#",
       submenu: [
         { label: "Engineering & Construction", href: "/services/engineering-construction" },
-        { label: "MEP", href: "/mep" },
-        { label: "Interior Fit-out", href: "/interior-design" },
-        { label: "Façade", href: "/facade" },
-        { label: "Facilities Management", href: "/integrated-facility-management" },
-        { label: "Water", href: "/water" }
+        { label: "MEP", href: "/services/mep" },
+        { label: "Interior Fit-out", href: "/services/interior-fit-out" },
+        { label: "Façade", href: "/services/facade" },
+        { label: "Facilities Management", href: "/services/integrated-facility-management" },
+        { label: "Water", href: "/services/water" }
       ]
     },
     {

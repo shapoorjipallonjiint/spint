@@ -7,23 +7,29 @@ import OurApproach from "./sections/OurApproach";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
 import WhyChooseSec from "./sections/WhyChooseSec";
 import { engineeringData } from "./data";
-const EngineeringConstruction = ({data,projectData}) => {
-  return (
-    <>
-      {/* <header className="">
+const EngineeringConstruction = ({ data, projectData }) => {
+    return (
+        <>
+            {/* <header className="">
         <MainNavbar /> 
       </header> */}
-      <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt}/>
-      <VdoSection data={data.firstSection} />
-      <ExpertiseSec data={data.secondSection}/>
-      <OurApproach data={data.thirdSection}/>
-      <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} />
-      <WhyChooseSec data={data.fourthSection} />
-      {/* <footer>
+            <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
+            <VdoSection data={data.firstSection} />
+            <ExpertiseSec data={data.secondSection} />
+            <OurApproach data={data.thirdSection} />
+            {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
+            {projectData.projects.filter((item) => item.secondSection.service._id === data._id).length > 0 && (
+                <FeaturedProjectSlider
+                    data={projectData.projects.filter((item) => item.secondSection.service._id === data._id)}
+                />
+            )}
+
+            <WhyChooseSec data={data.fourthSection} />
+            {/* <footer>
         <Footer />
       </footer> */}
-    </>
-  );
-}
+        </>
+    );
+};
 
 export default EngineeringConstruction;
