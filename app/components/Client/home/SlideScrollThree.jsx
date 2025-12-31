@@ -18,194 +18,195 @@ import { motion, AnimatePresence } from "framer-motion";
 import { moveUp } from "../../motionVarients.ts";
 import CountUp from "../../CountUp.jsx";
 import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
+import { mapBackendCitiesToMapCities } from "../../../../lib/mapDataHelper";
 
-const cityGroups = [
-    {
-        id: "sp-international",
-        label: "SP International",
-        cities: [
-            // Middle East
-            {
-                id: "uae",
-                name: "UAE",
-                position: { x: 46, y: 14 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "saudiarabia",
-                name: "Saudi Arabia",
-                position: { x: 42.5, y: 14 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "oman",
-                name: "Oman",
-                position: { x: 46, y: 16 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "kuwait",
-                name: "Kuwait",
-                position: { x: 43.6, y: 12 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "qatar",
-                name: "Qatar",
-                position: { x: 44.2, y: 14 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "bahrain",
-                name: "Bahrain",
-                position: { x: 44.2, y: 12.2 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
+// const cityGroups = [
+//     {
+//         id: "sp-international",
+//         label: "SP International",
+//         cities: [
+//             // Middle East
+//             {
+//                 id: "uae",
+//                 name: "UAE",
+//                 position: { x: 46, y: 14 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "saudiarabia",
+//                 name: "Saudi Arabia",
+//                 position: { x: 42.5, y: 14 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "oman",
+//                 name: "Oman",
+//                 position: { x: 46, y: 16 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "kuwait",
+//                 name: "Kuwait",
+//                 position: { x: 43.6, y: 12 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "qatar",
+//                 name: "Qatar",
+//                 position: { x: 44.2, y: 14 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "bahrain",
+//                 name: "Bahrain",
+//                 position: { x: 44.2, y: 12.2 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
 
-            // Africa
-            {
-                id: "sierraleone",
-                name: "Sierra Leone",
-                position: { x: 28.5, y: 22.5 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "ghana",
-                name: "Ghana",
-                position: { x: 31, y: 22 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "nigeria",
-                name: "Nigeria",
-                position: { x: 34, y: 17.5 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "algeria",
-                name: "Algeria",
-                position: { x: 32, y: 12 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "gambia",
-                name: "Gambia",
-                position: { x: 28.5, y: 20 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "cotedivoire",
-                name: "Côte d’Ivoire",
-                position: { x: 30.5, y: 20 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "togo",
-                name: "Togo",
-                position: { x: 31.8, y: 21.5 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "kenya",
-                name: "Kenya",
-                position: { x: 41, y: 24 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-        ],
-    },
-    {
-        id: "sp-group",
-        label: "SP Group",
-        cities: [
-            {
-                id: "india",
-                name: "India",
-                position: { x: 51.2, y: 19 },
-                stats: {
-                    iconicpjts: 250,
-                    pjtcompleted: 250,
-                    dedicatedemployees: 4000,
-                },
-            },
-            {
-                id: "unitedkingdom",
-                name: "UK",
-                position: { x: 32.5, y: -1 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "srilanka",
-                name: "Sri Lanka",
-                position: { x: 52.5, y: 22 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "afghanistan",
-                name: "Afghanistan",
-                position: { x: 48.5, y: 11 },
-                stats: {
-                    iconicpjts: 250,
-                    pjtcompleted: 300,
-                    dedicatedemployees: 4000,
-                },
-            },
-            {
-                id: "niger",
-                name: "Niger",
-                position: { x: 34, y: 15 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "iraq",
-                name: "Iraq",
-                position: { x: 43.2, y: 10 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "canada",
-                name: "Canada",
-                position: { x: 3, y: 0 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "mauritius",
-                name: "Mauritius",
-                position: { x: 46, y: 36 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
+//             // Africa
+//             {
+//                 id: "sierraleone",
+//                 name: "Sierra Leone",
+//                 position: { x: 28.5, y: 22.5 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "ghana",
+//                 name: "Ghana",
+//                 position: { x: 31, y: 22 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "nigeria",
+//                 name: "Nigeria",
+//                 position: { x: 34, y: 17.5 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "algeria",
+//                 name: "Algeria",
+//                 position: { x: 32, y: 12 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "gambia",
+//                 name: "Gambia",
+//                 position: { x: 28.5, y: 20 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "cotedivoire",
+//                 name: "Côte d’Ivoire",
+//                 position: { x: 30.5, y: 20 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "togo",
+//                 name: "Togo",
+//                 position: { x: 31.8, y: 21.5 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "kenya",
+//                 name: "Kenya",
+//                 position: { x: 41, y: 24 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//         ],
+//     },
+//     {
+//         id: "sp-group",
+//         label: "SP Group",
+//         cities: [
+//             {
+//                 id: "india",
+//                 name: "India",
+//                 position: { x: 51.2, y: 19 },
+//                 stats: {
+//                     iconicpjts: 250,
+//                     pjtcompleted: 250,
+//                     dedicatedemployees: 4000,
+//                 },
+//             },
+//             {
+//                 id: "unitedkingdom",
+//                 name: "UK",
+//                 position: { x: 32.5, y: -1 },
+//                 stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "srilanka",
+//                 name: "Sri Lanka",
+//                 position: { x: 52.5, y: 22 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "afghanistan",
+//                 name: "Afghanistan",
+//                 position: { x: 48.5, y: 11 },
+//                 stats: {
+//                     iconicpjts: 250,
+//                     pjtcompleted: 300,
+//                     dedicatedemployees: 4000,
+//                 },
+//             },
+//             {
+//                 id: "niger",
+//                 name: "Niger",
+//                 position: { x: 34, y: 15 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "iraq",
+//                 name: "Iraq",
+//                 position: { x: 43.2, y: 10 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "canada",
+//                 name: "Canada",
+//                 position: { x: 3, y: 0 },
+//                 stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "mauritius",
+//                 name: "Mauritius",
+//                 position: { x: 46, y: 36 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
 
-            {
-                id: "guyana",
-                name: "Guyana",
-                position: { x: 18.8, y: 25.8 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "libya",
-                name: "Libya",
-                position: { x: 35.5, y: 13 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "malta",
-                name: "Malta",
-                position: { x: 36.1, y: 11.1 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-        ],
-    },
-];
+//             {
+//                 id: "guyana",
+//                 name: "Guyana",
+//                 position: { x: 18.8, y: 25.8 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "libya",
+//                 name: "Libya",
+//                 position: { x: 35.5, y: 13 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "malta",
+//                 name: "Malta",
+//                 position: { x: 36.1, y: 11.1 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//         ],
+//     },
+// ];
 
-const cities = cityGroups.flatMap((group) =>
-    group.cities.map((city) => ({
-        id: city.id,
-        name: city.name,
-        left: `${city.position.x}%`,
-        top: `${city.position.y}%`,
-        ...city.stats,
-        groupId: group.id,
-    }))
-);
+// const cities = cityGroups.flatMap((group) =>
+//     group.cities.map((city) => ({
+//         id: city.id,
+//         name: city.name,
+//         left: `${city.position.x}%`,
+//         top: `${city.position.y}%`,
+//         ...city.stats,
+//         groupId: group.id,
+//     }))
+// );
 
 const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll }) => {
     const containerRef = useRef(null);
@@ -1608,6 +1609,19 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     //   };
     // }, [currentVisibleSlide, activeIndex, isAnimating]);
 
+
+    const [mapCities, setMapCities] = useState([]);
+
+    useEffect(() => {
+  if (data?.sixthSection?.cities) {
+    setMapCities(
+      mapBackendCitiesToMapCities(data.sixthSection.cities)
+    );
+  }
+}, [data]);
+
+
+
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
             <div className="fixed w-screen h-screen z-[500] mswd pointer-events-none grid content-center load-sec2">
@@ -2713,7 +2727,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 ref={maptitle}
                                 className="text-[36px] lg:text-34 xl:text-48 3xl:text-60  font-light gradient-text text-bl leading-[1.2] 3xl:leading-[1.18] max-w-[15ch]"
                             >
-                                Our Presence is Steadily Expanding
+                                {/* Our Presence is Steadily Expanding */}
+                                {data.sixthSection?.title}
                             </h1>
                         </div>
                         <div className="  flex justify-center" ref={mapimage}>
@@ -2738,7 +2753,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     />
                                     <div className="absolute top-[-121px] lg:top-0 left-[-69px] lg:left-0 min-w-[733px] w-[733px] h-[436px] lg:h-full lg:w-[1156px]  overflow-hidden  lg:overflow-visible    ">
                                         {/* Dots */}
-                                        {cities.map((city) => (
+                                        {mapCities.map((city) => (
                                             <div
                                                 key={city.id}
                                                 // ref={mapactive}
