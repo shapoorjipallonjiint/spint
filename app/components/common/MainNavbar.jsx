@@ -4,8 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { navData } from "../data";
+
 
 const MainNavbar = () => {
+    
     const [isSticky, setIsSticky] = useState(false);
     const [navHeight, setNavHeight] = useState(0);
     const navRef = useRef(null);
@@ -40,51 +43,62 @@ const MainNavbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [openSubmenu, setOpenSubmenu] = useState(null);
 
-    const menuItems = [
-        {
-            name: "About",
-            submenu: [
-                { name: "Overview", href: "/about-us" },
-                { name: "Leadership", href: "/leadership" },
-            ],
-        },
-        {
-            name: "Services",
-            submenu: [
-                { name: "Engineering & Construction", href: "/services/engineering-construction" },
-                { name: "MEP", href: "/services/mep" },
-                { name: "Interior Fit-out", href: "/services/interior-design" },
-                { name: "Facade", href: "/services/facade" },
-                { name: "Facilities Management", href: "/services/integrated-facility-management" },
-                { name: "Water", href: "/services/water" },
-                { name: "Design Studio", href: "/services/design-studio" },
-            ],
-        },
-        { name: "Global Presence", submenu: null, href: "/global-presence" },
-        {
-            name: "Projects",
-            href: "/projects",
-            // submenu: ['Residential', 'Commercial', 'Industrial', 'Infrastructure']
-        },
-        {
-            name: "Our Commitments",
-            submenu: [
-                { name: "Sustainability", href: "/sustainability" },
-                { name: "Community Engagement", href: "/community-engagement" },
-                { name: "Health, Safety and Environment", href: "/hse" },
-                { name: "Quality", href: "/quality" },
-            ],
-        },
-        {
-            name: "Newsroom",
-            submenu: [
-                { name: "Press Releases", href: "/press-releases" },
-                { name: "Gallery", href: "/gallery" },
-            ],
-        },
-        { name: "Careers", submenu: null, href: "/careers" },
-        { name: "Contact", submenu: null, href: "/contact-us" },
-    ];
+    // const menuItems = [
+    //     {
+    //         name: "About",
+    //         submenu: [
+    //             { name: "Overview", href: "/about-us" },
+    //             { name: "Leadership", href: "/leadership" },
+    //         ],
+    //     },
+    //     {
+    //         name: "Services",
+    //         submenu: [
+    //             { name: "Engineering & Construction", href: "/services/engineering-construction" },
+    //             { name: "MEP", href: "/services/mep" },
+    //             { name: "Interior Fit-out", href: "/services/interior-design" },
+    //             { name: "Facade", href: "/services/facade" },
+    //             { name: "Facilities Management", href: "/services/integrated-facility-management" },
+    //             { name: "Water", href: "/services/water" },
+    //             { name: "Design Studio", href: "/services/design-studio" },
+    //         ],
+    //     },
+    //     { name: "Global Presence", submenu: null, href: "/global-presence" },
+    //     {
+    //         name: "Projects",
+    //         href: "/projects",
+    //         // submenu: ['Residential', 'Commercial', 'Industrial', 'Infrastructure']
+    //     },
+    //     {
+    //         name: "Our Commitments",
+    //         submenu: [
+    //             { name: "Sustainability", href: "/sustainability" },
+    //             { name: "Community Engagement", href: "/community-engagement" },
+    //             { name: "Health, Safety and Environment", href: "/hse" },
+    //             { name: "Quality", href: "/quality" },
+    //         ],
+    //     },
+    //     {
+    //         name: "Newsroom",
+    //         submenu: [
+    //             { name: "Press Releases", href: "/press-releases" },
+    //             { name: "Gallery", href: "/gallery" },
+    //         ],
+    //     },
+    //     { name: "Careers", submenu: null, href: "/careers" },
+    //     { name: "Contact", submenu: null, href: "/contact-us" },
+    // ];
+
+    const menuItems = navData.mainMenu.map((item) => ({
+    name: item.title,
+    href: item.href,
+    submenu: Array.isArray(item.submenu)
+        ? item.submenu.map((sub) => ({
+              name: sub.label,
+              href: sub.href,
+          }))
+        : null,
+}));
 
     const toggleSubmenu = (itemName) => {
         setOpenSubmenu(openSubmenu === itemName ? null : itemName);
