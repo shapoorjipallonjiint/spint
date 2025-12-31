@@ -189,9 +189,8 @@ const homeSchema = new mongoose.Schema({
             name_ar: { type: String },
             left: { type: String },
             top: { type: String },
-            iconicProjects: { type: String },
             completedProjects: { type: String },
-            dedicatedEmployees: { type: String }
+            employees: { type: String }
         }]
     },
     seventhSection: {

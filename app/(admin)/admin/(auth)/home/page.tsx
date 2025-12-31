@@ -12,6 +12,7 @@ import { VideoUploader } from "@/components/ui/video-uploader";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
 import { toast } from "sonner";
+import Link from "next/link";
 
 interface HomeFormProps {
     metaTitle: string;
@@ -113,7 +114,7 @@ interface HomeFormProps {
             ongoingProjects_ar: string;
             title: string;
             title_ar: string;
-        }[]
+        }[];
     };
 
     sixthSection: {
@@ -126,9 +127,8 @@ interface HomeFormProps {
             name_ar?: string;
             left?: string;
             top?: string;
-            iconicProjects?: string;
             completedProjects?: string;
-            dedicatedEmployees?: string;
+            employees?: string;
         }[];
     };
 
@@ -192,14 +192,14 @@ const Home = () => {
         name: "fifthSection.items",
     });
 
-    const {
-        fields: sixthSectionCities,
-        append: sixthSectionCitiesAppend,
-        remove: sixthSectionCitiesRemove,
-    } = useFieldArray({
-        control,
-        name: "sixthSection.cities",
-    });
+    // const {
+    //     fields: sixthSectionCities,
+    //     append: sixthSectionCitiesAppend,
+    //     remove: sixthSectionCitiesRemove,
+    // } = useFieldArray({
+    //     control,
+    //     name: "sixthSection.cities",
+    // });
 
     const {
         fields: seventhSectionItems,
@@ -242,7 +242,7 @@ const Home = () => {
                 setValue("fifthSection", data.data.fifthSection);
                 setValue("fifthSection.items", data.data.fifthSection.items);
                 setValue("sixthSection", data.data.sixthSection);
-                setValue("sixthSection.cities", data.data.sixthSection.cities);
+                // setValue("sixthSection.cities", data.data.sixthSection.cities);
                 setValue("seventhSection", data.data.seventhSection);
                 setValue("seventhSection.items", data.data.seventhSection.items);
             } else {
@@ -671,120 +671,171 @@ const Home = () => {
                         </div>
 
                         <div>
-                            <Label className='font-bold'>Items</Label>
-                            <div className='border p-2 rounded-md flex flex-col gap-5'>
-
-
+                            <Label className="font-bold">Items</Label>
+                            <div className="border p-2 rounded-md flex flex-col gap-5">
                                 {fifthSectionItems.map((field, index) => (
-                                    <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0'>
-                                        <div className='absolute top-2 right-2'>
-                                            <RiDeleteBinLine onClick={() => fifthSectionRemove(index)} className='cursor-pointer text-red-600' />
+                                    <div
+                                        key={field.id}
+                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                    >
+                                        <div className="absolute top-2 right-2">
+                                            <RiDeleteBinLine
+                                                onClick={() => fifthSectionRemove(index)}
+                                                className="cursor-pointer text-red-600"
+                                            />
                                         </div>
 
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <Label className='font-bold'>Image</Label>
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Image</Label>
                                                 <Controller
                                                     name={`fifthSection.items.${index}.image`}
                                                     control={control}
                                                     rules={{ required: "Image is required" }}
                                                     render={({ field }) => (
-                                                        <ImageUploader
-                                                            value={field.value}
-                                                            onChange={field.onChange}
-                                                        />
+                                                        <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                                 {errors.fifthSection?.items?.[index]?.image && (
-                                                    <p className="text-red-500">{errors.fifthSection?.items?.[index]?.image.message}</p>
+                                                    <p className="text-red-500">
+                                                        {errors.fifthSection?.items?.[index]?.image.message}
+                                                    </p>
                                                 )}
                                             </div>
 
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Alt Tag</Label>
-                                                    <Input type='text' placeholder='Alt Tag' {...register(`fifthSection.items.${index}.imageAlt`, {
-                                                        required: "Value is required"
-                                                    })} />
-                                                    {errors.fifthSection?.items?.[index]?.imageAlt && <p className='text-red-500'>{errors.fifthSection?.items?.[index]?.imageAlt.message}</p>}
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Alt Tag</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Alt Tag"
+                                                        {...register(`fifthSection.items.${index}.imageAlt`, {
+                                                            required: "Value is required",
+                                                        })}
+                                                    />
+                                                    {errors.fifthSection?.items?.[index]?.imageAlt && (
+                                                        <p className="text-red-500">
+                                                            {errors.fifthSection?.items?.[index]?.imageAlt.message}
+                                                        </p>
+                                                    )}
                                                 </div>
                                             </div>
-
-
                                         </div>
 
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <Label className='font-bold'>Logo</Label>
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Logo</Label>
                                                 <Controller
                                                     name={`fifthSection.items.${index}.logo`}
                                                     control={control}
                                                     rules={{ required: "Logo is required" }}
                                                     render={({ field }) => (
-                                                        <ImageUploader
-                                                            value={field.value}
-                                                            onChange={field.onChange}
-                                                        />
+                                                        <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                                 {errors.fifthSection?.items?.[index]?.logo && (
-                                                    <p className="text-red-500">{errors.fifthSection?.items?.[index]?.logo.message}</p>
+                                                    <p className="text-red-500">
+                                                        {errors.fifthSection?.items?.[index]?.logo.message}
+                                                    </p>
                                                 )}
                                             </div>
 
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Alt Tag</Label>
-                                                    <Input type='text' placeholder='Alt Tag' {...register(`fifthSection.items.${index}.logoAlt`, {
-                                                        required: "Value is required"
-                                                    })} />
-                                                    {errors.fifthSection?.items?.[index]?.logoAlt && <p className='text-red-500'>{errors.fifthSection?.items?.[index]?.logoAlt.message}</p>}
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Alt Tag</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Alt Tag"
+                                                        {...register(`fifthSection.items.${index}.logoAlt`, {
+                                                            required: "Value is required",
+                                                        })}
+                                                    />
+                                                    {errors.fifthSection?.items?.[index]?.logoAlt && (
+                                                        <p className="text-red-500">
+                                                            {errors.fifthSection?.items?.[index]?.logoAlt.message}
+                                                        </p>
+                                                    )}
                                                 </div>
-                                            </div>
-
-
-                                        </div>
-
-                                        <div className='col-span-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Title</Label>
-                                                    <Input type='text' placeholder='Title' {...register(`fifthSection.items.${index}.title`, {
-                                                        required: "Value is required"
-                                                    })} />
-                                                    {errors.fifthSection?.items?.[index]?.title && <p className='text-red-500'>{errors.fifthSection?.items?.[index]?.title.message}</p>}
-                                                </div>
-
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Completed Projects</Label>
-                                                    <Input type='text' placeholder='Title' {...register(`fifthSection.items.${index}.completedProjects`, {
-                                                        required: "Value is required"
-                                                    })} />
-                                                    {errors.fifthSection?.items?.[index]?.completedProjects && <p className='text-red-500'>{errors.fifthSection?.items?.[index]?.completedProjects.message}</p>}
-                                                </div>
-
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Ongoing Projects</Label>
-                                                    <Input type='text' placeholder='Ongoing Projects' {...register(`fifthSection.items.${index}.ongoingProjects`)} />
-                                                    {errors.fifthSection?.items?.[index]?.ongoingProjects && <p className='text-red-500'>{errors.fifthSection?.items?.[index]?.ongoingProjects.message}</p>}
-                                                </div>
-
-
-
                                             </div>
                                         </div>
 
+                                        <div className="col-span-2">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Title</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Title"
+                                                        {...register(`fifthSection.items.${index}.title`, {
+                                                            required: "Value is required",
+                                                        })}
+                                                    />
+                                                    {errors.fifthSection?.items?.[index]?.title && (
+                                                        <p className="text-red-500">
+                                                            {errors.fifthSection?.items?.[index]?.title.message}
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Completed Projects</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Title"
+                                                        {...register(`fifthSection.items.${index}.completedProjects`, {
+                                                            required: "Value is required",
+                                                        })}
+                                                    />
+                                                    {errors.fifthSection?.items?.[index]?.completedProjects && (
+                                                        <p className="text-red-500">
+                                                            {errors.fifthSection?.items?.[index]?.completedProjects.message}
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Ongoing Projects</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Ongoing Projects"
+                                                        {...register(`fifthSection.items.${index}.ongoingProjects`)}
+                                                    />
+                                                    {errors.fifthSection?.items?.[index]?.ongoingProjects && (
+                                                        <p className="text-red-500">
+                                                            {errors.fifthSection?.items?.[index]?.ongoingProjects.message}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 ))}
-
-
-
                             </div>
-                            <div className='flex justify-end mt-2'>
-                                <Button type='button' addItem onClick={() => fifthSectionAppend({ title: "", image: "", imageAlt: "", title_ar: "", imageAlt_ar: "", logo: "", logoAlt: "", logoAlt_ar: "", completedProjects: "", ongoingProjects: "", completedProjects_ar: "", ongoingProjects_ar: "" })}>Add Item</Button>
+                            <div className="flex justify-end mt-2">
+                                <Button
+                                    type="button"
+                                    addItem
+                                    onClick={() =>
+                                        fifthSectionAppend({
+                                            title: "",
+                                            image: "",
+                                            imageAlt: "",
+                                            title_ar: "",
+                                            imageAlt_ar: "",
+                                            logo: "",
+                                            logoAlt: "",
+                                            logoAlt_ar: "",
+                                            completedProjects: "",
+                                            ongoingProjects: "",
+                                            completedProjects_ar: "",
+                                            ongoingProjects_ar: "",
+                                        })
+                                    }
+                                >
+                                    Add Item
+                                </Button>
                             </div>
                         </div>
-
                     </div>
                 </AdminItemContainer>
 
@@ -805,7 +856,7 @@ const Home = () => {
                             <FormError error={errors.sixthSection?.title?.message} />
                         </div>
                     </div>
-                    <div className="px-5 pb-5">
+                    {/* <div className="px-5 pb-5">
                         <Label className="font-bold">Items</Label>
                         <div className="border p-5 rounded-md flex flex-col gap-5 mt-0.5">
                             {sixthSectionCities.map((field, index) => (
@@ -923,6 +974,11 @@ const Home = () => {
                                 </Button>
                             </div>
                         </div>
+                    </div> */}
+                    <div className="flex justify-end p-5">
+                        <Link href="/admin/home/map-locations">
+                            <Button className="bg-black text-white">Manage Map Locations</Button>
+                        </Link>
                     </div>
                 </AdminItemContainer>
 
@@ -933,7 +989,6 @@ const Home = () => {
                     <div className="px-5 pt-2 flex flex-col gap-2">
                         <Label className=" font-bold">Title</Label>
                         <Textarea
-                            
                             placeholder="Title"
                             {...register("seventhSection.title", {
                                 required: "Title is required",
@@ -1373,109 +1428,139 @@ const Home = () => {
                         </div>
 
                         <div>
-                            <Label className='font-bold'>Items</Label>
-                            <div className='border p-2 rounded-md flex flex-col gap-5'>
-
-
+                            <Label className="font-bold">Items</Label>
+                            <div className="border p-2 rounded-md flex flex-col gap-5">
                                 {fifthSectionItems.map((field, index) => (
-                                    <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0'>
-                                        <div className='absolute top-2 right-2'>
-                                            <RiDeleteBinLine onClick={() => fifthSectionRemove(index)} className='cursor-pointer text-red-600' />
+                                    <div
+                                        key={field.id}
+                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                    >
+                                        <div className="absolute top-2 right-2">
+                                            <RiDeleteBinLine
+                                                onClick={() => fifthSectionRemove(index)}
+                                                className="cursor-pointer text-red-600"
+                                            />
                                         </div>
 
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <Label className='font-bold'>Image</Label>
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Image</Label>
                                                 <Controller
                                                     name={`fifthSection.items.${index}.image`}
                                                     control={control}
                                                     rules={{ required: "Image is required" }}
                                                     render={({ field }) => (
-                                                        <ImageUploader
-                                                            value={field.value}
-                                                            onChange={field.onChange}
-                                                        />
+                                                        <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                                 {errors.fifthSection?.items?.[index]?.image && (
-                                                    <p className="text-red-500">{errors.fifthSection?.items?.[index]?.image.message}</p>
+                                                    <p className="text-red-500">
+                                                        {errors.fifthSection?.items?.[index]?.image.message}
+                                                    </p>
                                                 )}
                                             </div>
 
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Alt Tag</Label>
-                                                    <Input type='text' placeholder='Alt Tag' {...register(`fifthSection.items.${index}.imageAlt_ar`)} />
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Alt Tag</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Alt Tag"
+                                                        {...register(`fifthSection.items.${index}.imageAlt_ar`)}
+                                                    />
                                                 </div>
                                             </div>
-
-
                                         </div>
 
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <Label className='font-bold'>Logo</Label>
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Logo</Label>
                                                 <Controller
                                                     name={`fifthSection.items.${index}.logo`}
                                                     control={control}
                                                     rules={{ required: "Logo is required" }}
                                                     render={({ field }) => (
-                                                        <ImageUploader
-                                                            value={field.value}
-                                                            onChange={field.onChange}
-                                                        />
+                                                        <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                                 {errors.fifthSection?.items?.[index]?.logo && (
-                                                    <p className="text-red-500">{errors.fifthSection?.items?.[index]?.logo.message}</p>
+                                                    <p className="text-red-500">
+                                                        {errors.fifthSection?.items?.[index]?.logo.message}
+                                                    </p>
                                                 )}
                                             </div>
 
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Alt Tag</Label>
-                                                    <Input type='text' placeholder='Alt Tag' {...register(`fifthSection.items.${index}.logoAlt_ar`)} />
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Alt Tag</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Alt Tag"
+                                                        {...register(`fifthSection.items.${index}.logoAlt_ar`)}
+                                                    />
                                                 </div>
-                                            </div>
-
-
-                                        </div>
-
-                                        <div className='col-span-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Title</Label>
-                                                    <Input type='text' placeholder='Title' {...register(`fifthSection.items.${index}.title_ar`)} />
-                                                </div>
-
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Completed Projects</Label>
-                                                    <Input type='text' placeholder='Title' {...register(`fifthSection.items.${index}.completedProjects_ar`)} />
-                                                </div>
-
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Ongoing Projects</Label>
-                                                    <Input type='text' placeholder='Ongoing Projects' {...register(`fifthSection.items.${index}.ongoingProjects_ar`)} />
-                                                </div>
-
-
-
                                             </div>
                                         </div>
 
+                                        <div className="col-span-2">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Title</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Title"
+                                                        {...register(`fifthSection.items.${index}.title_ar`)}
+                                                    />
+                                                </div>
+
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Completed Projects</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Title"
+                                                        {...register(`fifthSection.items.${index}.completedProjects_ar`)}
+                                                    />
+                                                </div>
+
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Ongoing Projects</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Ongoing Projects"
+                                                        {...register(`fifthSection.items.${index}.ongoingProjects_ar`)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 ))}
-
-
-
                             </div>
-                            <div className='flex justify-end mt-2'>
-                                <Button type='button' addItem onClick={() => fifthSectionAppend({ title: "", image: "", imageAlt: "", title_ar: "", imageAlt_ar: "", logo: "", logoAlt: "", logoAlt_ar: "", completedProjects: "", ongoingProjects: "", completedProjects_ar: "", ongoingProjects_ar: "" })}>Add Item</Button>
+                            <div className="flex justify-end mt-2">
+                                <Button
+                                    type="button"
+                                    addItem
+                                    onClick={() =>
+                                        fifthSectionAppend({
+                                            title: "",
+                                            image: "",
+                                            imageAlt: "",
+                                            title_ar: "",
+                                            imageAlt_ar: "",
+                                            logo: "",
+                                            logoAlt: "",
+                                            logoAlt_ar: "",
+                                            completedProjects: "",
+                                            ongoingProjects: "",
+                                            completedProjects_ar: "",
+                                            ongoingProjects_ar: "",
+                                        })
+                                    }
+                                >
+                                    Add Item
+                                </Button>
                             </div>
                         </div>
-
                     </div>
-
                 </AdminItemContainer>
 
                 <AdminItemContainer>
@@ -1488,7 +1573,7 @@ const Home = () => {
                             <Input type="text" placeholder="Main Title" {...register("sixthSection.title_ar")} />
                         </div>
                     </div>
-                    <div className="px-5 pb-5">
+                    {/* <div className="px-5 pb-5">
                         <Label className="font-bold">Items</Label>
                         <div className="border p-5 rounded-md flex flex-col gap-5 mt-0.5">
                             {sixthSectionCities.map((field, index) => (
@@ -1581,6 +1666,11 @@ const Home = () => {
                                 </Button>
                             </div>
                         </div>
+                    </div> */}
+                    <div className="flex justify-end p-5">
+                        <Link href="/admin/home/map-locations">
+                            <Button className="bg-black text-white">Manage Map Locations</Button>
+                        </Link>
                     </div>
                 </AdminItemContainer>
 
@@ -1590,7 +1680,7 @@ const Home = () => {
                     </Label>
                     <div className="px-5 pt-2 flex flex-col gap-2">
                         <Label className=" font-bold">Title</Label>
-                        <Textarea  placeholder="Title" {...register("seventhSection.title_ar")} />
+                        <Textarea placeholder="Title" {...register("seventhSection.title_ar")} />
                     </div>
                     <div className="flex gap-4 px-5">
                         <div className="flex flex-col gap-2 w-1/2">
