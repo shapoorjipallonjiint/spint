@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { navData } from "../data";
 import { moveRight, moveUp } from "../motionVarients";
@@ -29,6 +29,9 @@ const NavPage = ({ isOpen }) => {
         }
     }, [activeMenu]);
 
+    const activeMenuItem = navData.mainMenu.find((m) => m.id === activeMenu);
+    const hasSubmenu = Array.isArray(activeMenuItem?.submenu) && activeMenuItem.submenu.length > 0;
+
     return (
         <motion.div
             initial={{ x: "-100%" }}
@@ -53,26 +56,24 @@ const NavPage = ({ isOpen }) => {
                                     ref={isLast ? lastMenuRef : null}
                                     onMouseEnter={() => {
                                         setActiveMenu(item.id);
-                                        setAnimKey((prev) => prev + 1); // FORCE animation restart
+
+                                        if (item.submenu?.length) {
+                                            setAnimKey((prev) => prev + 1);
+                                        }
                                     }}
                                     className="relative group inline-flex items-center justify-between gap-2 cursor-pointer"
                                 >
                                     {/* MAIN TEXT */}
-<a href={item.href}>
-    <span
-        className={`
+                                    <a href={item.href}>
+                                        <span
+                                            className={`
             text-36 3xl:text-40 font-light transition-all duration-300
-            ${
-                activeMenu === item.id
-                    ? "text-white"
-                    : "text-white/25 group-hover:text-white"
-            }
+            ${activeMenu === item.id ? "text-white" : "text-white/25 group-hover:text-white"}
         `}
-    >
-        {item.title}
-    </span>
-</a>
-
+                                        >
+                                            {item.title}
+                                        </span>
+                                    </a>
 
                                     {/* RIGHT ARROW */}
                                     <span
@@ -132,22 +133,18 @@ const NavPage = ({ isOpen }) => {
                     <div ref={submenuRef} className="absolute pl-[74px] z-10" style={{ top: submenuTop }}>
                         {/* Animate EVERY hover (uses animKey) */}
                         <motion.div key={`${activeMenu}-${animKey}-${isOpen}`} initial="hidden" animate="show">
-                            {navData.mainMenu
-                                .find((m) => m.id === activeMenu)
-                                ?.submenu.map((sub, i) => (
+                            {hasSubmenu &&
+                                activeMenuItem.submenu.map((sub, i) => (
                                     <motion.div
                                         key={`${i}-submenu`}
                                         variants={moveRight(i * 0.14)}
                                         className="mb-5 last:mb-0"
                                     >
-<a href={sub.href}>
-    <p
-        className="text-29 font-light hover:font-semibold hover:translate-x-1 transition-all duration-300"
-    >
-        {sub.label}
-    </p>
-</a>
-
+                                        <a href={sub.href}>
+                                            <p className="text-29 font-light hover:font-semibold hover:translate-x-1 transition-all duration-300">
+                                                {sub.label}
+                                            </p>
+                                        </a>
                                     </motion.div>
                                 ))}
                         </motion.div>

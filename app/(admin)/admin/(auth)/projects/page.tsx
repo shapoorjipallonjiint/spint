@@ -768,6 +768,7 @@ export default function Projects() {
         <div className="h-screen w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
           <div className="flex justify-between border-b-2 pb-2">
             <Label className="text-sm font-bold">Projects</Label>
+            <p className="textsm">Count: {projectList.length}</p>
             <Button className="bg-black text-white" onClick={() => router.push("/admin/projects/add")}>Add Project</Button>
           </div>
           <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">

@@ -14,438 +14,200 @@ import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 gsap.registerPlugin(DrawSVGPlugin);
 import { motion, AnimatePresence } from "framer-motion";
 
-import { aboutData } from "./data";
+// import { aboutData } from "./data";
 import { moveUp } from "../../motionVarients.ts";
 import CountUp from "../../CountUp.jsx";
 import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
+import { mapBackendCitiesToMapCities } from "../../../../lib/mapDataHelper";
 import Image from "next/image";
 
-const cityGroups = [
-    {
-        id: "sp-international",
-        label: "SP International",
-        theme: "blue",
-        cities: [
-            {
-                id: "canada",
-                name: "Canada",
-                position: { x: 3, y: 0 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "usa",
-                name: "USA",
-                position: { x: 5, y: 6 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "argentina",
-                name: "Argentina",
-                position: { x: 16, y: 35 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "brazil",
-                name: "Brazil",
-                position: { x: 16, y: 29 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "chile",
-                name: "Chile",
-                position: { x: 13.5, y: 42 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "mexico",
-                name: "Mexico",
-                position: { x: 6, y: 14 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "peru",
-                name: "Peru",
-                position: { x: 13, y: 30 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
+// const cityGroups = [
+//     {
+//         id: "sp-international",
+//         label: "SP International",
+//         cities: [
+//             // Middle East
+//             {
+//                 id: "uae",
+//                 name: "UAE",
+//                 position: { x: 46, y: 14 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "saudiarabia",
+//                 name: "Saudi Arabia",
+//                 position: { x: 42.5, y: 14 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "oman",
+//                 name: "Oman",
+//                 position: { x: 46, y: 16 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "kuwait",
+//                 name: "Kuwait",
+//                 position: { x: 43.6, y: 12 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "qatar",
+//                 name: "Qatar",
+//                 position: { x: 44.2, y: 14 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "bahrain",
+//                 name: "Bahrain",
+//                 position: { x: 44.2, y: 12.2 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
 
-            {
-                id: "italy",
-                name: "Italy",
-                position: { x: 35, y: 5 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "spain",
-                name: "Spain",
-                position: { x: 30.5, y: 6 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "unitedkingdom",
-                name: "United Kingdom",
-                position: { x: 32.5, y: -1 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
+//             // Africa
+//             {
+//                 id: "sierraleone",
+//                 name: "Sierra Leone",
+//                 position: { x: 28.5, y: 22.5 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "ghana",
+//                 name: "Ghana",
+//                 position: { x: 31, y: 22 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "nigeria",
+//                 name: "Nigeria",
+//                 position: { x: 34, y: 17.5 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "algeria",
+//                 name: "Algeria",
+//                 position: { x: 32, y: 12 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "gambia",
+//                 name: "Gambia",
+//                 position: { x: 28.5, y: 20 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "cotedivoire",
+//                 name: "Côte d’Ivoire",
+//                 position: { x: 30.5, y: 20 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "togo",
+//                 name: "Togo",
+//                 position: { x: 31.8, y: 21.5 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "kenya",
+//                 name: "Kenya",
+//                 position: { x: 41, y: 24 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//         ],
+//     },
+//     {
+//         id: "sp-group",
+//         label: "SP Group",
+//         cities: [
+//             {
+//                 id: "india",
+//                 name: "India",
+//                 position: { x: 51.2, y: 19 },
+//                 stats: {
+//                     iconicpjts: 250,
+//                     pjtcompleted: 250,
+//                     dedicatedemployees: 4000,
+//                 },
+//             },
+//             {
+//                 id: "unitedkingdom",
+//                 name: "UK",
+//                 position: { x: 32.5, y: -1 },
+//                 stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "srilanka",
+//                 name: "Sri Lanka",
+//                 position: { x: 52.5, y: 22 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "afghanistan",
+//                 name: "Afghanistan",
+//                 position: { x: 48.5, y: 11 },
+//                 stats: {
+//                     iconicpjts: 250,
+//                     pjtcompleted: 300,
+//                     dedicatedemployees: 4000,
+//                 },
+//             },
+//             {
+//                 id: "niger",
+//                 name: "Niger",
+//                 position: { x: 34, y: 15 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "iraq",
+//                 name: "Iraq",
+//                 position: { x: 43.2, y: 10 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "canada",
+//                 name: "Canada",
+//                 position: { x: 3, y: 0 },
+//                 stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "mauritius",
+//                 name: "Mauritius",
+//                 position: { x: 46, y: 36 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
 
-            {
-                id: "bangladesh",
-                name: "Bangladesh",
-                position: { x: 53.5, y: 14.5 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "bhutan",
-                name: "Bhutan",
-                position: { x: 54, y: 12.5 },
-                stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-            },
-            {
-                id: "indonesia",
-                name: "Indonesia",
-                position: { x: 60.5, y: 25 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "kazakhstan",
-                name: "Kazakhstan",
-                position: { x: 48, y: 2 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "malaysia",
-                name: "Malaysia",
-                position: { x: 57.3, y: 23 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "maldives",
-                name: "Maldives",
-                position: { x: 50.2, y: 22 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "philippines",
-                name: "Philippines",
-                position: { x: 62.7, y: 20 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "singapore",
-                name: "Singapore",
-                position: { x: 58, y: 25 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "thailand",
-                name: "Thailand",
-                position: { x: 57, y: 18 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
+//             {
+//                 id: "guyana",
+//                 name: "Guyana",
+//                 position: { x: 18.8, y: 25.8 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "libya",
+//                 name: "Libya",
+//                 position: { x: 35.5, y: 13 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
+//             },
+//             {
+//                 id: "malta",
+//                 name: "Malta",
+//                 position: { x: 36.1, y: 11.1 },
+//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
+//             },
+//         ],
+//     },
+// ];
 
-            {
-                id: "bahrain",
-                name: "Bahrain",
-                position: { x: 44.2, y: 12.2 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "iraq",
-                name: "Iraq",
-                position: { x: 43.2, y: 10 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "kuwait",
-                name: "Kuwait",
-                position: { x: 43.6, y: 12 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "oman",
-                name: "Oman",
-                position: { x: 46, y: 16 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "qatar",
-                name: "Qatar",
-                position: { x: 44.2, y: 14 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "ksa",
-                name: "KSA",
-                position: { x: 42.5, y: 14 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "uae",
-                name: "UAE",
-                position: { x: 46, y: 14 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-
-            {
-                id: "australia",
-                name: "Australia",
-                position: { x: 65, y: 36 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-
-            {
-                id: "algeria",
-                name: "Algeria",
-                position: { x: 32, y: 12 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "benin",
-                name: "Benin",
-                position: { x: 32, y: 22 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "egypt",
-                name: "Egypt",
-                position: { x: 39, y: 12 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "ethiopia",
-                name: "Ethiopia",
-                position: { x: 41, y: 20.5 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "gabon",
-                name: "Gabon",
-                position: { x: 34.5, y: 26 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "gambia",
-                name: "Gambia",
-                position: { x: 28.5, y: 20 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "ghana",
-                name: "Ghana",
-                position: { x: 31, y: 22 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "guinea",
-                name: "Guinea",
-                position: { x: 29.5, y: 21 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "ivorycoast",
-                name: "Ivory Coast",
-                position: { x: 30.5, y: 20 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "kenya",
-                name: "Kenya",
-                position: { x: 41, y: 24 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "liberia",
-                name: "Liberia",
-                position: { x: 29.5, y: 23 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "libya",
-                name: "Libya",
-                position: { x: 35.5, y: 13 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "madagascar",
-                name: "Madagascar",
-                position: { x: 43.5, y: 35 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "mauritania",
-                name: "Mauritania",
-                position: { x: 29, y: 17 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "mauritius",
-                name: "Mauritius",
-                position: { x: 46, y: 36 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "mozambique",
-                name: "Mozambique",
-                position: { x: 40.5, y: 35 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "niger",
-                name: "Niger",
-                position: { x: 34, y: 15 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "nigeria",
-                name: "Nigeria",
-                position: { x: 34, y: 17.5 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "rwanda",
-                name: "Rwanda",
-                position: { x: 39.5, y: 25 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "sierraleone",
-                name: "Sierra Leone",
-                position: { x: 28.5, y: 22.5 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "southafrica",
-                name: "South Africa",
-                position: { x: 38, y: 39 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "tanzania",
-                name: "Tanzania",
-                position: { x: 40.5, y: 28 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "zambia",
-                name: "Zambia",
-                position: { x: 39, y: 30 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-            {
-                id: "zimbabwe",
-                name: "Zimbabwe",
-                position: { x: 39, y: 35 },
-                stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-            },
-        ],
-    },
-    {
-        id: "sp-group",
-        label: "SP Group",
-        theme: "red",
-        cities: [
-            {
-                id: "india",
-                name: "India",
-                position: { x: 51.2, y: 19 },
-                stats: {
-                    iconicpjts: 250,
-                    pjtcompleted: 250,
-                    dedicatedemployees: 4000,
-                },
-            },
-            {
-                id: "srilanka",
-                name: "Sri Lanka",
-                position: { x: 52.5, y: 22 },
-                stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-            },
-            {
-                id: "afghanistan",
-                name: "Afghanistan",
-                position: { x: 48.5, y: 11 },
-                stats: {
-                    iconicpjts: 250,
-                    pjtcompleted: 300,
-                    dedicatedemployees: 4000,
-                },
-            },
-            {
-                id: "jamaica",
-                name: "Jamaica",
-                position: { x: 12.1, y: 17.5 },
-                stats: {
-                    iconicpjts: 200,
-                    pjtcompleted: 300,
-                    dedicatedemployees: 4000,
-                },
-            },
-            {
-                id: "haiti",
-                name: "Haiti",
-                position: { x: 12.4, y: 15 },
-                stats: {
-                    iconicpjts: 200,
-                    pjtcompleted: 300,
-                    dedicatedemployees: 4000,
-                },
-            },
-            {
-                id: "cuba",
-                name: "Cuba",
-                position: { x: 11.5, y: 12.5 },
-                stats: {
-                    iconicpjts: 200,
-                    pjtcompleted: 300,
-                    dedicatedemployees: 4000,
-                },
-            },
-            {
-                id: "dominican-republic",
-                name: "Dominican Republic",
-                position: { x: 12.5, y: 16.5 },
-                stats: {
-                    iconicpjts: 200,
-                    pjtcompleted: 300,
-                    dedicatedemployees: 4000,
-                },
-            },
-            {
-                id: "trinidad-and-tobago",
-                name: "Trinidad & Tobago",
-                position: { x: 14.5, y: 22.5 },
-                stats: {
-                    iconicpjts: 200,
-                    pjtcompleted: 300,
-                    dedicatedemployees: 4000,
-                },
-            },
-            {
-                id: "bahamas",
-                name: "Bahamas",
-                position: { x: 12, y: 13.5 },
-                stats: {
-                    iconicpjts: 200,
-                    pjtcompleted: 300,
-                    dedicatedemployees: 4000,
-                },
-            },
-        ],
-    },
-];
-
-const cities = cityGroups.flatMap((group) =>
-    group.cities.map((city) => ({
-        id: city.id,
-        name: city.name,
-        left: `${city.position.x}%`,
-        top: `${city.position.y}%`,
-        ...city.stats,
-        groupId: group.id,
-    }))
-);
-
-
+// const cities = cityGroups.flatMap((group) =>
+//     group.cities.map((city) => ({
+//         id: city.id,
+//         name: city.name,
+//         left: `${city.position.x}%`,
+//         top: `${city.position.y}%`,
+//         ...city.stats,
+//         groupId: group.id,
+//     }))
+// );
 
 const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll }) => {
     const containerRef = useRef(null);
@@ -560,14 +322,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const containersRef = useRef(null);
 
     const items = [
-        ...data.seventhSection.items.map((item)=>{
-            return     {
+        ...data.seventhSection.items.map((item) => {
+            return {
                 id: item._id,
                 title: item.title,
-                desc:
-                    item.description
-            }
-        })
+                desc: item.description,
+            };
+        }),
     ];
 
     useEffect(() => {
@@ -1598,9 +1359,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         }, 2500); // 600ms exit + 2000ms entry delay
     };
 
-    const handleMenuClick = (index) => {
-        updateSlides(index);
-    };
+    // const handleMenuClick = (index) => {
+    //     updateSlides(index);
+    // };
 
     useEffect(() => {
         if (currentIndex !== indexToScroll) {
@@ -1659,57 +1420,57 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         };
     }, []);
 
-    const content = [
-        {
-            image: "/assets/images/services/engineering-construction.jpg",
-            title: "Engineering & Construction",
-            link: "/engineering-construction",
-            description:
-                "Spanning 20 countries, we transform complex visions into major projects. From iconic stadiums and theme parks to advanced healthcare and commercial facilities, we deliver innovative, high-quality projects designed to meet every client’s needs.",
-        },
-        {
-            image: "/assets/images/services/mep.jpg",
-            title: "MEP",
-            link: "/mep",
-            description:
-                "Our MEP division forms the backbone of major structures. We design, install, and manage fully integrated mechanical, electrical, and plumbing systems that ensure reliable, long-term operation.",
-        },
-        {
-            image: "/assets/images/services/interior-fit-out.jpg",
-            title: "Interior Fit-out",
-            link: "/interior-design",
-            description:
-                "SPINT’s Interior Division (SPID) delivers turnkey interior solutions across sectors, blending thoughtful design, uncompromising quality, and punctual execution to create spaces that truly inspire.",
-        },
-        {
-            image: "/assets/images/services/Facade.jpg",
-            title: "Facade",
-            link: "/facade",
-            description:
-                "From concept to completion, we combine the art and science of facades for complex structures. We design, engineer, and deliver custom, high-performance building for landmark projects worldwide.",
-        },
-        {
-            image: "/assets/images/services/Facility-Management.jpg",
-            title: "Facility Management",
-            link: "/integrated-facility-management",
-            description:
-                "We provide fully integrated FM solutions, combining global expertise with local insight. This ensures smooth operations, optimised asset performance, and improved occupant experiences across every property.",
-        },
-        {
-            image: "/assets/images/services/Water.jpg",
-            title: "Water",
-            link: "/water",
-            description:
-                "We deliver essential water infrastructure, from urban pipelines to complex desalination plants. Our expertise ensures every project is executed safely, efficiently, and to the highest standards.",
-        },
-        {
-            image: "/assets/images/services/servicemain.jpg",
-            title: "Design Studio",
-            link: "/design-studio",
-            description:
-                "We drive complex civil projects with advanced digital design and BIM. From integrated Design & Build to expert standalone services, we develop visionary structures with precision and expertise.",
-        },
-    ];
+    // const content = [
+    //     {
+    //         image: "/assets/images/services/engineering-construction.jpg",
+    //         title: "Engineering & Construction",
+    //         link: "/engineering-construction",
+    //         description:
+    //             "Spanning 20 countries, we transform complex visions into major projects. From iconic stadiums and theme parks to advanced healthcare and commercial facilities, we deliver innovative, high-quality projects designed to meet every client’s needs.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/mep.jpg",
+    //         title: "MEP",
+    //         link: "/mep",
+    //         description:
+    //             "Our MEP division forms the backbone of major structures. We design, install, and manage fully integrated mechanical, electrical, and plumbing systems that ensure reliable, long-term operation.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/interior-fit-out.jpg",
+    //         title: "Interior Fit-out",
+    //         link: "/interior-design",
+    //         description:
+    //             "SPINT’s Interior Division (SPID) delivers turnkey interior solutions across sectors, blending thoughtful design, uncompromising quality, and punctual execution to create spaces that truly inspire.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/Facade.jpg",
+    //         title: "Facade",
+    //         link: "/facade",
+    //         description:
+    //             "From concept to completion, we combine the art and science of facades for complex structures. We design, engineer, and deliver custom, high-performance building for landmark projects worldwide.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/Facility-Management.jpg",
+    //         title: "Facility Management",
+    //         link: "/integrated-facility-management",
+    //         description:
+    //             "We provide fully integrated FM solutions, combining global expertise with local insight. This ensures smooth operations, optimised asset performance, and improved occupant experiences across every property.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/Water.jpg",
+    //         title: "Water",
+    //         link: "/water",
+    //         description:
+    //             "We deliver essential water infrastructure, from urban pipelines to complex desalination plants. Our expertise ensures every project is executed safely, efficiently, and to the highest standards.",
+    //     },
+    //     {
+    //         image: "/assets/images/services/servicemain.jpg",
+    //         title: "Design Studio",
+    //         link: "/design-studio",
+    //         description:
+    //             "We drive complex civil projects with advanced digital design and BIM. From integrated Design & Build to expert standalone services, we develop visionary structures with precision and expertise.",
+    //     },
+    // ];
 
     const [activeService, setActiveService] = useState({
         image: serviceData[0].image,
@@ -1717,18 +1478,19 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         description: serviceData[0].description,
         index: 0,
     });
+
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
     const sectors = [
-        ...data.fifthSection.items.map((item)=>{
+        ...data.fifthSection.items.map((item) => {
             return {
                 name: item.title,
                 icon: item.logo,
                 image: item.image,
                 projectsCompleted: item.completedProjects,
                 ongoingProjects: item.ongoingProjects,
-            }
-        })
+            };
+        }),
     ];
     const [activeIndex, setActiveIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
@@ -1817,7 +1579,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
     const delayProjects = useFirstTimeDelay(
         currentVisibleSlide === "section5",
-        3000, // FIRST TIME delay
+        1000, // FIRST TIME delay
         10 // LATER delay when clicking items
     );
 
@@ -1848,6 +1610,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     //     sectorsAutoplayRef.current = null;
     //   };
     // }, [currentVisibleSlide, activeIndex, isAnimating]);
+
+    const [mapCities, setMapCities] = useState([]);
+
+    useEffect(() => {
+        if (data?.sixthSection?.cities) {
+            setMapCities(mapBackendCitiesToMapCities(data.sixthSection.cities));
+        }
+    }, [data]);
 
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
@@ -1910,13 +1680,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         /> */}
 
                 <div className="h-full absolute top-0 left-0 w-full bg-amber-50">
-                    <video
-                        src={data.firstSection.video}
-                        autoPlay
-                        loop
-                        muted
-                        className="w-full h-full object-cover"
-                    ></video>
+                    <video src={data.firstSection.video} autoPlay loop muted className="w-full h-full object-cover"></video>
                 </div>
             </div>
 
@@ -2087,9 +1851,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 <h1 className="text-[36px] lg:text-48 3xl:text-60 font-light leading-[1.166666666666667] mb-[15px] lg:mb-3 3xl:mb-[25px]">
                                     {data.secondSection.title}
                                 </h1>
-                                <div dangerouslySetInnerHTML={{ __html: data.secondSection.subTitle }}>
-
-                                </div>
+                                <div dangerouslySetInnerHTML={{ __html: data.secondSection.subTitle }}></div>
                                 {/* <h3 className="text-[20px] lg:text-18 xl:text-24 font-light max-w-xl mb-[33px] lg:mb-0">
                                     With a legacy of over{" "}
                                     <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
@@ -2247,7 +2009,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 >
                                     {data.thirdSection.description}
                                 </p>
-                                <a
+                                <Link
                                     ref={spbtn}
                                     href={data.thirdSection.link}
                                     className="text-[14px] lg:text-16 leading-[1.75] font-light text-[#464646] lg:text-white uppercase flex items-center gap-2 cursor-pointer group "
@@ -2276,7 +2038,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </a>
+                                </Link>
                             </div>
                             <div className="mt-auto relative">
                                 <hr
@@ -2287,7 +2049,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     {data.thirdSection.items.map((item, index) => (
                                         <div className="text-white" key={index}>
                                             <h1 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
-                                                <CountUp value={item.value} trigger={currentVisibleSlide === "section3"} delay={300} />
+                                                <CountUp
+                                                    value={item.value}
+                                                    trigger={currentVisibleSlide === "section3"}
+                                                    delay={300}
+                                                />
                                                 +
                                             </h1>
                                             <p className="text-16 xl:text-18 opacity-70 font-light leading-[1.555555555555556]">
@@ -2519,15 +2285,17 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 >
                                                     <Link href={`services/${service.link}`}>
                                                         <p
-                                                            className={`${activeServiceIndex === index
+                                                            className={`${
+                                                                activeServiceIndex === index
                                                                     ? "text-white lg:text-black font-bold bo "
                                                                     : "text-white/70 lg:text-black font-light"
-                                                                } text-14px lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9]  2xl:leading-[1.70]  3xl:leading-[1.607142857142857]  cursor-pointer group-hover:text-black group-hover:font-bold`}
+                                                            } text-14px lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9]  2xl:leading-[1.70]  3xl:leading-[1.607142857142857]  cursor-pointer group-hover:text-black group-hover:font-bold`}
                                                             onMouseOver={() => [
                                                                 setActiveService({
                                                                     image: service.homeImage,
                                                                     title: service.title,
                                                                     description: service.description,
+                                                                    link: service.link,
                                                                     index,
                                                                 }),
 
@@ -2557,7 +2325,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         </div>
                         {/* left */}
 
-                        <div className="relative w-full   lg:h-[100vh] z-[-1]" ref={srvsRghtBx}>
+                        {/* <div className="relative w-full lg:h-[100vh] z-[-1]" ref={srvsRghtBx}> */}
+                        <div className="relative w-full   lg:h-[100vh]" ref={srvsRghtBx}>
                             {/* <div className="lg:absolute h-full w-full" ref={srvsImgRef}>
                               <div className="lg:absolute z-10 top-0 left-0 w-full lg:h-full lg:bg-gradient-to-r lg:from-black/60 from-0% lg:via-black/60 via-52% lg:to-black/60 to-100%"></div>
 
@@ -2667,18 +2436,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </motion.p>
                                 </div>
                             </div>
-                            <div
-                                className="hidden lg:block absolute bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
-                                ref={srvsArrw}
-                            >
-                                <Image
-                                    src="../assets/images/services/arrow-up.svg"
-                                    alt="Arrow"
-                                    className=""
-                                    width={71}
-                                    height={71}
-                                />
-                            </div>
+                            <Link href={`/services/${activeService?.link}`}>
+                                <div
+                                    className="hidden lg:block absolute bottom-10 cursor-pointer 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
+                                    ref={srvsArrw}
+                                >
+                                    <Image
+                                        src="../assets/images/services/arrow-up.svg"
+                                        alt="Arrow"
+                                        className=""
+                                        width={71}
+                                        height={71}
+                                    />
+                                </div>
+                            </Link>
                         </div>
                         {/* right */}
                         {/* <div ref={brdonRef} className=""></div> */}
@@ -2752,8 +2523,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                     return (
                                                         <div
                                                             key={`${sector.originalIndex}-${sector.position}`}
-                                                            className={`flex items-center gap-5 cursor-pointer ${isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
-                                                                }`}
+                                                            className={`flex items-center gap-5 cursor-pointer ${
+                                                                isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
+                                                            }`}
                                                             style={{
                                                                 opacity: opacity,
                                                                 transform: `scale(${scale})`,
@@ -2784,10 +2556,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             )}
 
                                                             <h3
-                                                                className={`hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${isActive
+                                                                className={`hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
+                                                                    isActive
                                                                         ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
                                                                         : "text-[14px] lg:text-19 leading-[1.842105263157895]"
-                                                                    }`}
+                                                                }`}
                                                                 style={{
                                                                     transition: "all 0.5s ease-out",
                                                                     willChange: "font-size, font-weight",
@@ -2859,7 +2632,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         }}
                                     ></div>
                                     <div className=" lg:hidden tlnits p-5 group cursor-pointer absolute bottom-0 left-0">
-                                        <a
+                                        <Link
                                             href="/projects"
                                             className="flex items-center gap-2 uppercase font-light text-[14px] text-white"
                                         >
@@ -2871,7 +2644,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 alt="arrow right"
                                                 className="group-hover:translate-x-2 transition-all duration-300"
                                             />
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                                 {/* hear the absolute positioned box with project details */}
@@ -2937,7 +2710,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             </div>
                                         </div>
                                         <div className="hidden lg:block tlnits px-15 py-6 xl:pt-[42px] xl:pb-[49px] group cursor-pointer">
-                                            <a href="/sectors" className="flex items-center gap-2">
+                                            <Link href="/projects" className="flex items-center gap-2">
                                                 View All Projects
                                                 <Image
                                                 width={27}
@@ -2946,7 +2719,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                     alt="arrow right"
                                                     className="group-hover:translate-x-2 transition-all duration-300"
                                                 />
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -2971,7 +2744,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 ref={maptitle}
                                 className="text-[36px] lg:text-34 xl:text-48 3xl:text-60  font-light gradient-text text-bl leading-[1.2] 3xl:leading-[1.18] max-w-[15ch]"
                             >
-                                Our Presence is Steadily Expanding
+                                {/* Our Presence is Steadily Expanding */}
+                                {data.sixthSection?.title}
                             </h1>
                         </div>
                         <div className="  flex justify-center" ref={mapimage}>
@@ -2996,17 +2770,18 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     />
                                     <div className="absolute top-[-121px] lg:top-0 left-[-69px] lg:left-0 min-w-[733px] w-[733px] h-[436px] lg:h-full lg:w-[1156px]  overflow-hidden  lg:overflow-visible    ">
                                         {/* Dots */}
-                                        {cities.map((city) => (
+                                        {mapCities.map((city) => (
                                             <div
                                                 key={city.id}
-                                                ref={mapactive}
+                                                // ref={mapactive}
                                                 // className={` absolute   transition-all duration-300 flex items-center justify-center    w-[480px] h-[480px] ${
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
-                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${activeDot === city.id && city.groupId === "sp-international"
+                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
+                                                    activeDot === city.id && city.groupId === "sp-international"
                                                         ? "z-[999]"
                                                         : "z-[1]"
-                                                    }`}
+                                                }`}
                                                 style={{ left: city.left, top: city.top }}
                                             >
                                                 <div
@@ -3031,14 +2806,15 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                     //     ? "bg-[#30F955] shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
                                                     //     : "bg-[#30B6F9]   border border-[#97DCFF] scale-85"
                                                     // }`}
-                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${city.groupId === "sp-group"
+                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${
+                                                        city.groupId === "sp-group"
                                                             ? activeDot === city.id
-                                                                ? "bg-primary/40 shadow-[0_0_35px_rgba(239,68,68,0.9),0_0_50px_rgba(239,68,68,0.6)] border border-white scale-full"
-                                                                : "bg-primary border border-white scale-85"
-                                                            : activeDot === city.id
-                                                                ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
+                                                                ? "bg-primary/40 shadow-[0_0_35px_rgba(239,68,68,0.9),0_0_50px_rgba(239,68,68,0.6)] border border-[#97DCFF] scale-full"
                                                                 : "bg-[#30B6F9] border border-[#97DCFF] scale-85"
-                                                        }`}
+                                                            : activeDot === city.id
+                                                            ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
+                                                            : "bg-primary border border-white scale-85"
+                                                    }`}
                                                 ></div>
                                                 {/* <span
                       className={`relative   -left-1 border border-[#30F95533] min-w-[110px] text-center backdrop-blur-[10px] uppercase bg-[#0015FF99] text-white text-[14px] font-bold px-2 py-[2px] rounded-full opacity-0 
@@ -3154,8 +2930,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                 {/* Bubble 1 */}
                                                                 <div
                                                                     className={`bubble bg-[#00C8FF80] transition-all duration-500 delay-100 border border-[#00C8FF26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
-            absolute left-[0%] top-[21%] ${activeDot === city.id ? "opacity-100 scale-full float-bubble1" : "scale-80 opacity-0"
-                                                                        }`}
+            absolute left-[0%] top-[21%] ${
+                activeDot === city.id ? "opacity-100 scale-full float-bubble1" : "scale-80 opacity-0"
+            }`}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
                                                                         <CountUp
@@ -3193,8 +2970,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                 {/* Bubble 3 */}
                                                                 <div
                                                                     className={`bubble bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
-            absolute left-[51%] top-[55%] ${activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
-                                                                        } transition-all duration-500 delay-300`}
+            absolute left-[51%] top-[55%] ${
+                activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
+            } transition-all duration-500 delay-300`}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
                                                                         <CountUp
@@ -3215,10 +2993,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                                             {/* Ring */}
                                                             <div
-                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${activeDot === city.id
+                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${
+                                                                    activeDot === city.id
                                                                         ? "opacity-100 scale-full"
                                                                         : "opacity-0"
-                                                                    } transition-all duration-500 delay-300`}
+                                                                } transition-all duration-500 delay-300`}
                                                                 style={{
                                                                     backgroundImage: `url(../assets/images/ring3.svg)`,
                                                                     backgroundSize: "cover",
@@ -3245,10 +3024,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         <div
                                             // className={`me-2 bubble  bg-[#0015FF66] transition-all duration-500 delay-100 border  border-[#0015FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full
                                             className={`me-2 bubble transition-all duration-500 delay-100 backdrop-blur-sm bg-[#00C8FF80] border border-[#00C8FF26]  text-white text-center p-3 rounded-full  
-                                lg:absolute left-[0%] top-[21%] ${activeDot === selectedCity.id
-                                                    ? "opacity-100 scale-full float-bubble1"
-                                                    : "scale-80 opacity-0 "
-                                                }   `}
+                                lg:absolute left-[0%] top-[21%] ${
+                                    activeDot === selectedCity.id
+                                        ? "opacity-100 scale-full float-bubble1"
+                                        : "scale-80 opacity-0 "
+                                }   `}
                                         >
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.pjtcompleted}
@@ -3271,10 +3051,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         </div> */}
                                         <div
                                             className={`bubble  bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm  text-white text-center p-3 rounded-full 
-                                lg:absolute left-[51%] top-[55%] ${activeDot === selectedCity.id
-                                                    ? "opacity-100 scale-full float-bubble3"
-                                                    : "scale-80 opacity-0 "
-                                                }   transition-all duration-500 delay-300`}
+                                lg:absolute left-[51%] top-[55%] ${
+                                    activeDot === selectedCity.id
+                                        ? "opacity-100 scale-full float-bubble3"
+                                        : "scale-80 opacity-0 "
+                                }   transition-all duration-500 delay-300`}
                                         >
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.dedicatedemployees}
@@ -3284,8 +3065,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </div>
 
                                     <div
-                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
-                                            }   transition-all duration-500 delay-300`}
+                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${
+                                            activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
+                                        }   transition-all duration-500 delay-300`}
                                         style={{
                                             backgroundImage: `url(../assets/images/ring3.svg)`,
                                             backgroundSize: "cover",
@@ -3335,9 +3117,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     className="max-w-[14ch] text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] font-light mb-8 xl:mb-[25px] text-white"
                                 >
                                     {/* Driven by Talent. <br /> Defined by Culture. */}
-                                    {data.seventhSection.title.split('/n').map((item)=>(
-                                        item
-                                    ))}
+                                    {data.seventhSection.title.split("/n").map((item) => item)}
                                 </h1>
                                 <div className="mb-[35%] md:mb-[15%] lg:mb-0">
                                     {/* <div  className="max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0  before:content-[''] before:absolute before:right-[50px]   before:bg-primary before:w-full before:h-full ">
@@ -3430,17 +3210,19 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     lg:pb-1 transition-all duration-300 `}
                                                     >
                                                         <div
-                                                            className={`py-1 lg:py-0  ${activeItem.id === item.id
+                                                            className={`py-1 lg:py-0  ${
+                                                                activeItem.id === item.id
                                                                     ? "   bg-[linear-gradient(90deg,rgba(30,69,162,0.35)_0%,rgba(48,182,249,0)_100%)] lg:bg-none"
                                                                     : ""
-                                                                }`}
+                                                            }`}
                                                         >
                                                             <div
                                                                 className={`text-[15px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px]  text-white/80 leading-[1.473684210526316] 
-                    transition-all duration-300 cursor-pointer  ${activeItem.id === item.id
-                                                                        ? "font-bold text-white border-l-[2px] border-secondary lg:border-l-0  ps-2 lg:ps-0 "
-                                                                        : "hover:font-bold hover:text-white font-light "
-                                                                    }`}
+                    transition-all duration-300 cursor-pointer  ${
+                        activeItem.id === item.id
+                            ? "font-bold text-white border-l-[2px] border-secondary lg:border-l-0  ps-2 lg:ps-0 "
+                            : "hover:font-bold hover:text-white font-light "
+                    }`}
                                                             >
                                                                 {item.title.split(" ").map((word, i) => (
                                                                     <span key={i}>

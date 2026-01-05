@@ -1,12 +1,13 @@
 'use client';
 import { useMediaQuery } from "react-responsive";
-import { projectdetails } from "../data";
+// import { projectdetails } from "../data";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { fadeIn, moveDown, moveUp, paragraphItem } from "../../../motionVarients";
+import { fadeIn, moveUp, paragraphItem } from "../../../motionVarients";
 import { useRef } from "react";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
 import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
+import Link from "next/link";
 
 const Banner = ({ firstSection, secondSection }) => {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
@@ -30,6 +31,9 @@ const Banner = ({ firstSection, secondSection }) => {
         <div className="container relative   z-[2]">
           <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-3 lg:gap-0 ">
             <motion.div variants={paragraphItem} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} >
+              <Link href={"/projects"}>
+                <Image src={"/assets/images/icons/arrow-right.svg"} width={26} height={26} alt={"left"} className="w-8 h-8 mb-5 rotate-180"/>
+              </Link>
               <h1 className="text-40 2xl:text-70 font-light leading-[1.07] mb-3 lg:mb-5">
                 <SplitTextAnimation children={firstSection.title} staggerDelay={0.2} animationDuration={0.8} delay={0.3} />
               </h1>
@@ -60,8 +64,9 @@ const Banner = ({ firstSection, secondSection }) => {
           </div>
           <div className="flex items-center  py-3 lg:py-6">
             <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Location:</p>
-            <p className="text-19 font-light   leading-[1.475] text-black">{secondSection.location.name}</p>
-          </div> </motion.div>
+            <p className="text-19 font-light   leading-[1.475] text-black">{secondSection.items.find(item => item.key === "Location").value}</p>
+          </div> 
+          </motion.div>
 
         <motion.div variants={moveUp(0.6)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-[825px_1fr]  border-t border-black/20  ">
           <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 md:border-b-0">
@@ -74,7 +79,7 @@ const Banner = ({ firstSection, secondSection }) => {
           </div>
         </motion.div>
 
-        {secondSection.items.map((item, i) => {
+        {secondSection.items .filter(item => item.key !== "Location").map((item, i) => {
 
           if (i % 2 !== 0) return null;
 

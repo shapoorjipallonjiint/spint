@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Listbox } from "@headlessui/react";
 import { pjtList } from "../data";
@@ -10,11 +10,10 @@ import { useRef } from "react";
 import { statusData } from "@/app/components/AdminProject/statusData";
 import Image from "next/image";
 
-
 const ITEMS_PER_PAGE = 12;
 
 const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
-    const MotionImage = motion.create(Image)
+    const MotionImage = motion.create(Image);
     const [currentPage, setCurrentPage] = useState(1);
     const [isAnimating, setIsAnimating] = useState(false);
     const [bgImagehide, setBgImagehide] = useState(true);
@@ -26,28 +25,15 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
     const [view, setView] = useState("grid");
 
-    const sector = [
-        { id: 1, name: "All" },
-        ...sectorData
-    ];
+    const sector = [{ id: 1, name: "All" }, ...sectorData];
 
-    const status = [
-        { id: 1, name: "All" },
-        ...statusData
-    ];
+    const status = [{ id: 1, name: "All" }, ...statusData];
 
-    const country = [
-        { id: 1, name: "All" },
-        ...countryData
-    ];
+    const country = [{ id: 1, name: "All" }, ...countryData];
 
-    const service = [
-        { id: 1, title: "All" },
-        ...serviceData
-    ];
+    const service = [{ id: 1, title: "All" }, ...serviceData];
 
-
-    console.log(data)
+    console.log(data);
 
     // 🔹 Filter states
     const [selectedSector, setSelectedSector] = useState(sector[0]);
@@ -60,21 +46,27 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         let items = [...data];
 
         if (selectedSector.id !== 1) {
-            items = items.filter((item) => item.secondSection.sector.name.toLowerCase() === selectedSector.name.toLowerCase());
+            items = items.filter(
+                (item) => item.secondSection?.sector?.name.toLowerCase() === selectedSector?.name.toLowerCase()
+            );
         }
 
         if (selectedStatus.id !== 1) {
             // assuming your data has item.status
-            items = items.filter((item) => item.secondSection.status.toLowerCase() === selectedStatus.name.toLowerCase());
+            items = items.filter((item) => item.secondSection?.status.toLowerCase() === selectedStatus?.name.toLowerCase());
         }
 
         if (selectedCountry.id !== 1) {
-            items = items.filter((item) => item.secondSection.location.name.toLowerCase() === selectedCountry.name.toLowerCase());
+            items = items.filter(
+                (item) => item.secondSection?.location?.name.toLowerCase() === selectedCountry?.name.toLowerCase()
+            );
         }
 
         if (selectedService.id !== 1) {
             // assuming your data has item.service
-            items = items.filter((item) => item.secondSection.service.title.toLowerCase() === selectedService.title.toLowerCase());
+            items = items.filter(
+                (item) => item.secondSection?.service?.title.toLowerCase() === selectedService?.title.toLowerCase()
+            );
         }
 
         return items;
@@ -169,7 +161,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <Listbox value={selectedSector} onChange={handleSectorChange}>
                                         <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
                                             <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {selectedSector.name === "All" ? "Sector" : selectedSector.name}
+                                                {selectedSector?.name === "All" ? "Sector" : selectedSector?.name}
                                             </span>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +185,25 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             initial="hidden"
                                             animate="show"
                                             variants={dropdownListVariants}
-                                            className="border-0 outline-0 absolute w-full md:w-[200px] bg-white rounded-sm shadow-sm z-[1]"
+                                            onWheel={(e) => {
+                                                e.stopPropagation();
+                                                e.preventDefault();
+                                            }}
+                                            onTouchMove={(e) => {
+                                                e.stopPropagation();
+                                                e.preventDefault();
+                                            }}
+                                            className="
+    absolute
+    w-full md:w-[290px]
+    h-[290px]
+    overflow-y-auto
+    overscroll-contain
+    bg-white
+    rounded-sm
+    shadow-sm
+    z-[50]
+  "
                                         >
                                             {sector.map((opt) => (
                                                 <Listbox.Option
@@ -215,7 +225,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
           group-hover:scale-[1.03]
         "
                                                     >
-                                                        {opt.name}
+                                                        {opt?.name}
                                                     </span>
                                                 </Listbox.Option>
                                             ))}
@@ -228,7 +238,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <Listbox value={selectedStatus} onChange={handleStatusChange}>
                                         <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
                                             <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {selectedStatus.name === "All" ? "Status" : selectedStatus.name}
+                                                {selectedStatus?.name === "All" ? "Status" : selectedStatus?.name}
                                             </span>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -268,7 +278,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
       "
                                                 >
                                                     <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                        {opt.name}
+                                                        {opt?.name}
                                                     </span>
                                                 </Listbox.Option>
                                             ))}
@@ -281,7 +291,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <Listbox value={selectedCountry} onChange={handleCountryChange}>
                                         <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
                                             <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {selectedCountry.name === "All" ? "Country" : selectedCountry.name}
+                                                {selectedCountry?.name === "All" ? "Country" : selectedCountry?.name}
                                             </span>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -321,7 +331,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
       "
                                                 >
                                                     <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                        {opt.name}
+                                                        {opt?.name}
                                                     </span>
                                                 </Listbox.Option>
                                             ))}
@@ -334,7 +344,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <Listbox value={selectedService} onChange={handleServiceChange}>
                                         <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
                                             <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {selectedService.title === "All" ? "Service" : selectedService.title}
+                                                {selectedService?.title === "All" ? "Service" : selectedService?.title}
                                             </span>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -392,7 +402,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                     className="py-1 px-4 hover:bg-[#f0f0f0] cursor-pointer group hover:font-bold transition-colors duration-300 w-full"
                                                 >
                                                     <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                        {opt.title}
+                                                        {opt?.title}
                                                     </span>
                                                 </Listbox.Option>
                                             ))}
@@ -456,15 +466,18 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 19 19"
                                     fill="none"
-                                    className={`w-[14px] h-[14px] md:w-[19px] md:h-[19px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${view === "grid" ? "brightness-100" : "brightness-0"
-                                        }`}
+                                    className={`w-[14px] h-[14px] md:w-[19px] md:h-[19px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${
+                                        view === "grid" ? "brightness-100" : "brightness-0"
+                                    }`}
                                 >
                                     <rect width="8" height="8" fill="#30B6F9" />
                                     <rect y="11" width="8" height="8" fill="#30B6F9" />
                                     <rect x="11" width="8" height="8" fill="#30B6F9" />
                                     <rect x="11" y="11" width="8" height="8" fill="#30B6F9" />
                                 </svg>
-                                <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">Grid View</p>
+                                <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
+                                    Grid View
+                                </p>
                             </div>
                             <div
                                 className="flex group items-center gap-[6px] cursor-pointer"
@@ -472,15 +485,18 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className={`w-[14px] h-[11px] md:w-[19px] md:h-[13px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${view === "list" ? "brightness-100" : "brightness-0"
-                                        }`}
+                                    className={`w-[14px] h-[11px] md:w-[19px] md:h-[13px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${
+                                        view === "list" ? "brightness-100" : "brightness-0"
+                                    }`}
                                     viewBox="0 0 19 13"
                                     fill="none"
                                 >
                                     <line y1="0.5" x2="19" y2="0.5" stroke="#30B6F9" />
                                     <line y1="12.5" x2="19" y2="12.5" stroke="#30B6F9" />
                                 </svg>
-                                <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">list View</p>
+                                <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
+                                    list View
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -489,8 +505,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 {/* GRID VIEW */}
                 <div
                     className={`gap-5 3xl:gap-x-[30px]  gap-y-10 md:gap-y-12 xl:gap-y-[80px] pb-10 xl:pb-[80px] transition-all duration-300 
-          ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${view === "grid" ? "grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3" : "hidden"
-                        }`}
+          ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${
+                        view === "grid" ? "grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3" : "hidden"
+                    }`}
                     style={{
                         transform: isAnimating ? "translateY(16px)" : "translateY(0)",
                         transition: "opacity 300ms ease-in-out, transform 300ms ease-in-out",
@@ -507,7 +524,13 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         >
                             <Link href={`/projects/${item.slug}`}>
                                 <div className="relative">
-                                    <Image src={item.thumbnail} alt={item.thumbnailAlt} width={520} height={395} className="w-full h-[200px] md:h-[250px] xl:h-[395px] object-cover" />
+                                    <Image
+                                        src={item.thumbnail}
+                                        alt={item.thumbnailAlt}
+                                        width={520}
+                                        height={395}
+                                        className="w-full h-[200px] md:h-[250px] xl:h-[395px] object-cover"
+                                    />
                                     <div className=" opacity-0 group-hover:opacity-100 transition-all duration-300 absolute left-0 bottom-0 w-[50px] h-[50px]  xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -541,20 +564,16 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                 </div>
                                 <div className="flex justify-between border-t border-t-black/20 border-b border-b-black/20">
                                     <p className="text-paragraph text-19 font-light leading-[2.44] max-w-[18ch] truncate">
-                                        Sector: {item.secondSection.sector.name}
+                                        Sector: {item?.secondSection?.sector?.name}
                                     </p>
                                     <p className="text-paragraph text-19 font-light leading-[2.44] pe-1 3xl:xl:pe-6 max-w-[18ch] truncate">
-                                        BUA (Sq.ft): {
-                                            item.secondSection.items.find(
-                                                (i) => i.key === "BUA (Sq.ft)"
-                                            )?.value ?? ""
-                                        }
-
+                                        BUA (Sq.ft):{" "}
+                                        {item?.secondSection?.items?.find((i) => i.key === "BUA (Sq.ft)")?.value ?? ""}
                                     </p>
                                 </div>
                                 <div className="border-b border-b-black/20">
                                     <p className="text-paragraph text-19 font-light leading-[2.44]">
-                                        Location: {item.secondSection.location.name}
+                                        Location: {item?.secondSection?.location?.name}
                                     </p>
                                 </div>
                             </Link>
@@ -569,8 +588,10 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 </div>
 
                 {/* LIST VIEW */}
-                <div className={`   pb-10 xl:pb-[80px] transition-all duration-300 
-          ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${view === "list" ? "flex flex-col " : "hidden"
+                <div
+                    className={`   pb-10 xl:pb-[80px] transition-all duration-300 
+          ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${
+                        view === "list" ? "flex flex-col " : "hidden"
                     }`}
                     style={{
                         transform: isAnimating ? "translateY(16px)" : "translateY(0)",
@@ -609,15 +630,12 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             <div className="flex gap-5 3xl:gap-[168px] justify-between border-b border-b-black/20 pb-[11px] mb-[7px] ">
                                                 <p className="text-paragraph text-19 font-light  leading-[1.4] md:leading-[2] ">
                                                     Sector: <br className="hidden lg:block 2xl:hidden"></br>
-                                                    {item.secondSection.sector.name}
+                                                    {item?.secondSection?.sector?.name}
                                                 </p>
                                                 <p className="text-paragraph text-19 font-light leading-[1.4] md:leading-[2] xl:pe-6">
                                                     BUA (Sq.ft): <br className="hidden lg:block 2xl:hidden"></br>
-                                                    {
-                                            item.secondSection.items.find(
-                                                (i) => i.key === "BUA (Sq.ft)"
-                                            )?.value ?? ""
-                                        }
+                                                    {item?.secondSection?.items?.find((i) => i.key === "BUA (Sq.ft)")
+                                                        ?.value ?? ""}
                                                 </p>
                                             </div>
                                             <div className="">
@@ -651,7 +669,6 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             />
                                         </svg>
                                     </div>
-
                                 </div>
                             </Link>
                         </motion.div>
@@ -666,8 +683,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 <div className="flex items-center justify-center gap-2 w-full pb-10 xl:pb-15 2xl:pb-[120px]">
                     <div className="pagination flex items-center gap-5 justify-center ">
                         <button
-                            className={`prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
-                                }`}
+                            className={`prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${
+                                currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
+                            }`}
                             onClick={handlePrev}
                             disabled={currentPage === 1 || isAnimating}
                         >
@@ -691,8 +709,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         </p>
 
                         <button
-                            className={`next cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === totalPages || isAnimating ? "opacity-30" : "opacity-100"
-                                }`}
+                            className={`next cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${
+                                currentPage === totalPages || isAnimating ? "opacity-30" : "opacity-100"
+                            }`}
                             onClick={handleNext}
                             disabled={currentPage === totalPages || isAnimating}
                         >
@@ -713,12 +732,13 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
             {view === "grid" && (
                 <>
                     <div
-                        className={`${bgImagehide ? "block" : "hidden"
-                            } absolute top-[12%] 3xl:top-auto lg:bottom-[30%] translate-y-[58px] 3xl:bottom-3/7    right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
+                        className={`${
+                            bgImagehide ? "block" : "hidden"
+                        } absolute top-[12%] 3xl:top-auto lg:bottom-[30%] translate-y-[58px] 3xl:bottom-3/7    right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
                     >
                         <MotionImage
-                        width={1500}
-                        height={1000}
+                            width={1500}
+                            height={1000}
                             style={{ y: shapeY }}
                             src="./assets/images/projects/pjtbdy1.svg"
                             alt=""
@@ -726,12 +746,13 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         />
                     </div>
                     <div
-                        className={`${bgImagehide ? "block" : "hidden"
-                            } absolute bottom-[5%] lg:bottom-0 right-0 lg:right-[-150px] 3xl:right-0 z-[-1]`}
+                        className={`${
+                            bgImagehide ? "block" : "hidden"
+                        } absolute bottom-[5%] lg:bottom-0 right-0 lg:right-[-150px] 3xl:right-0 z-[-1]`}
                     >
                         <MotionImage
-                        width={1500}
-                        height={1000}
+                            width={1500}
+                            height={1000}
                             style={{ y: shapeY }}
                             src="./assets/images/projects/pjtbdy2.svg"
                             alt=""

@@ -8,24 +8,30 @@ import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider
 import WhyChooseSec from "./sections/WhyChooseSec";
 import { interiorData } from "./data";
 import SectorsSec from "./sections/SectorsSec";
-const InteriorDesign = ({data,projectData}) => {
-  return (
-    <>
-      {/* <header>
+const InteriorDesign = ({ data, projectData }) => {
+    return (
+        <>
+            {/* <header>
         <MainNavbar /> 
       </header> */}
-      <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
-      <VdoSection data={data.firstSection} />
-      <SecondSection data={data.secondSection}/>
-      <ExpertiseSec data={data.thirdSection}/>
-      <SectorsSec data={data.fourthSection}/>
-      <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} />
-      <WhyChooseSec data={data.fifthSection} />
-      {/* <footer>
+            <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
+            <VdoSection data={data.firstSection} />
+            <SecondSection data={data.secondSection} />
+            <ExpertiseSec data={data.thirdSection} />
+            <SectorsSec data={data.fourthSection} />
+            {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
+            {projectData.projects.filter((item) => item.secondSection.service._id === data._id).length > 0 && (
+                <FeaturedProjectSlider
+                    data={projectData.projects.filter((item) => item.secondSection.service._id === data._id)}
+                />
+            )}
+
+            <WhyChooseSec data={data.fifthSection} />
+            {/* <footer>
         <Footer />
       </footer> */}
-    </>
-  );
-}
+        </>
+    );
+};
 
 export default InteriorDesign;

@@ -18,7 +18,7 @@ const Index = ({ data }) => {
             <Empowerment data={data.secondSection} />
             <ImageAcc data={data.thirdSection}  />
             <OurValues data={data.fourthSection} />
-            <JourneySlider data={data.fifthSection} />
+            {/* <JourneySlider data={data.fifthSection} /> */}
             <PartOfUs data={data.sixthSection} />
         </>
     );

@@ -3,50 +3,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
+import { navData } from "../data";
 
 const HomeMobileNavbar = ({ isOpen, onClose }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null);
 
-  const menuItems = [
-    { name: "About", href: "/about-us", submenu: null },
-    {
-      name: "Services",
-      submenu: [
-        { name: "Engineering & Construction", href: "/engineering-construction" },
-        { name: "MEP", href: "/mep" },
-        { name: "Design Studio", href: "/design-studio" },
-        { name: "Interior Fit-out", href: "/interior-design" },
-        { name: "Facade", href: "/facade" },
-        { name: "Facilities Management", href: "/integrated-facility-management" },
-        { name: "Water", href: "/water" },
-      ],
-    },
-    { name: "Global Presence", href: "/global-presence", submenu: null },
-    { name: "Projects", href: "/projects", submenu: null },
-    {
-      name: "Our Commitments",
-      submenu: [
-        { name: "Community Engagement", href: "/community-engagement" },
-        { name: "Health safety & environmental", href: "/hse" },
-        { name: "Quality", href: "/quality" },
-      ],
-    },
-    {
-      name: "Newsroom",
-      submenu: [
-        { name: "Press Releases", href: "/press-releases" },
-        { name: "Gallery", href: "/gallery" },
-      ],
-    },
-    { name: "Careers", href: "/careers", submenu: null },
-    { name: "Contact", href: "/contact-us", submenu: null },
-  ];
-
-  const toggleSubmenu = (name) => {
-    setOpenSubmenu(openSubmenu === name ? null : name);
+  const toggleSubmenu = (title) => {
+    setOpenSubmenu(openSubmenu === title ? null : title);
   };
 
-  /* animations — unchanged */
+  /* animations */
   const menuVariants = {
     closed: {
       x: "100%",
@@ -83,7 +49,7 @@ const HomeMobileNavbar = ({ isOpen, onClose }) => {
             exit="closed"
             variants={overlayVariants}
             onClick={onClose}
-            className="fixed inset-0 bg-black bg-opacity-30 z-50 lg:hidden"
+            className="fixed inset-0 bg-black/30 z-50 lg:hidden"
           />
 
           {/* SLIDE PANEL */}
@@ -96,7 +62,10 @@ const HomeMobileNavbar = ({ isOpen, onClose }) => {
           >
             {/* CLOSE */}
             <div className="absolute right-5 top-5">
-              <button onClick={onClose} className="w-10 h-10 flex items-center justify-center">
+              <button
+                onClick={onClose}
+                className="w-10 h-10 flex items-center justify-center"
+              >
                 <div className="relative w-6 h-6">
                   <span className="absolute w-6 h-0.5 bg-black rotate-45 top-1/2" />
                   <span className="absolute w-6 h-0.5 bg-black -rotate-45 top-1/2" />
@@ -113,12 +82,14 @@ const HomeMobileNavbar = ({ isOpen, onClose }) => {
             <div className="p-8 pt-28 flex flex-col justify-between h-full">
               {/* MENU */}
               <ul className="space-y-3">
-                {menuItems.map((item, index) => {
-                  const hasSubmenu = Array.isArray(item.submenu);
+                {navData.mainMenu.map((item, index) => {
+                  const hasSubmenu =
+                    Array.isArray(item.submenu) &&
+                    item.submenu.length > 0;
 
                   return (
                     <motion.li
-                      key={index}
+                      key={item.id}
                       custom={index}
                       initial="closed"
                       animate="open"
@@ -133,18 +104,24 @@ const HomeMobileNavbar = ({ isOpen, onClose }) => {
                                 onClose();
                               } else {
                                 e.preventDefault();
-                                toggleSubmenu(item.name);
+                                toggleSubmenu(item.title);
                               }
                             }}
                             className="text-16 font-light uppercase flex-1 hover:font-bold transition-all duration-300"
                           >
-                            {item.name}
+                            {item.title}
                           </Link>
 
                           {hasSubmenu && (
-                            <button onClick={() => toggleSubmenu(item.name)} className="p-2">
+                            <button
+                              onClick={() => toggleSubmenu(item.title)}
+                              className="p-2"
+                            >
                               <motion.svg
-                                animate={{ rotate: openSubmenu === item.name ? 180 : 0 }}
+                                animate={{
+                                  rotate:
+                                    openSubmenu === item.title ? 180 : 0,
+                                }}
                                 transition={{ duration: 0.3 }}
                                 className="w-4 h-4"
                                 fill="currentColor"
@@ -162,7 +139,7 @@ const HomeMobileNavbar = ({ isOpen, onClose }) => {
 
                         {/* SUBMENU */}
                         <AnimatePresence>
-                          {hasSubmenu && openSubmenu === item.name && (
+                          {hasSubmenu && openSubmenu === item.title && (
                             <motion.ul
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: "auto", opacity: 1 }}
@@ -177,7 +154,7 @@ const HomeMobileNavbar = ({ isOpen, onClose }) => {
                                     onClick={onClose}
                                     className="block text-[14px] hover:font-bold transition-all duration-200"
                                   >
-                                    {sub.name}
+                                    {sub.label}
                                   </Link>
                                 </li>
                               ))}
@@ -190,36 +167,25 @@ const HomeMobileNavbar = ({ isOpen, onClose }) => {
                 })}
               </ul>
 
-              {/* ACTIONS (MISSING PART – NOW ADDED) */}
+              {/* ACTIONS */}
               <motion.div
-                custom={menuItems.length}
+                custom={navData.mainMenu.length}
                 initial="closed"
                 animate="open"
                 variants={itemVariants}
                 className="space-y-4 pt-6 border-t border-gray-200"
               >
-                {/* Arabic */}
-                <button className="w-full bg-gradient-to-r from-[#30B6F9] to-[#1E45A2] text-white text-sm font-light uppercase rounded-full px-5 py-3 hover:scale-105 transition-all duration-300">
+                <button className="w-full bg-gradient-to-r from-[#30B6F9] to-[#1E45A2] text-white text-sm uppercase rounded-full px-5 py-3">
                   العربية
                 </button>
 
-                {/* Employee Login */}
-                <div className="p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%]">
-                  <button className="w-full uppercase text-base font-light px-5 py-2 bg-white rounded-full hover:bg-[#f7faff] transition-all duration-300">
+                <div className="p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9]">
+                  <button className="w-full uppercase px-5 py-2 bg-white rounded-full">
                     Employee login
                   </button>
                 </div>
 
-                {/* Search */}
-                <button className="w-full bg-[#000000CC] rounded-full p-3 flex items-center justify-center gap-2 text-white hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] transition-all duration-300">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
+                <button className="w-full bg-black/80 rounded-full p-3 flex items-center justify-center gap-2 text-white">
                   <span className="text-sm uppercase">Search</span>
                 </button>
               </motion.div>

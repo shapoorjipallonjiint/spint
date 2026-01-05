@@ -154,7 +154,7 @@ const FeaturedProjectSlider = ({ data }) => {
                                     : 'initial-visible'
                                 }`}
                             >
-                              {item.firstSection.title}
+                              {item.firstSection?.title}
                             </h3>
                           </div>
                         </div>
@@ -168,7 +168,7 @@ const FeaturedProjectSlider = ({ data }) => {
                                       : 'initial-visible'
                                   }`}
                               >
-                                <span>Sector: </span>{item.secondSection.sector.name}
+                                <span>Sector: </span>{item.secondSection?.sector?.name}
                               </h4>
                             </div>
                           </div>
