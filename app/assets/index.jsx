@@ -7,4 +7,5 @@ import mainShape4 from "../../public/assets/images/svg/main-shape-4.svg";
 import arrowLeft2 from "../../public/assets/images/icons/arrow-left-2.svg";
 import arrowRight2 from "../../public/assets/images/icons/arrow-right-2.svg";
 import arrowDown from "../../public/assets/images/icons/arrow-down.svg";
-export const assets = { vdoPlayIcon, mainShape, vdoPauseIcon, mainShape2, arrowLeft2, arrowRight2, arrowDown, mainShape3, mainShape4 };
+import close from "../../public/assets/images/icons/close.svg";
+export const assets = { vdoPlayIcon, mainShape, vdoPauseIcon, mainShape2, arrowLeft2, arrowRight2, arrowDown, mainShape3, mainShape4, close };

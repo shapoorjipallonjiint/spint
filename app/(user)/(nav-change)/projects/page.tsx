@@ -7,7 +7,7 @@ const page = async() => {
     const sectorResponse = await fetch(`${process.env.BASE_URL}/api/admin/project/sector`, { next: { revalidate: 60 } });
     const sectorData = await sectorResponse.json();
 
-    const countryResponse = await fetch(`${process.env.BASE_URL}/api/admin/project/country`, { next: { revalidate: 60 } });
+    const countryResponse = await fetch(`${process.env.BASE_URL}/api/admin/home/countries`, { next: { revalidate: 60 } });
     const countryData = await countryResponse.json();
 
     const serviceResponse = await fetch(`${process.env.BASE_URL}/api/admin/services`, { next: { revalidate: 60 } });

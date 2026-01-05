@@ -5,9 +5,12 @@ import H2Title from "../../../common/H2Title";
 import { motion } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import Image from 'next/image'
+import { useState } from "react";
+import ImageLightbox from "../../../common/ImagePopup";
 
 const Certifications = ({ data }) => {
   const MotionImage = motion.create(Image);
+  const [activeImage, setActiveImage] = useState(null);
 
     return (
         <section className="pt-text90 pb25 bg-primary">
@@ -40,7 +43,8 @@ const Certifications = ({ data }) => {
                                     alt={item.fileImageAlt}
                                     width={276}
                                     height={400}
-                                    className="w-fit h-[276px] 2xl:h-[400px] object-contain"
+                                    className="w-fit h-[276px] 2xl:h-[400px] object-contain cursor-pointer"
+                                    onClick={() => setActiveImage(item.fileImage)}
                                 />
                                 <motion.h3
                                     variants={moveUp(0.5 + 0.2 * index)}
@@ -56,6 +60,7 @@ const Certifications = ({ data }) => {
                     </div>
                 </div>
             </div>
+            <ImageLightbox src={activeImage} alt="Certificate preview" onClose={() => setActiveImage(null)} />
         </section>
     );
 };
