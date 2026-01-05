@@ -685,7 +685,7 @@ export default function Projects() {
           </div>
 
 
-          <div className="h-1/2 w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
+          {/* <div className="h-1/2 w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
             <div className="flex justify-between border-b-2 pb-2">
               <Label className="text-sm font-bold">Country</Label>
               <Dialog>
@@ -761,7 +761,7 @@ export default function Projects() {
               </div>
 
             </div>
-          </div>
+          </div> */}
 
         </div>
 
