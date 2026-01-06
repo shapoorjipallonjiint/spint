@@ -1,7 +1,7 @@
 "use client";
 
 import { Listbox } from "@headlessui/react";
-import { pjtList } from "../data";
+// import { pjtList } from "../data";
 import { useState, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { dropdownItemVariants, dropdownListVariants, moveUp } from "../../../motionVarients";
@@ -9,10 +9,18 @@ import Link from "next/link";
 import { useRef } from "react";
 import { statusData } from "@/app/components/AdminProject/statusData";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 const ITEMS_PER_PAGE = 12;
 
 const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const searchParams = useSearchParams();
+    const isInitialized = useRef(false);
     const MotionImage = motion.create(Image);
     const [currentPage, setCurrentPage] = useState(1);
     const [isAnimating, setIsAnimating] = useState(false);
@@ -32,8 +40,6 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const country = [{ id: 1, name: "All" }, ...countryData];
 
     const service = [{ id: 1, title: "All" }, ...serviceData];
-
-    console.log(data);
 
     // 🔹 Filter states
     const [selectedSector, setSelectedSector] = useState(sector[0]);
@@ -120,11 +126,18 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setCurrentPage(1);
         setBgImagehide(false);
     };
-
     const handleCountryChange = (opt) => {
+        // ✅ update filter immediately
         setSelectedCountry(opt);
         setCurrentPage(1);
         setBgImagehide(false);
+
+        // ✅ update URL (no state reading from it)
+        if (opt.name === "All") {
+            router.push(pathname);
+        } else {
+            router.push(`${pathname}?country=${encodeURIComponent(opt.name)}`);
+        }
     };
 
     const handleServiceChange = (opt) => {
@@ -142,6 +155,23 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setCurrentPage(1);
         setBgImagehide(true);
     };
+
+    useEffect(() => {
+        if (isInitialized.current) return;
+
+        const countryFromUrl = searchParams.get("country");
+        if (!countryFromUrl) return;
+
+        const matchedCountry = country.find((c) => c.name.toLowerCase() === countryFromUrl.toLowerCase());
+
+        if (matchedCountry) {
+            setSelectedCountry(matchedCountry);
+            setCurrentPage(1);
+            setBgImagehide(false);
+        }
+
+        isInitialized.current = true;
+    }, [country, searchParams]);
 
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
@@ -314,7 +344,14 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             initial="hidden"
                                             animate="show"
                                             variants={dropdownListVariants}
-                                            className="border-0 outline-0 absolute w-full md:w-[150px] bg-white rounded-sm shadow-sm z-[1]"
+                                            className="
+    border-0 outline-0
+    absolute w-full md:w-[200px]
+    max-h-[220px] overflow-y-auto
+    bg-white rounded-sm shadow-sm z-[50]
+  "
+                                            onWheel={(e) => e.stopPropagation()}
+                                            onTouchMove={(e) => e.stopPropagation()}
                                         >
                                             {country.map((opt) => (
                                                 <Listbox.Option
@@ -524,13 +561,25 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         >
                             <Link href={`/projects/${item.slug}`}>
                                 <div className="relative">
-                                    <Image
+                                    {/* <Image
                                         src={item.thumbnail}
                                         alt={item.thumbnailAlt}
                                         width={520}
                                         height={395}
                                         className="w-full h-[200px] md:h-[250px] xl:h-[395px] object-cover"
-                                    />
+                                    /> */}
+                                                                        <div
+  className="
+    w-full
+    h-[200px] md:h-[250px] xl:h-[395px]
+    bg-amber-50
+    flex items-center justify-center
+  "
+>
+  <span className="text-black text-29 font-medium">
+    395*250
+  </span>
+</div>
                                     <div className=" opacity-0 group-hover:opacity-100 transition-all duration-300 absolute left-0 bottom-0 w-[50px] h-[50px]  xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -609,7 +658,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         >
                             <Link href={`/projects/${item.slug}`}>
                                 <div className="flex flex-col lg:grid grid-cols-[240px_244px_448px_0px] xl:grid-cols-[240px_244px_448px_32px] 2xl:grid-cols-[274px_324px_458px_32px] 3xl:grid-cols-[274px_384px_658px_32px] justify-between gap-3 md:gap-8 lg:gap-4 3xl:gap-[69px] ">
-                                    <div className="w-full xl:w-[274px]">
+                                    {/* <div className="w-full xl:w-[274px]">
                                         <Image
                                             src={item.thumbnail}
                                             alt={item.thumbnailAlt}
@@ -617,7 +666,25 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             height={208}
                                             className="w-full h-full   md:h-[350px] xl:min-w-[274px] lg:h-[208px] object-fit"
                                         />
-                                    </div>
+                                    </div> */}
+                                    <div className="w-full xl:w-[274px]">
+  <div
+    className="
+      w-full
+      h-full
+      md:h-[350px]
+      lg:h-[208px]
+      xl:min-w-[274px]
+      bg-amber-50
+      flex items-center justify-center
+    "
+  >
+    <span className="text-black text-19 font-medium">
+      Image
+    </span>
+  </div>
+</div>
+
                                     <div>
                                         <div>
                                             <h2 className="text20 text-29 leading-[1.344827586206897] font-light  ">
@@ -640,7 +707,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             </div>
                                             <div className="">
                                                 <p className="text-paragraph text-19 font-light leading-[2]">
-                                                    Location: {item.secondSection.location.name}
+                                                    Location: {item.secondSection?.location?.name}
                                                 </p>
                                             </div>
                                         </div>
