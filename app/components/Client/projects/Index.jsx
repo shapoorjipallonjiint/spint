@@ -10,7 +10,6 @@ const Index = ({data,sectorData,countryData,serviceData}) => {
       <main>
         <Banner banner={data.banner} bannerAlt={data.bannerAlt} pageTitle={data.pageTitle} data={data.firstSection}/> 
         <ProjectLists sectorData={sectorData} countryData={countryData} serviceData={serviceData} data={data.projects}/>
-    
       </main>
       {/* <footer>
         <Footer />

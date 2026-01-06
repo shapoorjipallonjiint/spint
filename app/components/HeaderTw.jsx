@@ -132,9 +132,8 @@
 
 //   const length = activeSection.length;
 //   console.log(activeSection[length - 1]);
- 
 
-// useEffect(() => { 
+// useEffect(() => {
 
 //   const lastValue = Number(activeSection[activeSection.length - 1]);
 
@@ -145,7 +144,6 @@
 //     setLogostatus(false);
 //   }
 // }, [activeSection]);
-
 
 //   console.log(logostatus);
 //   const nextSection = sections.find(
@@ -193,7 +191,6 @@
 //     // }
 //   };
 
-
 //   const activeIndex = sections.findIndex((s) => s.id === activeSection);
 //     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -233,14 +230,13 @@
 //               </div>
 //             </a>
 //             <div className="flex lg:hidden justify-center items-center ">
-            
-            
+
 // <svg xmlns="http://www.w3.org/2000/svg" width="31" height="24" viewBox="0 0 33 26" fill="none">
 // <path d="M32 1L1 0.999997" stroke={logostatus ? "#1E45A2" : "#ffffff"} strokeWidth="2" strokeLinecap="round"/>
 // <path d="M32 13L1 13" stroke="#30B6F9" strokeWidth="2" strokeLinecap="round"/>
 // <path d="M32 25L1 25" stroke={logostatus ? "#1E45A2" : "#ffffff"} strokeWidth="2" strokeLinecap="round"/>
 // </svg>
-              
+
 //             </div>
 //             <a href="#">
 //               <div className="hidden lg:flex items-center justify-center z-[1]  cursor-pointer relative  h-[31px] bg-[#00000040] rounded-[15px]">
@@ -375,7 +371,6 @@
 //   />
 // )}
 
-
 //                 </div>
 //                 <div
 //                   className={`flex flex-col gap-3 justify-center items-center border-t ${menuOpen ? "border-[#626262]" : "border-white/25"} cursor-pointer scrlldwn`}
@@ -435,8 +430,6 @@
 // };
 
 // export default HeaderTw;
-
-
 
 "use client";
 
@@ -604,10 +597,18 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
     console.log(logostatus);
     const nextSection = sections.find((section) => section.id === `section${parseInt(activeSection[length - 1]) + 1}`);
     const scrollStep = 700;
+    const scrollLock = useRef(false);
 
     const handleScroll = (sectionId) => {
-        console.log("clicked");
-        console.log(sectionId);
+        if (scrollLock.current) return;
+
+        scrollLock.current = true;
+        setTimeout(() => {
+            scrollLock.current = false;
+        }, 1800);
+
+        console.log("clicked", sectionId);
+
         switch (sectionId) {
             case "section2":
                 setIndexToScroll(1);
@@ -628,20 +629,6 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                 setIndexToScroll(6);
                 break;
         }
-
-        const index = sections.findIndex((s) => s.id === sectionId);
-
-        // if (index !== -1) {
-        //   console.log(index * scrollStep)
-        //   gsap.to(window, {
-        //     scrollTo: {
-        //       y: (index * scrollStep) + 1,
-        //       autoKill: false, // important if using ScrollTrigger-based logic
-        //     },
-        //     duration: 1,
-        //     ease: "power2.inOut",
-        //   });
-        // }
     };
 
     const activeIndex = sections.findIndex((s) => s.id === activeSection);
@@ -652,21 +639,21 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
             <div className="fixed top-7 lg:top-13 right-0 lg:right-10 3xl:right-38 z-[50] w-full ">
                 <div className="flex gap-8 items-center justify-between lg:justify-end ps-5 lg:ps-0">
                     <div className="flex justify-center items-center lg:hidden">
-             <Image
-               src="/assets/images/main-logo.svg"
-               width={90}
-               height={55}
-               className={`logsc ${logostatus === true ? "block" : "hidden"}`}
-               alt="main-logo"
-             />
+                        <Image
+                            src="/assets/images/main-logo.svg"
+                            width={90}
+                            height={55}
+                            className={`logsc ${logostatus === true ? "block" : "hidden"}`}
+                            alt="main-logo"
+                        />
 
-             <Image
-               src="/assets/images/logo.svg"
-               width={90}
-               height={55}
-               className={`logsc ${logostatus === true ? "hidden" : "block"}`}
-               alt="logo"
-             />
+                        <Image
+                            src="/assets/images/logo.svg"
+                            width={90}
+                            height={55}
+                            className={`logsc ${logostatus === true ? "hidden" : "block"}`}
+                            alt="logo"
+                        />
                     </div>
                     <div className="flex gap-6 lg:gap-2">
                         <a href="#">
@@ -837,7 +824,15 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                                     className={`flex flex-col gap-3 justify-center items-center border-t ${
                                         menuOpen ? "border-[#626262]" : "border-white/25"
                                     } cursor-pointer scrlldwn`}
-                                    onClick={() => handleScroll(nextSection.id)}
+                                    // onClick={() => handleScroll(nextSection.id)}
+                                    onClick={() => {
+                                        if (!nextSection) {
+                                            handleScroll("section6");
+                                            return;
+                                        }
+
+                                        handleScroll(nextSection.id);
+                                    }}
                                 >
                                     <AnimatePresence mode="wait">
                                         <motion.p
@@ -881,7 +876,15 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
             </header>
             <div
                 className="block lg:hidden absolute bottom-0 z-20 right-1/2 translate-x-1/2"
-                onClick={() => handleScroll(nextSection.id)}
+                // onClick={() => handleScroll(nextSection.id)}
+                onClick={() => {
+                    if (!nextSection) {
+                        handleScroll("section6");
+                        return;
+                    }
+
+                    handleScroll(nextSection.id);
+                }}
             >
                 <div className="w-[35px] h-[35px] bg-primary flex items-center justify-center  mx-auto mb-7">
                     <div
