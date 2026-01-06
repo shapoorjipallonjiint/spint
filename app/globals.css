@@ -1231,3 +1231,46 @@ body::-webkit-scrollbar {
   border-radius: 50%;
   background-color: white;
 }
+
+
+.border-gradient {
+  position: relative;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 20px;
+}
+
+.border-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px; /* border thickness */
+  border-radius: 20px;
+  background: linear-gradient(90deg, #30B6F9, #1E45A2);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+
+/* Chrome, Edge, Safari */
+.custom-scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(24, 53, 95, 0.1);
+  background-color: var(--secondary);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  background-color: var(--secondary);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
+
+
+}
+
+
+

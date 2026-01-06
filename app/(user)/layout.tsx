@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "../globals.css";
 import ScrollToTop from "../components/common/ScrollToTop";
-import SmoothScroll from "../components/common/SmoothScroll";
+import { SearchProvider } from "@/contexts/searchContext";
 
 
 const dmSans = DM_Sans({
@@ -31,9 +31,11 @@ export default async function RootLayout({
       <body>
     <div lang="en">
      <div className={`${dmSans.variable} font-sans antialiased`}>
-      <SmoothScroll/>
+      {/* <SmoothScroll/> */}
+      <SearchProvider>
      <ScrollToTop />
         {children}
+     </SearchProvider>
       </div>
     </div>
     </body>
