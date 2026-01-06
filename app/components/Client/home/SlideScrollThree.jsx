@@ -1769,13 +1769,15 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     <h2 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.5] lg:max-w-[14ch]">
                                         {data.firstSection.subTitle.text}
                                     </h2>
-                                    <img
-                                        src="../assets/images/arrowbl.svg"
-                                        alt="Logo"
-                                        width={71}
-                                        height={71}
-                                        className="w-[30px] h-[30px] lg:w-[71px] lg:h-[71px] "
-                                    />
+                                    <Link href={"/about-us"}>
+                                        <Image
+                                            src="../assets/images/arrowbl.svg"
+                                            alt="Logo"
+                                            width={71}
+                                            height={71}
+                                            className="w-[30px] h-[30px] lg:w-[71px] lg:h-[71px] cursor-pointer"
+                                        />
+                                    </Link>
                                 </div>
 
                                 <div className="hidden lg:flex flex-col items-center gap-3" ref={iconsRef}>

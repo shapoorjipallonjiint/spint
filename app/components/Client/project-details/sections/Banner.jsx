@@ -149,7 +149,7 @@ const Banner = ({ firstSection, secondSection }) => {
 
                                 {/* Right item */}
                                 {secondSection.items[i + 2] && (
-                                    <div className="flex items-center py-3 lg:py-6">
+                                    <div className="flex items-center gap-2 py-3 lg:py-6">
                                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">
                                             {secondSection.items[i + 2]?.key}:
                                         </p>
