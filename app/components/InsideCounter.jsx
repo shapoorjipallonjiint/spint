@@ -55,53 +55,47 @@
 
 // export default InsideCounter;
 
-
 import { useEffect, useRef, useState } from "react";
 
 const InsideCounter = ({ value, duration = 2, delay = 0, suffix = "" }) => {
   const [display, setDisplay] = useState(0);
   const ref = useRef(null);
-  const hasTriggered = useRef(false); // Ensures it runs only once per mount
+  const hasTriggered = useRef(false);
 
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        const inView = entries[0].isIntersecting;
+      ([entry]) => {
+        if (!entry.isIntersecting || hasTriggered.current) return;
 
-        // Run only first time it becomes visible
-        if (inView && !hasTriggered.current) {
-          hasTriggered.current = true;
+        hasTriggered.current = true;
+        observer.unobserve(element);
 
-          const target = Number(String(value).replace(/[^0-9]/g, ""));
-          const totalFrames = Math.round(duration * 60);
-          let frame = 0;
+        const target = Number(String(value).replace(/[^0-9]/g, ""));
+        const totalFrames = Math.round(duration * 60);
+        let frame = 0;
 
-          const start = () => {
-            const animate = () => {
-              frame++;
-              const progress = frame / totalFrames;
-              const eased = 1 - Math.pow(2, -10 * progress);
+        const animate = () => {
+          frame++;
+          const progress = frame / totalFrames;
+          const eased = 1 - Math.pow(2, -10 * progress);
 
-              setDisplay(Math.round(target * eased));
+          setDisplay(Math.round(target * eased));
 
-              if (frame < totalFrames) {
-                requestAnimationFrame(animate);
-              }
-            };
+          if (frame < totalFrames) {
             requestAnimationFrame(animate);
-          };
+          }
+        };
 
-          setTimeout(start, delay);
-          observer.disconnect(); // stop observing to avoid re-running
-        }
+        setTimeout(() => requestAnimationFrame(animate), delay);
       },
       { threshold: 0.3 }
     );
 
     observer.observe(element);
+
     return () => observer.disconnect();
   }, [value, duration, delay]);
 
@@ -114,3 +108,4 @@ const InsideCounter = ({ value, duration = 2, delay = 0, suffix = "" }) => {
 };
 
 export default InsideCounter;
+

@@ -2385,6 +2385,17 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     ref={brdonRef}
                                     className=" lg:absolute  left-[-40px] 3xl:left-[-58px] right-[25%] h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none   bg-white "
                                 />
+                                 {/* <AnimatePresence mode="wait">
+                                    <motion.img
+                                        key={activeService?.image}
+                                        src={activeService?.image}
+                                        className="  object-cover object-top w-full h- z-20"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                    />
+                                </AnimatePresence> */}
                                 <div className="flex gap-2 items-center overflow-hidden">
                                     <div
                                         className="flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10 w-7 h-7"
@@ -2781,6 +2792,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         if (city.groupId === "sp-international") {
                                                             setSelectedCity({
                                                                 id: city.id,
+                                                                name: city.name,
                                                                 pjtcompleted: city.pjtcompleted,
                                                                 iconicpjts: city.iconicpjts,
                                                                 dedicatedemployees: city.dedicatedemployees,
@@ -3023,15 +3035,30 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             >
                                 <div className={` transition-all duration-500  outside `}>
                                     <div className="flex lg:block justify-center gap-2">
-                                        <div
-                                            // className={`me-2 bubble  bg-[#0015FF66] transition-all duration-500 delay-100 border  border-[#0015FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full
-                                            className={`me-2 bubble transition-all duration-500 delay-100 backdrop-blur-sm bg-[#00C8FF80] border border-[#00C8FF26]  text-white text-center p-3 rounded-full  
-                                lg:absolute left-[0%] top-[21%] ${
-                                    activeDot === selectedCity.id
-                                        ? "opacity-100 scale-full float-bubble1"
-                                        : "scale-80 opacity-0 "
-                                }   `}
-                                        >
+<div
+  onTouchEnd={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    router.push(
+      `/projects?country=${encodeURIComponent(selectedCity.name)}`
+    );
+  }}
+  onClick={(e) => {
+    // desktop fallback
+    e.stopPropagation();
+    router.push(
+      `/projects?country=${encodeURIComponent(selectedCity.name)}`
+    );
+  }}
+  className={`me-2 bubble cursor-pointer
+    transition-all duration-500 delay-100 backdrop-blur-sm
+    bg-[#00C8FF80] border border-[#00C8FF26]
+    text-white text-center p-3 rounded-full
+    ${activeDot === selectedCity.id ? "opacity-100 scale-100 float-bubble1" : "opacity-0 scale-80"}
+  `}
+>
+
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.pjtcompleted}
                                             </p>

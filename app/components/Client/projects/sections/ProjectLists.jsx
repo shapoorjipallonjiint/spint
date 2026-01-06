@@ -127,12 +127,12 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setBgImagehide(false);
     };
     const handleCountryChange = (opt) => {
-        // ✅ update filter immediately
+        // update filter immediately
         setSelectedCountry(opt);
         setCurrentPage(1);
         setBgImagehide(false);
 
-        // ✅ update URL (no state reading from it)
+        // update URL (no state reading from it)
         if (opt.name === "All") {
             router.push(pathname);
         } else {
@@ -146,7 +146,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setBgImagehide(false);
     };
 
-    // 🔹 Clear all filters
+    // Clear all filters
     const handleClearFilters = () => {
         setSelectedSector(sector[0]);
         setSelectedStatus(status[0]);
@@ -568,18 +568,16 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         height={395}
                                         className="w-full h-[200px] md:h-[250px] xl:h-[395px] object-cover"
                                     /> */}
-                                                                        <div
-  className="
+                                    <div
+                                        className="
     w-full
     h-[200px] md:h-[250px] xl:h-[395px]
-    bg-amber-50
+    bg-primary opacity-90
     flex items-center justify-center
   "
->
-  <span className="text-black text-29 font-medium">
-    395*250
-  </span>
-</div>
+                                    >
+                                        <span className="text-white text-29 font-medium">395*250</span>
+                                    </div>
                                     <div className=" opacity-0 group-hover:opacity-100 transition-all duration-300 absolute left-0 bottom-0 w-[50px] h-[50px]  xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -617,12 +615,15 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     </p>
                                     <p className="text-paragraph text-19 font-light leading-[2.44] pe-1 3xl:xl:pe-6 max-w-[18ch] truncate">
                                         BUA (Sq.ft):{" "}
-                                        {item?.secondSection?.items?.find((i) => i.key === "BUA (Sq.ft)")?.value ?? ""}
+                                        {item?.secondSection?.items?.find(
+                                            (i) => i.key === "BUA (Sq.ft)" || i.key === "BUA (Sq. ft)"
+                                        )?.value ?? ""}
                                     </p>
                                 </div>
                                 <div className="border-b border-b-black/20">
                                     <p className="text-paragraph text-19 font-light leading-[2.44]">
-                                        Location: {item?.secondSection?.location?.name}
+                                        Location:{" "}
+                                        {item?.secondSection?.items?.find((i) => i.key === "Location")?.value ?? ""}
                                     </p>
                                 </div>
                             </Link>
@@ -668,14 +669,12 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         />
                                     </div> */}
                                     <div className="w-full xl:w-full">
-  <div
-    className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full bg-amber-50 flex items-center justify-center"
-  >
-    <span className="text-black text-19 font-medium">
-      Image
-    </span>
-  </div>
-</div>
+                                        <div
+                                            className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full bg-primary flex items-center justify-center"
+                                        >
+                                            <span className="text-white text-19 font-medium">Image</span>
+                                        </div>
+                                    </div>
 
                                     <div>
                                         <div>
