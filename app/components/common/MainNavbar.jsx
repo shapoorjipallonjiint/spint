@@ -5,13 +5,22 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { navData } from "../data";
+import { useSearchContext } from "@/contexts/searchContext";
+import HomeMobileNavbarSearch from "@/app/components/common/HomeMobileNavbarSearch";
 
 
 const MainNavbar = () => {
     
     const [isSticky, setIsSticky] = useState(false);
     const [navHeight, setNavHeight] = useState(0);
+    const [result, setResult] = useState(null);
+    const searchRef = useRef(null);
+    const [searchActive, setSearchActive] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [loading, setLoading] = useState(false);
     const navRef = useRef(null);
+    const searchButtonRef = useRef(null);
+    const {setSearchActive: globalSetSearchActive} = useSearchContext();
 
     // Measure nav height once (to create spacer and avoid jump)
     useEffect(() => {
@@ -42,6 +51,76 @@ const MainNavbar = () => {
     }, []);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [openSubmenu, setOpenSubmenu] = useState(null);
+    const [mobileMenuOpenSearch,setMobileMenuOpenSearch] = useState(false)
+
+
+
+    useEffect(() => {
+        function handleClickOutside() {
+          if (
+            event.target instanceof Node &&
+            searchRef.current &&
+            !searchRef.current.contains(event.target) &&
+            searchButtonRef.current &&
+            !searchButtonRef.current.contains(event.target)
+          ) {
+            setSearchActive(false);
+          }
+        }
+      
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+      }, []);
+
+
+      useEffect(() => {
+        if (searchActive) {
+          const scrollY = window.scrollY;
+          document.body.dataset.scrollY = String(scrollY);
+          // document.body.style.position = 'fixed';
+          document.body.style.overflow = 'hidden';
+          document.body.style.top = `-${scrollY}px`;
+          document.body.style.width = '100%';
+          globalSetSearchActive(true);
+        } else {
+          const scrollY = document.body.dataset.scrollY;
+          document.body.style.position = '';
+          document.body.style.top = '';
+          document.body.style.width = '';
+          window.scrollTo(0, scrollY ? parseInt(scrollY) : 0);
+          globalSetSearchActive(false);
+        }
+      }, [searchActive]);
+
+
+      const handleSearch = async (e) => {
+        e.preventDefault();
+        try {
+          setLoading(true);
+          const res = await fetch("/api/search", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ searchQuery }),
+          });
+    
+          const data = await res.json();
+    
+          if (data.success) {
+            console.log(data)
+            setResult(data.data);
+
+            setSearchQuery("")
+          }
+        } catch (err) {
+          console.log(err);
+        }finally{
+          setLoading(false);
+        }
+      };
 
     // const menuItems = [
     //     {
@@ -334,7 +413,7 @@ const MainNavbar = () => {
                                         Employee login
                                     </button>
                                 </div>
-                                <button className="cursor-pointer bg-[#000000CC] rounded-full p-[2px] w-[30px] h-[30px]  2xl:w-[45px] 2xl:h-[45px] flex items-center justify-center ml-3 xl:ml-5 transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] group">
+                                <button ref={searchButtonRef} className="cursor-pointer bg-[#000000CC] rounded-full p-[2px] w-[30px] h-[30px]  2xl:w-[45px] 2xl:h-[45px] flex items-center justify-center ml-3 xl:ml-5 transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] group" onClick={(e)=>{e.stopPropagation();setSearchActive((prev)=>!prev);setResult(null)}}>
                                     <Image
                                         width={0}
                                         height={0}
@@ -344,6 +423,8 @@ const MainNavbar = () => {
                                     />
                                 </button>
                             </div>
+
+                           
 
                             {/* Mobile Menu Button */}
                             <button
@@ -380,6 +461,68 @@ const MainNavbar = () => {
                     </div>
                 </div>
             </nav>
+
+            <>
+        <div className={`max-md:hidden absolute inset-0 bg-white/30 backdrop-blur-sm z-40 h-screen w-full duration-300 transition-opacity ${searchActive ? "translate-y-[-5%] opacity-100" : "translate-y-[-100%] opacity-0"}`}></div>
+        <div  ref={searchRef} className={`max-md:hidden w-full bg-white z-40 ${result?.length > 0 ? "h-[500px]" : "h-[130px]"} shadow-xl absolute top-24 lg:top-20 xl:top-24 right-0 duration-300 flex flex-col ${searchActive ? "translate-y-[-5%]" : "translate-y-[-110%]"}`}>
+        <div className="container h-full">
+          {/* <div className="absolute top-[20px] xxxl:right-[60px] right-[30px]" onClick={() => setSearchActive(!searchActive)}>
+            <IoClose className="text-lg text-green-950 cursor-pointer" />
+          </div> */}
+
+          <form className="w-[100%] mt-3 px-2" onSubmit={handleSearch}>
+            
+            <div className="relative mt-10 bg-[#f4f4f4]">
+
+              <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} type="text" id="" className="outline-none block w-full px-2 py-3 text-sm text-black bg-transparent  placeholder:text-green-950  pl-[40px]" placeholder="Search Website" required />
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3  cursor-pointer" onClick={handleSearch}>
+                <svg className="w-4 h-4 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+              </div>
+
+              <div className="absolute inset-y-0 right-3 flex items-center ps-3  cursor-pointer" onClick={()=>setSearchActive(false)}>
+              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+              <path d="M5.63086 14.3692L10 10L14.3692 14.3692M14.3692 5.63086L9.99919 10L5.63086 5.63086" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              </div>
+
+            </div>
+          </form>
+
+          <div className="mt-5 px-4 flex flex-col gap-5 text-black h-3/4">
+            {result && result.length>0 ? <div className="text-md font-semibold">Results</div> : null}
+            {loading ? (<div className="flex justify-center items-center h-full"><div className="loader">
+            <div className="bar1"></div>
+            <div className="bar2"></div>
+            <div className="bar3"></div>
+            <div className="bar4"></div>
+            <div className="bar5"></div>
+            <div className="bar6"></div>
+            <div className="bar7"></div>
+            <div className="bar8"></div>
+            <div className="bar9"></div>
+            <div className="bar10"></div>
+            <div className="bar11"></div>
+            <div className="bar12"></div>
+        </div></div>) : (
+            <div className="overflow-hidden h-fit"><ul className="grid grid-cols-2 list-disc gap-5 text-xs px-4 h-full overflow-y-auto">
+              {result && result.length>0 ? result.map((item,index) => {
+                if(item.project){
+                  return <Link href={`/projects/${item.project.slug}`} key={index} className="cursor-pointer" onClick={()=>{setSearchActive(false);setResult(null)}}><li>{item.project.firstSection.title}</li></Link>
+                }else if(item.type == "news"){
+                  return <Link href={`/press-releases/${item.item.slug}`} key={index} className="cursor-pointer" onClick={()=>{setSearchActive(false);setResult(null)}}><li>{item.item.title}</li></Link>
+                }else if(item.type == "service"){
+                  return <Link href={`/services/${item.item.link}`} key={index} className="cursor-pointer" onClick={()=>{setSearchActive(false);setResult(null)}}><li>{item.item.title}</li></Link>
+                }
+              }) : (result?.length==0?<div>No Results</div>:null)}
+            </ul></div>)}
+          </div>
+
+        </div></div>
+        </>
+
+
             <div style={{ height: isSticky ? navHeight : navHeight }} className="transition-[height] duration-300" />
             {/* Mobile Menu Overlay */}
             <AnimatePresence>
@@ -433,7 +576,7 @@ const MainNavbar = () => {
                                 </button>
                             </div>
                             <div className="flex items-center p-3 absolute">
-                                <img src="./assets/images/main-logo.svg" alt="logo" />
+                                <img src="/assets/images/main-logo.svg" alt="logo" />
                             </div>
                             <div className="p-8 pt-28 flex flex-col gap-2 justify-between h-full">
                                 {/* Mobile Menu Items */}
@@ -539,7 +682,7 @@ const MainNavbar = () => {
                                             Employee login
                                         </button>
                                     </div>
-                                    <button className="w-full cursor-pointer bg-[#000000CC] rounded-full p-3 flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] text-white">
+                                    <button onClick={()=>setMobileMenuOpenSearch(true)} className="w-full cursor-pointer bg-[#000000CC] rounded-full p-3 flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] text-white">
                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path
                                                 strokeLinecap="round"
@@ -553,6 +696,7 @@ const MainNavbar = () => {
                                 </motion.div>
                             </div>
                         </motion.div>
+                        <HomeMobileNavbarSearch isOpen={mobileMenuOpenSearch} onClose={() => setMobileMenuOpenSearch(false)} />
                     </>
                 )}
             </AnimatePresence>
