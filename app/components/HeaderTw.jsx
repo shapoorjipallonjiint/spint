@@ -442,6 +442,7 @@ import NavPage from "../components/common/NavPage";
 import NavPageSearch from "../components/common/NavPageSearch";
 import { AnimatePresence, motion } from "framer-motion";
 import HomeMobileNavbar from "../components/common/HomeMobileNavbar";
+import HomeMobileNavbarSearch from "../components/common/HomeMobileNavbarSearch";
 import Image from "next/image";
 
 gsap.registerPlugin(ScrollToPlugin);
@@ -582,6 +583,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
 
     const [logostatus, setLogostatus] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [mobileMenuOpenSearch,setMobileMenuOpenSearch] = useState(false)
 
     const length = activeSection.length;
     console.log(activeSection[length - 1]);
@@ -699,7 +701,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                             </div>
                         </a>
                     </div>
-                    <div className="hidden lg:flex items-center justify-center bg-black rounded-full p-2 w-11 h-11" onClick={()=>setSearchActive(!searchActive)}>
+                    <div className="hidden lg:flex items-center justify-center bg-black rounded-full p-2 w-11 h-11" onClick={()=>{setSearchActive(!searchActive);setMenuOpen(false)}}>
                         {!searchActive ? (<Image src="../assets/images/search.svg" alt="Logo" width={18} height={18} />) : 
                         (<svg
   xmlns="http://www.w3.org/2000/svg"
@@ -912,7 +914,8 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
             </div>
             <NavPageSearch isOpen={searchActive} closeMenu={() => setMenuOpen(false)} searchActive={searchActive}/>
             <NavPage isOpen={menuOpen} closeMenu={() => setMenuOpen(false)}/>
-            <HomeMobileNavbar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+            <HomeMobileNavbar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} setMobileMenuOpenSearch={setMobileMenuOpenSearch}/>
+            <HomeMobileNavbarSearch isOpen={mobileMenuOpenSearch} onClose={() => setMobileMenuOpenSearch(false)} />
         </>
     );
 };
