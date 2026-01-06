@@ -439,6 +439,7 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import NavPage from "../components/common/NavPage";
+import NavPageSearch from "../components/common/NavPageSearch";
 import { AnimatePresence, motion } from "framer-motion";
 import HomeMobileNavbar from "../components/common/HomeMobileNavbar";
 import Image from "next/image";
@@ -460,6 +461,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
     const headerRef = useRef(null);
     const navItemsRef = useRef([]);
     navItemsRef.current = [];
+    const [searchActive, setSearchActive] = useState(false);
 
     const addToNavRefs = (el) => {
         if (el && !navItemsRef.current.includes(el)) {
@@ -636,7 +638,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
 
     return (
         <>
-            <div className="fixed top-7 lg:top-13 right-0 lg:right-10 3xl:right-38 z-[50] w-full ">
+            <div className="fixed top-7 lg:top-13 right-0 lg:right-10 3xl:right-38 z-50 w-full">
                 <div className="flex gap-8 items-center justify-between lg:justify-end ps-5 lg:ps-0">
                     <div className="flex justify-center items-center lg:hidden">
                         <Image
@@ -697,8 +699,17 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                             </div>
                         </a>
                     </div>
-                    <div className="hidden lg:flex items-center justify-center bg-black rounded-full p-2 w-11 h-11">
-                        <Image src="../assets/images/search.svg" alt="Logo" width={18} height={18} />
+                    <div className="hidden lg:flex items-center justify-center bg-black rounded-full p-2 w-11 h-11" onClick={()=>setSearchActive(!searchActive)}>
+                        {!searchActive ? (<Image src="../assets/images/search.svg" alt="Logo" width={18} height={18} />) : 
+                        (<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="#30b6f9"
+>
+  <path d="M18.3 5.7a1 1 0 0 0-1.4 0L12 10.6 7.1 5.7a1 1 0 1 0-1.4 1.4L10.6 12l-4.9 4.9a1 1 0 1 0 1.4 1.4L12 13.4l4.9 4.9a1 1 0 0 0 1.4-1.4L13.4 12l4.9-4.9a1 1 0 0 0 0-1.4Z" />
+</svg>)}
+
+
                     </div>
                 </div>
             </div>
@@ -746,7 +757,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                             ref={headerRef}
                             className={`shadow ml-0 my-12 w-[125px] 3xl:w-[133px] h-[calc(100vh-100px)] relative
       transition-all duration-300
-      ${menuOpen ? "bg-white" : ""}
+      ${menuOpen ? "bg-white" : "bg-primary"}
   `}
                         >
                             <div className="bg-transparent  w-full absolute z-[-2] bxone"></div>
@@ -802,7 +813,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
 )} */}
 
                                     <button
-                                        onClick={() => setMenuOpen((prev) => !prev)}
+                                        onClick={() => {setSearchActive(false);setMenuOpen((prev) => !prev)}}
                                         className="relative w-[31px] h-[28px] flex items-center justify-center cursor-pointer"
                                         aria-label="Menu Toggle"
                                     >
@@ -899,7 +910,8 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                     </div>
                 </div>
             </div>
-            <NavPage isOpen={menuOpen} closeMenu={() => setMenuOpen(false)} />
+            <NavPageSearch isOpen={searchActive} closeMenu={() => setMenuOpen(false)} searchActive={searchActive}/>
+            <NavPage isOpen={menuOpen} closeMenu={() => setMenuOpen(false)}/>
             <HomeMobileNavbar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
         </>
     );
