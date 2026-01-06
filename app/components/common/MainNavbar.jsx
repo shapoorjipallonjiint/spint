@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { navData } from "../data";
 import { useSearchContext } from "@/contexts/searchContext";
+import HomeMobileNavbarSearch from "@/app/components/common/HomeMobileNavbarSearch";
 
 
 const MainNavbar = () => {
@@ -50,6 +51,7 @@ const MainNavbar = () => {
     }, []);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [openSubmenu, setOpenSubmenu] = useState(null);
+    const [mobileMenuOpenSearch,setMobileMenuOpenSearch] = useState(false)
 
 
 
@@ -574,7 +576,7 @@ const MainNavbar = () => {
                                 </button>
                             </div>
                             <div className="flex items-center p-3 absolute">
-                                <img src="./assets/images/main-logo.svg" alt="logo" />
+                                <img src="/assets/images/main-logo.svg" alt="logo" />
                             </div>
                             <div className="p-8 pt-28 flex flex-col gap-2 justify-between h-full">
                                 {/* Mobile Menu Items */}
@@ -680,7 +682,7 @@ const MainNavbar = () => {
                                             Employee login
                                         </button>
                                     </div>
-                                    <button className="w-full cursor-pointer bg-[#000000CC] rounded-full p-3 flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] text-white">
+                                    <button onClick={()=>setMobileMenuOpenSearch(true)} className="w-full cursor-pointer bg-[#000000CC] rounded-full p-3 flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] text-white">
                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path
                                                 strokeLinecap="round"
@@ -694,6 +696,7 @@ const MainNavbar = () => {
                                 </motion.div>
                             </div>
                         </motion.div>
+                        <HomeMobileNavbarSearch isOpen={mobileMenuOpenSearch} onClose={() => setMobileMenuOpenSearch(false)} />
                     </>
                 )}
             </AnimatePresence>

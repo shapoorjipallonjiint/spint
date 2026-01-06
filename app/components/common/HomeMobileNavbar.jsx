@@ -5,7 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { navData } from "../data";
 
-const HomeMobileNavbar = ({ isOpen, onClose }) => {
+const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null);
 
   const toggleSubmenu = (title) => {
@@ -185,7 +185,7 @@ const HomeMobileNavbar = ({ isOpen, onClose }) => {
                   </button>
                 </div>
 
-                <button className="w-full bg-black/80 rounded-full p-3 flex items-center justify-center gap-2 text-white">
+                <button className="w-full bg-black/80 rounded-full p-3 flex items-center justify-center gap-2 text-white" onClick={()=>setMobileMenuOpenSearch(true)}>
                   <span className="text-sm uppercase">Search</span>
                 </button>
               </motion.div>
