@@ -61,11 +61,11 @@ const OurValues = ({data}) => {
         </motion.h2> */}
         <H2Title titleText={data.title} marginClass={"mb-4 xl:mb-10 3xl:mb-[54px]"} />
 
-        <div className="md:max-w-[70%] lg:max-w-[80%] 2xl:max-w-[74.51%]">
+        <div className="md:max-w-[70%] lg:max-w-[80%] 2xl:max-w-[74.51%] border-t border-black/20">
           {data.items.map((item, index) => (
             // <ValueItem key={index} item={item} />
             <motion.div key={index} variants={paragraphItem} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}>
-            <div className={`group grid lg:grid-cols-[1.2fr_2.4fr_auto] py-2 2xl:py-[16px] cursor-pointer border-b border-black/20 first:border-t transition-all duration-300
+            <div className={`group grid lg:grid-cols-[1.2fr_2.4fr_auto] py-2 2xl:py-[16px] cursor-pointer border-b border-black/20  transition-all duration-300
                  ${isHovered === index ? "items-start" : "items-center"}`}
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={() => handleMouseLeave(index)}
@@ -83,7 +83,7 @@ const OurValues = ({data}) => {
               <div className="grid grid-cols-[2fr_auto] overflow-hidden gap-10 lg:gap-[217px]">
                 {/* Expanding List */}
                 <div className={`transition-all duration-500 ease-in-out overflow-hidden  ${isHovered === index ? `opacity-100 h-[${height}px]` : "opacity-0 h-0"}`} >
-                  <div key={isHovered === index ? "open" : "closed"} dangerouslySetInnerHTML={{__html:item.description}} className="our-values-about">
+                  <div key={isHovered === index ? "open" : "closed"} dangerouslySetInnerHTML={{__html:item.description}} className="our-values-about ">
 
                   </div>
                   {/* <ul ref={listRef} key={isHovered === index ? "open" : "closed"} className="text-sm xl:text-19 leading-[1.85] max-w-50ch ps-6 lg:ps-12 py-[11px]">
@@ -93,7 +93,7 @@ const OurValues = ({data}) => {
                   </ul> */}
                 </div>
 
-                <div className={`hidden lg:flex w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 ${isHovered === index ? "rotate-180" : ""
+                <div className={`hidden lg:flex w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 ${isHovered === index ? "" : "rotate-180"
                   }`}>
                   <Image src="/assets/images/about-us/arrow-top1.svg" width={20} height={20} alt="arrow" className="w-3 h-3" />
                 </div>

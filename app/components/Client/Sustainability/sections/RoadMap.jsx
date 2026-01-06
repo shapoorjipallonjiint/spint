@@ -40,7 +40,7 @@ const RoadMap = ({data}) => {
   return (
     <section className="relative pt-text90 pb25  overflow-hidden" ref={sectionRef}>
       <div className="reveal-overlay4 absolute inset-0 bg-black/20 z-20"></div>
-      <div className="absolute bottom-10 right-0 2xl:right-0 3xl:right-0 w-[200px] md:w-[359px] h-[340px] md:h-[625px] 3xl:w-[561px] 3xl:h-[725px] z-[-1]">
+      <div className="absolute bottom-30 right-0 2xl:right-0 3xl:right-0 w-[200px] md:w-[359px] h-[340px] md:h-[625px] 3xl:w-[561px] 3xl:h-[725px] z-[-1]">
         <MotionImage width={1920} height={800} style={{y:shapeY}} src={assets.mainShape2} alt="" />
         </div>
       <div className="container">
