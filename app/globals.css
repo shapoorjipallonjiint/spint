@@ -1129,7 +1129,36 @@ body::-webkit-scrollbar {
   transform-origin: center;
 }
 
-.our-expertise-item-desc ul {
+.our-values-about ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none; 
+}
+ 
+.our-values-about li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 7px;
+  font-weight: 300;
+
+  color: #464646;
+
+}
+ 
+/* Custom dot */
+.our-values-about li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 7px;
+  height: 7px;
+  background-color: #30B6F9;
+}
+.expertise-stretch .swiper-wrapper { 
+    display: grid !important; 
+    grid-auto-flow: column;
+}.our-expertise-item-desc ul {
   list-style: none;
   padding: 0;
   margin: 0;

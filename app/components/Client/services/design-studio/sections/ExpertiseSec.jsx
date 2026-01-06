@@ -124,7 +124,7 @@ const ExpertiseSec = ({ data }) => {
                 spaceBetween: 40,
               },
             }}
-            className="expertise-swiper !overflow-visible"
+            className="expertise-swiper !overflow-visible expertise-stretch"
           >
             {data.items.map((item, index) => {
               const distance = getSlideDistance(index);
@@ -133,9 +133,11 @@ const ExpertiseSec = ({ data }) => {
               return (
                 <SwiperSlide key={index}>
                   {({ isActive }) => (
-                    <div
+                   <div 
                       key={index}
-                      className="relative"
+                      className="relative h-full">
+                     <div  
+                      className=" overflow-hidden h-full"
                       
                     >
                       <MotionImage
@@ -143,7 +145,7 @@ const ExpertiseSec = ({ data }) => {
                       height={300}
                         src={item.image}
                         alt={item.imageAlt}
-                        className="w-full h-[200px] md:h-[250px] lg:h-[300px] xl:h-[333px] object-cover"
+                        className="w-full h-[200px] md:h-[250px] lg:h-[300px] xl:h-[333px] object-cover overflow-hidden"
                         // variants={moveUp(0.2)}
                         // initial="hidden"
                         // whileInView="show"
@@ -162,15 +164,16 @@ const ExpertiseSec = ({ data }) => {
                         }}
                         style={{ transformStyle: "preserve-3d" }}
                       />
-                      <div  className="pl-0 pt-4 xl:p-10 3xl:pb-[55px] xl:border-l border-white/30">
+                      <div  className="pl-0 pt-4 xl:p-10 3xl:pb-[55px] xl:border-l border-white/30 h-full ">
                         <h3  className="text-20 xl:text-29 leading-[1.2] 3xl:leading-[1.724137931034483] font-light xl:font-extralight mb-2 xl:mb-[12px]">
                           {item.title}
                         </h3>
-                        <p className="text-19 leading-[1.526315789473684] font-light">
+                        <p className="text-19 leading-[1.526315789473684] font-light ">
                           {item.description}
                         </p>
                       </div>
                     </div>
+                   </div>
                   )}
                 </SwiperSlide>
               );
