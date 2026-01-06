@@ -20,6 +20,7 @@ import CountUp from "../../CountUp.jsx";
 import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
 import { mapBackendCitiesToMapCities } from "../../../../lib/mapDataHelper";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 // const cityGroups = [
 //     {
@@ -1619,6 +1620,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         }
     }, [data]);
 
+    const router = useRouter();
+
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
             <div className="fixed w-screen h-screen z-[500] mswd pointer-events-none grid content-center load-sec2">
@@ -2929,10 +2932,26 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             <div>
                                                                 {/* Bubble 1 */}
                                                                 <div
-                                                                    className={`bubble bg-[#00C8FF80] transition-all duration-500 delay-100 border border-[#00C8FF26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
-            absolute left-[0%] top-[21%] ${
-                activeDot === city.id ? "opacity-100 scale-full float-bubble1" : "scale-80 opacity-0"
-            }`}
+                                                                    className={`bubble bg-[#00C8FF80]
+  transition-all duration-500 delay-100
+  border border-[#00C8FF26]
+  backdrop-blur-sm text-white text-center
+  p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
+  absolute left-[0%] top-[21%]
+  cursor-pointer
+  ${
+      activeDot === city.id
+          ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
+          : "opacity-0 scale-80 pointer-events-none"
+  }`}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        router.push(
+                                                                            `/projects?country=${encodeURIComponent(
+                                                                                city.name
+                                                                            )}`
+                                                                        );
+                                                                    }}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
                                                                         <CountUp

@@ -62,7 +62,7 @@ const ExpertiseSec = ({data}) => {
         {/* Header */}
         <div className="mb-50px">
             <H2Title titleText={data.title} titleColor="white" marginClass="mb-4 xl:mb-5" />
-            <motion.p variants={moveUp(0.4)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} className="text-19 leading-[1.473684210526316] opacity-90 font-light max-w-[85ch] pb-2 sm:pb-0">
+            <motion.p variants={moveUp(0.4)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} className="text-19 leading-[1.473684210526316] font-light max-w-[85ch] pb-2 sm:pb-0">
             {data.subTitle}
           </motion.p>
         </div>
@@ -141,12 +141,13 @@ const ExpertiseSec = ({data}) => {
                       <h3 className="text-29 leading-[1.344827586206897] font-light mb-4  xl:mb-5">
                         {item.title}
                       </h3>
-                      <p className="text-white/80 text-19 leading-[1.473684210526316] font-light mb-8 2xl:mb-[45px]">
+                      <p className="text-white text-19 leading-[1.473684210526316] font-light mb-8 2xl:mb-[45px]">
                         {item.subTitle}
                       </p>
 
                       {/* Services */}
-                      <div dangerouslySetInnerHTML={{__html:item.description}} className='our-expertise-item-desc'>
+                      <p className="text-white text-29 leading-[1.473684210526316] font-light mb-5">Key Services</p>
+                      <div dangerouslySetInnerHTML={{__html:item.description}} className='our-expertise-item-desc text-white'>
                         {/* <h4 className="text-29 leading-[1.344827586206897] font-light mb-3 xl:mb-5">
                           {item.subTitle}
                         </h4> */}

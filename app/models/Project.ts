@@ -75,8 +75,7 @@ const projectSchema = new mongoose.Schema({
       title_ar: { type: String },
 
       location: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Country",
+        type: String,
         required: true,
       },
 
