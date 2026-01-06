@@ -311,6 +311,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const currentIndexRef = useRef(0);
+    const MotionImage = motion.create(Image)
 
     const sections = [section1Ref, section2Ref, section3Ref, section4Ref, section5Ref, section6Ref, section7Ref];
 
@@ -1769,7 +1770,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     <h2 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.5] lg:max-w-[14ch]">
                                         {data.firstSection.subTitle.text}
                                     </h2>
-                                    <img
+                                    <Image
                                         src="../assets/images/arrowbl.svg"
                                         alt="Logo"
                                         width={71}
@@ -1782,13 +1783,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     <p className="text-13 uppercase font-light">Stay Connected</p>
                                     <div className="flex items-center gap-2">
                                         <div className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full">
-                                            <img src="../assets/images/ln.svg" alt="LinkedIn" width={15} height={14} />
+                                            <Image src="../assets/images/ln.svg" alt="LinkedIn" width={15} height={14} />
                                         </div>
                                         <div className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full">
-                                            <img src="../assets/images/fb.svg" alt="Facebook" width={8} height={14} />
+                                            <Image src="../assets/images/fb.svg" alt="Facebook" width={8} height={14} />
                                         </div>
                                         <div className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full">
-                                            <img src="../assets/images/ytube.svg" alt="YouTube" width={16} height={11} />
+                                            <Image src="../assets/images/ytube.svg" alt="YouTube" width={16} height={11} />
                                         </div>
                                     </div>
                                 </div>
@@ -1821,7 +1822,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         >
                             <div className="absolute top-0 w-full z-10 h-full right-0 " ref={leftBgRef}>
                                 <div className="absolute top-0 left-0 z-20 w-full h-full bg-gradient-to-l from-black/30 from-0% to-black/80 to-100%"></div>
-                                <img
+                                <Image
                                     src={data.secondSection.image}
                                     alt={data.secondSection.imageAlt}
                                     width={2000}
@@ -1968,14 +1969,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[800px_auto] 3xl:grid-cols-[1021px_auto] h-full bg-transparent">
                         <div className="lftblc relative right-0 h-[52.6dvh] lg:h-auto" ref={splftimng}>
                             <div className="bg-primary absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
-                            <img
+                            <Image
                                 src={data.thirdSection.image}
                                 alt={data.thirdSection.imageAlt}
                                 width={2000}
                                 height={1500}
                                 className="w-full h-full object-cover absolute object-right hidden lg:block"
                             />
-                            <img
+                            <Image
                                 src={data.thirdSection.image}
                                 alt={data.thirdSection.imageAlt}
                                 width={2000}
@@ -1991,7 +1992,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 className="bg-white lg:bg-primary absolute w-full left-0 h-full top-0 z-[-1]"
                                 ref={sprgtbg}
                             ></div>
-                            <img
+                            <Image
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
@@ -2237,7 +2238,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
             >
                 <section id="section4" className="h-screen relative overflow-hidden whitebgref scroll-area">
                     <figure className="absolute w-full h-full bg-white z-[-1]" ref={srvBgimg}>
-                        <img
+                        <Image
+                        width={1500}
+                        height={1000}
                             className="absolute w-full h-full object-cover"
                             src="../assets/images/services-bg.jpg"
                             alt=""
@@ -2252,7 +2255,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 ref={srvLftBx}
                             >
                                 <div className="absolute -top-58 right-0    " ref={srvsVct}>
-                                    <img
+                                    <Image
                                         src="../assets/images/svg/srv-vct.svg"
                                         alt="Logo"
                                         className="h-full w-full"
@@ -2305,7 +2308,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             <span className="duration-400"> {service.title}</span>
                                                         </p>
                                                     </Link>
-                                                    <img
+                                                    <Image
                                                         src="../assets/images/services/arrowblw.svg"
                                                         alt="Arrow"
                                                         width={21}
@@ -2340,7 +2343,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             <div className="lg:absolute h-full w-full relative overflow-hidden" ref={srvsImgRef}>
                                 {/* BASE IMAGE = PREVIOUS SERVICE IMAGE */}
                                 {prevImage && (
-                                    <img
+                                    <Image
+                                    width={1500}
+                                    height={1000}
                                         src={prevImage}
                                         className="absolute inset-0 object-cover object-top w-full h-full z-10"
                                     />
@@ -2348,7 +2353,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                 {/* NEW IMAGE FADES ABOVE IT */}
                                 <AnimatePresence mode="wait">
-                                    <motion.img
+                                    <MotionImage
+                                    width={1500}
+                                    height={1000}
                                         key={activeService?.image}
                                         src={activeService?.image}
                                         className="absolute inset-0 object-cover object-top w-full h-full z-20"
@@ -2477,7 +2484,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         <div ref={sectorLeft} className="flex lg:h-full bg-primary lg:bg-transparent">
                             <div className="w-full pt-[16.5dvh] pl-5 lg:pt-25 xl:pt-25 3xl:pt-33 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]">
                                 <div className="absolute -top-58 right-0   " ref={srvsVct}>
-                                    <img
+                                    <Image
                                         src="../assets/images/svg/srv-vct.svg"
                                         alt="Logo"
                                         className="h-full w-full"
@@ -2499,7 +2506,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         <div className="lg:pb-4 relative h-full flex items-center">
                                             {/* curved line svg */}
                                             <div className="  absolute top-0 left-0 h-full hidden lg:flex flex-col justify-center">
-                                                <img src="../assets/images/sectors/svg-crv.svg" alt="curved line svg" />
+                                                <Image width={81} height={83} src="../assets/images/sectors/svg-crv.svg" alt="curved line svg" />
                                             </div>
 
                                             <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pb-6 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
@@ -2546,7 +2553,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             {/* Show icon ONLY when at center */}
                                                             {isActive && (
                                                                 <div className="hidden lg:flex bg-[#30B6F94D] rounded-full w-[83px] h-[83px]  items-center justify-center relative opacity-0">
-                                                                    <img
+                                                                    <Image
+                                                                    width={200}
+                                                                    height={200}
                                                                         src={sector.icon}
                                                                         alt={`${sector.name} icon`}
                                                                         className="h-[40px]"
@@ -2580,7 +2589,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                             <div className="hidden lg:block absolute left-[-10px] top-1/2 -translate-y-[75%] z-10">
                                                 <div className="bg-[#30B6F94D] rounded-full w-[83px] h-[83px] flex items-center justify-center relative">
-                                                    <img
+                                                    <Image
+                                                    width={200}
+                                                    height={200}
                                                         key={activeSector.icon}
                                                         src={activeSector.icon}
                                                         alt={`${activeSector.name} icon`}
@@ -2618,7 +2629,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 pointerEvents: idx === displayedIndex ? "auto" : "none",
                                             }}
                                         >
-                                            <img
+                                            <Image
+                                            width={1500}
+                                            height={1000}
                                                 src={sector.image}
                                                 alt={`${sector.name} sector`}
                                                 className="object-cover w-full h-full"
@@ -2638,7 +2651,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             className="flex items-center gap-2 uppercase font-light text-[14px] text-white"
                                         >
                                             View All Projects
-                                            <img
+                                            <Image
+                                            width={27}
+                                            height={27}
                                                 src="../assets/images/icons/arrow-right.svg"
                                                 alt="arrow right"
                                                 className="group-hover:translate-x-2 transition-all duration-300"
@@ -2711,7 +2726,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         <div className="hidden lg:block tlnits px-15 py-6 xl:pt-[42px] xl:pb-[49px] group cursor-pointer">
                                             <Link href="/projects" className="flex items-center gap-2">
                                                 View All Projects
-                                                <img
+                                                <Image
+                                                width={27}
+                                                height={27}
                                                     src="../assets/images/icons/arrow-right.svg"
                                                     alt="arrow right"
                                                     className="group-hover:translate-x-2 transition-all duration-300"
@@ -2755,7 +2772,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                   height={355}
                   className="object-cover img-f select-none min-w-[86.2dvh] max-h-[355px] lg:hidden  "
                 /> */}
-                                    <motion.img
+                                    <MotionImage
                                         // initial={{ opacity: 0 }}
                                         // animate={{ opacity: 1 }}
                                         // transition={{ duration: 1.5, ease: "easeOut" }}
@@ -3122,7 +3139,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
             >
                 <section id="section7" className="h-screen relative overflow-hidden whitebgref scroll-area ">
                     <figure ref={cutltimg} className="absolute w-full h-full z-[-1] mx-auto my-0 left-0 right-0">
-                        <img
+                        <Image
+                        width={1500}
+                        height={1000}
                             className="absolute object-cover w-full h-full z-0"
                             src={data.seventhSection.image}
                             alt={data.seventhSection.imageAlt}
