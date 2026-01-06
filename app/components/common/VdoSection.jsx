@@ -90,7 +90,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
                 }
                 : {}
             }
-            className="container-scroll-effect lg:max-w-[100%] mx-auto pt-5">
+            className="container-scroll-effect lg:max-w-[100%] mx-auto pt-5 2xl:pt-3">
             <VideoPlayer src={data.video} poster={data.poster} />
           </motion.div>
         </div>

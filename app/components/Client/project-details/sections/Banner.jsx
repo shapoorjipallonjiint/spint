@@ -3,10 +3,11 @@ import { useMediaQuery } from "react-responsive";
 // import { projectdetails } from "../data";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { fadeIn, moveUp, paragraphItem } from "../../../motionVarients";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
 import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
+import ImageLightbox from "../../../../components/common/ImagePopup";
 import Link from "next/link";
 
 const Banner = ({ firstSection, secondSection }) => {
@@ -16,6 +17,7 @@ const Banner = ({ firstSection, secondSection }) => {
     const sectionRef = useRef(null);
     const imageContainerRefTwo = useRef(null);
     const MotionImage = motion.create(Image);
+    const [activeImage, setActiveImage] = useState(null);
 
     // Parallax for main image container
     const { scrollYProgress: imageProgress } = useScroll({
@@ -78,19 +80,9 @@ const Banner = ({ firstSection, secondSection }) => {
                 className="container relative bottom-19 md:bottom-28 lg:bottom-[120px] xl:bottom-[150px] left-0 z-[2] overflow-hidden"
                 ref={imageContainerRefTwo}
             >
-                {/* <MotionImage style={{ y: imageY }} variants={fadeIn(0.6)} initial="hidden" animate="show" viewport={{ amount: 0.2, once: true }} src={firstSection.coverImage} width={1620} height={750} alt={firstSection.coverImageAlt}
+                {/* <MotionImage onClick={() => setActiveImage(firstSection.coverImage)} style={{ y: imageY }} variants={fadeIn(0.6)} initial="hidden" animate="show" viewport={{ amount: 0.2, once: true }} src={firstSection.coverImage} width={1620} height={750} alt={firstSection.coverImageAlt}
           className="w-full h-[250px] lg:h-[400px] xl:h-[500px] 2xl:h-[600px] 3xl:h-[750px] object-cover scale-110" /> */}
-                <div
-                    className="
-    w-full
-    h-[250px]
-    lg:h-[400px]
-    xl:h-[500px]
-    2xl:h-[600px]
-    3xl:h-[750px]
-    bg-amber-50 text-29 flex items-center justify-center
-  "
-                >
+                <div className="w-full h-62.5 lg:h-100 xl:h-125 2xl:h-150 3xl:h-[750px] bg-primary text-29 text-white flex items-center justify-center">
                     Image
                 </div>
             </div>
@@ -190,6 +182,7 @@ const Banner = ({ firstSection, secondSection }) => {
                     className="w-md200 h-[376px] lg:w-[577px] lg:h-[576px] object-fit"
                 />
             </div>
+            <ImageLightbox src={activeImage} alt="Certificate preview" onClose={() => setActiveImage(null)} />
         </section>
     );
 };
