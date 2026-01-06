@@ -668,17 +668,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             className="w-full h-full   md:h-[350px] xl:min-w-[274px] lg:h-[208px] object-fit"
                                         />
                                     </div> */}
-                                    <div className="w-full xl:w-[274px]">
+                                    <div className="w-full xl:w-full">
                                         <div
-                                            className="
-      w-full
-      h-full
-      md:h-[350px]
-      lg:h-[208px]
-      xl:min-w-[274px]
-      bg-primary
-      flex items-center justify-center
-    "
+                                            className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full bg-primary flex items-center justify-center"
                                         >
                                             <span className="text-white text-19 font-medium">Image</span>
                                         </div>
@@ -800,7 +792,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                     <div
                         className={`${
                             bgImagehide ? "block" : "hidden"
-                        } absolute top-[12%] 3xl:top-auto lg:bottom-[30%] translate-y-[58px] 3xl:bottom-3/7    right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
+                        } absolute top-[25%] 3xl:top-auto lg:bottom-[30%] xl:bottom-[30%] translate-y-[58px] 3xl:bottom-3/7    right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
                     >
                         <MotionImage
                             width={1500}

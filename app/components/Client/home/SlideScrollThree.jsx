@@ -2392,6 +2392,17 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     ref={brdonRef}
                                     className=" lg:absolute  left-[-40px] 3xl:left-[-58px] right-[25%] h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none   bg-white "
                                 />
+                                 {/* <AnimatePresence mode="wait">
+                                    <motion.img
+                                        key={activeService?.image}
+                                        src={activeService?.image}
+                                        className="  object-cover object-top w-full h- z-20"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                    />
+                                </AnimatePresence> */}
                                 <div className="flex gap-2 items-center overflow-hidden">
                                     <div
                                         className="flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10 w-7 h-7"

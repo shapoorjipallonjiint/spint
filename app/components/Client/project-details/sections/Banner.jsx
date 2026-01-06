@@ -94,9 +94,9 @@ const Banner = ({ firstSection, secondSection }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-[825px_1fr]  border-t border-black/20  "
+                    className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr]  border-t border-black/20  "
                 >
-                    <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 md:border-b-0">
+                    <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 lg:border-b-0">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Project:</p>
                         <p className="text-19 font-light   leading-[1.475] text-black">{firstSection.title}</p>
                     </div>
@@ -113,9 +113,9 @@ const Banner = ({ firstSection, secondSection }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-[825px_1fr]  border-t border-black/20  "
+                    className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr]  border-t border-black/20  "
                 >
-                    <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 md:border-b-0">
+                    <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 lg:border-b-0">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Sector:</p>
                         <p className="text-19 font-light   leading-[1.475] text-black">{secondSection.sector?.name}</p>
                     </div>
@@ -137,10 +137,10 @@ const Banner = ({ firstSection, secondSection }) => {
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
-                                className={`grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-[825px_1fr] border-t border-black/20 last:border-b`}
+                                className={`grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr] border-t border-black/20 last:border-b`}
                             >
                                 {/* Left item */}
-                                <div className="flex items-center py-3 lg:py-6 border-black/20 md:border-b-0 border-b">
+                                <div className="flex items-center py-3 lg:py-6 border-black/20 lg:border-b-0 border-b">
                                     <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">
                                         {item?.key}:
                                     </p>

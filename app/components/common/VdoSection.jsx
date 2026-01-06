@@ -61,7 +61,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
         <MotionImage width={1500} height={1000} style={{ y: shapeY }} src={assets.mainShape2} alt="" className="w-[152px] lg:w-[400px] xl:w-[55%] 2xl:w-[70%] 3xl:w-[100%] h-fit object-contain vdo-shape" />
       </div>
       <div className="container">
-        <div className="w-full lg:max-w-[70%] xl:max-w-[95%] 2xl:max-w-[95%] 3xl:max-w-[70%] ml-auto 2xl:mr-[137px] relative z-10 overflow-hidden vdo-content-wrapper">
+        <div className="w-full lg:max-w-[70%] xl:max-w-[100%] 2xl:max-w-[74%] 3xl:max-w-[70%] ml-auto 2xl:mr-[137px] relative z-10 overflow-hidden vdo-content-wrapper">
           <div>
             <div className="lg:max-w-[600px] xl:max-w-[700px] 2xl:max-w-[700px] 3xl:max-w-[795px] ml-auto mb-4 xl:mb-50px 3xl:mb-17 vdo-content">
               {/* <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}> */}

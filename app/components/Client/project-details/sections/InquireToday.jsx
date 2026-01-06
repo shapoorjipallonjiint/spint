@@ -39,11 +39,11 @@ const InquireToday = ({data}) => {
     <section ref={sectionRef} className="relative overflow-hidden">
       <div className="reveal-overlay3 absolute inset-0 bg-black/20 z-20"></div>
       <div className="bg-primary">
-         <MotionImage width={1500} height={1000} style={{y:shapeY}} variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}}  src="/assets/images/svg/sv-02.svg" alt="" className="block xl:hidden w-[150px] h-[200px] lg:w-[313px] lg:h-[440px] absolute right-[0px] lg:left-[0px] 3xl:left-[13px] bottom-0 z-10 object-contain" />
+         <MotionImage width={1500} height={1000} style={{y:shapeY}} variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}}  src="/assets/images/svg/sv-02.svg" alt="" className="block 3xl:hidden w-[150px] h-[200px] lg:w-[313px] lg:h-[440px] absolute right-[0px] xl:left-[-70px] 3xl:left-[13px] bottom-0 z-10 object-contain" />
           
         <div className="container relative py-8 xl:py-15 2xl:py-22 3xl:py-[108px] overflow-hidden">
-          <MotionImage width={1500} height={1000} style={{y:shapeY}} variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}}  src="/assets/images/svg/sv-02.svg" alt="" className="hidden xl:block w-[150px] h-[200px] lg:w-[313px] lg:h-[440px] absolute right-[0px] lg:left-[0px] 3xl:left-[13px] bottom-0 z-10 object-contain" />
-          <div className=" lg:max-w-[650px] xl:max-w-[900px] 2xl:max-w-[1008px] 3xl:max-w-[1208px] ml-auto ">
+          <MotionImage width={1500} height={1000} style={{y:shapeY}} variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}}  src="/assets/images/svg/sv-02.svg" alt="" className="hidden 3xl:block w-[150px] h-[200px] lg:w-[313px] lg:h-[440px] absolute right-[0px] lg:left-[0px] 3xl:left-[13px] bottom-0 z-10 object-contain" />
+          <div className="  xl:max-w-[900px] 2xl:max-w-[1008px] 3xl:max-w-[1208px] ml-auto ">
             <div className="flex justify-between items-center ">
               <div className="mb-3 md:mb-5 xl:mb-[68px]">
                 <H2Title titleText={data.title} titleColor={"white"} marginClass="mb-5 md:mb-3 lg:mb-[21px]" />

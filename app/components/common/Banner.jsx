@@ -151,7 +151,7 @@ const Banner = ({ title, image, imageAlt }) => {
 
       {/* Content */}
       <div className="container relative z-30 h-full">
-        <div className="flex flex-col justify-end h-full pb-5 sm:pb-8  md:pb-8 lg:pb-10 2xl:pb-13 3xl:pb-26">
+        <div className="flex flex-col justify-end h-full pb-5 sm:pb-8  md:pb-8 lg:pb-10 2xl:pb-16 3xl:pb-26">
           <h1 ref={titleRef} className="text-white text-60 xl:text-70 font-light leading-[1.08] capitalize">{title}</h1>
         </div>
       </div>

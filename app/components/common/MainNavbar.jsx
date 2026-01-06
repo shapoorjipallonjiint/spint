@@ -378,7 +378,7 @@ const MainNavbar = () => {
                                                             transition: { duration: 0.25 },
                                                         },
                                                     }}
-                                                    className="absolute left-0 top-full overflow-hidden pt-2 w-70 bg-white shadow-lg rounded-lg z-[999] origin-top"
+                                                    className="absolute left-0 top-7 overflow-hidden pt-2 w-52 xl:w-60 3xl:w-70 bg-white shadow-lg rounded-lg z-[999] origin-top"
                                                 >
                                                     <motion.ul className="py-2">
                                                         {item.submenu.map((subItem, subIndex) => (

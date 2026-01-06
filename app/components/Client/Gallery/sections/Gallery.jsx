@@ -466,11 +466,11 @@ const Gallery = ({ data }) => {
                     </button>
 
                     <p>
-                        <span className="current-page font-bold text-16 leading-[2.4375]">
+                        <span className="current-page font-bold text-16 leading-[2.4375] text-paragraph">
                             {String(currentPage).padStart(2, "0")}
                         </span>
                         {" / "}
-                        <span className="total-pages">{String(totalPages).padStart(2, "0")}</span>
+                        <span className="total-pages font-light text-16 leading-[2.4375] text-paragraph">{String(totalPages).padStart(2, "0")}</span>
                     </p>
 
                     <button
