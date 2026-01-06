@@ -1139,9 +1139,9 @@ body::-webkit-scrollbar {
   position: relative;
   padding-left: 22px;
   margin-bottom: 7px;
-  font-weight: 300;
-
+  font-weight: 300; 
   color: #464646;
+  @apply text-19;
 
 }
  
