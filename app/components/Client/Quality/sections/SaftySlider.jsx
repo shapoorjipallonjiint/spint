@@ -70,7 +70,7 @@ const SaftySlider = ({ data }) => {
                     alt=""
                     width={468}
                     height={655}
-                    className="absolute top-0 lg:bottom-0 2xl:bottom-[-58px] right-0 lg:left-[-150px] 3xl:left-[-60px] z-[-1] w-[150px] h-[355px] lg:w-[468px] lg:h-[655px] 2xl:h-[555px] 3xl:h-[655px]"
+                    className="absolute top-0 lg:bottom-0 2xl:bottom-[-58px] right-0 lg:left-[-150px]   3xl:left-0 z-[-1] w-[150px] h-[355px] lg:w-[468px] lg:h-[655px] 2xl:h-[555px] 3xl:h-[655px]"
                 />
 
                 <div className="container pt-text30">

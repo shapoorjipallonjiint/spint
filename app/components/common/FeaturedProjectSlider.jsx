@@ -199,7 +199,7 @@ const FeaturedProjectSlider = ({ data }) => {
                                     : 'initial-visible'
                                 }`}
                             >
-                              <span>Location: </span>{item.secondSection.location.name}
+                              {/* <span>Location: </span>{item.secondSection.location.name} */}
                             </h4>
                           </div>
                         </div>
