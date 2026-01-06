@@ -33,7 +33,7 @@ const MoreDetrails = ({data}) => {
             </div>
           </div>
         </div>
-        <div  className="absolute hidden md:block right-0 lg:left-[-400px] 3xl:left-[-290px] bottom-8 lg:bottom-[73px]    z-10">
+        <div  className="absolute hidden xl:block right-0 lg:left-[-400px] 3xl:left-[-290px] bottom-8 lg:bottom-[73px]    z-10">
           <MotionImage width={1500} height={1000} style={{y:shapeY}} src="../assets/images/svg/sv-02.svg" className="w-[500px] h-[992px] md:w-[150x] md:h-[340px] lg:w-[742px] lg:h-[1040px] object-cover object-center" alt="" />
         </div>
       </div>
