@@ -855,7 +855,7 @@ export default function Projects() {
 
                                     <Dialog>
                                         <DialogTrigger>
-                                            <MdDelete className="cursor-pointer" />
+                                            <MdDelete className="cursor-pointer"/>
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
