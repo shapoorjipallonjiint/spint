@@ -404,7 +404,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         </SelectTrigger>
                                         <SelectContent className="max-h-[280px] overflow-y-scroll bg-white">
                                             {locationList.map((item, index) => (
-                                                <SelectItem key={index} value={item._id}>
+                                                <SelectItem key={index} value={item._id} className="hover:bg-gray-200">
                                                     {item.name}
                                                 </SelectItem>
                                             ))}
@@ -428,9 +428,9 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Select Sector" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="max-h-[300px] overflow-y-scroll bg-white">
                                             {sectorList.map((item, index) => (
-                                                <SelectItem key={index} value={item._id}>
+                                                <SelectItem key={index} value={item._id} className="hover:bg-gray-200">
                                                     {item.name}
                                                 </SelectItem>
                                             ))}
@@ -456,7 +456,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {serviceList.map((item, index) => (
-                                                <SelectItem key={index} value={item._id}>
+                                                <SelectItem key={index} value={item._id} className="hover:bg-gray-200">
                                                     {item.pageTitle}
                                                 </SelectItem>
                                             ))}
@@ -482,7 +482,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {statusData.map((item, index) => (
-                                                <SelectItem key={index} value={item.name}>
+                                                <SelectItem key={index} value={item.name} className="hover:bg-gray-200">
                                                     {item.name}
                                                 </SelectItem>
                                             ))}
@@ -867,15 +867,15 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <Label className="">Location</Label>
+                            <Label className="">Country</Label>
                             <Controller
                                 name="secondSection.location"
                                 control={control}
-                                rules={{ required: "Location is required" }}
+                                rules={{ required: "Country is required" }}
                                 render={({ field }) => (
                                     <Select disabled onValueChange={field.onChange} value={field.value} defaultValue="">
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select Location" />
+                                            <SelectValue placeholder="Select Country" />
                                         </SelectTrigger>
                                         <SelectContent className="max-h-[280px] overflow-y-scroll bg-white">
                                             {locationList.map((item, index) => (
