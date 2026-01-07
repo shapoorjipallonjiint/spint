@@ -619,7 +619,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                 i.key === "BUA (Sq.ft)" ||
                                                 i.key === "BUA (Sq. ft)" ||
                                                 i.key === "BUA (Sq.m)" ||
-                                                i.key === "BUA (Sq. m)"
+                                                i.key === "BUA (Sq. m)" ||
+                                                i.key === "BUA"
                                         );
 
                                         const label = buaItem?.key ?? "BUA (Sq.ft)";
@@ -635,7 +636,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                 <div className="border-b border-b-black/20">
                                     <p className="text-paragraph text-19 font-light leading-[2.44]">
                                         Location:{" "}
-                                        {item?.secondSection?.items?.find((i) => i.key === "Location")?.value ?? ""}
+                                        {item?.secondSection?.items?.find((i) => i.key === "Location")?.value ??
+                                            item?.secondSection?.location?.name ??
+                                            ""}
                                     </p>
                                 </div>
                             </Link>
@@ -681,9 +684,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         />
                                     </div> */}
                                     <div className="w-full xl:w-full">
-                                        <div
-                                            className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full bg-primary flex items-center justify-center"
-                                        >
+                                        <div className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full bg-primary flex items-center justify-center">
                                             <span className="text-white text-19 font-medium">Image</span>
                                         </div>
                                     </div>

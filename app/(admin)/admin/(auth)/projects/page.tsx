@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { MdDelete, MdEdit } from "react-icons/md";
@@ -18,10 +18,11 @@ import { useRouter } from "next/navigation";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { ImageUploader } from "@/components/ui/image-uploader";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { Dice1 } from "lucide-react";
+import { Search } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface ProjectPageProps {
     metaTitle: string;
@@ -44,19 +45,34 @@ interface ProjectPageProps {
 }
 
 export default function Projects() {
+    const [selectedCountry, setSelectedCountry] = useState("Country");
+    const [search, setSearch] = useState("");
+
     const [sector, setSector] = useState<string>("");
     const [sector_ar, setSectorAr] = useState<string>("");
 
-    const [service, setService] = useState<string>("");
-    const [service_ar, setServiceAr] = useState<string>("");
+    // const [service, setService] = useState<string>("");
+    // const [service_ar, setServiceAr] = useState<string>("");
 
-    const [country, setCountry] = useState<string>("");
-    const [country_ar, setCountryAr] = useState<string>("");
+    // const [country, setCountry] = useState<string>("");
+    // const [country_ar, setCountryAr] = useState<string>("");
 
-    const [projectList, setProjectList] = useState<{ _id: string; firstSection: { title: string; description: string } }[]>(
-        []
-    );
-    const [countryList, setCountryList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
+    const [projectList, setProjectList] = useState<
+        {
+            _id: string;
+            firstSection: {
+                title: string;
+                description: string;
+            };
+            secondSection?: {
+                location?: {
+                    name?: string;
+                };
+            };
+        }[]
+    >([]);
+
+    // const [countryList, setCountryList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
     const [sectorList, setSectorList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
     const [serviceList, setServiceList] = useState<{ _id: string; pageTitle: string; name_ar: string }[]>([]);
 
@@ -240,20 +256,20 @@ export default function Projects() {
     //   }
     // }
 
-    const handleFetchCountry = async () => {
-        try {
-            const response = await fetch("/api/admin/project/country");
-            if (response.ok) {
-                const data = await response.json();
-                setCountryList(data.data);
-            } else {
-                const data = await response.json();
-                toast.error(data.message);
-            }
-        } catch (error) {
-            console.log("Error fetching country", error);
-        }
-    };
+    // const handleFetchCountry = async () => {
+    //     try {
+    //         const response = await fetch("/api/admin/project/country");
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //             setCountryList(data.data);
+    //         } else {
+    //             const data = await response.json();
+    //             toast.error(data.message);
+    //         }
+    //     } catch (error) {
+    //         console.log("Error fetching country", error);
+    //     }
+    // };
 
     // const handleAddCountry = async () => {
     //   try {
@@ -374,10 +390,48 @@ export default function Projects() {
     useEffect(() => {
         handleFetchProjects();
         handleFetchSector();
-        handleFetchCountry();
+        // handleFetchCountry();
         handleFetchService();
         fetchProjectDetails();
     }, []);
+
+    // unique country list
+    const countries = useMemo<string[]>(() => {
+        if (!projectList?.length) return ["All"];
+
+        // projects that match search (ignore country filter)
+        const searchFiltered = projectList.filter((item) =>
+            item?.firstSection?.title?.toLowerCase().includes(search.toLowerCase())
+        );
+
+        const list = searchFiltered
+            .map((p) => p?.secondSection?.location?.name)
+            .filter((name): name is string => Boolean(name));
+
+        const uniqueSorted = Array.from(new Set(list)).sort((a, b) => a.localeCompare(b));
+
+        return ["Country", ...uniqueSorted];
+    }, [projectList, search]);
+
+    // filtered projects
+    const filteredProjects = useMemo(() => {
+        if (!projectList?.length) return [];
+
+        const normalizedSearch = search.toLowerCase();
+
+        return projectList
+            .filter((item) => {
+                const countryName = item?.secondSection?.location?.name;
+
+                const countryMatch = selectedCountry === "Country" || countryName === selectedCountry;
+
+                const titleMatch = item?.firstSection?.title?.toLowerCase().includes(normalizedSearch) ?? false;
+
+                return countryMatch && titleMatch;
+            })
+            .slice()
+            .reverse();
+    }, [projectList, selectedCountry, search]);
 
     return (
         <div className="flex flex-col gap-5">
@@ -834,28 +888,58 @@ export default function Projects() {
                 </div>
 
                 <div className="h-screen w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
-                    <div className="flex justify-between border-b-2 pb-2">
+                    <div className="flex justify-between items-center border-b-2 pb-2">
                         <Label className="text-sm font-bold">Projects</Label>
                         <p className="textsm">Count: {projectList.length}</p>
+                        <Select value={selectedCountry} onValueChange={(value) => setSelectedCountry(value)}>
+                            <SelectTrigger className="w-[180px] text-sm">
+                                <SelectValue placeholder="Select country" />
+                            </SelectTrigger>
+
+                            <SelectContent className="bg-white max-h-[350px] overflow-y-scroll">
+                                {countries.map((country) => (
+                                    <SelectItem key={country} value={country} className="hover:bg-gray-200">
+                                        {country}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
                         <Button className="bg-black text-white" onClick={() => router.push("/admin/projects/add")}>
                             Add Project
                         </Button>
                     </div>
+                    <div className="relative mt-2 mb-4">
+                        <Input
+                            type="text"
+                            placeholder="Search project..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full pr-10 text-sm"
+                        />
+
+                        <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+
                     <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
-                        {projectList?.slice()?.reverse().map((item) => (
+                        {filteredProjects.map((item) => (
                             <div
                                 className="flex justify-between border p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
                                 key={item._id}
                             >
-                                <div className="text-[16px]">{item.firstSection.title}
-                                    {/* <p className="text-red-500">{item?.secondSection?.location?.name}</p> */}
+                                <div className="text-[16px]">
+                                    {item.firstSection.title}
+                                    <p className="text-red-500">{item?.secondSection?.location?.name}</p>
                                 </div>
                                 <div className="flex gap-5">
-                                    <MdEdit className="cursor-pointer" onClick={() => router.push(`/admin/projects/edit/${item._id}`)} />
+                                    <MdEdit
+                                        className="cursor-pointer"
+                                        onClick={() => router.push(`/admin/projects/edit/${item._id}`)}
+                                    />
 
                                     <Dialog>
                                         <DialogTrigger>
-                                            <MdDelete className="cursor-pointer"/>
+                                            <MdDelete className="cursor-pointer" />
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
