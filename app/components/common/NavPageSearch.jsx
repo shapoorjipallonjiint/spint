@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchContext } from "@/contexts/searchContext";
 import {  AnimatePresence } from "framer-motion";
+import { useDebounce } from '@/hooks/useDebounce'
 
 const NavPageSearch = ({ isOpen, searchActive }) => {
     const [activeMenu, setActiveMenu] = useState(2);
@@ -20,6 +21,41 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setSearchActive: globalSetSearchActive } = useSearchContext();
+    const debouncedSearchQuery = useDebounce(searchQuery, 2000)
+
+    useEffect(() => {
+        if (!debouncedSearchQuery.trim()) {
+            setResult(null)
+            return;
+        }
+
+        const fetchSearch = async (e) => {
+            if (loading) return; 
+            try {
+                setLoading(true);
+                const res = await fetch("/api/search", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ searchQuery: debouncedSearchQuery }),
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    setResult(data.data);
+                }
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchSearch()
+
+    }, [debouncedSearchQuery])
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -148,7 +184,7 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
                                 <div className="bar11"></div>
                                 <div className="bar12"></div>
                             </div></div>) : (
-                                <div className="overflow-hidden h-full"><ul className="grid grid-cols-1 list-disc gap-5 text-sm px-4 h-full overflow-y-auto custom-scrollbar">
+                                <div className="overflow-hidden h-fit"><ul className="grid grid-cols-1 list-disc gap-5 text-sm px-4 h-full overflow-y-auto custom-scrollbar">
                                     {result && result.length > 0 ? result.map((item, index) => {
                                         if (item.project) {
                                             return <Link href={`/projects/${item.project.slug}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.project.firstSection.title}</li></Link>
