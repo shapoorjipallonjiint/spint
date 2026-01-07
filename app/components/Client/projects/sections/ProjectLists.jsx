@@ -554,23 +554,31 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         >
                             <Link href={`/projects/${item.slug}`}>
                                 <div className="relative">
-                                    {/* <Image
-                                        src={item.thumbnail}
-                                        alt={item.thumbnailAlt}
-                                        width={520}
-                                        height={395}
-                                        className="w-full h-[200px] md:h-[250px] xl:h-[395px] object-cover"
-                                    /> */}
-                                    <div
-                                        className="
-    w-full
-    h-[200px] md:h-[250px] xl:h-[395px]
-    bg-primary opacity-90
-    flex items-center justify-center
-  "
-                                    >
-                                        <span className="text-white text-29 font-medium">395*250</span>
-                                    </div>
+                                    {item?.secondSection?.location?.name === "UAE" ||
+                                    item?.secondSection?.location?.name === "Qatar" ||
+                                    item?.secondSection?.location?.name === "Kuwait" ||
+                                    item?.secondSection?.location?.name === "Bahrain" ||
+                                    item?.secondSection?.location?.name === "Saudi Arabia" ? (
+                                        <Image
+                                            src={item.thumbnail}
+                                            alt={item.thumbnailAlt}
+                                            width={520}
+                                            height={395}
+                                            className="w-full h-[200px] md:h-[250px] xl:h-[395px] object-cover"
+                                        />
+                                    ) : (
+                                        <div
+                                            className="
+      w-full
+      h-[200px] md:h-[250px] xl:h-[395px]
+      bg-primary opacity-90
+      flex items-center justify-center
+    "
+                                        >
+                                            <span className="text-white text-29 font-medium">395×250</span>
+                                        </div>
+                                    )}
+
                                     <div className=" opacity-0 group-hover:opacity-100 transition-all duration-300 absolute left-0 bottom-0 w-[50px] h-[50px]  xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"

@@ -890,7 +890,7 @@ export default function Projects() {
                 <div className="h-screen w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
                     <div className="flex justify-between items-center border-b-2 pb-2">
                         <Label className="text-sm font-bold">Projects</Label>
-                        <p className="textsm">Count: {projectList.length}</p>
+                        <p className="textsm">Count: {filteredProjects.length}</p>
                         <Select value={selectedCountry} onValueChange={(value) => setSelectedCountry(value)}>
                             <SelectTrigger className="w-[180px] text-sm">
                                 <SelectValue placeholder="Select country" />
