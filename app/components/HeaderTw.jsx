@@ -816,7 +816,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
 
                                     <button
                                         onClick={() => {setSearchActive(false);setMenuOpen((prev) => !prev)}}
-                                        className="relative w-[31px] h-[28px] flex items-center justify-center cursor-pointer"
+                                        className="relative w-[31px] h-[28px] flex items-center justify-center cursor-pointer 2xl:pt-[70px]"
                                         aria-label="Menu Toggle"
                                     >
                                         <svg
@@ -899,11 +899,11 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                     handleScroll(nextSection.id);
                 }}
             >
-                <div className="w-[35px] h-[35px] bg-primary flex items-center justify-center  mx-auto mb-7">
+                <div className="w-[45px] h-[45px] lg:w-[35px] lg:h-[35px] bg-primary flex items-center justify-center  mx-auto mb-7">
                     <div
                         className={`${
                             menuOpen ? "border-[#626262]" : "border-white"
-                        } w-[22px] h-[22px] border rounded-full flex items-center justify-center `}
+                        } w-[30px] h-[30px] lg:w-[22px] lg:h-[22px] border rounded-full flex items-center justify-center `}
                     >
                         <img
                             src="../assets/images/home/downarrow.svg"

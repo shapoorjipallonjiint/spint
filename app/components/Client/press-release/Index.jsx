@@ -30,8 +30,7 @@ const Index = ({newsData,topicData}) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState(topics[0]);
-  const [bgImagehide, setBgImagehide] = useState(true);
+  const [selectedTopic, setSelectedTopic] = useState(topics[0]); 
 
   const MotionImage = motion.create(Image)
 
@@ -107,15 +106,13 @@ const Index = ({newsData,topicData}) => {
   // 🔹 When topic changes → reset to page 1
   const handleTopicChange = (topic) => {
     setSelectedTopic(topic);
-    setCurrentPage(1);
-    setBgImagehide(false)
+    setCurrentPage(1); 
   };
 
   // 🔹 When year changes → reset to page 1
   const handleYearChange = (year) => {
     setSelectedYear(year);
-    setCurrentPage(1);
-    setBgImagehide(false)
+    setCurrentPage(1); 
   };
 
   // 🔹 Clear all filters
@@ -351,7 +348,8 @@ const Index = ({newsData,topicData}) => {
           </div>
 
 
-          <div className={`absolute bottom-[14%] 3xl:bottom-[16%] lg:left-[-141px] 3xl:left-0 z-[-1] right-0 lg:right-auto w-fit ${bgImagehide ? 'block' : 'hidden'}`}>
+          <div className={`absolute    lg:left-[-141px] 3xl:left-0 z-[-1] right-0 lg:right-auto w-fit    
+          ${currentItems.length === 0 ? 'hidden' : currentItems.length < 6 ? '3xl:bottom-[-16%] 2xl:bottom-[-24%] lg:bottom-[14%] bottom-[-14%]' : '3xl:bottom-[18%] 2xl:bottom-[32%]   bottom-[28%]'}`}>
             <MotionImage width={1500} height={1000} style={{ y: shapeY }} src="/assets/images/press-releases/listbody.svg" alt="" className=" object-fit w-md200 lg:w-[350px] 2xl:w-[754px] 2xl:h-[1056px] relative 2xl:top-[14px] " />
           </div>
         </section>
