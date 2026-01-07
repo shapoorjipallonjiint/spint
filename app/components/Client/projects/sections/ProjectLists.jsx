@@ -613,12 +613,24 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <p className="text-paragraph text-19 font-light leading-[2.44] max-w-[18ch] truncate">
                                         Sector: {item?.secondSection?.sector?.name}
                                     </p>
-                                    <p className="text-paragraph text-19 font-light leading-[2.44] pe-1 3xl:xl:pe-6 max-w-[18ch] truncate">
-                                        BUA (Sq.ft):{" "}
-                                        {item?.secondSection?.items?.find(
-                                            (i) => i.key === "BUA (Sq.ft)" || i.key === "BUA (Sq. ft)"
-                                        )?.value ?? ""}
-                                    </p>
+                                    {(() => {
+                                        const buaItem = item?.secondSection?.items?.find(
+                                            (i) =>
+                                                i.key === "BUA (Sq.ft)" ||
+                                                i.key === "BUA (Sq. ft)" ||
+                                                i.key === "BUA (Sq.m)" ||
+                                                i.key === "BUA (Sq. m)"
+                                        );
+
+                                        const label = buaItem?.key ?? "BUA (Sq.ft)";
+                                        const value = buaItem?.value ?? "";
+
+                                        return (
+                                            <p className="text-paragraph text-19 font-light leading-[2.44] pe-1 3xl:xl:pe-6 max-w-[18ch] truncate">
+                                                {label}: {value}
+                                            </p>
+                                        );
+                                    })()}
                                 </div>
                                 <div className="border-b border-b-black/20">
                                     <p className="text-paragraph text-19 font-light leading-[2.44]">

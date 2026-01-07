@@ -35,11 +35,12 @@ export async function GET() {
 
     const cities = home.sixthSection.cities
       .map((city) => ({
-        _id: city._id.toString(), // ✅ FIX
+        _id: city._id.toString(),
         name: city.name ?? "",
         name_ar: city.name_ar ?? "",
       }))
-      .filter((city) => city._id && city.name);
+      .filter((city) => city._id && city.name)
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     return NextResponse.json(
       { data: cities, message: "Cities fetched successfully" },
