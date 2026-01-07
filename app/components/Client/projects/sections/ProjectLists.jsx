@@ -23,8 +23,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const isInitialized = useRef(false);
     const MotionImage = motion.create(Image);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isAnimating, setIsAnimating] = useState(false);
-    const [bgImagehide, setBgImagehide] = useState(true);
+    const [isAnimating, setIsAnimating] = useState(false); 
     const sectionRef = useRef(null);
     const { scrollYProgress: shapeProgress } = useScroll({
         target: sectionRef,
@@ -117,20 +116,17 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     // 🔹 Filter change handlers (reset page to 1)
     const handleSectorChange = (opt) => {
         setSelectedSector(opt);
-        setCurrentPage(1);
-        setBgImagehide(false);
+        setCurrentPage(1); 
     };
 
     const handleStatusChange = (opt) => {
         setSelectedStatus(opt);
-        setCurrentPage(1);
-        setBgImagehide(false);
+        setCurrentPage(1); 
     };
     const handleCountryChange = (opt) => {
         // update filter immediately
         setSelectedCountry(opt);
-        setCurrentPage(1);
-        setBgImagehide(false);
+        setCurrentPage(1); 
 
         // update URL (no state reading from it)
         if (opt.name === "All") {
@@ -142,8 +138,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
     const handleServiceChange = (opt) => {
         setSelectedService(opt);
-        setCurrentPage(1);
-        setBgImagehide(false);
+        setCurrentPage(1); 
     };
 
     // Clear all filters
@@ -152,8 +147,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setSelectedStatus(status[0]);
         setSelectedCountry(country[0]);
         setSelectedService(service[0]);
-        setCurrentPage(1);
-        setBgImagehide(true);
+        setCurrentPage(1); 
     };
 
     useEffect(() => {
@@ -166,8 +160,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
         if (matchedCountry) {
             setSelectedCountry(matchedCountry);
-            setCurrentPage(1);
-            setBgImagehide(false);
+            setCurrentPage(1); 
         }
 
         isInitialized.current = true;
@@ -811,9 +804,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
             {view === "grid" && (
                 <>
                     <div
-                        className={`${
-                            bgImagehide ? "block" : "hidden"
-                        } absolute top-[25%] 3xl:top-auto lg:bottom-[30%] xl:bottom-[30%] translate-y-[58px] 3xl:bottom-3/7    right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
+                        className={`${currentItems.length === 0 ? 'hidden' : currentItems.length < 4 ? 'top-[27%] 3xl:bottom-[-16%]' : 'top-[25%] lg:bottom-[30%] xl:bottom-[30%] 3xl:bottom-3/7'} absolute  3xl:top-auto  translate-y-[58px]    right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
                     >
                         <MotionImage
                             width={1500}
@@ -825,9 +816,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         />
                     </div>
                     <div
-                        className={`${
-                            bgImagehide ? "block" : "hidden"
-                        } absolute bottom-[5%] lg:bottom-0 right-0 lg:right-[-150px] 3xl:right-0 z-[-1]`}
+                        className={`${currentItems.length === 0 ? 'hidden' : currentItems.length < 4 ? 'bottom-[5%] hidden' : 'bottom-[5%] lg:bottom-0'} absolute  right-0 lg:right-[-150px] 3xl:right-0 z-[-1]`}
                     >
                         <MotionImage
                             width={1500}
