@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Textarea } from "@/components/ui/textarea";
@@ -69,6 +69,11 @@ const ContactPage = () => {
                 items: [],
             },
         },
+    });
+
+    const watchedSecondSectionItems = useWatch({
+        control,
+        name: "secondSection.items",
     });
 
     const {
@@ -224,27 +229,21 @@ const ContactPage = () => {
                                     </div>
 
                                     <div className="flex flex-col gap-2">
-                                        <Label className="font-bold">Phone</Label>
+                                        <Label className="font-bold">Phone <span className="text-sm text-primary">(use comma to separate multiple numbers)</span></Label>
                                         <Input
-                                            {...register(`secondSection.items.${index}.phone`, {
-                                                required: "Phone is required",
-                                            })}
+                                            {...register(`secondSection.items.${index}.phone`)}
                                         />
                                         <FormError error={errors.secondSection?.items?.[index]?.phone?.message} />
 
                                         <Label className="font-bold">Fax</Label>
                                         <Input
-                                            {...register(`secondSection.items.${index}.fax`, {
-                                                required: "Fax is required",
-                                            })}
+                                            {...register(`secondSection.items.${index}.fax`)}
                                         />
                                         <FormError error={errors.secondSection?.items?.[index]?.fax?.message} />
 
                                         <Label className="font-bold">Location</Label>
                                         <Input
-                                            {...register(`secondSection.items.${index}.location`, {
-                                                required: "Location is required",
-                                            })}
+                                            {...register(`secondSection.items.${index}.location`)}
                                         />
                                         <FormError error={errors.secondSection?.items?.[index]?.location?.message} />
                                     </div>
@@ -377,34 +376,36 @@ const ContactPage = () => {
                                     <div className="flex flex-col gap-2">
                                         <Label className="font-bold">Phone</Label>
                                         <Input
-                                            {...register(`secondSection.items.${index}.phone`, {
-                                                required: "Phone is required",
-                                            })}
+                                            readOnly
+                                            disabled
+                                            value={watchedSecondSectionItems?.[index]?.phone || ""}
+                                            className="bg-muted cursor-default"
                                         />
-                                        <FormError error={errors.secondSection?.items?.[index]?.phone?.message} />
 
                                         <Label className="font-bold">Fax</Label>
                                         <Input
-                                            {...register(`secondSection.items.${index}.fax`, {
-                                                required: "Fax is required",
-                                            })}
+                                            readOnly
+                                            disabled
+                                            value={watchedSecondSectionItems?.[index]?.fax || ""}
+                                            className="bg-muted cursor-default"
                                         />
-                                        <FormError error={errors.secondSection?.items?.[index]?.fax?.message} />
 
                                         <Label className="font-bold">Location</Label>
                                         <Input
-                                            {...register(`secondSection.items.${index}.location`, {
-                                                required: "Location is required",
-                                            })}
+                                            readOnly
+                                            disabled
+                                            value={watchedSecondSectionItems?.[index]?.location || ""}
+                                            className="bg-muted cursor-default"
                                         />
-                                        <FormError error={errors.secondSection?.items?.[index]?.location?.message} />
                                     </div>
                                 </div>
                             ))}
 
-                            <div className="flex justify-end">
+                            <div className="flex justify-end cursor-not-allowed">
                                 <Button
+                                    className="bg-muted"
                                     type="button"
+                                    disabled
                                     addItem
                                     onClick={() =>
                                         secondSectionAppend({

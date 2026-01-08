@@ -523,7 +523,7 @@ const MainNavbar = () => {
 
                                 <div className="absolute inset-y-0 right-3 flex items-center ps-3  cursor-pointer" onClick={() => setSearchActive(false)}>
                                     <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-                                        <path d="M5.63086 14.3692L10 10L14.3692 14.3692M14.3692 5.63086L9.99919 10L5.63086 5.63086" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M5.63086 14.3692L10 10L14.3692 14.3692M14.3692 5.63086L9.99919 10L5.63086 5.63086" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                     </svg>
                                 </div>
 

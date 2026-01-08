@@ -29,7 +29,10 @@ const RegionalOffices = ({ data }) => {
                                 className={`text-19 font-light  leading-[1.5] md:leading-[1.6] lg:leading-[1.48] text-paragraph ${
                                     office.phone || office.fax ? "mb-4 lg:mb-[45px]" : null
                                 }`}
-                                dangerouslySetInnerHTML={{ __html: office.address }}
+                                // dangerouslySetInnerHTML={{ __html: office.address }}
+                                dangerouslySetInnerHTML={{
+                                    __html: office.address.replace(/\n/g, "<br />"),
+                                }}
                             ></p>
 
                             {office.phone || office.fax ? (
@@ -41,14 +44,11 @@ const RegionalOffices = ({ data }) => {
                                                     Phone
                                                 </p>
                                                 <div>
-                                                    {/* {office.phone.map((phone, index) => ( */}
-                                                    <p
-                                                        key={index}
-                                                        className=" text-16 3xl:text-19 font-bold leading-[1.53] "
-                                                    >
-                                                        {office.phone}
-                                                    </p>
-                                                    {/* ))} */}
+                                                    {office.phone?.split(",").map((phone, i) => (
+                                                        <p key={i} className="text-16 3xl:text-19 font-bold leading-[1.53]">
+                                                            {phone.trim()}
+                                                        </p>
+                                                    ))}
                                                 </div>
                                             </div>
                                         ) : null}

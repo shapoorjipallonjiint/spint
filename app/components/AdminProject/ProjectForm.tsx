@@ -28,9 +28,9 @@ interface ProjectFormProps {
         title_ar: string;
         subTitle: string;
         subTitle_ar: string;
-        coverImage: string;
-        coverImageAlt: string;
-        coverImageAlt_ar: string;
+        coverImage?: string;
+        coverImageAlt?: string;
+        coverImageAlt_ar?: string;
         status: string;
     };
     secondSection: {
@@ -73,9 +73,9 @@ interface ProjectFormProps {
         email_ar: string;
     };
     slug: string;
-    thumbnail: string;
-    thumbnailAlt: string;
-    thumbnailAlt_ar: string;
+    thumbnail?: string;
+    thumbnailAlt?: string;
+    thumbnailAlt_ar?: string;
     metaTitle: string;
     metaTitle_ar: string;
     metaDescription: string;
@@ -152,9 +152,9 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                 setValue("thirdSection.items", data.data.thirdSection.items);
                 setValue("fourthSection", data.data.fourthSection);
                 setValue("sixthSection", data.data.sixthSection);
-                setValue("thumbnail", data.data.thumbnail);
-                setValue("thumbnailAlt", data.data.thumbnailAlt);
-                setValue("thumbnailAlt_ar", data.data.thumbnailAlt_ar);
+                setValue("thumbnail", data.data?.thumbnail);
+                setValue("thumbnailAlt", data.data?.thumbnailAlt);
+                setValue("thumbnailAlt_ar", data.data?.thumbnailAlt_ar);
                 setValue("metaTitle", data.data.metaTitle);
                 setValue("metaTitle_ar", data.data.metaTitle_ar);
                 setValue("metaDescription", data.data.metaDescription);
@@ -340,16 +340,16 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         onChange={(url) => setValue("firstSection.coverImage", url)}
                                         value={watch("firstSection.coverImage")}
                                     />
-                                    {errors.firstSection?.coverImage && (
+                                    {/* {errors.firstSection?.coverImage && (
                                         <p className="text-red-500">{errors.firstSection.coverImage.message}</p>
-                                    )}
+                                    )} */}
                                 </div>
                                 <div>
                                     <Label className="">Cover Image Alt</Label>
                                     <Input type="text" placeholder="Alt Tag" {...register("firstSection.coverImageAlt")} />
-                                    {errors.firstSection?.coverImageAlt && (
+                                    {/* {errors.firstSection?.coverImageAlt && (
                                         <p className="text-red-500">{errors.firstSection.coverImageAlt.message}</p>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
                         </div>
@@ -362,12 +362,12 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         onChange={(url) => setValue("thumbnail", url)}
                                         value={watch("thumbnail")}
                                     />
-                                    {errors.thumbnail && <p className="text-red-500">{errors.thumbnail.message}</p>}
+                                    {/* {errors.thumbnail && <p className="text-red-500">{errors.thumbnail.message}</p>} */}
                                 </div>
                                 <div>
                                     <Label className="">Thumbnail Alt</Label>
                                     <Input type="text" placeholder="Alt Tag" {...register("thumbnailAlt")} />
-                                    {errors.thumbnailAlt && <p className="text-red-500">{errors.thumbnailAlt.message}</p>}
+                                    {/* {errors.thumbnailAlt && <p className="text-red-500">{errors.thumbnailAlt.message}</p>} */}
                                 </div>
                             </div>
                         </div>
@@ -822,9 +822,9 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         onChange={(url) => setValue("firstSection.coverImage", url)}
                                         value={watch("firstSection.coverImage")}
                                     />
-                                    {errors.firstSection?.coverImage && (
+                                    {/* {errors.firstSection?.coverImage && (
                                         <p className="text-red-500">{errors.firstSection.coverImage.message}</p>
-                                    )}
+                                    )} */}
                                 </div>
                                 <div>
                                     <Label className="">Cover Image Alt</Label>
@@ -845,7 +845,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         onChange={(url) => setValue("thumbnail", url)}
                                         value={watch("thumbnail")}
                                     />
-                                    {errors.thumbnail && <p className="text-red-500">{errors.thumbnail.message}</p>}
+                                    {/* {errors.thumbnail && <p className="text-red-500">{errors.thumbnail.message}</p>} */}
                                 </div>
                                 <div>
                                     <Label className="">Thumbnail Alt</Label>
