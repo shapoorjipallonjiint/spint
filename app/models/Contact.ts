@@ -82,15 +82,12 @@ const contactSchema = new mongoose.Schema({
             },
             phone: {
                 type: String,
-                required: true
             },
             fax: {
                 type: String,
-                required: true
             },
             location: {
                 type: String,
-                required: true
             }
         }]
     }
