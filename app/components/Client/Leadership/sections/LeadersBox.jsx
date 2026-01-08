@@ -158,20 +158,20 @@ import Image from "next/image";
 
 const LeaderBox = ({ data }) => {
     /* ---------------- NORMALIZED DATA ---------------- */
-    const normalizedData = [
-        {
-            name: data.name,
-            position: data.designation,
-            image: data.image,
-            desc: data.description?.split("\n\n") || [],
-        },
-        {
-            name: data.nameTwo,
-            position: data.designationTwo,
-            image: data.imageTwo,
-            desc: data.descriptionTwo?.split("\n\n") || [],
-        },
-    ];
+    // const normalizedData = [
+    //     {
+    //         name: data.name,
+    //         position: data.designation,
+    //         image: data.image,
+    //         desc: data.description?.split("\n\n") || [],
+    //     },
+    //     {
+    //         name: data.nameTwo,
+    //         position: data.designationTwo,
+    //         image: data.imageTwo,
+    //         desc: data.descriptionTwo?.split("\n\n") || [],
+    //     },
+    // ];
 
     const MotionImage = motion.create(Image);
 
@@ -205,11 +205,10 @@ const LeaderBox = ({ data }) => {
     // const imageY = useTransform(imageProgress, [0, 1], imageOffset);
 
     const { scrollYProgress } = useScroll({
-        target:imageContainerRef,
-        offset:["start end","end start"]
+        target: imageContainerRef,
+        offset: ["start end", "end start"],
     }); // 👈 no target
-const imageY = useTransform(scrollYProgress, [0, 1], imageOffset);
-
+    const imageY = useTransform(scrollYProgress, [0, 1], imageOffset);
 
     // const { scrollYProgress: imageProgress2 } = useScroll({
     //     target: imageContainerRefTwo,
@@ -237,7 +236,7 @@ const imageY = useTransform(scrollYProgress, [0, 1], imageOffset);
             <div className="container">
                 <div className=" border-cmnbdr relative overflow-hidden mb-5 xl:mb-20 2xl:mb-25" ref={imageContainerRef}>
                     {/* ================= LEADER ONE ================= */}
-                    {data.items.map((item,index)=>(
+                    {/* {data.items.map((item,index)=>(
                         <div key={index} className="grid items-center grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[739px_auto] pt-5 lg:pt-10 3xl:pt-18 pb-10 3xl:pb-[135px] gap-y-6 lg:gap-y-10">
                         <div className="relative flex flex-col justify-end">
                             <MotionImage
@@ -327,8 +326,109 @@ const imageY = useTransform(scrollYProgress, [0, 1], imageOffset);
                             </div>
                         </div>
                     </div>
-                    ))}
-                    
+                    ))} */}
+
+                    {data.items.map((item, index) => {
+                        const isReverse = index % 2 !== 0;
+
+                        return (
+                            <div
+                                key={index}
+                                className={`grid items-center grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[739px_auto]
+        pt-5 lg:pt-10 3xl:pt-18 pb-10 3xl:pb-[135px] gap-y-6 lg:gap-y-10
+        ${isReverse ? "lg:[&>*:first-child]:order-2 lg:[&>*:last-child]:order-1" : ""}
+      `}
+                            >
+                                {/* IMAGE */}
+                                <div className="relative flex flex-col justify-end">
+                                    <MotionImage
+                                        width={1000}
+                                        height={1920}
+                                        style={{ y: imageY }}
+                                        variants={fadeIn(0.6)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.1, once: true }}
+                                        src={item.image}
+                                        alt={item.imageAlt}
+                                        className={`relative w-fit object-contain z-20
+            h-[250px] xs:h-[400px] xl:h-[450px] 2xl:h-[600px] 3xl:h-[735.62px] max-w-[710px]
+            ${isReverse ? "ml-auto mr-3 lg:mr-auto" : "mr-auto ml-3 lg:ml-auto 2xl:ml-3 3xl:ml-auto lg:mr-2"}
+          `}
+                                    />
+
+                                    <motion.div
+                                        style={{ y: imageY }}
+                                        variants={fadeIn(0.2)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.1, once: true }}
+                                        className="absolute bottom-0 left-0 h-[80%] lg:h-[70%] xl:h-[80%] 3xl:h-[612px] w-full bg-primary z-10"
+                                    />
+
+                                    <motion.div
+                                        style={{ y: imageY }}
+                                        variants={fadeIn(0.4)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.1, once: true }}
+                                        className="absolute bottom-0 left-0 h-[60%] lg:h-[60%] xl:h-[60%] 3xl:h-[382px] w-full bg-gradient-to-t from-primary to-transparent z-30"
+                                    />
+                                </div>
+
+                                {/* CONTENT */}
+                                <div
+                                    className={`pt-5 xl:pt-8 2xl:pt-12 3xl:pt-[68.5px]
+          ${isReverse ? "lg:pr-8 xl:pr-15 2xl:pr-17 3xl:pr-[97px]" : "lg:pl-8 xl:pl-15 2xl:pl-17 3xl:pl-[97px]"}
+        `}
+                                >
+                                    <H2Title titleText={item.name} marginClass="mb-[10px]" />
+
+                                    <motion.h3
+                                        variants={moveUp(0.4)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.1, once: true }}
+                                        className="text-29 font-light leading-[1.344827586206897] text-paragraph mb-6 lg:mb-5 xl:mb-6 2xl:mb-7 3xl:mb-[45px]"
+                                    >
+                                        {item.designation}
+                                    </motion.h3>
+
+                                    <div
+                                        className="md:max-h-[200px] lg:max-h-[250px] xl:max-h-[385px] lg:overflow-y-auto scrollbar-thin scrollbar-pointer pr-2"
+                                        style={{ overscrollBehavior: "contain" }}
+                                        onWheel={(e) => {
+                                            const el = e.currentTarget;
+                                            const { scrollTop, scrollHeight, clientHeight } = el;
+
+                                            const isScrollable = scrollHeight > clientHeight;
+                                            if (!isScrollable) return;
+
+                                            const isAtTop = scrollTop <= 0;
+                                            const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+                                            if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) return;
+
+                                            e.preventDefault();
+                                            e.stopPropagation();
+
+                                            const SCROLL_SPEED = 0.001;
+                                            el.scrollTop += e.deltaY * SCROLL_SPEED;
+                                        }}
+                                    >
+                                        {item.description.split("\n").map((text, i) => (
+                                            <p
+                                                key={i}
+                                                className="text-19 leading-[1.473684210526316] text-paragraph font-light lg:max-w-[52ch] mb-4 2xl:mb-7"
+                                            >
+                                                {text}
+                                            </p>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
 
                     {/* ================= LEADER TWO ================= */}
                     {/* <div className="xs:mt-10 md:mt-30 lg:mt-10 2xl:mt-17 3xl:mt-[135px] grid items-center grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[793px_auto] gap-6 md:gap-10 xl:gap-15 2xl:gap-17 3xl:gap-[88px] pb-10 xl:pb-25 3xl:pb-[135px]">
@@ -400,7 +500,3 @@ const imageY = useTransform(scrollYProgress, [0, 1], imageOffset);
 };
 
 export default LeaderBox;
-
-
-
-
