@@ -27,8 +27,13 @@ const CountUp = ({ value, duration = 2, trigger, delay = 1800 }) => {
 
         setDisplay(Math.round(from + (to - from) * eased));
 
-        if (frame < totalFrames) requestAnimationFrame(animate);
-        else prev.current = to; // save final value
+        if (frame < totalFrames){
+          requestAnimationFrame(animate);
+        } 
+        else{
+          setDisplay(to); 
+          prev.current = to;
+        }  // save final value
       };
 
       requestAnimationFrame(animate);

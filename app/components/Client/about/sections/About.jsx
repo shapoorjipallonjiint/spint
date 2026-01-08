@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { assets } from "@/app/assets";
 import InsideCounter from "../../../InsideCounter";
 import Image from "next/image";
+import { getSuffix } from "@/helpers/getSuffix.ts";
 
 const About = ({data}) => {
   const sectionRef = useRef(null);
@@ -43,7 +44,8 @@ const About = ({data}) => {
                   {data.items.map((item, i) => (
                     <motion.div variants={paragraphItem} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} key={i}>
                       <h3 className='text-40 font-light leading-[1] mb-3 text-white'>
-                        <InsideCounter value={item.number} delay={i == 2 ? 20 : 2000} />+
+                        <InsideCounter value={item.number} delay={i == 2 ? 20 : 2000} />
+                        {getSuffix(item.number)}
                       </h3>
                       <p className='text-19 font-light leading-[1.474] text-white/70'>{item.value}</p>
                     </motion.div>

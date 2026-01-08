@@ -21,6 +21,7 @@ import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
 import { mapBackendCitiesToMapCities } from "../../../../lib/mapDataHelper";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { getSuffix } from "@/helpers/getSuffix.ts";
 
 // const cityGroups = [
 //     {
@@ -333,6 +334,8 @@ useEffect(() => {
 
     const bubbleRef = useRef(null);
     const containersRef = useRef(null);
+
+    console.log(data)
 
     const items = [
         ...data.seventhSection.items.map((item) => {
@@ -1932,8 +1935,12 @@ useEffect(() => {
                                 <hr ref={brdrsRef} className="border-t border-white/30 absolute top-0 w-full my-0" />
                                 {data.secondSection.items.map((item, index) => (
                                     <div key={index}>
-                                        <h3 className="text-24 xl:text-40 font-light leading-[auto] mb-[5px]">
-                                            <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />+
+                                        <h3 className="text-24 xl:text-40 font-light mb-[5px]">
+                                            <CountUp
+                                                value={item.value}
+                                                trigger={currentVisibleSlide === "section2"}
+                                            />
+                                            {getSuffix(item.value)}
                                         </h3>
 
                                         <p className="text-16 xl:text-18 font-light leading-[1.555555555555556]">
@@ -1967,7 +1974,11 @@ useEffect(() => {
                             {data.secondSection.items.map((item, index) => (
                                 <div className="border-b border-[#0a000020] lg:border-b-0 pb-5 mb-5" key={index}>
                                     <h3 className="text-26 md:text-40 xl:text-40 font-light leading-[auto] mb-[5px]">
-                                        <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />+
+                                    <CountUp
+                                                value={item.value}
+                                                trigger={currentVisibleSlide === "section2"}
+                                            />
+                                            {getSuffix(item.value)}
                                     </h3>
                                     <p className="text-[14px] md:text-[18px]  font-light leading-[1.555555555555556]">
                                         {item.key}
@@ -2037,15 +2048,15 @@ useEffect(() => {
                             <div
                                 className="bg-white lg:bg-primary absolute w-full left-0 h-full top-0 z-[-1]"
                                 ref={sprgtbg}
-                            ></div> 
-                                <Image
+                            ></div>
+                            <Image
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
                                 alt=""
                                 className="hidden lg:block absolute right-0 w-[250px] 3xl:w-[353px]"
-                            /> 
+                            />
                             <div className="">
                                 <h1
                                     ref={sptitle}
@@ -2093,18 +2104,17 @@ useEffect(() => {
                             <div className="mt-auto relative">
                                 <hr
                                     ref={spBrdOne}
-                                    className="border-white opacity-20 absolute top-[55%] left-[-30%] right-0"
+                                    className="border-white opacity-20 absolute top-[40%] left-[-30%] right-0"
                                 />
                                 <div className="hidden lg:grid grid-cols-3 " ref={spStats}>
                                     {data.thirdSection.items.map((item, index) => (
                                         <div className="text-white" key={index}>
                                             <h1 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
-                                                <CountUp
-                                                    value={item.value}
-                                                    trigger={currentVisibleSlide === "section3"}
-                                                    delay={300}
-                                                />
-                                                +
+                                            <CountUp
+                                                value={item.value}
+                                                trigger={currentVisibleSlide === "section3"}
+                                            />
+                                            {getSuffix(item.value)}
                                             </h1>
                                             <p className="text-16 xl:text-19 opacity-70 font-light leading-[1.555555555555556]">
                                                 {item.key}
@@ -2288,8 +2298,8 @@ useEffect(() => {
                 <section id="section4" className="h-screen relative overflow-hidden whitebgref scroll-area">
                     <figure className="absolute w-full h-full bg-white z-[-1]" ref={srvBgimg}>
                         <Image
-                        width={1500}
-                        height={1000}
+                            width={1500}
+                            height={1000}
                             className="absolute w-full h-full object-cover"
                             src="../assets/images/services-bg.jpg"
                             alt=""
@@ -2303,7 +2313,7 @@ useEffect(() => {
                                 className="w-full pt-[21dvh] lg:pt-33 pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px] bg-primary lg:bg-transparent"
                                 ref={srvLftBx}
                             >
-                                 <div className="absolute -top-58 right-0   " ref={srvsVct}>
+                                <div className="absolute -top-58 right-0   " ref={srvsVct}>
                                     <Image
                                         src="../assets/images/svg/srv-vct.svg"
                                         alt="Logo"
@@ -2312,7 +2322,7 @@ useEffect(() => {
                                         height={356}
                                     />
                                 </div>
-                                
+
                                 <div className=" 3xl:ml-[110px] flex flex-col h-full">
                                     <h1
                                         ref={srvttlRef}
@@ -2398,8 +2408,8 @@ useEffect(() => {
                                 {/* BASE IMAGE = PREVIOUS SERVICE IMAGE */}
                                 {prevImage && (
                                     <Image
-                                    width={1500}
-                                    height={1000}
+                                        width={1500}
+                                        height={1000}
                                         src={prevImage}
                                         className="absolute inset-0 object-cover object-top w-full h-full z-10"
                                     />
@@ -2408,8 +2418,8 @@ useEffect(() => {
                                 {/* NEW IMAGE FADES ABOVE IT */}
                                 <AnimatePresence mode="wait">
                                     <MotionImage
-                                    width={1500}
-                                    height={1000}
+                                        width={1500}
+                                        height={1000}
                                         key={activeService?.image}
                                         src={activeService?.image}
                                         alt=""
@@ -2598,9 +2608,8 @@ useEffect(() => {
                                                     return (
                                                         <div
                                                             key={`${sector.originalIndex}-${sector.position}`}
-                                                            className={`flex items-center gap-5 cursor-pointer ${
-                                                                isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
-                                                            }`}
+                                                            className={`flex items-center gap-5 cursor-pointer ${isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
+                                                                }`}
                                                             style={{
                                                                 opacity: opacity,
                                                                 transform: `scale(${scale})`,
@@ -2615,8 +2624,8 @@ useEffect(() => {
                                                             {isActive && (
                                                                 <div className="hidden lg:flex bg-[#30B6F94D] rounded-full w-[83px] h-[83px]  items-center justify-center relative opacity-0">
                                                                     <Image
-                                                                    width={200}
-                                                                    height={200}
+                                                                        width={200}
+                                                                        height={200}
                                                                         src={sector.icon}
                                                                         alt={`${sector.name} icon`}
                                                                         className="h-[40px]"
@@ -2631,11 +2640,10 @@ useEffect(() => {
                                                             )}
 
                                                             <h3
-                                                                className={`hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
-                                                                    isActive
+                                                                className={`hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${isActive
                                                                         ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
                                                                         : "text-[14px] lg:text-19 leading-[1.842105263157895]"
-                                                                }`}
+                                                                    }`}
                                                                 style={{
                                                                     transition: "all 0.5s ease-out",
                                                                     willChange: "font-size, font-weight",
@@ -2651,8 +2659,8 @@ useEffect(() => {
                                             <div className="hidden lg:block absolute left-[-10px] top-1/2 -translate-y-[75%] z-10">
                                                 <div className="bg-[#30B6F94D] rounded-full w-[83px] h-[83px] flex items-center justify-center relative">
                                                     <Image
-                                                    width={200}
-                                                    height={200}
+                                                        width={200}
+                                                        height={200}
                                                         key={activeSector.icon}
                                                         src={activeSector.icon}
                                                         alt={`${activeSector.name} icon`}
@@ -2691,8 +2699,8 @@ useEffect(() => {
                                             }}
                                         >
                                             <Image
-                                            width={1500}
-                                            height={1000}
+                                                width={1500}
+                                                height={1000}
                                                 src={sector.image}
                                                 alt={`${sector.name} sector`}
                                                 className="object-cover w-full h-full"
@@ -2713,8 +2721,8 @@ useEffect(() => {
                                         >
                                             View All Projects
                                             <Image
-                                            width={27}
-                                            height={27}
+                                                width={27}
+                                                height={27}
                                                 src="../assets/images/icons/arrow-right.svg"
                                                 alt="arrow right"
                                                 className="group-hover:translate-x-2 transition-all duration-300"
@@ -2788,8 +2796,8 @@ useEffect(() => {
                                             <Link href="/projects" className="flex items-center gap-2">
                                                 View All Projects
                                                 <Image
-                                                width={27}
-                                                height={27}
+                                                    width={27}
+                                                    height={27}
                                                     src="../assets/images/icons/arrow-right.svg"
                                                     alt="arrow right"
                                                     className="group-hover:translate-x-2 transition-all duration-300"
@@ -2852,11 +2860,10 @@ useEffect(() => {
                                                 // className={` absolute   transition-all duration-300 flex items-center justify-center    w-[480px] h-[480px] ${
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
-                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
-                                                    activeDot === city.id && city.groupId === "sp-international"
+                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${activeDot === city.id && city.groupId === "sp-international"
                                                         ? "z-[999]"
                                                         : "z-[1]"
-                                                }`}
+                                                    }`}
                                                 style={{ left: city.left, top: city.top }}
                                             >
                                                 <div
@@ -2882,15 +2889,14 @@ useEffect(() => {
                                                     //     ? "bg-[#30F955] shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
                                                     //     : "bg-[#30B6F9]   border border-[#97DCFF] scale-85"
                                                     // }`}
-                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${
-                                                        city.groupId === "sp-group"
+                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${city.groupId === "sp-group"
                                                             ? activeDot === city.id
                                                                 ? "bg-primary/40 shadow-[0_0_35px_rgba(239,68,68,0.9),0_0_50px_rgba(239,68,68,0.6)] border border-[#97DCFF] scale-full"
                                                                 : "bg-[#30B6F9] border border-[#97DCFF] scale-85"
                                                             : activeDot === city.id
-                                                            ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
-                                                            : "bg-primary border border-white scale-85"
-                                                    }`}
+                                                                ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
+                                                                : "bg-primary border border-white scale-85"
+                                                        }`}
                                                 ></div>
                                                 {/* <span
                       className={`relative   -left-1 border border-[#30F95533] min-w-[110px] text-center backdrop-blur-[10px] uppercase bg-[#0015FF99] text-white text-[14px] font-bold px-2 py-[2px] rounded-full opacity-0 
@@ -3012,11 +3018,10 @@ useEffect(() => {
   p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
   absolute left-[0%] top-[21%]
   cursor-pointer
-  ${
-      activeDot === city.id
-          ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
-          : "opacity-0 scale-80 pointer-events-none"
-  }`}
+  ${activeDot === city.id
+                                                                            ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
+                                                                            : "opacity-0 scale-80 pointer-events-none"
+                                                                        }`}
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
                                                                         router.push(
@@ -3062,9 +3067,8 @@ useEffect(() => {
                                                                 {/* Bubble 3 */}
                                                                 <div
                                                                     className={`bubble bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
-            absolute left-[51%] top-[55%] ${
-                activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
-            } transition-all duration-500 delay-300`}
+            absolute left-[51%] top-[55%] ${activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
+                                                                        } transition-all duration-500 delay-300`}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
                                                                         <CountUp
@@ -3085,11 +3089,10 @@ useEffect(() => {
 
                                                             {/* Ring */}
                                                             <div
-                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${
-                                                                    activeDot === city.id
+                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${activeDot === city.id
                                                                         ? "opacity-100 scale-full"
                                                                         : "opacity-0"
-                                                                } transition-all duration-500 delay-300`}
+                                                                    } transition-all duration-500 delay-300`}
                                                                 style={{
                                                                     backgroundImage: `url(../assets/images/ring3.svg)`,
                                                                     backgroundSize: "cover",
@@ -3113,29 +3116,29 @@ useEffect(() => {
                             >
                                 <div className={` transition-all duration-500  outside `}>
                                     <div className="flex lg:block justify-center gap-2">
-<div
-  onTouchEnd={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
+                                        <div
+                                            onTouchEnd={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
 
-    router.push(
-      `/projects?country=${encodeURIComponent(selectedCity.name)}`
-    );
-  }}
-  onClick={(e) => {
-    // desktop fallback
-    e.stopPropagation();
-    router.push(
-      `/projects?country=${encodeURIComponent(selectedCity.name)}`
-    );
-  }}
-  className={`me-2 bubble cursor-pointer
+                                                router.push(
+                                                    `/projects?country=${encodeURIComponent(selectedCity.name)}`
+                                                );
+                                            }}
+                                            onClick={(e) => {
+                                                // desktop fallback
+                                                e.stopPropagation();
+                                                router.push(
+                                                    `/projects?country=${encodeURIComponent(selectedCity.name)}`
+                                                );
+                                            }}
+                                            className={`me-2 bubble cursor-pointer
     transition-all duration-500 delay-100 backdrop-blur-sm
     bg-[#00C8FF80] border border-[#00C8FF26]
     text-white text-center p-3 rounded-full
     ${activeDot === selectedCity.id ? "opacity-100 scale-100 float-bubble1" : "opacity-0 scale-80"}
   `}
->
+                                        >
 
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.pjtcompleted}
@@ -3158,11 +3161,10 @@ useEffect(() => {
                                         </div> */}
                                         <div
                                             className={`bubble  bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm  text-white text-center p-3 rounded-full 
-                                lg:absolute left-[51%] top-[55%] ${
-                                    activeDot === selectedCity.id
-                                        ? "opacity-100 scale-full float-bubble3"
-                                        : "scale-80 opacity-0 "
-                                }   transition-all duration-500 delay-300`}
+                                lg:absolute left-[51%] top-[55%] ${activeDot === selectedCity.id
+                                                    ? "opacity-100 scale-full float-bubble3"
+                                                    : "scale-80 opacity-0 "
+                                                }   transition-all duration-500 delay-300`}
                                         >
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.dedicatedemployees}
@@ -3172,9 +3174,8 @@ useEffect(() => {
                                     </div>
 
                                     <div
-                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${
-                                            activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
-                                        }   transition-all duration-500 delay-300`}
+                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
+                                            }   transition-all duration-500 delay-300`}
                                         style={{
                                             backgroundImage: `url(../assets/images/ring3.svg)`,
                                             backgroundSize: "cover",
@@ -3201,8 +3202,8 @@ useEffect(() => {
                 <section id="section7" className="h-screen relative overflow-hidden whitebgref scroll-area ">
                     <figure ref={cutltimg} className="absolute w-full h-full z-[-1] mx-auto my-0 left-0 right-0">
                         <Image
-                        width={1500}
-                        height={1000}
+                            width={1500}
+                            height={1000}
                             className="absolute object-cover w-full h-full z-0"
                             src={data.seventhSection.image}
                             alt={data.seventhSection.imageAlt}
@@ -3317,11 +3318,10 @@ useEffect(() => {
     lg:pb-1 transition-all duration-300 `}
                                                     >
                                                         <div
-                                                            className={`py-1 lg:py-0  ${
-                                                                activeItem.id === item.id
+                                                            className={`py-1 lg:py-0  ${activeItem.id === item.id
                                                                     ? "   bg-[linear-gradient(90deg,rgba(30,69,162,0.35)_0%,rgba(48,182,249,0)_100%)] lg:bg-none"
                                                                     : ""
-                                                            }`}
+                                                                }`}
                                                         >
                                                             <div
                                                                 className={`text-[15px] md:text-[18px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px]  text-white/80 leading-[1.473684210526316] 
