@@ -23,7 +23,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const isInitialized = useRef(false);
     const MotionImage = motion.create(Image);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isAnimating, setIsAnimating] = useState(false); 
+    const [isAnimating, setIsAnimating] = useState(false);
     const sectionRef = useRef(null);
     const { scrollYProgress: shapeProgress } = useScroll({
         target: sectionRef,
@@ -116,17 +116,17 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     // 🔹 Filter change handlers (reset page to 1)
     const handleSectorChange = (opt) => {
         setSelectedSector(opt);
-        setCurrentPage(1); 
+        setCurrentPage(1);
     };
 
     const handleStatusChange = (opt) => {
         setSelectedStatus(opt);
-        setCurrentPage(1); 
+        setCurrentPage(1);
     };
     const handleCountryChange = (opt) => {
         // update filter immediately
         setSelectedCountry(opt);
-        setCurrentPage(1); 
+        setCurrentPage(1);
 
         // update URL (no state reading from it)
         if (opt.name === "All") {
@@ -138,7 +138,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
     const handleServiceChange = (opt) => {
         setSelectedService(opt);
-        setCurrentPage(1); 
+        setCurrentPage(1);
     };
 
     // Clear all filters
@@ -147,7 +147,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setSelectedStatus(status[0]);
         setSelectedCountry(country[0]);
         setSelectedService(service[0]);
-        setCurrentPage(1); 
+        setCurrentPage(1);
     };
 
     useEffect(() => {
@@ -160,7 +160,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
         if (matchedCountry) {
             setSelectedCountry(matchedCountry);
-            setCurrentPage(1); 
+            setCurrentPage(1);
         }
 
         isInitialized.current = true;
@@ -554,14 +554,10 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         >
                             <Link href={`/projects/${item.slug}`}>
                                 <div className="relative">
-                                    {item?.secondSection?.location?.name === "UAE" ||
-                                    item?.secondSection?.location?.name === "Qatar" ||
-                                    item?.secondSection?.location?.name === "Kuwait" ||
-                                    item?.secondSection?.location?.name === "Bahrain" ||
-                                    item?.secondSection?.location?.name === "Saudi Arabia" ? (
+                                    {item?.thumbnail ? (
                                         <Image
                                             src={item.thumbnail}
-                                            alt={item.thumbnailAlt}
+                                            alt={item.thumbnailAlt || item.firstSection.title}
                                             width={520}
                                             height={395}
                                             className="w-full h-[200px] md:h-[250px] xl:h-[395px] object-cover"
@@ -675,19 +671,20 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         >
                             <Link href={`/projects/${item.slug}`}>
                                 <div className="flex flex-col lg:grid grid-cols-[240px_244px_448px_0px] xl:grid-cols-[240px_244px_448px_32px] 2xl:grid-cols-[274px_324px_458px_32px] 3xl:grid-cols-[274px_384px_658px_32px] justify-between gap-3 md:gap-8 lg:gap-4 3xl:gap-[69px] ">
-                                    {/* <div className="w-full xl:w-[274px]">
-                                        <Image
-                                            src={item.thumbnail}
-                                            alt={item.thumbnailAlt}
-                                            width={274}
-                                            height={208}
-                                            className="w-full h-full   md:h-[350px] xl:min-w-[274px] lg:h-[208px] object-fit"
-                                        />
-                                    </div> */}
                                     <div className="w-full xl:w-full">
-                                        <div className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full bg-primary flex items-center justify-center">
-                                            <span className="text-white text-19 font-medium">Image</span>
-                                        </div>
+                                        {item?.thumbnail ? (
+                                            <Image
+                                                src={item.thumbnail}
+                                                alt={item.thumbnailAlt || item.firstSection.title}
+                                                width={274}
+                                                height={208}
+                                                className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full bg-primary flex items-center justify-center">
+                                                <span className="text-white text-19 font-medium">Image</span>
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div>
@@ -804,7 +801,13 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
             {view === "grid" && (
                 <>
                     <div
-                        className={`${currentItems.length === 0 ? 'hidden' : currentItems.length < 4 ? 'top-[27%] 3xl:bottom-[-16%]' : 'top-[25%] lg:bottom-[30%] xl:bottom-[30%] 3xl:bottom-3/7'} absolute  3xl:top-auto  translate-y-[58px]    right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
+                        className={`${
+                            currentItems.length === 0
+                                ? "hidden"
+                                : currentItems.length < 4
+                                ? "top-[27%] 3xl:bottom-[-16%]"
+                                : "top-[25%] lg:bottom-[30%] xl:bottom-[30%] 3xl:bottom-3/7"
+                        } absolute  3xl:top-auto  translate-y-[58px]    right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
                     >
                         <MotionImage
                             width={1500}
@@ -816,7 +819,13 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         />
                     </div>
                     <div
-                        className={`${currentItems.length === 0 ? 'hidden' : currentItems.length < 4 ? 'bottom-[5%] hidden' : 'bottom-[5%] lg:bottom-0'} absolute  right-0 lg:right-[-150px] 3xl:right-0 z-[-1]`}
+                        className={`${
+                            currentItems.length === 0
+                                ? "hidden"
+                                : currentItems.length < 4
+                                ? "bottom-[5%] hidden"
+                                : "bottom-[5%] lg:bottom-0"
+                        } absolute  right-0 lg:right-[-150px] 3xl:right-0 z-[-1]`}
                     >
                         <MotionImage
                             width={1500}
