@@ -929,7 +929,6 @@ export default function Projects() {
                             >
                                 <div className="text-[16px]">
                                     {item.firstSection.title}
-                                    {/* <p className="text-red-500">{item?.secondSection?.location?.name}</p> */}
                                 </div>
                                 <div className="flex gap-5">
                                     <MdEdit

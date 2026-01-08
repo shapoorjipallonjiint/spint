@@ -61,7 +61,7 @@ const CoreLeardershipTeam = ({ data }) => {
                 <div className="flex flex-wrap gap-y-5 justify-between items-center mb-6 lg:mb-10 xl:mb-12 2xl:mb-15 3xl:mb-18">
                     <H2Title titleText={data?.title} />
 
-                    <motion.div
+                    {/* <motion.div
                         variants={moveUp(0.4)}
                         initial="hidden"
                         whileInView="show"
@@ -126,7 +126,7 @@ const CoreLeardershipTeam = ({ data }) => {
                                 ))}
                             </ComboboxOptions>
                         </Combobox>
-                    </motion.div>
+                    </motion.div> */}
                 </div>
 
                 <div className="grid grid-cols-2 xs:grid-cols-3 lg:grid-cols-4 gap-6 3xl:gap-y-[70px] 3xl:gap-[30px]">
