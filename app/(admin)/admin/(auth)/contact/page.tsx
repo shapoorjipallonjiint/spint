@@ -229,27 +229,21 @@ const ContactPage = () => {
                                     </div>
 
                                     <div className="flex flex-col gap-2">
-                                        <Label className="font-bold">Phone</Label>
+                                        <Label className="font-bold">Phone <span className="text-sm text-primary">(use comma to separate multiple numbers)</span></Label>
                                         <Input
-                                            {...register(`secondSection.items.${index}.phone`, {
-                                                required: "Phone is required",
-                                            })}
+                                            {...register(`secondSection.items.${index}.phone`)}
                                         />
                                         <FormError error={errors.secondSection?.items?.[index]?.phone?.message} />
 
                                         <Label className="font-bold">Fax</Label>
                                         <Input
-                                            {...register(`secondSection.items.${index}.fax`, {
-                                                required: "Fax is required",
-                                            })}
+                                            {...register(`secondSection.items.${index}.fax`)}
                                         />
                                         <FormError error={errors.secondSection?.items?.[index]?.fax?.message} />
 
                                         <Label className="font-bold">Location</Label>
                                         <Input
-                                            {...register(`secondSection.items.${index}.location`, {
-                                                required: "Location is required",
-                                            })}
+                                            {...register(`secondSection.items.${index}.location`)}
                                         />
                                         <FormError error={errors.secondSection?.items?.[index]?.location?.message} />
                                     </div>

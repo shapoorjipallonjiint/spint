@@ -44,14 +44,11 @@ const RegionalOffices = ({ data }) => {
                                                     Phone
                                                 </p>
                                                 <div>
-                                                    {/* {office.phone.map((phone, index) => ( */}
-                                                    <p
-                                                        key={index}
-                                                        className=" text-16 3xl:text-19 font-bold leading-[1.53] "
-                                                    >
-                                                        {office.phone}
-                                                    </p>
-                                                    {/* ))} */}
+                                                    {office.phone?.split(",").map((phone, i) => (
+                                                        <p key={i} className="text-16 3xl:text-19 font-bold leading-[1.53]">
+                                                            {phone.trim()}
+                                                        </p>
+                                                    ))}
                                                 </div>
                                             </div>
                                         ) : null}
