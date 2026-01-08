@@ -29,7 +29,10 @@ const RegionalOffices = ({ data }) => {
                                 className={`text-19 font-light  leading-[1.5] md:leading-[1.6] lg:leading-[1.48] text-paragraph ${
                                     office.phone || office.fax ? "mb-4 lg:mb-[45px]" : null
                                 }`}
-                                dangerouslySetInnerHTML={{ __html: office.address }}
+                                // dangerouslySetInnerHTML={{ __html: office.address }}
+                                dangerouslySetInnerHTML={{
+                                    __html: office.address.replace(/\n/g, "<br />"),
+                                }}
                             ></p>
 
                             {office.phone || office.fax ? (
