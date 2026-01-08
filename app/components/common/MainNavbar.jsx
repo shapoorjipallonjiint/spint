@@ -446,9 +446,9 @@ const MainNavbar = () => {
                                 <button className="bg-gradient-to-r from-[#30B6F9] to-[#1E45A2] text-white text-13 leading-[1.230769230769231] font-300 uppercase rounded-full px-4 2xl:px-[22px] py-[7.5px] cursor-pointer mr-3 hover:scale-[1.03] transition-all duration-300">
                                     العربية
                                 </button>
-                                <div className="leading-[1] p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%] inline-block transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] hover:scale-[1.03] cursor-pointer">
+                                <div className=" leading-[1] p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%] inline-block transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] hover:scale-[1.03] cursor-pointer">
                                     <Link target="_blank" href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji">
-                                    <button  className="uppercase text-[10px] xl:text-[12px] 2xl:text-16 leading-[1.75] font-300 px-[10px] 2xl:px-[18px] py-[5px] xl:py-1 2xl:py-[1.5px]  bg-white rounded-full transition-all duration-300 hover:bg-[#f7faff]">
+                                    <button  className="cursor-pointer uppercase text-[10px] xl:text-[12px] 2xl:text-16 leading-[1.75] font-300 px-[10px] 2xl:px-[18px] py-[5px] xl:py-1 2xl:py-[1.5px]  bg-white rounded-full transition-all duration-300 hover:bg-[#f7faff]">
                                         Employee login
                                     </button>
                                     </Link>
@@ -503,8 +503,8 @@ const MainNavbar = () => {
             </nav>
 
             <>
-                <div className={`max-md:hidden absolute inset-0 bg-white/30 backdrop-blur-sm z-40 h-screen w-full duration-300 transition-opacity ${searchActive ? "translate-y-[-5%] opacity-100" : "translate-y-[-100%] opacity-0"}`}></div>
-                <div ref={searchRef} className={`max-md:hidden w-full bg-white z-40 ${result?.length > 0 ? "h-[500px]" : "h-[180px]"} shadow-xl absolute top-24 lg:top-20 xl:top-24 right-0 duration-300 flex flex-col ${searchActive ? "translate-y-[-5%]" : "translate-y-[-110%]"}`}>
+                <div className={`max-md:hidden fixed inset-0 bg-white/30 backdrop-blur-sm z-40 h-screen w-full duration-300 transition-opacity ${searchActive ? "translate-y-[5%] opacity-100" : "translate-y-[-110%] opacity-0"}`}></div>
+                <div ref={searchRef} className={`max-md:hidden w-full bg-white z-40 ${result?.length > 0 ? "h-[500px]" : "h-[140px]"} shadow-xl fixed top-24 lg:top-20 xl:top-24 right-0 duration-300 flex flex-col ${searchActive ? "translate-y-[-5%]" : "translate-y-[-110%]"}`}>
                     <div className="container h-full">
                         {/* <div className="absolute top-[20px] xxxl:right-[60px] right-[30px]" onClick={() => setSearchActive(!searchActive)}>
             <IoClose className="text-lg text-green-950 cursor-pointer" />
@@ -711,7 +711,7 @@ const MainNavbar = () => {
                                         العربية
                                     </button>
                                     <div className="p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%] transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] hover:scale-105">
-                                        <Link target="_blank" href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji"><button className="w-full uppercase text-base leading-7 font-light px-5 py-2 bg-white rounded-full transition-all duration-300 hover:bg-[#f7faff]">
+                                        <Link target="_blank" href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji"><button className="cursor-pointer w-full uppercase text-base leading-7 font-light px-5 py-2 bg-white rounded-full transition-all duration-300 hover:bg-[#f7faff]">
                                             Employee login
                                         </button>
                                         </Link>
