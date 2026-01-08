@@ -211,6 +211,18 @@ import { useRouter } from "next/navigation";
 // );
 
 const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll }) => {
+    const [isDesktop, setIsDesktop] = useState(false);
+
+useEffect(() => {
+  const checkWidth = () => {
+    setIsDesktop(window.innerWidth > 992);
+  };
+
+  checkWidth(); // initial check
+  window.addEventListener("resize", checkWidth);
+
+  return () => window.removeEventListener("resize", checkWidth);
+}, []);
     const containerRef = useRef(null);
     const scrollBlock = useRef(false);
     const timeoutRef = useRef(null);
@@ -1474,12 +1486,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     // ];
 
     const [activeService, setActiveService] = useState({
-        image: serviceData[0].image,
+        image: serviceData[0]?.homeImage,
         title: serviceData[0].title,
         description: serviceData[0].description,
+        link: serviceData[0].link,
         index: 0,
     });
 
+    
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
     const sectors = [
@@ -2041,7 +2055,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 </h1>
                                 <p
                                     ref={spdscrpt}
-                                    className="text-[14px] lg:text-19 text-[#464646] lg:text-white font-light leading-[1.5] lg:max-w-[90%]  3xl:max-w-[75%] mb-[30px]"
+                                    className="text-[18px] lg:text-19 text-[#464646] lg:text-white font-light leading-[1.5] max-w-[52ch]  lg:max-w-[90%]  3xl:max-w-[75%] mb-[30px]"
                                 >
                                     {data.thirdSection.description}
                                 </p>
@@ -2315,20 +2329,24 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         0{activeService.index + 1}/ 06
                       </p> */}
                                         </div>
-                                        <div className=" flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden   border-b border-[#ffffff20]  mb-5 lg:mb-0 pt-[4dvh] lg:pt-18 lg:pb-21 3xl:pt-14 3xl:pb-21 pr-2">
+                                        <div className="flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden   border-b border-[#ffffff20]  mb-5 lg:mb-0 pt-[4dvh] lg:pt-18  lg:pb-21 3xl:pt-14 3xl:pb-21 pr-2">
                                             {serviceData.map((service, index) => (
                                                 <div
                                                     key={index}
-                                                    className={`flex items-center gap-3 cursor-pointer group w-fit`}
+                                                    className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0  ${
+                                                                activeServiceIndex === index
+                                                                    ? "border-white "
+                                                                    : "border-transparent"
+                                                            }`}
                                                     ref={(el) => (textItemsRef.current[index] = el)}
-                                                >
-                                                    <Link href={`services/${service.link}`}>
+                                                > 
+                                                    <Link href={isDesktop ? `services/${service.link}` : "#"}> 
                                                         <p
                                                             className={`${
                                                                 activeServiceIndex === index
-                                                                    ? "text-white lg:text-black font-bold bo "
+                                                                    ? "text-white lg:text-black font-light lg:font-bold bo "
                                                                     : "text-white/70 lg:text-black font-light"
-                                                            } text-14px lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9]  2xl:leading-[1.70]  3xl:leading-[1.607142857142857]  cursor-pointer group-hover:text-black group-hover:font-bold`}
+                                                            } text-[14px] lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9]  2xl:leading-[1.70]  3xl:leading-[1.607142857142857]  cursor-pointer group-hover:lg:text-black group-hover:lg:font-bold`}
                                                             onMouseOver={() => [
                                                                 setActiveService({
                                                                     image: service.homeImage,
@@ -2429,18 +2447,23 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     ref={brdonRef}
                                     className=" lg:absolute  left-[-40px] 3xl:left-[-58px] right-[25%] h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none   bg-white "
                                 />
-                                 {/* <AnimatePresence mode="wait">
+                                 <AnimatePresence mode="wait">
+                                    
                                     <motion.img
                                         key={activeService?.image}
                                         src={activeService?.image}
-                                        className="  object-cover object-top w-full h- z-20"
+                                        className="  object-cover  w-full h-[200px] sm:h-[277px] z-20 mb-5 md:mb-8 lg:hidden"
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
                                         transition={{ duration: 0.5, ease: "easeInOut" }}
                                     />
-                                </AnimatePresence> */}
-                                <div className="flex gap-2 items-center overflow-hidden">
+                                </AnimatePresence>
+                                <motion.div className="flex gap-2 items-center overflow-hidden" 
+                                        key={activeService?.index}
+                                        variants={moveUp(0.2)}
+                                        initial="hidden"
+                                        animate="show">
                                     <div
                                         className="flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10 w-7 h-7"
                                         ref={srvsArrw}
@@ -2453,19 +2476,19 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             height={19}
                                         />
                                     </div>
-                                    <motion.h3
-                                        key={activeService?.index}
-                                        variants={moveUp(0.2)}
-                                        initial="hidden"
-                                        animate="show"
+
+                                        <Link href={`/services/${activeService?.link}`}>
+                                    <h3
                                         className="text-[20px] lg:text-29 leading-[1.344827586206897] font-light text-black lg:text-white"
                                     >
                                         {activeService?.title}
-                                    </motion.h3>
+                                    </h3>
+                                        </Link>
                                     <div
                                         className=" lg:hidden    bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
                                         ref={srvsArrw}
                                     >
+                                        <Link href={`/services/${activeService?.link}`}>
                                         <Image
                                             src="../assets/images/services/thickarrow.svg"
                                             alt="Arrow"
@@ -2473,15 +2496,16 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             width={19}
                                             height={19}
                                         />
+                                        </Link>
                                     </div>
-                                </div>
+                                </motion.div>
                                 <div className="overflow-hidden">
                                     <motion.p
                                         key={activeService?.index}
                                         variants={moveUp(0.35)}
                                         initial="hidden"
                                         animate="show"
-                                        className="text-[14px] lg:text-18 text-paragraph lg:text-white mt-5 lg:mt-[80px] w-full lg:w-[75%] 3xl:max-w-[49ch]"
+                                        className="text-[14px] md:text-[17px] lg:text-18 text-paragraph lg:text-white mt-5 lg:mt-[80px] w-full lg:w-[75%] 3xl:max-w-[49ch]"
                                     >
                                         {activeService?.description}
                                     </motion.p>
@@ -2732,7 +2756,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         +
                                                     </h3>
                                                 </div>
-                                                <p className="text-[14px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]">
+                                                <p className="text-[14px]  md:text-[16px]  lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]">
                                                     Completed Projects
                                                 </p>
                                             </div>
@@ -2755,7 +2779,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         +
                                                     </h3>
                                                 </div>
-                                                <p className="text-[14px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]">
+                                                <p className="text-[14px] md:text-[16px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]">
                                                     Ongoing Projects
                                                 </p>
                                             </div>
@@ -2800,7 +2824,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             </h1>
                         </div>
                         <div className="  flex justify-center" ref={mapimage}>
-                            <div className="[position:initial] lg:relative  overflow-x-scroll lg:overflow-x-visible  scrollbar-hide  ">
+                            <div className="[position:initial] lg:relative  overflow-x-scroll lg:overflow-x-visible  scrollbar-hide responsive-map-position ">
                                 <div className="relative lg:[position:initial]   overflow-hide   " ref={containersRef}>
                                     {/* <img
                   src="../assets/images/mobilebmap.png"
@@ -3239,7 +3263,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -15 }}
                                                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                                                className="text-[14px] xl:text-19 font-light leading-[1.5]"
+                                                className="text-[14px] md:text-18  xl:text-19 font-light leading-[1.5]"
                                             >
                                                 {activeItem.desc}
                                             </motion.p>
@@ -3300,7 +3324,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             }`}
                                                         >
                                                             <div
-                                                                className={`text-[15px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px]  text-white/80 leading-[1.473684210526316] 
+                                                                className={`text-[15px] md:text-[18px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px]  text-white/80 leading-[1.473684210526316] 
                     transition-all duration-300 cursor-pointer  ${
                         activeItem.id === item.id
                             ? "font-bold text-white border-l-[2px] border-secondary lg:border-l-0  ps-2 lg:ps-0 "
