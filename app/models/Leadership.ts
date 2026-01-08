@@ -37,73 +37,40 @@ const leadershipSchema = new mongoose.Schema({
         type: String,
     },
     firstSection: {
-        name: {
-            type: String,
-            required: true,
-        },
-        name_ar: {
-            type: String,
-        },
-        designation: {
-            type: String,
-            required: true,
-        },
-        designation_ar: {
-            type: String,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
-        description_ar: {
-            type: String,
-        },
-        image: {
-            type: String,
-            required: true,
-        },
-        imageAlt: {
-            type: String,
-            required: true,
-        },
-        imageAlt_ar: {
-            type: String,
-        },
-
-        /* ---- Second Leader ---- */
-        nameTwo: {
-            type: String,
-            required: true,
-        },
-        nameTwo_ar: {
-            type: String,
-        },
-        designationTwo: {
-            type: String,
-            required: true,
-        },
-        designationTwo_ar: {
-            type: String,
-        },
-        descriptionTwo: {
-            type: String,
-            required: true,
-        },
-        descriptionTwo_ar: {
-            type: String,
-        },
-
-        imageTwo: {
-            type: String,
-            required: true,
-        },
-        imageTwoAlt: {
-            type: String,
-            required: true,
-        },
-        imageTwoAlt_ar: {
-            type: String,
-        },
+        items:[{
+            name: {
+                type: String,
+                required: true,
+            },
+            name_ar: {
+                type: String,
+            },
+            designation: {
+                type: String,
+                required: true,
+            },
+            designation_ar: {
+                type: String,
+            },
+            description: {
+                type: String,
+                required: true,
+            },
+            description_ar: {
+                type: String,
+            },
+            image: {
+                type: String,
+                required: true,
+            },
+            imageAlt: {
+                type: String,
+                required: true,
+            },
+            imageAlt_ar: {
+                type: String,
+            },
+        }]
     },
     secondSection: {
         title: {
@@ -113,20 +80,6 @@ const leadershipSchema = new mongoose.Schema({
         title_ar: {
             type: String,
         },
-
-        /* ---- Departments ---- */
-        departments: [
-            {
-                _id: false,
-                name: {
-                    type: String,
-                    required: true,
-                },
-                name_ar: {
-                    type: String,
-                },
-            },
-        ],
 
         /* ---- People ---- */
         items: [

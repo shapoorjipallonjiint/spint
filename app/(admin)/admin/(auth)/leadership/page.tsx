@@ -29,35 +29,22 @@ interface LeadershipFormProps {
     pageDescription_ar?: string;
 
     firstSection: {
-        name: string;
-        name_ar?: string;
-        designation: string;
-        designation_ar?: string;
-        description: string;
-        description_ar: string;
-        image: string;
-        imageAlt: string;
-        imageAlt_ar?: string;
-
-        nameTwo: string;
-        nameTwo_ar?: string;
-        designationTwo?: string;
-        designationTwo_ar?: string;
-        descriptionTwo: string;
-        descriptionTwo_ar: string;
-        imageTwo: string;
-        imageTwoAlt: string;
-        imageTwoAlt_ar?: string;
+        items:{
+            image: string;
+            imageAlt?: string;
+            imageAlt_ar?: string;
+            name: string;
+            name_ar?: string;
+            designation: string;
+            designation_ar?: string;
+            description:string;
+            description_ar:string;
+        }[]
     };
 
     secondSection: {
         title: string;
         title_ar?: string;
-
-        departments: {
-            name: string;
-            name_ar?: string;
-        }[];
 
         items: {
             image: string;
@@ -67,44 +54,15 @@ interface LeadershipFormProps {
             name_ar?: string;
             designation: string;
             designation_ar?: string;
-            department: string;
             socialLink?: string;
         }[];
     };
 }
 
-type DepartmentField = FieldArrayWithId<LeadershipFormProps, "secondSection.departments", "id">;
 
 type PersonField = FieldArrayWithId<LeadershipFormProps, "secondSection.items", "id">;
 
-type DepartmentListProps = {
-    departments: DepartmentField[];
-    onEdit: (index: number) => void;
-    onDelete: (index: number) => void;
-    onAdd: () => void;
-};
 
-const DepartmentList = ({ departments, onEdit, onDelete, onAdd }: DepartmentListProps) => (
-    <div className="p-4 flex flex-col gap-3">
-        {departments.map((dept, i) => (
-            <div key={dept.id} className="flex items-center justify-between p-3 border rounded-md hover:bg-muted">
-                <div className="cursor-pointer" onClick={() => onEdit(i)}>
-                    <p className="font-medium">{dept.name || "— English name"}</p>
-                    <p className="text-sm text-muted-foreground">{dept.name_ar || "— Arabic name"}</p>
-                </div>
-
-                <div className="flex gap-4">
-                    <RiEditLine size={24} className="cursor-pointer" onClick={() => onEdit(i)} />
-                    <RiDeleteBinLine size={22} className="cursor-pointer" onClick={() => onDelete(i)} />
-                </div>
-            </div>
-        ))}
-
-        <Button type="button" addItem onClick={onAdd}>
-            Add Department
-        </Button>
-    </div>
-);
 
 type PeopleListProps = {
     people: PersonField[];
@@ -148,20 +106,10 @@ const LeadershipAdminPage = () => {
         formState: { errors },
     } = useForm<LeadershipFormProps>();
 
-    const [editingDepartment, setEditingDepartment] = useState<number | null>(null);
     const [editingPerson, setEditingPerson] = useState<number | null>(null);
 
     /* ---------- Field Arrays ---------- */
 
-    const {
-        fields: departmentFields,
-        update: updateDepartment,
-        remove: removeDepartment,
-        replace: replaceDepartments,
-    } = useFieldArray({
-        control,
-        name: "secondSection.departments",
-    });
 
     const {
         fields: peopleFields,
@@ -171,6 +119,15 @@ const LeadershipAdminPage = () => {
     } = useFieldArray({
         control,
         name: "secondSection.items",
+    });
+
+    const {
+        fields: firstSectionItems,
+        append: firstSectionAppend,
+        remove: firstSectionRemove,
+    } = useFieldArray({
+        control,
+        name: "firstSection.items",
     });
 
     /* ================= SUBMIT ================= */
@@ -245,11 +202,11 @@ const LeadershipAdminPage = () => {
         setValue("pageDescription_ar", json.data?.pageDescription_ar);
 
         setValue("firstSection", json.data?.firstSection);
+        setValue("firstSection.items", json.data?.firstSection.items);
 
         setValue("secondSection.title", json.data?.secondSection?.title);
         setValue("secondSection.title_ar", json.data?.secondSection?.title_ar);
 
-        replaceDepartments(json.data?.secondSection?.departments || []);
         replacePeople(json.data?.secondSection?.items || []);
     };
 
@@ -304,129 +261,107 @@ const LeadershipAdminPage = () => {
                 </AdminItemContainer>
 
                 {/* ================= LEADERSHIP SECTION ================= */}
+
                 <AdminItemContainer>
-                    <Label main>Leadership Section</Label>
+                    <Label main>First Section</Label>
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="grid grid-cols-1 gap-2">
+                                <div>
+                                    <Label className="font-bold">Items</Label>
+                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                        {firstSectionItems.map((field, index) => (
+                                            <div key={field.id} className="px-5 grid grid-cols-2 gap-5 relative border-b pb-2">
+                                            <div className="absolute top-0 right-2">
+                                                    <RiDeleteBinLine
+                                                        onClick={() => firstSectionRemove(index)}
+                                                        className="cursor-pointer text-red-600"
+                                                    />
+                                                </div>
+                                            <div>
+                                                <Controller
+                                                    name={`firstSection.items.${index}.image`}
+                                                    control={control}
+                                                    rules={{ required: "Leader image is required" }}
+                                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                                />
+                                                <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
+                                            </div>
+                    
+                                            <div className="flex flex-col gap-3">
+                                                <div>
+                                                    <Label className="font-bold">Name</Label>
+                                                    <Input
+                                                        {...register(`firstSection.items.${index}.name`, {
+                                                            required: "Leader name is required",
+                                                        })}
+                                                    />
+                                                    <FormError error={errors.firstSection?.items?.[index]?.name?.message} />
+                                                </div>
+                    
+                                                <div>
+                                                    <Label className="font-bold">Designation</Label>
+                                                    <Input
+                                                        {...register(`firstSection.items.${index}.designation`, {
+                                                            required: "Designation is required",
+                                                        })}
+                                                    />
+                                                    <FormError error={errors.firstSection?.items?.[index]?.designation?.message} />
+                                                </div>
+                    
+                                                <div>
+                                                    <Label className="font-bold">Image Alt</Label>
+                                                    <Input
+                                                        {...register(`firstSection.items.${index}.imageAlt`, {
+                                                            required: "Image alt text is required",
+                                                        })}
+                                                    />
+                                                    <FormError error={errors.firstSection?.items?.[index]?.imageAlt?.message} />
+                                                </div>
+                                            </div>
+                    
+                                            <div className="col-span-2">
+                                                <Label className="font-bold">Description</Label>
+                                                <Textarea
+                                                    {...register(`firstSection.items.${index}.description`, {
+                                                        required: "Description is required",
+                                                    })}
+                                                    placeholder="Leader description"
+                                                />
+                                                <FormError error={errors.firstSection?.items?.[index]?.description?.message} />
+                                            </div>
+                                        </div>
+                                        ))}
 
-                    {/* ================= LEADER 1 ================= */}
-                    <div className="px-5">
-                        <Label className="text-sm font-semibold text-muted-foreground">Leader 1</Label>
-                    </div>
-
-                    <div className="px-5 rounded-md grid grid-cols-2 gap-5">
-                        <div>
-                            <Controller
-                                name="firstSection.image"
-                                control={control}
-                                rules={{ required: "Leader image is required" }}
-                                render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
-                            />
-                            <FormError error={errors.firstSection?.image?.message} />
-                        </div>
-
-                        <div className="flex flex-col gap-3">
-                            <div>
-                                <Label className="font-bold">Name</Label>
-                                <Input
-                                    {...register("firstSection.name", {
-                                        required: "Leader name is required",
-                                    })}
-                                />
-                                <FormError error={errors.firstSection?.name?.message} />
+                                        <div className="flex justify-end">
+                                            <Button
+                                                type="button"
+                                                className=""
+                                                addItem
+                                                onClick={() =>
+                                                    firstSectionAppend({
+                                                        image: "",
+                                                        name: "",
+                                                        name_ar: "",
+                                                        designation: "",
+                                                        designation_ar: "",
+                                                        description: "",
+                                                        description_ar: "",
+                                                        imageAlt:"",
+                                                        imageAlt_ar:""
+                                                    })
+                                                }
+                                            >
+                                                Add Item
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div>
-                                <Label className="font-bold">Designation</Label>
-                                <Input
-                                    {...register("firstSection.designation", {
-                                        required: "Designation is required",
-                                    })}
-                                />
-                                <FormError error={errors.firstSection?.designation?.message} />
-                            </div>
-
-                            <div>
-                                <Label className="font-bold">Image Alt</Label>
-                                <Input
-                                    {...register("firstSection.imageAlt", {
-                                        required: "Image alt text is required",
-                                    })}
-                                />
-                                <FormError error={errors.firstSection?.imageAlt?.message} />
-                            </div>
-                        </div>
-
-                        <div className="col-span-2">
-                            <Label className="font-bold">Description</Label>
-                            <Textarea
-                                {...register("firstSection.description", {
-                                    required: "Description is required",
-                                })}
-                                placeholder="Leader description"
-                            />
-                            <FormError error={errors.firstSection?.description?.message} />
-                        </div>
-                    </div>
-
-                    {/* ================= LEADER 2 ================= */}
-                    <div className="px-5 pt-5 border-t mt-5">
-                        <Label className="text-sm font-semibold text-muted-foreground">Leader 2</Label>
-                    </div>
-
-                    <div className="px-5 pb-5 rounded-md grid grid-cols-2 gap-5">
-                        <div>
-                            <Controller
-                                name="firstSection.imageTwo"
-                                control={control}
-                                rules={{ required: "Second leader image is required" }}
-                                render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
-                            />
-                            <FormError error={errors.firstSection?.imageTwo?.message} />
-                        </div>
-
-                        <div className="flex flex-col gap-3">
-                            <div>
-                                <Label className="font-bold">Name</Label>
-                                <Input
-                                    {...register("firstSection.nameTwo", {
-                                        required: "Name is required",
-                                    })}
-                                />
-                                <FormError error={errors.firstSection?.nameTwo?.message} />
-                            </div>
-
-                            <div>
-                                <Label className="font-bold">Designation</Label>
-                                <Input
-                                    {...register("firstSection.designationTwo", {
-                                        required: "Designation is required",
-                                    })}
-                                />
-                                <FormError error={errors.firstSection?.designationTwo?.message} />
-                            </div>
-
-                            <div>
-                                <Label className="font-bold">Image Alt</Label>
-                                <Input
-                                    {...register("firstSection.imageTwoAlt", {
-                                        required: "Image alt text is required",
-                                    })}
-                                />
-                                <FormError error={errors.firstSection?.imageTwoAlt?.message} />
-                            </div>
-                        </div>
-
-                        <div className="col-span-2">
-                            <Label className="font-bold">Description</Label>
-                            <Textarea
-                                {...register("firstSection.descriptionTwo", {
-                                    required: "Description is required",
-                                })}
-                                placeholder="Second leader description"
-                            />
-                            <FormError error={errors.firstSection?.descriptionTwo?.message} />
                         </div>
                     </div>
                 </AdminItemContainer>
+                
 
                 {/* ================= Second SECTION ================= */}
                 <AdminItemContainer>
@@ -489,89 +424,87 @@ const LeadershipAdminPage = () => {
 
                 {/* ================= LEADERSHIP SECTION ================= */}
                 <AdminItemContainer>
-                    <Label main>Leadership Section</Label>
-                    {/* ================= LEADER 1 ================= */}
-                    <div className="px-5">
-                        <Label className="text-sm font-semibold text-muted-foreground">Leader 1</Label>
-                    </div>
+                    <Label main>First Section</Label>
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="grid grid-cols-1 gap-2">
+                                <div>
+                                    <Label className="font-bold">Items</Label>
+                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                        {firstSectionItems.map((field, index) => (
+                                            <div className="px-5 rounded-md grid grid-cols-2 gap-5">
+                                            <div>
+                                                <Controller
+                                                    name={`firstSection.items.${index}.image`}
+                                                    control={control}
+                                                    rules={{ required: "Leader image is required" }}
+                                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                                />
+                                                <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
+                                            </div>
+                    
+                                            <div className="flex flex-col gap-3">
+                                                <div>
+                                                    <Label className="font-bold">Name</Label>
+                                                    <Input
+                                                        {...register(`firstSection.items.${index}.name_ar`)}
+                                                    />
+                                                    
+                                                </div>
+                    
+                                                <div>
+                                                    <Label className="font-bold">Designation</Label>
+                                                    <Input
+                                                        {...register(`firstSection.items.${index}.designation_ar`)}
+                                                    />
+                                                    
+                                                </div>
+                    
+                                                <div>
+                                                    <Label className="font-bold">Image Alt</Label>
+                                                    <Input
+                                                        {...register(`firstSection.items.${index}.imageAlt_ar`)}
+                                                    />
+                                                    
+                                                </div>
+                                            </div>
+                    
+                                            <div className="col-span-2">
+                                                <Label className="font-bold">Description</Label>
+                                                <Textarea
+                                                    {...register(`firstSection.items.${index}.description_ar`)}
+                                                    placeholder="Leader description"
+                                                />
+                                                
+                                            </div>
+                                        </div>
+                                        ))}
 
-                    <div className="px-5 rounded-md grid grid-cols-2 gap-5">
-                        <div>
-                            <Controller
-                                name="firstSection.image"
-                                control={control}
-                                rules={{ required: "Leader image is required" }}
-                                render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
-                            />
-                            <FormError error={errors.firstSection?.image?.message} />
-                        </div>
-
-                        <div className="flex flex-col gap-3">
-                            <div>
-                                <Label className="font-bold">Name</Label>
-                                <Input {...register("firstSection.name_ar")} />
+                                        <div className="flex justify-end">
+                                            <Button
+                                                type="button"
+                                                className=""
+                                                addItem
+                                                onClick={() =>
+                                                    firstSectionAppend({
+                                                        image: "",
+                                                        name: "",
+                                                        name_ar: "",
+                                                        designation: "",
+                                                        designation_ar: "",
+                                                        description: "",
+                                                        description_ar: "",
+                                                        imageAlt:"",
+                                                        imageAlt_ar:""
+                                                    })
+                                                }
+                                            >
+                                                Add Item
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div>
-                                <Label className="font-bold">Designation</Label>
-                                <Input {...register("firstSection.designation_ar")} />
-                            </div>
-
-                            <div>
-                                <Label className="font-bold">Image Alt</Label>
-                                <Input
-                                    {...register("firstSection.imageAlt_ar", {
-                                        required: "Image alt text is required",
-                                    })}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="col-span-2">
-                            <Label className="font-bold">Description</Label>
-                            <Textarea {...register("firstSection.description_ar")} placeholder="Leader description" />
-                        </div>
-                    </div>
-
-                    {/* ================= LEADER 2 ================= */}
-                    <div className="px-5 pt-5 border-t mt-5">
-                        <Label className="text-sm font-semibold text-muted-foreground">Leader 2</Label>
-                    </div>
-
-                    <div className="px-5 pb-5 rounded-md grid grid-cols-2 gap-5">
-                        <div>
-                            <Controller
-                                name="firstSection.imageTwo"
-                                control={control}
-                                rules={{ required: "Second leader image is required" }}
-                                render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
-                            />
-                            <FormError error={errors.firstSection?.imageTwo?.message} />
-                        </div>
-
-                        <div className="flex flex-col gap-3">
-                            <div>
-                                <Label className="font-bold">Name</Label>
-                                <Input {...register("firstSection.nameTwo_ar")} />
-                            </div>
-
-                            <div>
-                                <Label className="font-bold">Designation</Label>
-                                <Input {...register("firstSection.designationTwo_ar")} />
-                            </div>
-
-                            <div>
-                                <Label className="font-bold">Image Alt</Label>
-                                <Input {...register("firstSection.imageTwoAlt_ar")} />
-                            </div>
-                        </div>
-
-                        <div className="col-span-2">
-                            <Label className="font-bold">Description</Label>
-                            <Textarea
-                                {...register("firstSection.descriptionTwo_ar")}
-                                placeholder="Second leader description"
-                            />
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -615,61 +548,7 @@ const LeadershipAdminPage = () => {
                 </Button>
             </div>
 
-            {/* ================= EDIT DEPARTMENT ================= */}
-            {editingDepartment !== null && (
-                <Dialog
-                    open
-                    onOpenChange={() => {
-                        // resetField(`secondSection.departments.${editingDepartment}`);
-                        setEditingDepartment(null);
-                    }}
-                >
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Edit Department</DialogTitle>
-                        </DialogHeader>
 
-                        <div className="flex flex-col gap-4">
-                            <Input
-                                placeholder="Department (English)"
-                                {...register(`secondSection.departments.${editingDepartment}.name`, {
-                                    required: "Department name is required",
-                                })}
-                            />
-
-                            <FormError error={errors.secondSection?.departments?.[editingDepartment!]?.name?.message} />
-
-                            <Input
-                                placeholder="Department (Arabic)"
-                                {...register(`secondSection.departments.${editingDepartment}.name_ar`)}
-                            />
-
-                            <Button
-                                type="button"
-                                className="text-white"
-                                onClick={async () => {
-                                    const index = editingDepartment!;
-
-                                    const isValid = await trigger(`secondSection.departments.${index}.name`);
-
-                                    if (!isValid) return;
-
-                                    updateDepartment(index, {
-                                        name: getValues(`secondSection.departments.${index}.name`),
-                                        name_ar: getValues(`secondSection.departments.${index}.name_ar`),
-                                    });
-
-                                    await saveToAPI();
-
-                                    setEditingDepartment(null);
-                                }}
-                            >
-                                Save
-                            </Button>
-                        </div>
-                    </DialogContent>
-                </Dialog>
-            )}
 
             {/* ================= EDIT PERSON ================= */}
             {editingPerson !== null && (
@@ -758,40 +637,7 @@ const LeadershipAdminPage = () => {
                                     {...register(`secondSection.items.${editingPerson}.imageAlt_ar`)}
                                 />
 
-                                {/* DEPARTMENT – REQUIRED */}
-                                <Controller
-                                    control={control}
-                                    name={`secondSection.items.${editingPerson}.department`}
-                                    rules={{ required: "Department is required" }}
-                                    render={({ field }) => (
-                                        <>
-                                            <Select value={field.value} onValueChange={field.onChange}>
-                                                <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Select Department" />
-                                                </SelectTrigger>
-
-                                                <SelectContent
-                                                    className="w-full z-[60] bg-white"
-                                                    position="popper"
-                                                    sideOffset={4}
-                                                >
-                                                    {departmentFields.map((dept, i) => (
-                                                        <SelectItem key={i} value={dept.name}>
-                                                            <span>{dept.name}</span>
-                                                            <span className="ml-4 text-muted-foreground">
-                                                                ({dept.name_ar})
-                                                            </span>
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-
-                                            <FormError
-                                                error={errors.secondSection?.items?.[editingPerson!]?.department?.message}
-                                            />
-                                        </>
-                                    )}
-                                />
+                                
                             </div>
                         </div>
 
@@ -807,7 +653,6 @@ const LeadershipAdminPage = () => {
                                     `secondSection.items.${index}.name`,
                                     `secondSection.items.${index}.designation`,
                                     `secondSection.items.${index}.imageAlt`,
-                                    `secondSection.items.${index}.department`,
                                 ]);
 
                                 if (!isValid) return;
@@ -828,28 +673,7 @@ const LeadershipAdminPage = () => {
             )}
 
             {/* ================= MANAGE SECTIONS ================= */}
-            <div className="col-span-2 mt-10 grid grid-cols-2 gap-6">
-                {/* LEFT: DEPARTMENTS */}
-                <AdminItemContainer>
-                    <Label main>Departments</Label>
-                    <DepartmentList
-                        departments={departmentFields}
-                        onEdit={(i) => {
-                            setEditingDepartment(i);
-                        }}
-                        onDelete={async (i) => {
-                            removeDepartment(i);
-                            await saveToAPI();
-                        }}
-                        onAdd={() => {
-                            setValue(`secondSection.departments.${departmentFields.length}`, {
-                                name: "",
-                                name_ar: "",
-                            });
-                            setEditingDepartment(departmentFields.length);
-                        }}
-                    />
-                </AdminItemContainer>
+            <div className="col-span-2 mt-10 grid grid-cols-1 gap-6">
 
                 {/* RIGHT: TEAM MEMBERS */}
                 <AdminItemContainer>
@@ -870,7 +694,6 @@ const LeadershipAdminPage = () => {
                                 name_ar: "",
                                 designation: "",
                                 designation_ar: "",
-                                department: "",
                                 socialLink: "",
                             });
                             setEditingPerson(peopleFields.length);
