@@ -692,7 +692,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                                 />
                             </svg>
                         </div>
-                        <a href="#">
+                        <a href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji" target="_blank">
                             <div className="hidden lg:flex items-center justify-center z-[1]  cursor-pointer relative  h-[31px] bg-[#00000040] rounded-[15px]">
                                 <img src="../assets/images/border-wide.svg" alt="Logo" className="absolute w-full h-full" />
                                 <p className="mb-0 text-white z-1 font-[300] text-[16px] px-4 pt-[1px] uppercase">

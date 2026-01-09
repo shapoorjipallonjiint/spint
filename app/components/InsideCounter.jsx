@@ -77,17 +77,19 @@ const InsideCounter = ({ value, duration = 2, delay = 0, suffix = "" }) => {
                 const totalFrames = Math.round(duration * 60);
                 let frame = 0;
 
-                const animate = () => {
-                    frame++;
-                    const progress = frame / totalFrames;
-                    const eased = 1 - Math.pow(2, -10 * progress);
-
-                    setDisplay(Math.round(target * eased));
-
-                    if (frame < totalFrames) {
-                        requestAnimationFrame(animate);
-                    }
-                };
+        const animate = () => {
+          frame++;
+          const progress = frame / totalFrames;
+          const eased = 1 - Math.pow(2, -10 * progress);
+        
+          if (frame < totalFrames) {
+            setDisplay(Math.round(target * eased));
+            requestAnimationFrame(animate);
+          } else {
+            setDisplay(target); // ✅ force final value
+          }
+        };
+        
 
                 setTimeout(() => requestAnimationFrame(animate), delay);
             },
