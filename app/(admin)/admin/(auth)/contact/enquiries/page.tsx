@@ -126,7 +126,7 @@ const EnquiryPage = () => {
                                             <div className="flex gap-2">
                                                 <DialogClose className="bg-gray-300 px-3 py-1 rounded-md">No</DialogClose>
                                                 <DialogClose
-                                                    className="bg-red-600 text-white px-3 py-1 rounded-md"
+                                                    className="bg-black text-white px-3 py-1 rounded-md"
                                                     onClick={() => handleDeleteEnquiry(enquiry._id)}
                                                 >
                                                     Yes
