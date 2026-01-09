@@ -75,7 +75,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
 
             {/* LOGO */}
             <div className="flex items-center p-3 absolute">
-              <img src="./assets/images/main-logo.png" alt="logo" />
+              <img src="./assets/images/main-logo.png" alt="logo" className="w-25" />
             </div>
 
             {/* CONTENT */}

@@ -1858,7 +1858,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                         <div
                             ref={rightSecRef}
-                            className="relative flex flex-col  px-10 xl:px-[90px] pb-20 xl:pb-[93px] pt-20 xl:pt-[50px] overflow-hidden h-[62.15dvh] lg:h-full"
+                            className="relative flex flex-col  px-10 xl:px-[90px] pb-20 xl:pb-[93px] pt-20 xl:pt-[50px] overflow-hidden h-[52.15dvh] lg:h-full"
                         >
                             <div className="absolute top-0 w-full z-10 h-full right-0 opacity-0" ref={videoBgRef}>
                                 <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/85 from-0% via-black/65 via-75% to-black/60 to-100% "></div>
@@ -1977,7 +1977,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             ref={mobileStatsRef}
                         >
                             {data.secondSection.items.map((item, index) => (
-                                <div className="border-b border-[#0a000020] lg:border-b-0 pb-5 mb-5" key={index}>
+                                <div className="border-b border-[#0a000020] last:border-b-0 lg:border-b-0 pb-5 mb-5" key={index}>
                                     <h3 className="text-26 md:text-40 xl:text-40 font-light leading-[auto] mb-[5px]">
                                         <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />
                                         {getSuffix(item.value)}
@@ -2025,7 +2025,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
                 <section id="section3" className="h-screen overflow-hidden relative scroll-area">
-                    <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[800px_auto] 3xl:grid-cols-[1021px_auto] h-full bg-transparent">
+                    <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[600px_auto] 2xl:grid-cols-[800px_auto] 3xl:grid-cols-[1021px_auto] h-full bg-transparent">
                         <div className="lftblc relative right-0 h-[52.6dvh] lg:h-auto" ref={splftimng}>
                             <div className="bg-primary absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
                             <Image
@@ -2043,12 +2043,21 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 className="w-full h-full object-cover absolute object-center lg:hidden"
                             />
                         </div>
+                         <div className="block lg:hidden   ">
+                            <img
+                                ref={sprIcnim}
+                                src="/assets/images/svg/sv-02.svg"
+                                width={600}
+                                height={600}
+                                className="   absolute  right-0 bottom-0 z-[0] w-[394px] h-[554px]"
+                            />
+                        </div>
                         <div
                             className=" flex flex-col h-full px-5 lg:px-[70px] 3xl:px-[100px] pb-[120px] 3xl:pb-[150px] pt-[7dvh] lg:pt-[120px] 3xl:pt-[150px] overflow-hidden relative"
                             ref={sprghtBx}
                         >
                             <div
-                                className="bg-white lg:bg-primary absolute w-full left-0 h-full top-0 z-[-1]"
+                                className="  lg:bg-primary absolute w-full left-0 h-full top-0 z-[-1]"
                                 ref={sprgtbg}
                             ></div>
                             <Image
@@ -2059,19 +2068,21 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 alt=""
                                 className="hidden lg:block absolute right-0 w-[250px] 3xl:w-[353px]"
                             />
-                            <div className="">
+                            <div className="relative z-[99]">
                                 <h1
                                     ref={sptitle}
-                                    className="text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] lg:max-w-[8ch] font-light mb-[15px] lg:mb-8 xl:mb-[25px] text-black lg:text-white"
+                                    className="text-[32px] sm:text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] lg:max-w-[8ch] font-light mb-[15px] lg:mb-8 xl:mb-[25px] text-black lg:text-white"
                                 >
                                     {data.thirdSection.title}
                                 </h1>
-                                <p
+                               <div className="  max-h-[6rem]   md:max-h-[6rem] lg:max-h-full overflow-y-auto  mb-[30px]">
+                                 <p
                                     ref={spdscrpt}
-                                    className="text-[18px] lg:text-19 text-[#464646] lg:text-white font-light leading-[1.5] max-w-[52ch]  lg:max-w-[90%]  3xl:max-w-[75%] mb-[30px]"
+                                    className="text-[14px] md:text-[18px] lg:text-19 text-[#464646] lg:text-white font-light leading-[1.5] max-w-[33ch] sm:max-w-[80%]  lg:max-w-[90%]  3xl:max-w-[75%]"
                                 >
                                     {data.thirdSection.description}
                                 </p>
+                               </div>
                                 <Link
                                     ref={spbtn}
                                     href={data.thirdSection.link}
@@ -2106,7 +2117,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             <div className="mt-auto relative">
                                 <hr
                                     ref={spBrdOne}
-                                    className="border-white opacity-20 absolute top-[40%] left-[-30%] right-0"
+                                    className="border-white opacity-20 absolute top-[57px] left-[-30%] right-0"
                                 />
                                 <div className="hidden lg:grid grid-cols-3 " ref={spStats}>
                                     {data.thirdSection.items.map((item, index) => (
@@ -2146,15 +2157,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 </div>
                             </div>
                         </div>
-                        <div className="block lg:hidden   ">
-                            <img
-                                ref={sprIcnim}
-                                src="/assets/images/svg/sv-02.svg"
-                                width={600}
-                                height={600}
-                                className="   absolute  right-0 bottom-0 z-[1] w-[394px] h-[554px]"
-                            />
-                        </div>
+                       
                     </div>
                     {/* <div className="absolute top-0 left-0 z-0 w-full h-full bg-transparent">
             <img
@@ -2309,14 +2312,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         <div className="flex lg:h-full">
                             {/*      <div className="w-1/3"></div> */}
                             <div
-                                className="w-full pt-[21dvh] lg:pt-33 pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px] bg-primary lg:bg-transparent"
+                                className="w-full pt-[16.3dvh] lg:pt-33 pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px] bg-primary lg:bg-transparent"
                                 ref={srvLftBx}
                             >
-                                <div className="absolute -top-58 right-0   " ref={srvsVct}>
+                                <div className="absolute top-[-195px] right-0   " ref={srvsVct}>
                                     <Image
                                         src="../assets/images/svg/srv-vct.svg"
                                         alt="Logo"
-                                        className="h-full w-full"
+                                        className="h-[356px] w-[254px] lg:hidden"
                                         width={254}
                                         height={356}
                                     />
@@ -2338,7 +2341,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         0{activeService.index + 1}/ 06
                       </p> */}
                                         </div>
-                                        <div className="flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden   border-b border-[#ffffff20]  mb-5 lg:mb-0 pt-[4dvh] lg:pt-18  lg:pb-21 3xl:pt-14 3xl:pb-21 pr-2">
+                                        <div className="flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden   border-b border-[#ffffff20]  mb-5 lg:mb-0 xs-pt-1 pt-[4dvh] lg:pt-18  lg:pb-21 3xl:pt-14 3xl:pb-21 pr-2">
                                             {serviceData.map((service, index) => (
                                                 <div
                                                     key={index}
@@ -2444,8 +2447,21 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     height={914}
                                 />
                             </div>
+
+                                 <AnimatePresence mode="wait">
+                                    
+                                    <motion.img
+                                        key={activeService?.image}
+                                        src={activeService?.image}
+                                        className="  object-cover  w-full sx-h26 h-[32.5dvh] md:h-[357px] z-20 object-top xs-objcen lg:hidden"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                    />
+                                </AnimatePresence>
                             <div
-                                className="lg:absolute top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px]  left-[40px] 3xl:left-[58px] z-10 px-5 lg:px-0 pt-7 lg:pt-0"
+                                className="lg:absolute xs-ptop-15 top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px]  left-[40px] 3xl:left-[58px] z-10 px-5 lg:px-0 pt-7 lg:pt-0"
                                 ref={srvsCntb}
                             >
                                 <hr
@@ -2456,24 +2472,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     ref={brdonRef}
                                     className=" lg:absolute  left-[-40px] 3xl:left-[-58px] right-[25%] h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none   bg-white "
                                 />
-                                <AnimatePresence mode="wait">
-                                    <motion.img
-                                        key={activeService?.image}
-                                        src={activeService?.image}
-                                        className="  object-cover  w-full h-[200px] sm:h-[277px] z-20 mb-5 md:mb-8 lg:hidden"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        transition={{ duration: 0.5, ease: "easeInOut" }}
-                                    />
-                                </AnimatePresence>
-                                <motion.div
-                                    className="flex gap-2 items-center overflow-hidden"
-                                    key={activeService?.index}
-                                    variants={moveUp(0.2)}
-                                    initial="hidden"
-                                    animate="show"
-                                >
+                                <motion.div className="flex gap-2 items-center overflow-hidden" 
+                                        key={activeService?.index}
+                                        variants={moveUp(0.2)}
+                                        initial="hidden"
+                                        animate="show">
                                     <div
                                         className="flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10 w-7 h-7"
                                         ref={srvsArrw}
@@ -2513,7 +2516,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         variants={moveUp(0.35)}
                                         initial="hidden"
                                         animate="show"
-                                        className="text-[14px] md:text-[17px] lg:text-18 text-paragraph lg:text-white mt-5 lg:mt-[80px] w-full lg:w-[75%] 3xl:max-w-[49ch]"
+                                        className="text-[14px] xs-mt-10 md:text-[17px] lg:text-18 text-paragraph lg:text-white mt-5 lg:mt-[80px] w-full lg:w-[75%] 3xl:max-w-[49ch]"
                                     >
                                         {activeService?.description}
                                     </motion.p>
@@ -2552,11 +2555,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         {/* left start */}
                         <div ref={sectorLeft} className="flex lg:h-full bg-primary lg:bg-transparent">
                             <div className="w-full pt-[16.5dvh] pl-5 lg:pt-25 xl:pt-25 3xl:pt-33 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]">
-                                <div className="absolute -top-58 right-0   " ref={srvsVct}>
+                                <div className="absolute top-[-195px] right-0   " ref={srvsVct}>
                                     <Image
                                         src="../assets/images/svg/srv-vct.svg"
                                         alt="Logo"
-                                        className="h-full w-full"
+                                        className="h-[356px] w-[254px] lg:hidden"
                                         width={254}
                                         height={356}
                                     />
@@ -2570,7 +2573,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </h1>
                                     <div
                                         ref={talentlist}
-                                        className="scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible lg:pl-4 3xl:pl-0"
+                                        className="xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible lg:pl-4 3xl:pl-0"
                                     >
                                         <div className="lg:pb-4 relative h-full flex items-center">
                                             {/* curved line svg */}
