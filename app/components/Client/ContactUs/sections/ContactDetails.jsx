@@ -9,10 +9,19 @@ import { moveUp } from "../../../motionVarients";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const ContactDetails = ({ data }) => {
-    console.log(data, "dfd");
     const [subject, setSubject] = useState(null);
+    const [captchaVerified, setCaptchaVerified] = useState(false);
+
+    const handleCaptchaChange = (value) => {
+        if (value) {
+            setCaptchaVerified(true);
+        } else {
+            setCaptchaVerified(false);
+        }
+    };
 
     const options = [
         { value: "general", label: "General Inquiry" },
@@ -53,13 +62,51 @@ const ContactDetails = ({ data }) => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm({
         mode: "onBlur",
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (formData) => {
+        if (!captchaVerified) {
+            alert("Please verify that you are not a robot.");
+            return;
+        }
+
+        if (!subject?.value) {
+            alert("Please select a subject.");
+            return;
+        }
+
+        try {
+            const payload = {
+                ...formData,
+                subject: subject.value,
+            };
+
+            const response = await fetch("/api/admin/contact/enquiry", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const res = await response.json();
+
+            if (res.success) {
+                alert(res.message);
+                reset();
+                setSubject(null);
+                setCaptchaVerified(false);
+            } else {
+                alert(res.message || "Something went wrong");
+            }
+        } catch (error) {
+            console.error("Error sending message:", error);
+            alert("Sorry, something went wrong. Please try again later.");
+        }
     };
 
     return (
@@ -350,19 +397,36 @@ const ContactDetails = ({ data }) => {
                                 </label>
                             </motion.div>
 
+                            <div className="mb-6">
+                                <ReCAPTCHA
+                                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                                    onChange={handleCaptchaChange}
+                                    theme="dark"
+                                />
+                            </div>
+
                             <motion.button
                                 variants={moveUp(1)}
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
                                 type="submit"
-                                className="bg-white/25 text-white rounded-full hover:bg-gray-800  uppercase"
+                                disabled={!captchaVerified}
+                                className={`bg-white/25 text-white rounded-full uppercase transition-opacity
+        ${!captchaVerified ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"}
+    `}
                             >
-                                <div className="relative p-[1px] rounded-full cursor-pointer">
+                                <div className="relative p-[1px] rounded-full">
                                     <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#30B6F9] to-[#1E45A2]"></div>
 
-                                    <div className="relative rounded-full bg-[#5974b7] py-2 px-4 text-white text-[12px] md:text-[14px] lg:text-[16px]">
-                                        Send Message
+                                    <div
+                                        className={`relative rounded-full bg-[#5974b7] py-2 px-4 text-white
+                text-[12px] md:text-[14px] lg:text-[16px]
+                ${!captchaVerified ? "pointer-events-none" : "cursor-pointer"}
+            `}
+                                    >
+                                        {/* Send Message */}
+                                        {!captchaVerified ? "Verify Captcha" : "Send Message"}
                                     </div>
                                 </div>
                             </motion.button>
