@@ -644,7 +644,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                 <div className="flex gap-8 items-center justify-between lg:justify-end ps-5 lg:ps-0">
                     <div className="flex justify-center items-center lg:hidden">
                         <Image
-                            src="/assets/images/main-logo.svg"
+                            src="/assets/images/main-logo.png"
                             width={90}
                             height={55}
                             className={`logsc ${logostatus === true ? "block" : "hidden"}`}
@@ -652,10 +652,10 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                         />
 
                         <Image
-                            src="/assets/images/logo.svg"
+                            src="/assets/images/main-logo.png"
                             width={90}
                             height={55}
-                            className={`logsc ${logostatus === true ? "hidden" : "block"}`}
+                            className={`logsc invert brightness-0 ${logostatus === true ? "hidden" : "block"}`}
                             alt="logo"
                         />
                     </div>
@@ -768,8 +768,9 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                                 <div className="flex justify-center items-center">
                                     {!menuOpen ? (
                                         <Image
-                                            className="logsc"
-                                            src="/assets/images/icons/logo-white.svg"
+                                            className="logsc invert brightness-0"
+                                            // src="/assets/images/icons/logo-white.svg"
+                                            src="/assets/images/main-logo.png"
                                             alt="Logo"
                                             width={90}
                                             height={55}
@@ -777,7 +778,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                                     ) : (
                                         <Image
                                             className="logsc"
-                                            src="/assets/images/main-logo.svg"
+                                            src="/assets/images/main-logo.png"
                                             alt="Logo"
                                             width={90}
                                             height={55}

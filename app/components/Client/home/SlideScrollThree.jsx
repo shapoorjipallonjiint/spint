@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -211,19 +211,19 @@ import { getSuffix } from "@/helpers/getSuffix.ts";
 //     }))
 // );
 
-const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll }) => {
+const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData }) => {
+    console.log(projectsData, "home prjs");
     const [isDesktop, setIsDesktop] = useState(false);
+    useEffect(() => {
+        const checkWidth = () => {
+            setIsDesktop(window.innerWidth > 992);
+        };
 
-useEffect(() => {
-  const checkWidth = () => {
-    setIsDesktop(window.innerWidth > 992);
-  };
+        checkWidth(); // initial check
+        window.addEventListener("resize", checkWidth);
 
-  checkWidth(); // initial check
-  window.addEventListener("resize", checkWidth);
-
-  return () => window.removeEventListener("resize", checkWidth);
-}, []);
+        return () => window.removeEventListener("resize", checkWidth);
+    }, []);
     const containerRef = useRef(null);
     const scrollBlock = useRef(false);
     const timeoutRef = useRef(null);
@@ -324,7 +324,7 @@ useEffect(() => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const currentIndexRef = useRef(0);
-    const MotionImage = motion.create(Image)
+    const MotionImage = motion.create(Image);
 
     const sections = [section1Ref, section2Ref, section3Ref, section4Ref, section5Ref, section6Ref, section7Ref];
 
@@ -335,7 +335,7 @@ useEffect(() => {
     const bubbleRef = useRef(null);
     const containersRef = useRef(null);
 
-    console.log(data)
+    console.log(data);
 
     const items = [
         ...data.seventhSection.items.map((item) => {
@@ -1496,7 +1496,6 @@ useEffect(() => {
         index: 0,
     });
 
-    
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
     const sectors = [
@@ -1631,13 +1630,19 @@ useEffect(() => {
 
     const [mapCities, setMapCities] = useState([]);
 
+    const router = useRouter();
+
+    const projectCities = useMemo(() => {
+        if (!projectsData?.projects) return new Set();
+
+        return new Set(projectsData.projects.map((p) => p?.secondSection?.location?.name).filter(Boolean));
+    }, [projectsData]);
+
     useEffect(() => {
         if (data?.sixthSection?.cities) {
-            setMapCities(mapBackendCitiesToMapCities(data.sixthSection.cities));
+            setMapCities(mapBackendCitiesToMapCities(data.sixthSection.cities, projectCities));
         }
-    }, [data]);
-
-    const router = useRouter();
+    }, [data, projectCities]);
 
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
@@ -1922,7 +1927,10 @@ useEffect(() => {
                                         ref={dsrnRef}
                                         className="bg-primary ovrbx w-full h-full absolute left-0 right-0 bottom-0 z-[-1]"
                                     ></div>
-                                    <p ref={descriptionRef} className="text-16 xl:text-18 3xl:text-19 font-light leading-[1.5]">
+                                    <p
+                                        ref={descriptionRef}
+                                        className="text-16 xl:text-18 3xl:text-19 font-light leading-[1.5]"
+                                    >
                                         {data.secondSection.description}
                                     </p>
                                 </div>
@@ -1936,10 +1944,7 @@ useEffect(() => {
                                 {data.secondSection.items.map((item, index) => (
                                     <div key={index}>
                                         <h3 className="text-24 xl:text-40 font-light mb-[5px]">
-                                            <CountUp
-                                                value={item.value}
-                                                trigger={currentVisibleSlide === "section2"}
-                                            />
+                                            <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />
                                             {getSuffix(item.value)}
                                         </h3>
 
@@ -1974,11 +1979,8 @@ useEffect(() => {
                             {data.secondSection.items.map((item, index) => (
                                 <div className="border-b border-[#0a000020] lg:border-b-0 pb-5 mb-5" key={index}>
                                     <h3 className="text-26 md:text-40 xl:text-40 font-light leading-[auto] mb-[5px]">
-                                    <CountUp
-                                                value={item.value}
-                                                trigger={currentVisibleSlide === "section2"}
-                                            />
-                                            {getSuffix(item.value)}
+                                        <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />
+                                        {getSuffix(item.value)}
                                     </h3>
                                     <p className="text-[14px] md:text-[18px]  font-light leading-[1.555555555555556]">
                                         {item.key}
@@ -2110,11 +2112,8 @@ useEffect(() => {
                                     {data.thirdSection.items.map((item, index) => (
                                         <div className="text-white" key={index}>
                                             <h1 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
-                                            <CountUp
-                                                value={item.value}
-                                                trigger={currentVisibleSlide === "section3"}
-                                            />
-                                            {getSuffix(item.value)}
+                                                <CountUp value={item.value} trigger={currentVisibleSlide === "section3"} />
+                                                {getSuffix(item.value)}
                                             </h1>
                                             <p className="text-16 xl:text-19 opacity-70 font-light leading-[1.555555555555556]">
                                                 {item.key}
@@ -2344,13 +2343,13 @@ useEffect(() => {
                                                 <div
                                                     key={index}
                                                     className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0  ${
-                                                                activeServiceIndex === index
-                                                                    ? "border-white "
-                                                                    : "border-transparent"
-                                                            }`}
+                                                        activeServiceIndex === index
+                                                            ? "border-white "
+                                                            : "border-transparent"
+                                                    }`}
                                                     ref={(el) => (textItemsRef.current[index] = el)}
-                                                > 
-                                                    <Link href={isDesktop ? `services/${service.link}` : "#"}> 
+                                                >
+                                                    <Link href={isDesktop ? `services/${service.link}` : "#"}>
                                                         <p
                                                             className={`${
                                                                 activeServiceIndex === index
@@ -2457,8 +2456,7 @@ useEffect(() => {
                                     ref={brdonRef}
                                     className=" lg:absolute  left-[-40px] 3xl:left-[-58px] right-[25%] h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none   bg-white "
                                 />
-                                 <AnimatePresence mode="wait">
-                                    
+                                <AnimatePresence mode="wait">
                                     <motion.img
                                         key={activeService?.image}
                                         src={activeService?.image}
@@ -2469,11 +2467,13 @@ useEffect(() => {
                                         transition={{ duration: 0.5, ease: "easeInOut" }}
                                     />
                                 </AnimatePresence>
-                                <motion.div className="flex gap-2 items-center overflow-hidden" 
-                                        key={activeService?.index}
-                                        variants={moveUp(0.2)}
-                                        initial="hidden"
-                                        animate="show">
+                                <motion.div
+                                    className="flex gap-2 items-center overflow-hidden"
+                                    key={activeService?.index}
+                                    variants={moveUp(0.2)}
+                                    initial="hidden"
+                                    animate="show"
+                                >
                                     <div
                                         className="flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10 w-7 h-7"
                                         ref={srvsArrw}
@@ -2487,25 +2487,23 @@ useEffect(() => {
                                         />
                                     </div>
 
-                                        <Link href={`/services/${activeService?.link}`}>
-                                    <h3
-                                        className="text-[20px] lg:text-29 leading-[1.344827586206897] font-light text-black lg:text-white"
-                                    >
-                                        {activeService?.title}
-                                    </h3>
-                                        </Link>
+                                    <Link href={`/services/${activeService?.link}`}>
+                                        <h3 className="text-[20px] lg:text-29 leading-[1.344827586206897] font-light text-black lg:text-white">
+                                            {activeService?.title}
+                                        </h3>
+                                    </Link>
                                     <div
                                         className=" lg:hidden    bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
                                         ref={srvsArrw}
                                     >
                                         <Link href={`/services/${activeService?.link}`}>
-                                        <Image
-                                            src="../assets/images/services/thickarrow.svg"
-                                            alt="Arrow"
-                                            className=""
-                                            width={19}
-                                            height={19}
-                                        />
+                                            <Image
+                                                src="../assets/images/services/thickarrow.svg"
+                                                alt="Arrow"
+                                                className=""
+                                                width={19}
+                                                height={19}
+                                            />
                                         </Link>
                                     </div>
                                 </motion.div>
@@ -2577,7 +2575,12 @@ useEffect(() => {
                                         <div className="lg:pb-4 relative h-full flex items-center">
                                             {/* curved line svg */}
                                             <div className="  absolute top-0 left-0 h-full hidden lg:flex flex-col justify-center">
-                                                <Image width={81} height={83} src="../assets/images/sectors/svg-crv.svg" alt="curved line svg" />
+                                                <Image
+                                                    width={81}
+                                                    height={83}
+                                                    src="../assets/images/sectors/svg-crv.svg"
+                                                    alt="curved line svg"
+                                                />
                                             </div>
 
                                             <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pb-6 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
@@ -2608,8 +2611,9 @@ useEffect(() => {
                                                     return (
                                                         <div
                                                             key={`${sector.originalIndex}-${sector.position}`}
-                                                            className={`flex items-center gap-5 cursor-pointer ${isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
-                                                                }`}
+                                                            className={`flex items-center gap-5 cursor-pointer ${
+                                                                isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
+                                                            }`}
                                                             style={{
                                                                 opacity: opacity,
                                                                 transform: `scale(${scale})`,
@@ -2640,10 +2644,11 @@ useEffect(() => {
                                                             )}
 
                                                             <h3
-                                                                className={`hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${isActive
+                                                                className={`hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
+                                                                    isActive
                                                                         ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
                                                                         : "text-[14px] lg:text-19 leading-[1.842105263157895]"
-                                                                    }`}
+                                                                }`}
                                                                 style={{
                                                                     transition: "all 0.5s ease-out",
                                                                     willChange: "font-size, font-weight",
@@ -2860,10 +2865,11 @@ useEffect(() => {
                                                 // className={` absolute   transition-all duration-300 flex items-center justify-center    w-[480px] h-[480px] ${
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
-                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${activeDot === city.id && city.groupId === "sp-international"
+                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
+                                                    activeDot === city.id && city.groupId === "sp-international"
                                                         ? "z-[999]"
                                                         : "z-[1]"
-                                                    }`}
+                                                }`}
                                                 style={{ left: city.left, top: city.top }}
                                             >
                                                 <div
@@ -2889,14 +2895,15 @@ useEffect(() => {
                                                     //     ? "bg-[#30F955] shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
                                                     //     : "bg-[#30B6F9]   border border-[#97DCFF] scale-85"
                                                     // }`}
-                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${city.groupId === "sp-group"
+                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${
+                                                        city.groupId === "sp-group"
                                                             ? activeDot === city.id
                                                                 ? "bg-primary/40 shadow-[0_0_35px_rgba(239,68,68,0.9),0_0_50px_rgba(239,68,68,0.6)] border border-[#97DCFF] scale-full"
                                                                 : "bg-[#30B6F9] border border-[#97DCFF] scale-85"
                                                             : activeDot === city.id
-                                                                ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
-                                                                : "bg-primary border border-white scale-85"
-                                                        }`}
+                                                            ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
+                                                            : "bg-primary border border-white scale-85"
+                                                    }`}
                                                 ></div>
                                                 {/* <span
                       className={`relative   -left-1 border border-[#30F95533] min-w-[110px] text-center backdrop-blur-[10px] uppercase bg-[#0015FF99] text-white text-[14px] font-bold px-2 py-[2px] rounded-full opacity-0 
@@ -3017,13 +3024,17 @@ useEffect(() => {
   backdrop-blur-sm text-white text-center
   p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
   absolute left-[0%] top-[21%]
-  cursor-pointer
-  ${activeDot === city.id
-                                                                            ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
-                                                                            : "opacity-0 scale-80 pointer-events-none"
-                                                                        }`}
+    ${city.isClickable ? "cursor-pointer" : "cursor-default"}
+  ${
+      activeDot === city.id
+          ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
+          : "opacity-0 scale-80 pointer-events-none"
+  }`}
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
+
+                                                                        if (!city.isClickable) return;
+
                                                                         router.push(
                                                                             `/projects?country=${encodeURIComponent(
                                                                                 city.name
@@ -3067,8 +3078,9 @@ useEffect(() => {
                                                                 {/* Bubble 3 */}
                                                                 <div
                                                                     className={`bubble bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
-            absolute left-[51%] top-[55%] ${activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
-                                                                        } transition-all duration-500 delay-300`}
+            absolute left-[51%] top-[55%] ${
+                activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
+            } transition-all duration-500 delay-300`}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
                                                                         <CountUp
@@ -3089,10 +3101,11 @@ useEffect(() => {
 
                                                             {/* Ring */}
                                                             <div
-                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${activeDot === city.id
+                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${
+                                                                    activeDot === city.id
                                                                         ? "opacity-100 scale-full"
                                                                         : "opacity-0"
-                                                                    } transition-all duration-500 delay-300`}
+                                                                } transition-all duration-500 delay-300`}
                                                                 style={{
                                                                     backgroundImage: `url(../assets/images/ring3.svg)`,
                                                                     backgroundSize: "cover",
@@ -3121,16 +3134,16 @@ useEffect(() => {
                                                 e.preventDefault();
                                                 e.stopPropagation();
 
-                                                router.push(
-                                                    `/projects?country=${encodeURIComponent(selectedCity.name)}`
-                                                );
+                                                if (!selectedCity.isClickable) return;
+
+                                                router.push(`/projects?country=${encodeURIComponent(selectedCity.name)}`);
                                             }}
                                             onClick={(e) => {
-                                                // desktop fallback
                                                 e.stopPropagation();
-                                                router.push(
-                                                    `/projects?country=${encodeURIComponent(selectedCity.name)}`
-                                                );
+
+                                                if (!selectedCity.isClickable) return;
+
+                                                router.push(`/projects?country=${encodeURIComponent(selectedCity.name)}`);
                                             }}
                                             className={`me-2 bubble cursor-pointer
     transition-all duration-500 delay-100 backdrop-blur-sm
@@ -3139,7 +3152,6 @@ useEffect(() => {
     ${activeDot === selectedCity.id ? "opacity-100 scale-100 float-bubble1" : "opacity-0 scale-80"}
   `}
                                         >
-
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.pjtcompleted}
                                             </p>
@@ -3161,10 +3173,11 @@ useEffect(() => {
                                         </div> */}
                                         <div
                                             className={`bubble  bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm  text-white text-center p-3 rounded-full 
-                                lg:absolute left-[51%] top-[55%] ${activeDot === selectedCity.id
-                                                    ? "opacity-100 scale-full float-bubble3"
-                                                    : "scale-80 opacity-0 "
-                                                }   transition-all duration-500 delay-300`}
+                                lg:absolute left-[51%] top-[55%] ${
+                                    activeDot === selectedCity.id
+                                        ? "opacity-100 scale-full float-bubble3"
+                                        : "scale-80 opacity-0 "
+                                }   transition-all duration-500 delay-300`}
                                         >
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.dedicatedemployees}
@@ -3174,8 +3187,9 @@ useEffect(() => {
                                     </div>
 
                                     <div
-                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
-                                            }   transition-all duration-500 delay-300`}
+                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${
+                                            activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
+                                        }   transition-all duration-500 delay-300`}
                                         style={{
                                             backgroundImage: `url(../assets/images/ring3.svg)`,
                                             backgroundSize: "cover",
@@ -3318,10 +3332,11 @@ useEffect(() => {
     lg:pb-1 transition-all duration-300 `}
                                                     >
                                                         <div
-                                                            className={`py-1 lg:py-0  ${activeItem.id === item.id
+                                                            className={`py-1 lg:py-0  ${
+                                                                activeItem.id === item.id
                                                                     ? "   bg-[linear-gradient(90deg,rgba(30,69,162,0.35)_0%,rgba(48,182,249,0)_100%)] lg:bg-none"
                                                                     : ""
-                                                                }`}
+                                                            }`}
                                                         >
                                                             <div
                                                                 className={`text-[15px] md:text-[18px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px]  text-white/80 leading-[1.473684210526316] 

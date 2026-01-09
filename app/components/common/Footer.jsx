@@ -18,7 +18,7 @@ const Footer = () => {
         </div>
         <div className="border-b border-white/30 grid gap-6 lg:gap-0 grid-cols-1 lg:grid-cols-[350px_auto] xl:grid-cols-[549px_auto]">
           <div className="lg:border-r border-white/30">
-            <MotionImage width={0} height={0} variants={fadeIn(0.5)} initial="hidden" animate="show" src="/assets/images/logo.svg" alt="logo" className="w-[169px] h-auto" />
+            <MotionImage width={0} height={0} variants={fadeIn(0.5)} initial="hidden" animate="show" src="/assets/images/main-logo.png" alt="logo" className="w-[169px] h-auto brightness-0 invert" />
           </div>
           <div className="lg:pl-20 xl:pl-20 2xl:pl-[107px] pb-6 md:pb-9 lg:pb-15 xl:pb-20">
             <motion.p variants={moveUp(0.2)} initial="hidden" animate="show" className="text-19 font-extralight leading-[1.578947368421053] text-white/70 mb-[22px] max-w-[35ch]">Al Hudaiba Mall, Al Mina Street <br />P.O. Box No. 118219 Dubai, UAE <br />Office 307, 3rd Floor </motion.p>
