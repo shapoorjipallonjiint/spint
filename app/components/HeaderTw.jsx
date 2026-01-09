@@ -661,7 +661,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                     </div>
                     <div className="flex gap-6 lg:gap-2">
                         <a href="#">
-                            <div className="flex items-center justify-center z-[1]  cursor-pointer relative  h-[31px] bg-[#00000040] rounded-[15px]">
+                            <div className={`flex items-center justify-center z-[1]  cursor-pointer relative  h-[31px]  ${logostatus === true ? "bg-[#00000040] lg:bg-[#ffffff]" : "bg-[#00000040]"} rounded-[15px]`}>
                                 <Image
                                     src="../assets/images/grbdr.svg"
                                     alt="Logo"
@@ -669,7 +669,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                                     width={18}
                                     height={31}
                                 />
-                                <p className="mb-0 text-white font-[300] text-[16px] px-5">العربية</p>
+                                <p className={`mb-0 font-[300] text-[16px] px-5 ${logostatus === true ? "text-[#ffffff] lg:text-[#000]" : "text-[#ffffff]"}`}>العربية</p>
                             </div>
                         </a>
                         <div
@@ -693,9 +693,9 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                             </svg>
                         </div>
                         <a href="#">
-                            <div className="hidden lg:flex items-center justify-center z-[1]  cursor-pointer relative  h-[31px] bg-[#00000040] rounded-[15px]">
-                                <img src="../assets/images/border-wide.svg" alt="Logo" className="absolute w-full h-full" />
-                                <p className="mb-0 text-white z-1 font-[300] text-[16px] px-4 pt-[1px] uppercase">
+                            <div className={`hidden lg:flex items-center justify-center z-[1]  cursor-pointer relative  h-[31px] ${logostatus === true ? "bg-[#00000040] lg:bg-[#ffffff]" : "bg-[#00000040]"} rounded-[15px]`}>
+                                <img src="../assets/images/border-wide2.svg" alt="Logo" className="absolute w-full h-full" />
+                                <p className={`mb-0 ${logostatus === true ? "text-[#ffffff] lg:text-[#000]" : "text-[#ffffff]"} z-1 font-[300] text-[16px] px-4 pt-[1px] uppercase`}>
                                     Employee Login
                                 </p>
                             </div>
@@ -899,7 +899,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                     handleScroll(nextSection.id);
                 }}
             >
-                <div className="w-[35px] h-[35px] md:w-[45px] md:h-[45px] lg:w-[35px] lg:h-[35px] bg-primary flex items-center justify-center  mx-auto mb-7">
+                <div className="w-[35px] h-[35px] md:w-[45px] md:h-[45px] lg:w-[35px] lg:h-[35px] bg-primary flex items-center justify-center  mx-auto xs-mb-12 mb-7">
                     <div
                         className={`${
                             menuOpen ? "border-[#626262]" : "border-white"
