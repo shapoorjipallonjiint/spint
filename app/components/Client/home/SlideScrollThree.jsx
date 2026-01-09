@@ -1741,6 +1741,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 autoPlay
                                 loop
                                 muted
+                                playsInline
+                                webkit-playsinline
                                 className=" w-full h-full object-cover absolute top-0 left-0 right-0 z-[1]"
                             ></video>
 
@@ -1867,6 +1869,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     autoPlay
                                     loop
                                     muted
+                                    playsInline
+                                    webkit-playsinline
                                     className="w-full h-full object-cover absolute left-0 right-0"
                                 ></video>
                             </div>
