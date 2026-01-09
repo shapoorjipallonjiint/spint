@@ -367,7 +367,7 @@ const ContactDetails = ({ data }) => {
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
-                                className="relative mb-50px"
+                                className="relative mb-20px"
                             >
                                 <textarea
                                     id="message"
