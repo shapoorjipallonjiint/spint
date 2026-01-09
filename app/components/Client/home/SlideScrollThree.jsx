@@ -3272,7 +3272,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                     <div
                                         ref={talentDescMob}
-                                        className="max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0"
+                                        className="max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0 -left-5 md:left-0"
                                     >
                                         <div className="p-5 md:p-10 lg:p-7 3xl:py-12 3xl:px-15 bg-primary w-fit 2xl:w-[400px] 3xl:w-[550px] text-white relative ">
                                             <motion.p
@@ -3330,8 +3330,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             setActiveItem(item);
                                                             startAutoSlide();
                                                         }}
-                                                        className={`hover:lg:border-b-[2px] hover:lg:border-primary lg:border-b-2 border-b border-transparent  
-    ${activeItem.id === item.id ? "underline-anim-item" : "border-transparent"} 
+                                                        className={`hover:lg:border-b-[2px] hover:lg:border-primary lg:border-b-2 border-b border-[#ffffff30]  
+    ${activeItem.id === item.id ? "underline-anim-item " : "border-[#ffffff30]"} 
     lg:pb-1 transition-all duration-300 `}
                                                     >
                                                         <div
