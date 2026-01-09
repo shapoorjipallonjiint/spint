@@ -1402,9 +1402,9 @@ body::-webkit-scrollbar {
   .xs-pt-1  {padding-top: 1dvh;}
   .sx-h26{height: 31.5dvh;}
   .xs-objcen{object-position: center;}
-  .xs-ptop-15{padding-top: 15px;}
+  .xs-ptop-15{padding-top: 22px;}
   .xs-mb-12{margin-bottom: 12px;}
-  .xs-mt-10{margin-top:10px !important;}
+  .xs-mt-10{margin-top:13px !important;}
   .xs-mt-1{margin-top:1dvh;}
 }
 
