@@ -7,20 +7,30 @@ type BackendCity = {
   employees?: string;
 };
 
-export const mapBackendCitiesToMapCities = (cities: BackendCity[] = []) => {
-  return cities.map((city) => ({
-    // stable id for map interactions
-    id: `${city.name}-${city.left}-${city.top}`,
+export const mapBackendCitiesToMapCities = (
+  cities: BackendCity[] = [],
+  projectCities: Set<string>
+) => {
+  return cities.map((city) => {
+    const hasProjects = projectCities.has(city.name ?? "");
 
-    name: city.name || "",
+    return {
+      id: `${city.name}-${city.left}-${city.top}`,
+      name: city.name || "",
 
-    left: `${city.left}%`,
-    top: `${city.top}%`,
+      left: `${city.left}%`,
+      top: `${city.top}%`,
 
-    groupId: city.id,
+      groupId: city.id,
 
-    // only two stats (as decided)
-    pjtcompleted: Number(city.completedProjects || 0),
-    dedicatedemployees: Number(city.employees || 0),
-  }));
+      pjtcompleted: Number(city.completedProjects || 0),
+      dedicatedemployees: Number(city.employees || 0),
+
+      // ✅ NEW FLAGS
+      hasProjects,
+      isClickable:
+        city.id === "sp-international" && hasProjects,
+    };
+  });
 };
+

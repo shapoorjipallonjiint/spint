@@ -929,6 +929,7 @@ export default function Projects() {
                             >
                                 <div className="text-[16px]">
                                     {item.firstSection.title}
+                                    {/* <p className="text-red-500">{item?.firstSection?.coverImage}</p> */}
                                 </div>
                                 <div className="flex gap-5">
                                     <MdEdit

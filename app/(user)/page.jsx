@@ -1,15 +1,16 @@
-import Index from '../components/Client/home/Index'
+import Index from "../components/Client/home/Index";
 
-const page = async() => {
-  const response = await fetch(`${process.env.BASE_URL}/api/admin/home`, { next: { revalidate: 60 } });
-  const data = await response.json();
+const page = async () => {
+    const response = await fetch(`${process.env.BASE_URL}/api/admin/home`, { next: { revalidate: 60 } });
+    const data = await response.json();
 
-  const serviceResponse = await fetch(`${process.env.BASE_URL}/api/admin/services`, { next: { revalidate: 60 } });
-  const serviceData = await serviceResponse.json();
+    const serviceResponse = await fetch(`${process.env.BASE_URL}/api/admin/services`, { next: { revalidate: 60 } });
+    const serviceData = await serviceResponse.json();
 
-  return (
-    <Index data={data.data} serviceData={serviceData.data}/>
-  )
-}
+    const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project`, { next: { revalidate: 60 } });
+    const projectData = await projectResponse.json();
 
-export default page
+    return <Index data={data.data} serviceData={serviceData.data} projectsData={projectData.data} />;
+};
+
+export default page;
