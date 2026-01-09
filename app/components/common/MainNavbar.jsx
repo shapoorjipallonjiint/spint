@@ -610,7 +610,7 @@ const MainNavbar = () => {
                                 </button>
                             </div>
                             <div className="flex items-center p-3 absolute">
-                                <img src="/assets/images/main-logo.png" alt="logo" />
+                                <img src="/assets/images/main-logo.png" alt="logo" className="w-25" />
                             </div>
                             <div className="p-8 pt-28 flex flex-col gap-2 justify-between h-full">
                                 {/* Mobile Menu Items */}
