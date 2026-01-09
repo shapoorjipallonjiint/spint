@@ -130,26 +130,7 @@ const NavPage = ({ isOpen }) => {
                     </div>
 
                     {/* Submenu aligned by baseline */}
-                    <div ref={submenuRef} className="absolute pl-[74px] z-10" style={{ top: submenuTop }}>
-                        {/* Animate EVERY hover (uses animKey) */}
-                        <motion.div key={`${activeMenu}-${animKey}-${isOpen}`} initial="hidden" animate="show">
-                            {hasSubmenu &&
-                                activeMenuItem.submenu.map((sub, i) => (
-                                    <motion.div
-                                        key={`${i}-submenu`}
-                                        variants={moveRight(i * 0.14)}
-                                        className="mb-5 last:mb-0"
-                                    >
-                                        <a href={sub.href}>
-                                            <p className="text-29 font-light hover:font-semibold hover:translate-x-1 transition-all duration-300">
-                                                {sub.label}
-                                            </p>
-                                        </a>
-                                    </motion.div>
-                                ))}
-                        </motion.div>
-                    </div>
-
+                    
                     {/* ✅ RESTORED — STAY CONNECTED */}
                     <motion.div
                         variants={moveUp(0.2)}
