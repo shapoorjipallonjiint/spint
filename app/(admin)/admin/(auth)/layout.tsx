@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Sidebar */}
             <aside className="w-68 bg-white shadow-md flex flex-col h-screen overflow-y-auto">
                 <div className="flex items-center w-full pt-10 pb-2 justify-center">
-                    <Image src="/main-logo.svg" alt="Logo" width={150} height={150} />
+                    <Image src="/assets/images/main-logo.png" alt="Logo" width={150} height={150} />
                 </div>
                 <div className="flex-1 px-3 py-4">
                     <div className="mb-6 px-4 flex flex-col gap-2">

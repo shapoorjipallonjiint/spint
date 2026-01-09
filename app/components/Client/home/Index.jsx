@@ -4,14 +4,14 @@ import  { useRef, useState } from 'react'
 import HeaderTw from '../../HeaderTw'
 import SlideScrollThree from '../home/SlideScrollThree'
 
-const IndexV2 = ({data,serviceData}) => {
+const IndexV2 = ({data,serviceData, projectsData}) => {
    const [activeSection, setActiveSection] = useState("section1");
     const [indexToScroll, setIndexToScroll] = useState(0);
     const sectionScrollPositions = useRef({});
   return (
    <>
     <HeaderTw activeSection={activeSection} setActiveSection={setActiveSection} sectionScrollPositions={sectionScrollPositions} setIndexToScroll={setIndexToScroll}/>
-    <SlideScrollThree data={data} serviceData={serviceData} setActiveSection={setActiveSection} activeSection={activeSection} indexToScroll={indexToScroll} setIndexToScroll={setIndexToScroll}/>
+    <SlideScrollThree data={data} serviceData={serviceData} projectsData={projectsData} setActiveSection={setActiveSection} activeSection={activeSection} indexToScroll={indexToScroll} setIndexToScroll={setIndexToScroll}/>
    </>
   )
 }

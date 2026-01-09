@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -210,19 +210,19 @@ import { useRouter } from "next/navigation";
 //     }))
 // );
 
-const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll }) => {
+const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData }) => {
+    console.log(projectsData, "home prjs");
     const [isDesktop, setIsDesktop] = useState(false);
+    useEffect(() => {
+        const checkWidth = () => {
+            setIsDesktop(window.innerWidth > 992);
+        };
 
-useEffect(() => {
-  const checkWidth = () => {
-    setIsDesktop(window.innerWidth > 992);
-  };
+        checkWidth(); // initial check
+        window.addEventListener("resize", checkWidth);
 
-  checkWidth(); // initial check
-  window.addEventListener("resize", checkWidth);
-
-  return () => window.removeEventListener("resize", checkWidth);
-}, []);
+        return () => window.removeEventListener("resize", checkWidth);
+    }, []);
     const containerRef = useRef(null);
     const scrollBlock = useRef(false);
     const timeoutRef = useRef(null);
@@ -323,7 +323,7 @@ useEffect(() => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const currentIndexRef = useRef(0);
-    const MotionImage = motion.create(Image)
+    const MotionImage = motion.create(Image);
 
     const sections = [section1Ref, section2Ref, section3Ref, section4Ref, section5Ref, section6Ref, section7Ref];
 
@@ -1493,7 +1493,6 @@ useEffect(() => {
         index: 0,
     });
 
-    
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
     const sectors = [
@@ -1628,13 +1627,19 @@ useEffect(() => {
 
     const [mapCities, setMapCities] = useState([]);
 
+    const router = useRouter();
+
+    const projectCities = useMemo(() => {
+        if (!projectsData?.projects) return new Set();
+
+        return new Set(projectsData.projects.map((p) => p?.secondSection?.location?.name).filter(Boolean));
+    }, [projectsData]);
+
     useEffect(() => {
         if (data?.sixthSection?.cities) {
-            setMapCities(mapBackendCitiesToMapCities(data.sixthSection.cities));
+            setMapCities(mapBackendCitiesToMapCities(data.sixthSection.cities, projectCities));
         }
-    }, [data]);
-
-    const router = useRouter();
+    }, [data, projectCities]);
 
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
@@ -1919,7 +1924,10 @@ useEffect(() => {
                                         ref={dsrnRef}
                                         className="bg-primary ovrbx w-full h-full absolute left-0 right-0 bottom-0 z-[-1]"
                                     ></div>
-                                    <p ref={descriptionRef} className="text-16 xl:text-18 3xl:text-19 font-light leading-[1.5]">
+                                    <p
+                                        ref={descriptionRef}
+                                        className="text-16 xl:text-18 3xl:text-19 font-light leading-[1.5]"
+                                    >
                                         {data.secondSection.description}
                                     </p>
                                 </div>
@@ -2037,15 +2045,15 @@ useEffect(() => {
                             <div
                                 className="bg-white lg:bg-primary absolute w-full left-0 h-full top-0 z-[-1]"
                                 ref={sprgtbg}
-                            ></div> 
-                                <Image
+                            ></div>
+                            <Image
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
                                 alt=""
                                 className="hidden lg:block absolute right-0 w-[250px] 3xl:w-[353px]"
-                            /> 
+                            />
                             <div className="">
                                 <h1
                                     ref={sptitle}
@@ -2288,8 +2296,8 @@ useEffect(() => {
                 <section id="section4" className="h-screen relative overflow-hidden whitebgref scroll-area">
                     <figure className="absolute w-full h-full bg-white z-[-1]" ref={srvBgimg}>
                         <Image
-                        width={1500}
-                        height={1000}
+                            width={1500}
+                            height={1000}
                             className="absolute w-full h-full object-cover"
                             src="../assets/images/services-bg.jpg"
                             alt=""
@@ -2303,7 +2311,7 @@ useEffect(() => {
                                 className="w-full pt-[21dvh] lg:pt-33 pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px] bg-primary lg:bg-transparent"
                                 ref={srvLftBx}
                             >
-                                 <div className="absolute -top-58 right-0   " ref={srvsVct}>
+                                <div className="absolute -top-58 right-0   " ref={srvsVct}>
                                     <Image
                                         src="../assets/images/svg/srv-vct.svg"
                                         alt="Logo"
@@ -2312,7 +2320,7 @@ useEffect(() => {
                                         height={356}
                                     />
                                 </div>
-                                
+
                                 <div className=" 3xl:ml-[110px] flex flex-col h-full">
                                     <h1
                                         ref={srvttlRef}
@@ -2334,13 +2342,13 @@ useEffect(() => {
                                                 <div
                                                     key={index}
                                                     className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0  ${
-                                                                activeServiceIndex === index
-                                                                    ? "border-white "
-                                                                    : "border-transparent"
-                                                            }`}
+                                                        activeServiceIndex === index
+                                                            ? "border-white "
+                                                            : "border-transparent"
+                                                    }`}
                                                     ref={(el) => (textItemsRef.current[index] = el)}
-                                                > 
-                                                    <Link href={isDesktop ? `services/${service.link}` : "#"}> 
+                                                >
+                                                    <Link href={isDesktop ? `services/${service.link}` : "#"}>
                                                         <p
                                                             className={`${
                                                                 activeServiceIndex === index
@@ -2398,8 +2406,8 @@ useEffect(() => {
                                 {/* BASE IMAGE = PREVIOUS SERVICE IMAGE */}
                                 {prevImage && (
                                     <Image
-                                    width={1500}
-                                    height={1000}
+                                        width={1500}
+                                        height={1000}
                                         src={prevImage}
                                         className="absolute inset-0 object-cover object-top w-full h-full z-10"
                                     />
@@ -2408,8 +2416,8 @@ useEffect(() => {
                                 {/* NEW IMAGE FADES ABOVE IT */}
                                 <AnimatePresence mode="wait">
                                     <MotionImage
-                                    width={1500}
-                                    height={1000}
+                                        width={1500}
+                                        height={1000}
                                         key={activeService?.image}
                                         src={activeService?.image}
                                         alt=""
@@ -2447,8 +2455,7 @@ useEffect(() => {
                                     ref={brdonRef}
                                     className=" lg:absolute  left-[-40px] 3xl:left-[-58px] right-[25%] h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none   bg-white "
                                 />
-                                 <AnimatePresence mode="wait">
-                                    
+                                <AnimatePresence mode="wait">
                                     <motion.img
                                         key={activeService?.image}
                                         src={activeService?.image}
@@ -2459,11 +2466,13 @@ useEffect(() => {
                                         transition={{ duration: 0.5, ease: "easeInOut" }}
                                     />
                                 </AnimatePresence>
-                                <motion.div className="flex gap-2 items-center overflow-hidden" 
-                                        key={activeService?.index}
-                                        variants={moveUp(0.2)}
-                                        initial="hidden"
-                                        animate="show">
+                                <motion.div
+                                    className="flex gap-2 items-center overflow-hidden"
+                                    key={activeService?.index}
+                                    variants={moveUp(0.2)}
+                                    initial="hidden"
+                                    animate="show"
+                                >
                                     <div
                                         className="flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10 w-7 h-7"
                                         ref={srvsArrw}
@@ -2477,25 +2486,23 @@ useEffect(() => {
                                         />
                                     </div>
 
-                                        <Link href={`/services/${activeService?.link}`}>
-                                    <h3
-                                        className="text-[20px] lg:text-29 leading-[1.344827586206897] font-light text-black lg:text-white"
-                                    >
-                                        {activeService?.title}
-                                    </h3>
-                                        </Link>
+                                    <Link href={`/services/${activeService?.link}`}>
+                                        <h3 className="text-[20px] lg:text-29 leading-[1.344827586206897] font-light text-black lg:text-white">
+                                            {activeService?.title}
+                                        </h3>
+                                    </Link>
                                     <div
                                         className=" lg:hidden    bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
                                         ref={srvsArrw}
                                     >
                                         <Link href={`/services/${activeService?.link}`}>
-                                        <Image
-                                            src="../assets/images/services/thickarrow.svg"
-                                            alt="Arrow"
-                                            className=""
-                                            width={19}
-                                            height={19}
-                                        />
+                                            <Image
+                                                src="../assets/images/services/thickarrow.svg"
+                                                alt="Arrow"
+                                                className=""
+                                                width={19}
+                                                height={19}
+                                            />
                                         </Link>
                                     </div>
                                 </motion.div>
@@ -2567,7 +2574,12 @@ useEffect(() => {
                                         <div className="lg:pb-4 relative h-full flex items-center">
                                             {/* curved line svg */}
                                             <div className="  absolute top-0 left-0 h-full hidden lg:flex flex-col justify-center">
-                                                <Image width={81} height={83} src="../assets/images/sectors/svg-crv.svg" alt="curved line svg" />
+                                                <Image
+                                                    width={81}
+                                                    height={83}
+                                                    src="../assets/images/sectors/svg-crv.svg"
+                                                    alt="curved line svg"
+                                                />
                                             </div>
 
                                             <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pb-6 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
@@ -2615,8 +2627,8 @@ useEffect(() => {
                                                             {isActive && (
                                                                 <div className="hidden lg:flex bg-[#30B6F94D] rounded-full w-[83px] h-[83px]  items-center justify-center relative opacity-0">
                                                                     <Image
-                                                                    width={200}
-                                                                    height={200}
+                                                                        width={200}
+                                                                        height={200}
                                                                         src={sector.icon}
                                                                         alt={`${sector.name} icon`}
                                                                         className="h-[40px]"
@@ -2651,8 +2663,8 @@ useEffect(() => {
                                             <div className="hidden lg:block absolute left-[-10px] top-1/2 -translate-y-[75%] z-10">
                                                 <div className="bg-[#30B6F94D] rounded-full w-[83px] h-[83px] flex items-center justify-center relative">
                                                     <Image
-                                                    width={200}
-                                                    height={200}
+                                                        width={200}
+                                                        height={200}
                                                         key={activeSector.icon}
                                                         src={activeSector.icon}
                                                         alt={`${activeSector.name} icon`}
@@ -2691,8 +2703,8 @@ useEffect(() => {
                                             }}
                                         >
                                             <Image
-                                            width={1500}
-                                            height={1000}
+                                                width={1500}
+                                                height={1000}
                                                 src={sector.image}
                                                 alt={`${sector.name} sector`}
                                                 className="object-cover w-full h-full"
@@ -2713,8 +2725,8 @@ useEffect(() => {
                                         >
                                             View All Projects
                                             <Image
-                                            width={27}
-                                            height={27}
+                                                width={27}
+                                                height={27}
                                                 src="../assets/images/icons/arrow-right.svg"
                                                 alt="arrow right"
                                                 className="group-hover:translate-x-2 transition-all duration-300"
@@ -2788,8 +2800,8 @@ useEffect(() => {
                                             <Link href="/projects" className="flex items-center gap-2">
                                                 View All Projects
                                                 <Image
-                                                width={27}
-                                                height={27}
+                                                    width={27}
+                                                    height={27}
                                                     src="../assets/images/icons/arrow-right.svg"
                                                     alt="arrow right"
                                                     className="group-hover:translate-x-2 transition-all duration-300"
@@ -3011,7 +3023,7 @@ useEffect(() => {
   backdrop-blur-sm text-white text-center
   p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
   absolute left-[0%] top-[21%]
-  cursor-pointer
+      ${city.isClickable ? "cursor-pointer" : "cursor-default"}
   ${
       activeDot === city.id
           ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
@@ -3019,6 +3031,9 @@ useEffect(() => {
   }`}
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
+
+                                                                        if (!city.isClickable) return;
+
                                                                         router.push(
                                                                             `/projects?country=${encodeURIComponent(
                                                                                 city.name
@@ -3113,30 +3128,29 @@ useEffect(() => {
                             >
                                 <div className={` transition-all duration-500  outside `}>
                                     <div className="flex lg:block justify-center gap-2">
-<div
-  onTouchEnd={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
+                                        <div
+                                            onTouchEnd={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
 
-    router.push(
-      `/projects?country=${encodeURIComponent(selectedCity.name)}`
-    );
-  }}
-  onClick={(e) => {
-    // desktop fallback
-    e.stopPropagation();
-    router.push(
-      `/projects?country=${encodeURIComponent(selectedCity.name)}`
-    );
-  }}
-  className={`me-2 bubble cursor-pointer
+                                                if (!selectedCity.isClickable) return;
+
+                                                router.push(`/projects?country=${encodeURIComponent(selectedCity.name)}`);
+                                            }}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+
+                                                if (!selectedCity.isClickable) return;
+
+                                                router.push(`/projects?country=${encodeURIComponent(selectedCity.name)}`);
+                                            }}
+                                            className={`me-2 bubble cursor-pointer
     transition-all duration-500 delay-100 backdrop-blur-sm
     bg-[#00C8FF80] border border-[#00C8FF26]
     text-white text-center p-3 rounded-full
     ${activeDot === selectedCity.id ? "opacity-100 scale-100 float-bubble1" : "opacity-0 scale-80"}
   `}
->
-
+                                        >
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.pjtcompleted}
                                             </p>
@@ -3201,8 +3215,8 @@ useEffect(() => {
                 <section id="section7" className="h-screen relative overflow-hidden whitebgref scroll-area ">
                     <figure ref={cutltimg} className="absolute w-full h-full z-[-1] mx-auto my-0 left-0 right-0">
                         <Image
-                        width={1500}
-                        height={1000}
+                            width={1500}
+                            height={1000}
                             className="absolute object-cover w-full h-full z-0"
                             src={data.seventhSection.image}
                             alt={data.seventhSection.imageAlt}

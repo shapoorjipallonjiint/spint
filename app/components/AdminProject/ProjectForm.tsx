@@ -379,7 +379,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                         Second Section
                     </Label>
                     <div className="p-5 rounded-md flex flex-col gap-5">
-                        <div>
+                        {/* <div>
                             <Label className="">Title</Label>
                             <Input
                                 type="text"
@@ -389,7 +389,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             {errors.secondSection?.title && (
                                 <p className="text-red-500">{errors.secondSection.title.message}</p>
                             )}
-                        </div>
+                        </div> */}
 
                         <div className="flex flex-col gap-2">
                             <Label className="">Country</Label>
@@ -861,10 +861,10 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                         Second Section
                     </Label>
                     <div className="p-5 rounded-md flex flex-col gap-5">
-                        <div>
+                        {/* <div>
                             <Label className="">Title</Label>
                             <Input type="text" placeholder="Title" {...register("secondSection.title_ar")} />
-                        </div>
+                        </div> */}
 
                         <div className="flex flex-col gap-2">
                             <Label className="">Country</Label>

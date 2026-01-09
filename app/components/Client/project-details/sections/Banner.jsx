@@ -102,7 +102,8 @@ const Banner = ({ firstSection, secondSection }) => {
             </div>
             <div className="container relative md:bottom-[70px] bottom-10 left-0 2xl:pb-[50px]">
                 {/* <motion.h2 variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-60 font-light mb-7  xl:mb-10  2xl:mb-[58px] leading-[1.17]">About Project</motion.h2> */}
-                <H2Title titleText={secondSection.title} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" />
+                {/* <H2Title titleText={secondSection.title} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" /> */}
+                <H2Title titleText={"About the Project"} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" />
                 <motion.div
                     variants={moveUp(0.4)}
                     initial="hidden"

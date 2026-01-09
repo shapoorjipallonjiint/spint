@@ -32,11 +32,27 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
     const [view, setView] = useState("grid");
 
+    // Project with Countries
+    const projectCountries = useMemo(() => {
+        if (!data?.length) return new Set();
+
+        return new Set(
+            data
+                .map((item) => item?.secondSection?.location?.name)
+                .filter(Boolean)
+                .map((name) => name.toLowerCase())
+        );
+    }, [data]);
+
     const sector = [{ id: 1, name: "All" }, ...sectorData];
 
     const status = [{ id: 1, name: "All" }, ...statusData];
 
-    const country = [{ id: 1, name: "All" }, ...countryData];
+    const filteredCountryData = useMemo(() => {
+        return countryData.filter((c) => projectCountries.has(c.name.toLowerCase()));
+    }, [countryData, projectCountries]);
+
+    const country = [{ id: 1, name: "All" }, ...filteredCountryData];
 
     const service = [{ id: 1, title: "All" }, ...serviceData];
 
