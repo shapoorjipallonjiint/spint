@@ -5,6 +5,7 @@ type BackendCity = {
   top?: string;
   completedProjects?: string;
   employees?: string;
+  showInProjectFilter?: boolean
 };
 
 export const mapBackendCitiesToMapCities = (
@@ -29,7 +30,7 @@ export const mapBackendCitiesToMapCities = (
       // ✅ NEW FLAGS
       hasProjects,
       isClickable:
-        city.id === "sp-international" && hasProjects,
+        city.id === "sp-international" && hasProjects && city.showInProjectFilter === true,
     };
   });
 };

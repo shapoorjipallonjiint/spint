@@ -16,6 +16,7 @@ import { useRouter, usePathname } from "next/navigation";
 const ITEMS_PER_PAGE = 12;
 
 const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
+    console.log(countryData, "cntry")
     const router = useRouter();
     const pathname = usePathname();
 
@@ -46,11 +47,15 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
     const sector = [{ id: 1, name: "All" }, ...sectorData];
 
-    const status = [{ id: 1, name: "All" }, ...statusData];
+    const status = [
+        { id: 1, name: "All" },
+        ...statusData.filter((item) => item.name && item.name.toLowerCase() !== "nill"),
+    ];
 
-    const filteredCountryData = useMemo(() => {
-        return countryData.filter((c) => projectCountries.has(c.name.toLowerCase()));
-    }, [countryData, projectCountries]);
+const filteredCountryData = useMemo(() => {
+    return countryData.filter((c) => c.showInProjectFilter);
+}, [countryData]);
+
 
     const country = [{ id: 1, name: "All" }, ...filteredCountryData];
 

@@ -6,6 +6,7 @@ import Trusted from "./sections/Trusted";
 import Legacy from "./sections/Legacy";
 // import MainNavbar from "../../MainLayout/MainNavbar";
 // import Footer from "../../MainLayout/Footer";
+import Impact from './sections/Impact'
 
 const Index = ({data}:{data:any}) => {
   return (
@@ -20,7 +21,8 @@ const Index = ({data}:{data:any}) => {
           imageAlt={data.bannerAlt}
         />
         <About data={data.firstSection}/>
-        <VisionMission data={data.secondSection}/>
+        {/* <VisionMission data={data.secondSection}/> */}
+        <Impact CultureData={data.secondSection} />
         <OurValues data={data.thirdSection}/>
         <Legacy data={data.fourthSection}/>
         <Trusted data={data.fifthSection}/>

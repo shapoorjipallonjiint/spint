@@ -20,6 +20,7 @@ type City = {
     top?: string;
     completedProjects?: string;
     employees?: string;
+    showInProjectFilter?: boolean;
 };
 
 /* ---------------- COMPONENT ---------------- */
@@ -51,7 +52,7 @@ export default function MapSectionPage() {
             const res = await fetch("/api/admin/home");
             const json = await res.json();
 
-            setLocations(json.data?.sixthSection?.cities || []);
+            setLocations(json.data?.sixthSection?.cities || []);            
 
             setSixthSectionMeta({
                 title: json.data?.sixthSection?.title,
@@ -120,6 +121,7 @@ export default function MapSectionPage() {
         l.name?.toLowerCase().includes(spInternationalSearch.toLowerCase())
     );
 
+                console.log(locations, "locs");
     /* ---------------- UI ---------------- */
 
     return (
@@ -130,7 +132,11 @@ export default function MapSectionPage() {
                 <Button
                     className="text-white bg-black"
                     onClick={() => {
-                        reset({ id: "" });
+                        reset({
+                            id: "",
+                            showInProjectFilter: false,
+                        });
+
                         setEditIndex(null);
                         setOpen(true);
                     }}
@@ -236,6 +242,22 @@ export default function MapSectionPage() {
                             </>
                         )}
 
+                                                <div className="col-span-2 flex items-center gap-2">
+                            <Controller
+                                name="showInProjectFilter"
+                                control={control}
+                                render={({ field }) => (
+                                    <input
+                                        type="checkbox"
+                                        checked={!!field.value}
+                                        onChange={(e) => field.onChange(e.target.checked)}
+                                        className="h-4 w-4"
+                                    />
+                                )}
+                            />
+                            <Label>Show in Project Filter</Label>
+                        </div>
+
                         <div className="col-span-2 flex justify-end gap-2">
                             <Button
                                 type="button"
@@ -248,7 +270,7 @@ export default function MapSectionPage() {
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" disabled={saving}>
+                            <Button className="text-white bg-black" type="submit" disabled={saving}>
                                 {saving ? "Saving..." : "Save"}
                             </Button>
                         </div>
