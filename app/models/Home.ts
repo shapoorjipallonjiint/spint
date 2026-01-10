@@ -190,7 +190,8 @@ const homeSchema = new mongoose.Schema({
             left: { type: String },
             top: { type: String },
             completedProjects: { type: String },
-            employees: { type: String }
+            employees: { type: String },
+            showInProjectFilter: { type: Boolean}
         }]
     },
     seventhSection: {

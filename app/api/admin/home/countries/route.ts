@@ -5,9 +5,10 @@ import Home from "../../../../models/Home";
 type HomeCitiesResult = {
   sixthSection?: {
     cities?: {
-      _id: string;          // ✅ ObjectId
+      _id: string;
       name?: string;
       name_ar?: string;
+      showInProjectFilter?: boolean;
     }[];
   };
 };
@@ -22,6 +23,7 @@ export async function GET() {
         "sixthSection.cities._id": 1,
         "sixthSection.cities.name": 1,
         "sixthSection.cities.name_ar": 1,
+        "sixthSection.cities.showInProjectFilter": 1,
         _id: 0,
       }
     ).lean()) as HomeCitiesResult | null;
@@ -38,6 +40,7 @@ export async function GET() {
         _id: city._id.toString(),
         name: city.name ?? "",
         name_ar: city.name_ar ?? "",
+        showInProjectFilter: city.showInProjectFilter ?? false,
       }))
       .filter((city) => city._id && city.name)
       .sort((a, b) => a.name.localeCompare(b.name));

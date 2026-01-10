@@ -2908,6 +2908,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                 pjtcompleted: city.pjtcompleted,
                                                                 iconicpjts: city.iconicpjts,
                                                                 dedicatedemployees: city.dedicatedemployees,
+                                                                showInProjectFilter: city.showInProjectFilter,
                                                             });
                                                         }
                                                     }}
