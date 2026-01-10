@@ -1,167 +1,191 @@
 import mongoose from "mongoose";
 
 const aboutSchema = new mongoose.Schema({
-    metaTitle:{
-        type:String,
-        required:true
+    metaTitle: {
+        type: String,
+        required: true
     },
-    metaTitle_ar:{
-        type:String,
+    metaTitle_ar: {
+        type: String,
     },
-    metaDescription:{
-        type:String,
-        required:true
+    metaDescription: {
+        type: String,
+        required: true
     },
-    metaDescription_ar:{
-        type:String,
+    metaDescription_ar: {
+        type: String,
     },
-    banner:{
-        type:String,
-        required:true
+    banner: {
+        type: String,
+        required: true
     },
-    bannerAlt:{
-        type:String,
+    bannerAlt: {
+        type: String,
     },
-    bannerAlt_ar:{
-        type:String,
+    bannerAlt_ar: {
+        type: String,
     },
-    pageTitle:{
-        type:String,
-        required:true
+    pageTitle: {
+        type: String,
+        required: true
     },
-    pageTitle_ar:{
-        type:String,
+    pageTitle_ar: {
+        type: String,
     },
-    firstSection:{
-        title:{
-            type:String,
-            required:true
+    firstSection: {
+        title: {
+            type: String,
+            required: true
         },
-        title_ar:{
-            type:String,
+        title_ar: {
+            type: String,
         },
-        description:{
-            type:String,
-            required:true
+        description: {
+            type: String,
+            required: true
         },
-        description_ar:{
-            type:String,
+        description_ar: {
+            type: String,
         },
-        items:[{
-            number:{
-                type:String,
+        items: [{
+            number: {
+                type: String,
             },
-            number_ar:{
-                type:String,
+            number_ar: {
+                type: String,
             },
-            value:{
-                type:String,
+            value: {
+                type: String,
             },
-            value_ar:{
-                type:String,
+            value_ar: {
+                type: String,
             },
         }]
     },
-    secondSection:{
-        image:{
-            type:String,
-            required:true
+    secondSection: {
+        title: {
+            type: String,
+            required: true
         },
-        imageAlt:{
-            type:String,
+        title_ar: {
+            type: String,
+            required: true
         },
-        imageAlt_ar:{
-            type:String,
+        subTitle: {
+            type: String,
         },
-        mission:{
-            type:String,
+        subTitle_ar: {
+            type: String,
         },
-        mission_ar:{
-            type:String,
+        description: {
+            type: String,
         },
-        vision:{
-            type:String,
+        description_ar: {
+            type: String,
         },
-        vision_ar:{
-            type:String,
-        },
-    },
-    thirdSection:{
-        title:{
-            type:String,
-            required:true
-        },
-        title_ar:{
-            type:String,
-        },
-        items:[{
-            title:{
-                type:String,
+        items: [{
+            letter: {
+                type: String
             },
-            title_ar:{
-                type:String,
+            letter_ar: {
+                type: String
             },
-            description:{
-                type:String,
+            title: {
+                type: String
             },
-            description_ar:{
-                type:String,
+            title_ar: {
+                type: String
+            },
+            subTitle: {
+                type: String
+            },
+            subTitle_ar: {
+                type: String
+            },
+            description: {
+                type: String
+            },
+            description_ar: {
+                type: String
             }
         }]
     },
-    fourthSection:{
-        title:{
-            type:String,
-            required:true
+    thirdSection: {
+        title: {
+            type: String,
+            required: true
         },
-        title_ar:{
-            type:String,
+        title_ar: {
+            type: String,
         },
-        items:[{
-            year:{
-                type:String,
+        items: [{
+            title: {
+                type: String,
             },
-            year_ar:{
-                type:String,
+            title_ar: {
+                type: String,
             },
-            description:{
-                type:String,
+            description: {
+                type: String,
             },
-            description_ar:{
-                type:String,
+            description_ar: {
+                type: String,
+            }
+        }]
+    },
+    fourthSection: {
+        title: {
+            type: String,
+            required: true
+        },
+        title_ar: {
+            type: String,
+        },
+        items: [{
+            year: {
+                type: String,
             },
-            image:{
-                type:String
+            year_ar: {
+                type: String,
             },
-            imageAlt:{
-                type:String
+            description: {
+                type: String,
             },
-            imageAlt_ar:{
-                type:String
-            }   
+            description_ar: {
+                type: String,
+            },
+            image: {
+                type: String
+            },
+            imageAlt: {
+                type: String
+            },
+            imageAlt_ar: {
+                type: String
+            }
         }],
     },
-    fifthSection:{
-        title:{
-            type:String,
-            required:true
+    fifthSection: {
+        title: {
+            type: String,
+            required: true
         },
-        title_ar:{
-            type:String
+        title_ar: {
+            type: String
         },
-        buttonText:{
-            type:String,
-            required:true
+        buttonText: {
+            type: String,
+            required: true
         },
-        buttonText_ar:{
-            type:String,
+        buttonText_ar: {
+            type: String,
         },
-        buttonLink:{
-            type:String,
-            required:true
+        buttonLink: {
+            type: String,
+            required: true
         },
-        buttonLink_ar:{
-            type:String,
+        buttonLink_ar: {
+            type: String,
         }
     }
 })

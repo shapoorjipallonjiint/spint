@@ -46,7 +46,10 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
     const sector = [{ id: 1, name: "All" }, ...sectorData];
 
-    const status = [{ id: 1, name: "All" }, ...statusData];
+    const status = [
+        { id: 1, name: "All" },
+        ...statusData.filter((item) => item.name && item.name.toLowerCase() !== "nill"),
+    ];
 
     const filteredCountryData = useMemo(() => {
         return countryData.filter((c) => projectCountries.has(c.name.toLowerCase()));

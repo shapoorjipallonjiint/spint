@@ -1863,7 +1863,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             className="relative flex flex-col  px-10 xl:px-[90px] pb-20 xl:pb-[93px] pt-20 xl:pt-[50px] overflow-hidden h-[52.15dvh] lg:h-full"
                         >
                             <div className="absolute top-0 w-full z-10 h-full right-0 opacity-0" ref={videoBgRef}>
-                                <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/85 from-0% via-black/65 via-75% to-black/60 to-100% "></div>
+                                {/* <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/85 from-0% via-black/65 via-75% to-black/60 to-100% "></div> */}
+                                <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"></div>
+
                                 <video
                                     src={data.secondSection.video}
                                     autoPlay
@@ -1883,7 +1885,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     {data.secondSection.title}
                                 </h1>
                                 <div dangerouslySetInnerHTML={{ __html: data.secondSection.subTitle }}></div>
-                                <Link
+                                {/* <Link
                                     ref={spbtn}
                                     href={data.thirdSection.link}
                                     className=" hidden lg:flex text-[14px] mb-4 lg:mb-0 mt-5  3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-white lg:text-white uppercase  items-center gap-2 cursor-pointer group "
@@ -1912,7 +1914,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </Link>
+                                </Link> */}
                                 {/* <h3 className="text-[20px] lg:text-18 xl:text-24 font-light max-w-xl mb-[33px] lg:mb-0">
                                     With a legacy of over{" "}
                                     <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
@@ -1981,7 +1983,10 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             ref={mobileStatsRef}
                         >
                             {data.secondSection.items.map((item, index) => (
-                                <div className="border-b border-[#0a000020] last:border-b-0 lg:border-b-0 pb-5 mb-5" key={index}>
+                                <div
+                                    className="border-b border-[#0a000020] last:border-b-0 lg:border-b-0 pb-5 mb-5"
+                                    key={index}
+                                >
                                     <h3 className="text-26 md:text-40 xl:text-40 font-light leading-[auto] mb-[5px]">
                                         <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />
                                         {getSuffix(item.value)}
@@ -2047,7 +2052,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 className="w-full h-full object-cover absolute object-center lg:hidden"
                             />
                         </div>
-                         <div className="block lg:hidden   ">
+                        <div className="block lg:hidden   ">
                             <img
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
@@ -2060,10 +2065,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             className=" flex flex-col h-full px-5 lg:px-[70px] 3xl:px-[100px] pb-[120px] 3xl:pb-[150px] pt-[7dvh] lg:pt-[120px] 3xl:pt-[150px] overflow-hidden relative"
                             ref={sprghtBx}
                         >
-                            <div
-                                className="  lg:bg-primary absolute w-full left-0 h-full top-0 z-[-1]"
-                                ref={sprgtbg}
-                            ></div>
+                            <div className="  lg:bg-primary absolute w-full left-0 h-full top-0 z-[-1]" ref={sprgtbg}></div>
                             <Image
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
@@ -2079,14 +2081,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 >
                                     {data.thirdSection.title}
                                 </h1>
-                               <div className="  max-h-[6rem]   md:max-h-[6rem] lg:max-h-full overflow-y-auto  mb-[30px]">
-                                 <p
-                                    ref={spdscrpt}
-                                    className="text-[14px] md:text-[18px] lg:text-19 text-[#464646] lg:text-white font-light leading-[1.5] max-w-[33ch] sm:max-w-[80%]  lg:max-w-[90%]  3xl:max-w-[75%]"
-                                >
-                                    {data.thirdSection.description}
-                                </p>
-                               </div>
+                                <div className="  max-h-[6rem]   md:max-h-[6rem] lg:max-h-full overflow-y-auto  mb-[30px]">
+                                    <p
+                                        ref={spdscrpt}
+                                        className="text-[14px] md:text-[18px] lg:text-19 text-[#464646] lg:text-white font-light leading-[1.5] max-w-[33ch] sm:max-w-[80%]  lg:max-w-[90%]  3xl:max-w-[75%]"
+                                    >
+                                        {data.thirdSection.description}
+                                    </p>
+                                </div>
                                 <Link
                                     ref={spbtn}
                                     href={data.thirdSection.link}
@@ -2161,7 +2163,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 </div>
                             </div>
                         </div>
-                       
                     </div>
                     {/* <div className="absolute top-0 left-0 z-0 w-full h-full bg-transparent">
             <img
@@ -2439,7 +2440,17 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                 {/* GRADIENT ALWAYS ON TOP */}
                                 {/* <div className="absolute inset-0 z-30 bg-gradient-to-r from-black/60 via-black/60 to-black/60 pointer-events-none"></div> */}
-                                <div className="absolute inset-0 z-30 bg-gradient-to-r from-black/50 via-black/30 to-black/20 pointer-events-none"></div>
+                                {/* <div className="absolute inset-0 z-30 bg-gradient-to-r from-black/50 via-black/30 to-black/20 pointer-events-none"></div> */}
+                                <div
+                                    className={`absolute inset-0 z-30 bg-gradient-to-r pointer-events-none
+  transition-opacity duration-300 ease-in-out
+    ${
+        activeService?.title === "Interior Fit-Out" || activeService?.title === "Facade"
+            ? "from-black/75 from-0% via-black/70 via-60% to-black/45 to-100%"
+            : "from-black/50 from-0% via-black/30 via-60% to-black/20 to-100%"
+    }
+  `}
+                                ></div>
                             </div>
 
                             <div className="hidden lg:block lg:absolute bottom-0 right-0   " ref={srvsVct}>
@@ -2452,18 +2463,17 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 />
                             </div>
 
-                                 <AnimatePresence mode="wait">
-                                    
-                                    <motion.img
-                                        key={activeService?.image}
-                                        src={activeService?.image}
-                                        className="  object-cover  w-full sx-h26 h-[32.5dvh] md:h-[357px] z-20 object-top xs-objcen lg:hidden"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        transition={{ duration: 0.5, ease: "easeInOut" }}
-                                    />
-                                </AnimatePresence>
+                            <AnimatePresence mode="wait">
+                                <motion.img
+                                    key={activeService?.image}
+                                    src={activeService?.image}
+                                    className="  object-cover  w-full sx-h26 h-[32.5dvh] md:h-[357px] z-20 object-top xs-objcen lg:hidden"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                                />
+                            </AnimatePresence>
                             <div
                                 className="lg:absolute xs-ptop-15 top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px]  left-[40px] 3xl:left-[58px] z-10 px-5 lg:px-0 pt-7 lg:pt-0"
                                 ref={srvsCntb}
@@ -2476,11 +2486,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     ref={brdonRef}
                                     className=" lg:absolute  left-[-40px] 3xl:left-[-58px] right-[25%] h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none   bg-white "
                                 />
-                                <motion.div className="flex gap-2 items-center overflow-hidden" 
-                                        key={activeService?.index}
-                                        variants={moveUp(0.2)}
-                                        initial="hidden"
-                                        animate="show">
+                                <motion.div
+                                    className="flex gap-2 items-center overflow-hidden"
+                                    key={activeService?.index}
+                                    variants={moveUp(0.2)}
+                                    initial="hidden"
+                                    animate="show"
+                                >
                                     <div
                                         className="flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10 w-7 h-7"
                                         ref={srvsArrw}
@@ -2661,7 +2673,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                     willChange: "font-size, font-weight",
                                                                 }}
                                                             >
-                                                                {sector.name}
+                                                                {sector.name?.toLowerCase() === "industrial"
+                                                                    ? "Entertainment and Leisure"
+                                                                    : sector.name}
                                                             </h3>
                                                         </div>
                                                     );
