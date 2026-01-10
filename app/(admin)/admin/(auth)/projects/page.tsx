@@ -23,6 +23,10 @@ import { toast } from "sonner";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Search } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { arrayMove } from "@dnd-kit/sortable";
+import ProjectCard from "./ProjectCard";
 
 interface ProjectPageProps {
     metaTitle: string;
@@ -50,6 +54,8 @@ export default function Projects() {
 
     const [sector, setSector] = useState<string>("");
     const [sector_ar, setSectorAr] = useState<string>("");
+
+    const [reorderMode, setReorderMode] = useState(false);
 
     // const [service, setService] = useState<string>("");
     // const [service_ar, setServiceAr] = useState<string>("");
@@ -183,26 +189,6 @@ export default function Projects() {
         }
     };
 
-    // const handleAddService = async () => {
-    //   try {
-    //     const response = await fetch("/api/admin/project/service", {
-    //       method: "POST",
-    //       body: JSON.stringify({ name: service,name_ar:service_ar }),
-    //     });
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       setService("");
-    //       toast.success(data.message);
-    //       handleFetchService();
-    //     } else {
-    //       const data = await response.json();
-    //       toast.error(data.message);
-    //     }
-    //   } catch (error) {
-    //     console.log("Error adding service", error);
-    //   }
-    // }
-
     const handleFetchService = async () => {
         try {
             const response = await fetch("/api/admin/services");
@@ -217,116 +203,6 @@ export default function Projects() {
             console.log("Error fetching service", error);
         }
     };
-
-    // const handleEditService = async (id: string) => {
-    //   try {
-    //     const response = await fetch(`/api/admin/project/service?id=${id}`, {
-    //       method: "PATCH",
-    //       body: JSON.stringify({ name: service,name_ar:service_ar }),
-    //     });
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       toast.success(data.message);
-    //       handleFetchService();
-    //       setService("");
-    //     } else {
-    //       const data = await response.json();
-    //       toast.error(data.message);
-    //     }
-    //   } catch (error) {
-    //     console.log("Error editing service", error);
-    //   }
-    // }
-
-    // const handleDeleteService = async (id: string) => {
-    //   try {
-    //     const response = await fetch(`/api/admin/project/service?id=${id}`, {
-    //       method: "DELETE",
-    //     });
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       toast.success(data.message);
-    //       handleFetchService();
-    //     } else {
-    //       const data = await response.json();
-    //       toast.error(data.message);
-    //     }
-    //   } catch (error) {
-    //     console.log("Error deleting service", error);
-    //   }
-    // }
-
-    // const handleFetchCountry = async () => {
-    //     try {
-    //         const response = await fetch("/api/admin/project/country");
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //             setCountryList(data.data);
-    //         } else {
-    //             const data = await response.json();
-    //             toast.error(data.message);
-    //         }
-    //     } catch (error) {
-    //         console.log("Error fetching country", error);
-    //     }
-    // };
-
-    // const handleAddCountry = async () => {
-    //   try {
-    //     const response = await fetch("/api/admin/project/country", {
-    //       method: "POST",
-    //       body: JSON.stringify({ name: country,name_ar:country_ar }),
-    //     });
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       setCountry("");
-    //       toast.success(data.message);
-    //       handleFetchCountry();
-    //     } else {
-    //       const data = await response.json();
-    //       toast.error(data.message);
-    //     }
-    //   } catch (error) {
-    //     console.log("Error adding country", error);
-    //   }
-    // }
-
-    // const handleEditCountry = async (id: string) => {
-    //   try {
-    //     const response = await fetch(`/api/admin/project/country?id=${id}`, {
-    //       method: "PATCH",
-    //       body: JSON.stringify({ name: country,name_ar:country_ar }),
-    //     });
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       toast.success(data.message);
-    //       handleFetchCountry();
-    //     } else {
-    //       const data = await response.json();
-    //       toast.error(data.message);
-    //     }
-    //   } catch (error) {
-    //     console.log("Error editing country", error);
-    //   }
-    // }
-
-    // const handleDeleteCountry = async (id: string) => {
-    //   try {
-    //     const response = await fetch(`/api/admin/project/country?id=${id}`, {
-    //       method: "DELETE",
-    //     });
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       toast.success(data.message);
-    //       handleFetchCountry();
-    //     } else {
-    //       const data = await response.json();
-    //       toast.error(data.message);
-    //     }
-    //   } catch (error) {
-    //     console.log("Error deleting country", error);
-    //   }
-    // }
 
     const handleDeleteProject = async (id: string) => {
         try {
@@ -419,19 +295,47 @@ export default function Projects() {
 
         const normalizedSearch = search.toLowerCase();
 
-        return projectList
-            .filter((item) => {
-                const countryName = item?.secondSection?.location?.name;
+        return projectList.filter((item) => {
+            const countryName = item?.secondSection?.location?.name;
 
-                const countryMatch = selectedCountry === "Country" || countryName === selectedCountry;
+            const countryMatch = selectedCountry === "Country" || countryName === selectedCountry;
 
-                const titleMatch = item?.firstSection?.title?.toLowerCase().includes(normalizedSearch) ?? false;
+            const titleMatch = item?.firstSection?.title?.toLowerCase().includes(normalizedSearch) ?? false;
 
-                return countryMatch && titleMatch;
-            })
-            .slice()
-            .reverse();
+            return countryMatch && titleMatch;
+        });
     }, [projectList, selectedCountry, search]);
+
+    const getProjectPos = (id: string) => projectList.findIndex((item) => item._id === id);
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        const oldIndex = getProjectPos(active.id as string);
+        const newIndex = getProjectPos(over.id as string);
+
+        setProjectList((items) => arrayMove(items, oldIndex, newIndex));
+    };
+
+    const confirmProjectOrder = async () => {
+        setReorderMode(false);
+
+        const orderedIds = projectList.map((p) => p._id);
+
+        const formData = new FormData();
+        formData.append("projects", JSON.stringify(orderedIds));
+
+        const res = await fetch("/api/admin/project/reorder", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            toast.success(data.message);
+        }
+    };
 
     return (
         <div className="flex flex-col gap-5">
@@ -888,27 +792,43 @@ export default function Projects() {
                 </div>
 
                 <div className="h-screen w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
-                    <div className="flex justify-between items-center border-b-2 pb-2">
-                        <Label className="text-sm font-bold">Projects</Label>
-                        <p className="textsm">Count: {filteredProjects.length}</p>
-                        <Select value={selectedCountry} onValueChange={(value) => setSelectedCountry(value)}>
-                            <SelectTrigger className="w-[180px] text-sm">
-                                <SelectValue placeholder="Select country" />
-                            </SelectTrigger>
+                    <div className="border-b-2 pb-3">
+                        <div className="flex justify-between items-center">
+                            {/* LEFT: Title */}
+                            <Label className="text-sm font-bold">Projects</Label>
 
-                            <SelectContent className="bg-white max-h-[350px] overflow-y-scroll">
-                                {countries.map((country) => (
-                                    <SelectItem key={country} value={country} className="hover:bg-gray-200">
-                                        {country}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                            {/* RIGHT: Controls */}
+                            <div className="flex items-center gap-4">
+                                <Select value={selectedCountry} onValueChange={(value) => setSelectedCountry(value)}>
+                                    <SelectTrigger className="w-[180px] text-sm">
+                                        <SelectValue placeholder="Select country" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white max-h-[350px] overflow-y-scroll">
+                                        {countries.map((country) => (
+                                            <SelectItem key={country} value={country} className="hover:bg-gray-200">
+                                                {country}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
 
-                        <Button className="bg-black text-white" onClick={() => router.push("/admin/projects/add")}>
-                            Add Project
-                        </Button>
+                                <Button
+                                    className={`text-white ${reorderMode ? "bg-yellow-700" : "bg-green-700"}`}
+                                    onClick={() => (reorderMode ? confirmProjectOrder() : setReorderMode(true))}
+                                >
+                                    {reorderMode ? "Done" : "Reorder"}
+                                </Button>
+
+                                <Button className="bg-black text-white" onClick={() => router.push("/admin/projects/add")}>
+                                    Add Project
+                                </Button>
+                            </div>
+                        </div>
+
+                        {/* SECOND LINE: Count */}
+                        <p className="text-sm text-muted-foreground mt-1">Count: {filteredProjects.length}</p>
                     </div>
+
                     <div className="relative mt-2 mb-4">
                         <Input
                             type="text"
@@ -921,47 +841,37 @@ export default function Projects() {
                         <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                     </div>
 
-                    <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
-                        {filteredProjects.map((item) => (
-                            <div
-                                className="flex justify-between border p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
-                                key={item._id}
-                            >
-                                <div className="text-[16px]">
-                                    {item.firstSection.title}
-                                    {/* <p className="text-red-500">{item?.firstSection?.coverImage}</p> */}
+                    {!reorderMode && (
+                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
+                            {filteredProjects.map((item) => (
+                                <div
+                                    key={item._id}
+                                    className="flex justify-between border p-2 items-center rounded-md shadow-md"
+                                >
+                                    <div>{item.firstSection.title}</div>
+                                    <div className="flex gap-5">
+                                        <MdEdit onClick={() => router.push(`/admin/projects/edit/${item._id}`)} />
+                                        <MdDelete onClick={() => handleDeleteProject(item._id)} />
+                                    </div>
                                 </div>
-                                <div className="flex gap-5">
-                                    <MdEdit
-                                        className="cursor-pointer"
-                                        onClick={() => router.push(`/admin/projects/edit/${item._id}`)}
-                                    />
+                            ))}
+                        </div>
+                    )}
 
-                                    <Dialog>
-                                        <DialogTrigger>
-                                            <MdDelete className="cursor-pointer" />
-                                        </DialogTrigger>
-                                        <DialogContent>
-                                            <DialogHeader>
-                                                <DialogTitle>Are you sure?</DialogTitle>
-                                            </DialogHeader>
-                                            <div className="flex gap-2">
-                                                <DialogClose className="bg-black text-white px-2 py-1 rounded-md">
-                                                    No
-                                                </DialogClose>
-                                                <DialogClose
-                                                    className="bg-black text-white px-2 py-1 rounded-md"
-                                                    onClick={() => handleDeleteProject(item._id)}
-                                                >
-                                                    Yes
-                                                </DialogClose>
-                                            </div>
-                                        </DialogContent>
-                                    </Dialog>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    {reorderMode && (
+                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
+                            <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+                                <SortableContext
+                                    items={projectList.map((p) => p._id)}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    {projectList.map((item) => (
+                                        <ProjectCard key={item._id} id={item._id} title={item.firstSection.title} />
+                                    ))}
+                                </SortableContext>
+                            </DndContext>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
