@@ -1742,7 +1742,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 loop
                                 muted
                                 playsInline
-                                webkit-playsinline
+                                webkit-playsinline="true"
                                 className=" w-full h-full object-cover absolute top-0 left-0 right-0 z-[1]"
                             ></video>
 
@@ -1872,7 +1872,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     loop
                                     muted
                                     playsInline
-                                    webkit-playsinline
+                                    webkit-playsinline="true"
+
                                     className="w-full h-full object-cover absolute left-0 right-0"
                                 ></video>
                             </div>
@@ -2016,6 +2017,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         </div>
                         <div className="block lg:hidden   ">
                             <img
+                            alt="logo"
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
@@ -2054,6 +2056,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         </div>
                         <div className="block lg:hidden   ">
                             <img
+                            alt="logo"
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
@@ -2071,7 +2074,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
-                                alt=""
+                                alt="logo"
                                 className="hidden lg:block absolute right-0 w-[250px] 3xl:w-[353px]"
                             />
                             <div className="relative z-[99]">
@@ -2309,7 +2312,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             height={1000}
                             className="absolute w-full h-full object-cover"
                             src="../assets/images/services-bg.jpg"
-                            alt=""
+                            alt="logo"
                         />
                     </figure>
                     <div className="lg:grid lg:grid-cols-[550px_auto] xl:grid-cols-[720px_auto] 3xl:grid-cols-[975px_auto] h-full">
@@ -2415,6 +2418,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 {/* BASE IMAGE = PREVIOUS SERVICE IMAGE */}
                                 {prevImage && (
                                     <Image
+                                    alt="prev-image"
                                         width={1500}
                                         height={1000}
                                         src={prevImage}
@@ -2429,7 +2433,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         height={1000}
                                         key={activeService?.image}
                                         src={activeService?.image}
-                                        alt=""
+                                        alt="activeService"
                                         className="absolute inset-0 object-cover object-top w-full h-full z-20"
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
