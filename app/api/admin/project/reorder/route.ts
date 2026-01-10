@@ -3,6 +3,8 @@ import connectDB from "@/lib/mongodb";
 import { verifyAdmin } from "@/lib/verifyAdmin";
 import Project from "@/app/models/Project";
 import mongoose from "mongoose";
+import type { Types } from "mongoose";
+
 
 export async function POST(req: NextRequest) {
     const session = await mongoose.startSession();
@@ -26,8 +28,13 @@ export async function POST(req: NextRequest) {
         }
 
         const reordered = orderedIds
-            .map((id) => doc.projects.find((p) => p._id.toString() === id))
+            .map((id) =>
+                doc.projects.find(
+                    (p: { _id: Types.ObjectId }) => p._id.toString() === id
+                )
+            )
             .filter(Boolean);
+
 
         doc.projects = reordered;
         await doc.save({ session });
