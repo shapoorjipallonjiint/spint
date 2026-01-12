@@ -9,6 +9,8 @@ import "swiper/css/thumbs";
 import { motion, useScroll, useTransform } from "framer-motion";
 import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 
 import { assets } from "../../../../assets/index"
@@ -55,6 +57,8 @@ const Legacy = ({data}) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const imageContainerRefTwo = useRef(null);
   const MotionImage = motion.create(Image)
+  const isArabic = useIsPreferredLanguageArabic()
+  const t = useApplyLang(data)
 
   // Parallax for main image container
   const { scrollYProgress: imageProgress } = useScroll({
@@ -70,7 +74,7 @@ const Legacy = ({data}) => {
             {/* <motion.h2 variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-60 font-light leading-[1.18] text-white">
               Legacy
             </motion.h2> */}
-            <H2Title titleText={data.title} titleColor="white" marginClass="md:mb-4 lg:mb-8 xl:mb-15" />
+            <H2Title titleText={t.title} titleColor="white" marginClass="md:mb-4 lg:mb-8 xl:mb-15" />
 
             <div className="flex flex-col-reverse md:flex-row gap-7 md:gap-5 2xl:gap-[20%]  3xl:gap-[23.3%] justify-between md:items-end">
               {/* LEFT: Vertical Year Thumbs */}
@@ -95,7 +99,7 @@ const Legacy = ({data}) => {
                   }}
                   className="legacy-main-swiper"
                 >
-                  {data.items.map((item, i) => (
+                  {t.items.map((item, i) => (
                     <SwiperSlide key={i}>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-7 lg:gap-15 2xl:gap-[137px] items-center">
                         <div>
@@ -103,14 +107,14 @@ const Legacy = ({data}) => {
                             <div className='flex items-center gap-5'>
                               <button
                                 onClick={() => imageSwiper?.slidePrev()}
-                                className="w-10 xl:w-[50px] xl:h-[50px] h-10 rounded-full border border-white/20 flex items-center justify-center"
+                                className={`w-10 xl:w-[50px] xl:h-[50px] h-10 rounded-full border border-white/20 flex items-center justify-center ${isArabic && "rotate-180"}`}
                               >
                                 <Image height={20} width={20} src={assets.arrowLeft2} alt="" />
                               </button>
 
                               <button
                                 onClick={() => imageSwiper?.slideNext()}
-                                className="w-10 xl:w-[50px] xl:h-[50px] h-10 rounded-full border border-white/20 flex items-center justify-center"
+                                className={`w-10 xl:w-[50px] xl:h-[50px] h-10 rounded-full border border-white/20 flex items-center justify-center ${isArabic && "rotate-180"}`}
                               >
                                 <Image height={20} width={20} src={assets.arrowRight2} alt="" />
                               </button>

@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
-, "app/(user)/page.jsx", "app/components/Client/projects/Index.jsx", "app/components/common/VdoSection.jsx", "app/components/Client/services/interior-design/Index.jsx", "app/components/common/HomeMobileNavbarSearch.jsx"  ],
+, "app/(user)/(en)/page.jsx", "app/components/Client/projects/Index.jsx", "app/components/common/VdoSection.jsx", "app/components/Client/services/interior-design/Index.jsx", "app/components/common/HomeMobileNavbarSearch.jsx"  ],
   "exclude": [
     "node_modules"
   ],
