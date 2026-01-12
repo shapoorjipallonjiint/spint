@@ -87,7 +87,7 @@ const OurValues = ({data}) => {
               <div className="grid grid-cols-[2fr_auto] overflow-hidden gap-10 lg:gap-[217px]">
                 {/* Expanding List */}
                 <div className={`transition-all duration-500 ease-in-out overflow-hidden  ${isHovered === index ? `opacity-100 h-[${height}px]` : "opacity-0 h-0"}`} >
-                  <div key={isHovered === index ? "open" : "closed"} dangerouslySetInnerHTML={{__html:item.description}} className={`${isArabic ? "our-values-about-ar" : "our-values-about"}`}>
+                  <div key={isHovered === index ? "open" : "closed"} dangerouslySetInnerHTML={{__html:item.description}} className={`xl:pt-[11px] xl:pb-[15px] ${isArabic ? "our-values-about-ar" : "our-values-about"}`}>
 
                   </div>
                   {/* <ul ref={listRef} key={isHovered === index ? "open" : "closed"} className="text-sm xl:text-19 leading-[1.85] max-w-50ch ps-6 lg:ps-12 py-[11px]">
