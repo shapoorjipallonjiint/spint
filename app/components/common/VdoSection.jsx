@@ -40,7 +40,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
     (value) => `blur(${value}px)`
   );
  
-  const scale = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0.5, 1.05, 1.05, 0.5]);
+  const scale = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0.5, 1, 1.05, 0.5]);
   const y = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [200, 0, 0, -200]);
   const x = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [-150, 0, 0, 150]);
   const rotateX = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [45, 0, 0, -45]);
@@ -90,7 +90,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
                 }
                 : {}
             }
-            className="container-scroll-effect lg:max-w-[100%] mx-auto pt-5 2xl:pt-3">
+            className="container-scroll-effect lg:max-w-[100%] mx-auto pt-1 2xl:pt-3">
             <VideoPlayer src={data.video} poster={data.poster} />
           </motion.div>
         </div>

@@ -58,14 +58,14 @@ const SplitTextAnimation = ({
         animate={isInView ? "show" : "hidden"}
       >
         {lines.map((line, lineIndex) => (
-          <h2 key={lineIndex} className="overflow-hidden">
+          <p key={lineIndex} className="overflow-hidden">
             <motion.div
               variants={child}
             >
               {line}
               {lineIndex < lines.length - 1 && <br />}
             </motion.div>
-          </h2>
+          </p>
         ))}
       </motion.div>
     </div>

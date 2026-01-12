@@ -108,13 +108,13 @@ const ExpertiseSec = ({data}) => {
                     className="w-10 h-10 xl:w-50px xl:h-50px  rounded-full border border-white/20 flex items-center justify-center transition-colors"
                   aria-label="Previous slide"
                 >
-                  <Image width={20} height={20} src={assets.arrowLeft2} alt="" />
+                  <Image width={20} height={20} src={assets.arrowLeft2} alt="" className='w-[14px] h-[14px]' />
                 </button>
                 <button onClick={() => imageSwiper?.slideNext()}
                     className="w-10 h-10 xl:w-50px xl:h-50px rounded-full border border-white/20 flex items-center justify-center transition-colors"
                   aria-label="Next slide"
                 >
-                  <Image width={20} height={20} src={assets.arrowRight2} alt="" />
+                  <Image width={20} height={20} src={assets.arrowRight2} alt="" className='w-[14px] h-[14px]'  />
                 </button>
                 </div>
                 <span className="text-19 leading-[1.473684210526316] ml-2">
