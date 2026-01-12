@@ -71,7 +71,7 @@ const Horizons = ({ data }) => {
                                         <p className="text-19 font-light text-black/70">Projects</p>
                                     </div>
                                     <div>
-                                        <p className="text-20 2xl:text-32 3xl:text-40 leading-[1.1] font-light mb-[2px]">
+                                        <p className="text-20 2xl:text-32 3xl:text-40 leading-[1.3] font-light mb-[2px]">
                                             <InsideCounter
                                                 value={item.country}
                                                 delay={10}
@@ -82,11 +82,11 @@ const Horizons = ({ data }) => {
                                         <p className="text-19 font-light text-black/70">Countries</p>
                                     </div>
                                 </div>
-                                <ul className="flex flex-wrap gap-1 ulst pt-3 lg:pt-5 2xl:pt-[35px] mt-3 lg:mt-5 2xl:mt-[35px] border-t border-black/20">
+                                <ul className="flex flex-wrap gap-1 xl:gap-2 ulst pt-3 lg:pt-5 2xl:pt-[35px] mt-3 lg:mt-5 2xl:mt-[35px] border-t border-black/20">
                                     {item.countries.map((country, i) => (
                                         <li key={i} className="text-16 2xl:text-19 text-paragraph font-light ">
                                             {country.name}
-                                            <span className="text-[#30B6F9] pl-2 laststs">|</span>{" "}
+                                            <span className="text-[#30B6F9] pl-1 xl:pl-2 laststs">|</span>{" "}
                                         </li>
                                     ))}
                                 </ul>

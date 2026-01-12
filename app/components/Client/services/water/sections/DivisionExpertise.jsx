@@ -69,34 +69,17 @@ const DivisionExpertise = ({ data }) => {
                 {/* Counter + Arrows */}
                 <div className="container flex items-center justify-between mb-[50px]" ref={containerRef}>
                     <H2Title titleText={data.title} titleColor="black" marginClass="mb-0px" />
-                    <div className="flex gap-8 items-center">
-                        <button
-                            onClick={() => swiperRef.current?.slidePrev()}
-                            className="cursor-pointer flex items-center justify-center transition-colors hover:bg-white/10"
-                            aria-label="Previous slide"
-                        >
-                            <Image
-                                src={assets.arrowLeft2}
-                                width={18.89}
-                                height={18.89}
-                                alt=""
-                                className="w-[18.89px] h-[18.89px] "
-                            />
-                        </button>
-                        <button
-                            onClick={() => swiperRef.current?.slideNext()}
-                            className="cursor-pointer flex items-center justify-center transition-colors hover:bg-white/10"
-                            aria-label="Next slide"
-                        >
-                            <Image
-                                src={assets.arrowRight2}
-                                width={18.89}
-                                height={18.89}
-                                alt=""
-                                className="w-[18.89px] h-[18.89px] "
-                            />
-                        </button>
-                    </div>
+                    
+                    <div className="flex gap-3    ">
+                                <button className="custom-prev w-10 h-10 xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20 hover:bg-secondary hover:text-white transition"
+                                 onClick={() => swiperRef.current?.slidePrev()} >
+                                  <Image src="/assets/images/project-details/rightarrow.svg" className="w-[14px] h-[14px]  rotate-180 group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
+                                </button>
+                                <button className="custom-next w-10 h-10 xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20 hover:bg-secondary hover:text-white transition"
+                                onClick={() => swiperRef.current?.slideNext()}>
+                             <Image src="/assets/images/project-details/rightarrow.svg" className="w-[14px] h-[14px]  group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
+                                </button>
+                              </div>
                 </div>
                 {/* Swiper */}
                 <div className="flex flex-col md:flex-row gap-3   md:pe-0">
@@ -164,9 +147,9 @@ const DivisionExpertise = ({ data }) => {
                                                 className="w-full h-[200px] md:h-[250px] 2xl:h-[333px] scale-y-110 object-cover"
                                             />
                                         </div>
-                                        <div className="pt-3 md:pl-4 lg:pt-8 lg:pl-8 lg:pb-8 2xl:pt-10 2xl:pl-10 2xl:pb-12 md:border-l border-black/20">
+                                        <div className="h-full pt-3 md:pl-4 lg:pt-8 lg:pl-8 lg:pb-8 2xl:pt-10 2xl:pl-10 2xl:pb-12 md:border-l border-black/20">
                                             <div>
-                                                <h3 className="text-20 2xl:text-29 leading-[1.344827586206897] font-light mb-1 md:mb-2">
+                                                <h3 className="text-20 2xl:text-29 leading-[1.344827586206897] font-light mb-1 md:mb-3">
                                                     {item.title}
                                                 </h3>
                                             </div>

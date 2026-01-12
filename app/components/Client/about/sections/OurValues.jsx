@@ -83,7 +83,7 @@ const OurValues = ({data}) => {
               <div className="grid grid-cols-[2fr_auto] overflow-hidden gap-10 lg:gap-[217px]">
                 {/* Expanding List */}
                 <div className={`transition-all duration-500 ease-in-out overflow-hidden  ${isHovered === index ? `opacity-100 h-[${height}px]` : "opacity-0 h-0"}`} >
-                  <div key={isHovered === index ? "open" : "closed"} dangerouslySetInnerHTML={{__html:item.description}} className="our-values-about ">
+                  <div key={isHovered === index ? "open" : "closed"} dangerouslySetInnerHTML={{__html:item.description}} className="our-values-about xl:pt-[11px] xl:pb-[15px] ">
 
                   </div>
                   {/* <ul ref={listRef} key={isHovered === index ? "open" : "closed"} className="text-sm xl:text-19 leading-[1.85] max-w-50ch ps-6 lg:ps-12 py-[11px]">
@@ -95,7 +95,7 @@ const OurValues = ({data}) => {
 
                 <div className={`hidden lg:flex w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 ${isHovered === index ? "" : "rotate-180"
                   }`}>
-                  <Image src="/assets/images/about-us/arrow-top1.svg" width={20} height={20} alt="arrow" className="w-3 h-3" />
+                  <Image src="/assets/images/about-us/arrow-top1.svg" width={20} height={20} alt="arrow" className="w-3 h-3 xl:w-[14px] xl:h-[14px]" />
                 </div>
               </div>
             </div>

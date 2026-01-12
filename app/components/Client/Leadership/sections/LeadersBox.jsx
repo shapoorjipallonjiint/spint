@@ -230,7 +230,7 @@ const LeaderBox = ({ data }) => {
                 style={{ y: shapeY }}
                 src={assets.mainShape2}
                 alt="Decorative background shape"
-                className="absolute right-0 lg:left-0 bottom-10 md:bottom-20 xl:bottom-49 w-[150px] md:w-[30%] lg:w-[40%] 3xl:w-[764px]"
+                className="absolute right-0 lg:left-0 top-10 md:top-20 xl:top-[20%] w-[150px] md:w-[30%] lg:w-[40%] 3xl:w-[764px]"
             />
 
             <div className="container">
@@ -334,9 +334,9 @@ const LeaderBox = ({ data }) => {
                         return (
                             <div
                                 key={index}
-                                className={`grid items-center grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[739px_auto]
-        pt-5 lg:pt-10 3xl:pt-18 pb-10 3xl:pb-[135px] gap-y-6 lg:gap-y-10
-        ${isReverse ? "lg:[&>*:first-child]:order-2 lg:[&>*:last-child]:order-1" : ""}
+                                className={`grid  grid-cols-1 lg:grid-cols-2 first:pt-5 lg:first:pt-10 3xl:first:pt-18
+         pb-10 3xl:pb-[100px] gap-y-6 lg:gap-y-10
+        ${isReverse ? "lg:[&>*:first-child]:order-2 lg:[&>*:last-child]:order-1 3xl:grid-cols-[auto_739px]" : "3xl:grid-cols-[739px_auto]"}
       `}
                             >
                                 {/* IMAGE */}
@@ -372,14 +372,14 @@ const LeaderBox = ({ data }) => {
                                         initial="hidden"
                                         whileInView="show"
                                         viewport={{ amount: 0.1, once: true }}
-                                        className="absolute bottom-0 left-0 h-[60%] lg:h-[60%] xl:h-[60%] 3xl:h-[382px] w-full bg-gradient-to-t from-primary to-transparent z-30"
+                                        className="absolute bottom-0 left-0 h-[60%] lg:h-[60%] xl:h-[60%] 3xl:h-[66%] w-full bg-gradient-to-t from-primary to-transparent z-30"
                                     />
                                 </div>
 
                                 {/* CONTENT */}
                                 <div
-                                    className={`pt-5 xl:pt-8 2xl:pt-12 3xl:pt-[68.5px]
-          ${isReverse ? "lg:pr-8 xl:pr-15 2xl:pr-17 3xl:pr-[97px]" : "lg:pl-8 xl:pl-15 2xl:pl-17 3xl:pl-[97px]"}
+                                    className={`pt-0 2xl:pt-[68px]
+          ${isReverse ? " lg:pr-8 xl:pr-15 2xl:pr-17 3xl:pr-[97px]" : "lg:pl-8 xl:pl-15 2xl:pl-17 3xl:pl-[97px]"}
         `}
                                 >
                                     <H2Title titleText={item.name} marginClass="mb-[10px]" />

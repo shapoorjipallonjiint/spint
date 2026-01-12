@@ -1407,5 +1407,9 @@ body::-webkit-scrollbar {
   .xs-mt-10{margin-top:13px !important;}
   .xs-mt-1{margin-top:1dvh;}
 }
-
+h2,h1{letter-spacing: -3px;}
+@media (max-width:1200px){
+     h2,h1{letter-spacing: -0.75px;}
+}
+h2.text-19,h1.text-19{letter-spacing: -1px;}
 

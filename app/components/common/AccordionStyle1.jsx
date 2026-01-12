@@ -119,7 +119,7 @@ const AccordionStyle1 = ({ accData }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className={`border-b border-cmnbdr relative transition-all duration-500 ${
+                    className={`border-b border-cmnbdr relative transition-all duration-500 mb-0 ${
                         openIndex === index ? "pl-50px" : "pl-0"
                     }`}
                 >
@@ -136,7 +136,7 @@ const AccordionStyle1 = ({ accData }) => {
                     <button
                         onClick={() => toggleAccordion(index)}
                         className={`w-full ${
-                            openIndex === index ? "pt-30px pb-2 xl:pb-[15px]" : "pt-30px pb-30px"
+                            openIndex === index ? "pt-30px " : "pt-30px pb-30px"
                         } flex items-center justify-between text-left group transition-all duration-500 cursor-pointer`}
                     >
                         <div className="flex-1">
@@ -149,7 +149,7 @@ const AccordionStyle1 = ({ accData }) => {
                                     initial={{ opacity: 0, y: -6 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                                    className="text-19 leading-[1.52] text-paragraph mt-1"
+                                    className="text-19 leading-[1.52] text-paragraph mt-1 2xl:mt-[15px]"
                                 >
                                     {item.description}
                                 </motion.p>

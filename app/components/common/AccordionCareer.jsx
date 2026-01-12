@@ -145,7 +145,7 @@ const AccordionCareer = ({ accData, openIndex, setOpenIndex }) => {
             onClick={() => toggleAccordion(index)}
             className={`w-full ${
               openIndex === index
-                ? "pt-[20px] pb-3 xl:pb-[15px]"
+                ? "pt-[20px] "
                 : "py-3 2xl:py-[32px]"
             } flex items-center justify-between text-left group transition-all duration-500`}
           >
@@ -165,7 +165,7 @@ const AccordionCareer = ({ accData, openIndex, setOpenIndex }) => {
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="text-19 leading-[1.52] text-paragraph mt-1"
+                  className="text-19 leading-[1.52] text-paragraph mt-1 2xl:mt-[15px]"
                 >
                   {item.subtitle}
                 </motion.p>

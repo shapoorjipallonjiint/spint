@@ -92,10 +92,10 @@ const SaftySlider = ({ data }) => {
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
-                            className="grid grid-cols-1 md:grid-cols-3 3xl:grid-cols-[406px_300px_auto] p-5 lg:px-12 lg:py-10 2xl:pt-[43px] 2xl:pb-[42px] bg-f5f5 gap-8 md:gap-0"
+                            className="grid grid-cols-1 md:grid-cols-3 3xl:grid-cols-[406px_300px_auto] p-5 lg:px-12 lg:py-10  2xl:pt-[43px] 2xl:pb-[42px] bg-f5f5 gap-8 md:gap-0"
                         >
                             {data.itemsOne.map((item, index) => (
-                                <div key={index} className="md:w-[33.33%]">
+                                <div key={index} className="last:2xl:w-[90%]" >
                                     <motion.p
                                         variants={moveLeft(0.3 * index)}
                                         initial="hidden"
