@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-import "../globals.css";
-import ScrollToTop from "../components/common/ScrollToTop";
-import { SearchProvider } from "@/contexts/searchContext";
+import "@/app/globals.css";
+import MainNavbar from "../../../components/common/MainNavbar";
+import Footer from "../../../components/common/Footer";
 
 
 const dmSans = DM_Sans({
@@ -12,7 +12,6 @@ const dmSans = DM_Sans({
   variable: '--font-dm-sans',
   display: 'swap',
 })
-
 
 export const metadata: Metadata = {
   title: "Shapoorji Pallonji",
@@ -29,14 +28,10 @@ export default async function RootLayout({
   return (
     <html>
       <body>
-    <div lang="en">
-     <div className={`${dmSans.variable} font-sans antialiased`}>
-      {/* <SmoothScroll/> */}
-      <SearchProvider>
-     <ScrollToTop />
+    <div>
+        <MainNavbar/>
         {children}
-     </SearchProvider>
-      </div>
+        <Footer/>
     </div>
     </body>
     </html>
