@@ -140,7 +140,7 @@ const CoreLeardershipTeam = ({ data }) => {
                                 viewport={{ amount: 0.1, once: true }}
                                 className="relative"
                             >
-                                <div className="relative group h-[150px] md:h-[250px] 2xl:h-[333px] flex flex-col justify-end">
+                                <div className="relative group h-[150px] md:h-[250px] 2xl:h-[333px] flex flex-col items-center justify-end">
                                     <Image
                                         width={600}
                                         height={600}
