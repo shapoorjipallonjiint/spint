@@ -51,6 +51,7 @@ html {
   --breakpoint-3xl: 1680px;
 }
 
+
 @utility container {
   @apply mx-auto px-[15px];
 
@@ -148,9 +149,8 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-.container {
-  @apply px-[15px] mx-auto;
-}
+
+
 
 .activebfr::before {
   content: "";

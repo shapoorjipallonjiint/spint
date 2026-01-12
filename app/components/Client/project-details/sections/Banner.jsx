@@ -25,11 +25,13 @@ const Banner = ({ firstSection, secondSection }) => {
         offset: ["start end", "end start"],
     });
     const imageY = useTransform(imageProgress, [0, 1], imageOffset);
+    const hasAnimatedRef = useRef(false);
+
 
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
             <div className="pt-12 xl:pt-15  3xl:pt-30 pb-26 md:pb-38  lg:pb-[170px] xl:pb-[230px] bg-f5f5 2xl:pb-[232px]  ">
-                <div className="container relative   z-[2]">
+                <div className="container relative   z-[2] px-0">
                     <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-3 lg:gap-0 ">
                         <motion.div
                             variants={paragraphItem}
@@ -85,14 +87,19 @@ const Banner = ({ firstSection, secondSection }) => {
                         onClick={() => setActiveImage(firstSection.coverImage)}
                         style={{ y: imageY }}
                         variants={fadeIn(0.6)}
-                        initial="hidden"
-                        animate="show"
+                        initial={hasAnimatedRef.current ? false : "hidden"}
+  animate="show"
                         viewport={{ amount: 0.2, once: true }}
                         src={firstSection.coverImage}
+                        onAnimationComplete={() => {
+                            hasAnimatedRef.current = true;
+                          }}
                         width={1620}
                         height={750}
                         alt={firstSection.coverImageAlt || firstSection.title}
-                        className="w-full h-[250px] lg:h-[400px] xl:h-[500px] 2xl:h-[600px] 3xl:h-[750px] object-cover scale-110"
+                        className={`w-full h-[250px] lg:h-[400px] xl:h-[500px] 
+                            2xl:h-[600px] 3xl:h-[750px] object-cover scale-110
+                            ${activeImage ? "pointer-events-none" : ""}`}
                     />
                 ) : (
                     <div className="w-full h-62.5 lg:h-100 xl:h-125 2xl:h-150 3xl:h-[750px] bg-primary text-29 text-white flex items-center justify-center">
@@ -100,7 +107,7 @@ const Banner = ({ firstSection, secondSection }) => {
                     </div>
                 )}
             </div>
-            <div className="container relative md:bottom-[70px] bottom-10 left-0 2xl:pb-[50px]">
+            <div className="container  relative md:bottom-[70px] bottom-10 left-0 2xl:pb-[50px] px-0">
                 {/* <motion.h2 variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-60 font-light mb-7  xl:mb-10  2xl:mb-[58px] leading-[1.17]">About Project</motion.h2> */}
                 {/* <H2Title titleText={secondSection.title} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" /> */}
                 <H2Title titleText={"About the Project"} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" />
