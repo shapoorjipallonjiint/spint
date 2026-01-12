@@ -11,23 +11,24 @@ type ImageLightboxProps = {
 };
 
 const ImageLightbox = ({ src, alt = "", onClose }: ImageLightboxProps) => {
-    if (!src) return null;
+    
 
     return (
-        <AnimatePresence>
-            <motion.div
+        <AnimatePresence mode="wait">
+            {src && <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
                 onClick={onClose}
             >
                 {/* Modal */}
                 <motion.div
                     initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
+                    animate={{ scale: 1, opacity: 1}}
                     exit={{ scale: 0.9, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    transition={{ duration: 0.7, ease: "easeInOut" }}
                     className="relative max-w-[95vw] max-h-[95vh]"
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -49,7 +50,7 @@ const ImageLightbox = ({ src, alt = "", onClose }: ImageLightboxProps) => {
                         className="max-w-full max-h-[80vh] object-contain"
                     />
                 </motion.div>
-            </motion.div>
+            </motion.div>}
         </AnimatePresence>
     );
 };
