@@ -6,6 +6,8 @@ import H2Title from "../../../../components/common/H2Title";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { moveUp, moveRight } from "../../../motionVarients";
 import Image from "next/image";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,6 +31,8 @@ const CultureDrivers = ({ CultureData }) => {
     const [letterPositions, setLetterPositions] = useState([]);
     const [halfBoxWidth, setHalfBoxWidth] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
+    const isArabic = useIsPreferredLanguageArabic()
+    const t = useApplyLang(CultureData)
 
     const boxRef = useRef(null);
 
@@ -86,6 +90,7 @@ const CultureDrivers = ({ CultureData }) => {
             }
             return 0;
         });
+        console.log(positions)
         setLetterPositions(positions);
 
         // Recalculate on resize
@@ -98,6 +103,7 @@ const CultureDrivers = ({ CultureData }) => {
                 }
                 return 0;
             });
+            
             setLetterPositions(positions);
         };
 
@@ -111,9 +117,15 @@ const CultureDrivers = ({ CultureData }) => {
     });
     const shapeY = useTransform(shapeProgress, [1, 0], [0, -130]);
 
-    const lineStart = letterPositions.length > 0 ? letterPositions[0] : 0;
+    const lineStart =
+    letterPositions.length > 0
+        ? Math.min(...letterPositions)
+        : 0;
 
-    const lineEnd = letterPositions.length > 0 ? letterPositions[letterPositions.length - 1] : 0;
+const lineEnd =
+    letterPositions.length > 0
+        ? Math.max(...letterPositions)
+        : 0;
 
     const lineWidth = lineEnd - lineStart;
 
@@ -121,7 +133,7 @@ const CultureDrivers = ({ CultureData }) => {
         <section ref={sectionRef} className="pt-text30 pb30 bg-[#F5F5F5] relative overflow-hidden">
             <div className="reveal-overlay absolute inset-0 bg-white z-20"></div>
             {/* Decorative Triangle */}
-            <div className="absolute left-0 bottom-0 md:w-44 h-[590px] xl:w-80 3xl:w-[432px] xl:h-[607px]">
+            <div className={`absolute ${isArabic ? "right-0 -scale-x-100" : "left-0"}  bottom-0 md:w-44 h-[590px] xl:w-80 3xl:w-[432px] xl:h-[607px]`}>
                 <ParallaxShape y={shapeY} />
             </div>
 
@@ -134,9 +146,9 @@ const CultureDrivers = ({ CultureData }) => {
                     viewport={{ amount: 0.2, once: true }}
                     className="mb-8 md:mb-16 lg:mb-[70px]"
                 >
-                    <H2Title titleText={CultureData.title} marginClass={"mb-4 xl:mb-10 3xl:mb-[54px]"} />
-                    <p className="text-19 text-[#464646] font-light mb-5">{CultureData.subTitle}</p>
-                    <p className="text-19 text-[#464646] font-light max-w-7xl">{CultureData.description}</p>
+                    <H2Title titleText={t.title} marginClass={"mb-4 xl:mb-10 3xl:mb-[54px]"} />
+                    <p className="text-19 text-[#464646] font-light mb-5">{t.subTitle}</p>
+                    <p className="text-19 text-[#464646] font-light max-w-7xl">{t.description}</p>
                 </motion.div>
 
                 {/* IMPACT Letters Section */}
@@ -149,7 +161,7 @@ const CultureDrivers = ({ CultureData }) => {
                 >
                     {/* Letters Row */}
                     <div className="relative z-10 letter-container flex justify-center items-center gap-8 md:gap-12 lg:gap-16 xl:gap-20 3xl:gap-24 mb-[34px]">
-                        {CultureData.items.map((driver, index) => (
+                        {t.items.map((driver, index) => (
                             <button
                                 key={index}
                                 ref={(el) => (letterRefs.current[index] = el)}
@@ -247,14 +259,14 @@ const CultureDrivers = ({ CultureData }) => {
             variants={moveUp(0.3)}
             className="text-29 font-bold mb-4"
         >
-            {CultureData.items[activeIndex].title}
+            {t.items[activeIndex].title}
         </motion.h3>
 
         <motion.p
             variants={moveUp(0.6)}
             className="text-19 font-light mb-6"
         >
-            {CultureData.items[activeIndex].subTitle}
+            {t.items[activeIndex].subTitle}
         </motion.p>
 
         <motion.div
@@ -266,7 +278,7 @@ const CultureDrivers = ({ CultureData }) => {
             variants={moveUp(1.2)}
             className="text-19 font-light leading-[1.47] max-w-[30ch] 2xl:max-w-[35ch]"
         >
-            {CultureData.items[activeIndex].description}
+            {t.items[activeIndex].description}
         </motion.p>
     </motion.div>
 </AnimatePresence>
