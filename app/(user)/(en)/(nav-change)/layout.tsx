@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "@/app/globals.css";
-import MainNavbar from "@/app/components/common/MainNavbar";
-import Footer from "@/app/components/common/Footer";
+import MainNavbar from "../../../components/common/MainNavbar";
+import Footer from "../../../components/common/Footer";
 
 
 const dmSans = DM_Sans({
@@ -26,14 +26,10 @@ export default async function RootLayout({
 
 
   return (
-    <html  lang="ar" dir="rtl">
-      <body>
-    <div >
+    <div>
         <MainNavbar/>
         {children}
         <Footer/>
     </div>
-    </body>
-    </html>
   );
 }
