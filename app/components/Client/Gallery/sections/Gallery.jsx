@@ -279,9 +279,9 @@ const Gallery = ({ data }) => {
                                         <h4 className="text-paragraph text-sm 2xl:text-16 font-light leading-[1.75] uppercase 2xl:pb-3">
                                             {item.category}
                                         </h4>
-                                        <h2 className="text-16 2xl:text-29 noLetterSpacing leading-[1.344827586206897] font-light xl:max-w-[90%]">
+                                        <h3 className="text-16 2xl:text-29 noLetterSpacing leading-[1.344827586206897] font-light xl:max-w-[90%]">
                                             {item.title}
-                                        </h2>
+                                        </h3>
                                     </div>
                                 </motion.div>
                             ))

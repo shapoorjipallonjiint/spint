@@ -17,7 +17,7 @@ export const navData = {
         { label: "Engineering & Construction", href: "/services/engineering-construction" },
         { label: "MEP", href: "/services/mep" },
         { label: "Interior Fit-out", href: "/services/interior-design" },
-        { label: "Facade", href: "/services/facade" },
+        { label: "Façade", href: "/services/facade" },
         { label: "Facilities Management", href: "/services/integrated-facility-management" },
         { label: "Water", href: "/services/water" },
         { label: "Design Studio", href: "/services/design-studio" },

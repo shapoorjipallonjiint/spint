@@ -88,7 +88,7 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
                     <H2Title titleText={heading} titleColor="black" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-17" />
                 </motion.div>
 
-                <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18">
+                <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
                     {/* ================= IMAGE (DESKTOP ONLY) ================= */}
                     <div ref={imageRef} className="hidden md:block relative h-[250px] md:h-full overflow-hidden">
                         <MotionImage
