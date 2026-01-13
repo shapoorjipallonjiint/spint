@@ -10,15 +10,18 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import Image from "next/image";
 import Link from "next/link";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const CoreLeardershipTeam = ({ data }) => {
-    console.log(data, "team");
     const MotionImage = motion.create(Image);
 
     const items = data?.departments ?? [];
 
     const [query, setQuery] = useState("");
     const [selected, setSelected] = useState({ id: "all", name: "All" });
+    const isArabic = useIsPreferredLanguageArabic()
+    const t = useApplyLang(data)
 
     const filteredItems = useMemo(() => {
         if (!query) return items;
@@ -27,8 +30,8 @@ const CoreLeardershipTeam = ({ data }) => {
 
     const filteredTeam =
         selected.id === "all"
-            ? data?.items ?? []
-            : (data?.items ?? []).filter((member) => member.department === selected.name);
+            ? t?.items ?? []
+            : (t?.items ?? []).filter((member) => member.department === selected.name);
 
     const sectionRef = useRef(null);
 
@@ -53,13 +56,13 @@ const CoreLeardershipTeam = ({ data }) => {
                     width={648}
                     height={908}
                     alt=""
-                    className="absolute -z-10 right-0 bottom-0 2xl:bottom-50 w-[300px] h-fit 3xl:w-[648px] max-h-[908px]"
+                    className={`absolute -z-10 ${isArabic ? "left-0 -scale-x-100" : "right-0"} bottom-0 2xl:bottom-50 w-[300px] h-fit 3xl:w-[648px] max-h-[908px]`}
                 />
             </div>
 
             <div className="container">
                 <div className="flex flex-wrap gap-y-5 justify-between items-center mb-6 lg:mb-10 xl:mb-12 2xl:mb-15 3xl:mb-18">
-                    <H2Title titleText={data?.title} />
+                    <H2Title titleText={t?.title} />
 
                     {/* <motion.div
                         variants={moveUp(0.4)}
@@ -149,10 +152,10 @@ const CoreLeardershipTeam = ({ data }) => {
                                         className="w-full xs:w-fit max-h-full object-contain rounded-xl absolute bottom-0"
                                     />
                                     <div className="bg-f5f5 xl:w-full h-[60%] 2xl:h-[234px] z-[-1]"></div>
-                                    <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 absolute left-0 bottom-0 w-[50px] h-[50px] xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary">
+                                    <div className={`opacity-0 group-hover:opacity-100 transition-all duration-300 absolute ${isArabic ? "right-0" : "left-0"} bottom-0 w-[50px] h-[50px] xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="-translate-x-2 group-hover:translate-x-0 translate-y-2 group-hover:translate-y-0 transition-all duration-500 w-[25px] h-[25px]"
+                                            className={`${isArabic ? "translate-x-2  rotate-270" : "-translate-x-2"}  group-hover:translate-x-0 translate-y-2 group-hover:translate-y-0 transition-all duration-500 w-[25px] h-[25px]`}
                                             viewBox="0 0 35 35"
                                             fill="none"
                                         >

@@ -19,6 +19,7 @@ const Index = ({data}:{data:any}) => {
           title={data.pageTitle}
           image={data.banner}
           imageAlt={data.bannerAlt}
+          data={data}
         />
         <About data={data.firstSection}/>
         {/* <VisionMission data={data.secondSection}/> */}

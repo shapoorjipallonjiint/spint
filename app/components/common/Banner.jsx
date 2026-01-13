@@ -84,13 +84,15 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Image from 'next/image'
+import { useApplyLang } from "@/lib/applyLang";
 
-const Banner = ({ title, image, imageAlt }) => {
+const Banner = ({ title, image, imageAlt,data }) => {
   const sectionRef = useRef(null);
   const imgRef = useRef(null);
   const overlayRef = useRef(null);
   const titleRef = useRef(null);
   const maskRef = useRef(null);
+  const t = useApplyLang(data)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -135,8 +137,8 @@ const Banner = ({ title, image, imageAlt }) => {
       {/* Background Image */}
       <div ref={imgRef} className="absolute inset-0 w-full h-full z-0">
         <Image
-          src={image}
-          alt={imageAlt ? imageAlt : title}
+          src={t?.banner ? t.banner : image}
+          alt={t?.bannerAlt ? t.bannerAlt : imageAlt ? imageAlt : title}
           fill
           className="object-cover object-top"
           priority
@@ -152,7 +154,7 @@ const Banner = ({ title, image, imageAlt }) => {
       {/* Content */}
       <div className="container relative z-30 h-full">
         <div className="flex flex-col justify-end h-full pb-5 sm:pb-8  md:pb-8 lg:pb-10 2xl:pb-16 3xl:pb-26">
-          <h1 ref={titleRef} className="text-white text-60 xl:text-70 font-light leading-[1.08] capitalize">{title}</h1>
+          <h1 ref={titleRef} className="text-white text-60 xl:text-70 font-light leading-[1.08] capitalize">{t?.pageTitle}</h1>
         </div>
       </div>
     </section>

@@ -6,7 +6,7 @@ import CoreLeardershipTeam from "./sections/CoreLeardershipTeam";
 const Leadership = ({data}) => {
   return ( 
     <>
-      <Banner title={data?.pageTitle} subTitle={data?.pageSubTitle} description={data?.pageDescription} />
+      <Banner data={data}/>
       <LeadersBox data={data.firstSection} />
       <CoreLeardershipTeam data={data.secondSection}/>
     </>

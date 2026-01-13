@@ -155,6 +155,8 @@ import { assets } from "../../../../assets/index";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp, fadeIn } from "../../../motionVarients";
 import Image from "next/image";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const LeaderBox = ({ data }) => {
     /* ---------------- NORMALIZED DATA ---------------- */
@@ -221,6 +223,8 @@ const LeaderBox = ({ data }) => {
         offset: ["start end", "end start"],
     });
     const shapeY = useTransform(shapeProgress, [0, 1], shapeOffset);
+    const isArabic = useIsPreferredLanguageArabic()
+    const t = useApplyLang(data)
 
     return (
         <section className="relative" ref={sectionRef}>
@@ -230,7 +234,7 @@ const LeaderBox = ({ data }) => {
                 style={{ y: shapeY }}
                 src={assets.mainShape2}
                 alt="Decorative background shape"
-                className="absolute right-0 lg:left-0 top-10 md:top-20 xl:top-[20%] w-[150px] md:w-[30%] lg:w-[40%] 3xl:w-[764px]"
+                className={`absolute ${isArabic ? "left-0 -scale-x-100" : "right-0  lg:left-0"} top-10 md:top-20 xl:top-[20%] w-[150px] md:w-[30%] lg:w-[40%] 3xl:w-[764px]`}
             />
 
             <div className="container">
@@ -328,7 +332,7 @@ const LeaderBox = ({ data }) => {
                     </div>
                     ))} */}
 
-                    {data.items.map((item, index) => {
+                    {t.items.map((item, index) => {
                         const isReverse = index % 2 !== 0;
 
                         return (
@@ -379,7 +383,7 @@ const LeaderBox = ({ data }) => {
                                 {/* CONTENT */}
                                 <div
                                     className={`pt-0 2xl:pt-[68px]
-          ${isReverse ? " lg:pr-8 xl:pr-15 2xl:pr-17 3xl:pr-[97px]" : "lg:pl-8 xl:pl-15 2xl:pl-17 3xl:pl-[97px]"}
+          ${isReverse ? ( isArabic ? "lg:pl-8 xl:pl-15 2xl:pl-17 3xl:pl-[97px]" : "lg:pr-8 xl:pr-15 2xl:pr-17 3xl:pr-[97px]") : (isArabic ? "lg:pr-8 xl:pr-15 2xl:pr-17 3xl:pr-[97px]" : "lg:pl-8 xl:pl-15 2xl:pl-17 3xl:pl-[97px]")}
         `}
                                 >
                                     <H2Title titleText={item.name} marginClass="mb-[10px]" />
@@ -395,7 +399,7 @@ const LeaderBox = ({ data }) => {
                                     </motion.h3>
 
                                     <div
-                                        className="md:max-h-[200px] lg:max-h-[250px] xl:max-h-[385px] lg:overflow-y-auto scrollbar-thin scrollbar-pointer pr-2"
+                                        className={`md:max-h-[200px] lg:max-h-[250px] xl:max-h-[385px] lg:overflow-y-auto scrollbar-thin scrollbar-pointer ${isArabic ? "pl-2" : "pr-2"}`}
                                         style={{ overscrollBehavior: "contain" }}
                                         onWheel={(e) => {
                                             const el = e.currentTarget;
