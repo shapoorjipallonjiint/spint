@@ -7,11 +7,15 @@ import VideoPlayer from "./VideoPlayer";
 import { motion } from "framer-motion";
 import { moveUp} from "@/app/components/motionVarients";
 import Image from "next/image";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
+
 const VdoSection = ({ data, maxW, maxtextwidth }) => {
  const MotionImage = motion.create(Image)
  
   const [enableAnim, setEnableAnim] = useState(false);
- 
+  const isArabic = useIsPreferredLanguageArabic()
+  const t = useApplyLang(data)
   // Check screen size (Tablet >= 768px)
   useEffect(() => {
     const media = window.matchMedia("(min-width: 992px)");
@@ -40,12 +44,24 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
     (value) => `blur(${value}px)`
   );
  
+  const dir = isArabic ? -1 : 1;
   const scale = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0.5, 1, 1.05, 0.5]);
   const y = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [200, 0, 0, -200]);
-  const x = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [-150, 0, 0, 150]);
+  const x = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.75, 1],
+    [-150 * dir, 0, 0, 150 * dir]
+  );
+  
   const rotateX = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [45, 0, 0, -45]);
-  const rotateY = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [-25, 0, 0, 25]);
+  const rotateY = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.75, 1],
+    [-25 * dir, 0, 0, 25 * dir]
+  );
+  
   const rotateZ = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [-8, 0, 0, 8]);
+
  
  
   // Parallax for shape
@@ -54,21 +70,22 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
     offset: ["start end", "end start"]
   });
   const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
+
  
   return (
     <section className="relative sectm-100 pb30" ref={sectionRef}>
-      <div className="absolute top-custom-100 right-0 lg:left-[-4%] xl:left-0 2xl:left-[-6%] 3xl:left-0 h-fit w-fit z-0 ">
-        <MotionImage width={1500} height={1000} style={{ y: shapeY }} src={assets.mainShape2} alt="" className="w-[152px] lg:w-[400px] xl:w-[55%] 2xl:w-[70%] 3xl:w-[100%] h-fit object-contain vdo-shape" />
+      <div className={`absolute top-custom-100 h-fit w-fit z-0 ${isArabic ? "left-0 lg:right-[-4%] xl:right-0 2xl:right-[-6%] 3xl:right-0" : "right-0 lg:left-[-4%] xl:left-0 2xl:left-[-6%] 3xl:left-0"}`}>
+        <MotionImage width={1500} height={1000} style={{ y: shapeY }} src={assets.mainShape2} alt="" className={`${isArabic && "-scale-x-100"} w-[152px] lg:w-[400px] xl:w-[55%] 2xl:w-[70%] 3xl:w-[100%] h-fit object-contain vdo-shape`} />
       </div>
       <div className="container">
-        <div className="w-full lg:max-w-[70%] xl:max-w-[100%] 2xl:max-w-[74%] 3xl:max-w-[70%] ml-auto 2xl:mr-[137px] relative z-10 overflow-hidden vdo-content-wrapper">
+        <div className={`w-full lg:max-w-[70%] xl:max-w-[100%] 2xl:max-w-[74%] 3xl:max-w-[70%] ${isArabic ? "mr-auto 2xl:ml-[137px]" : "ml-auto 2xl:mr-[137px]"} relative z-10 overflow-hidden vdo-content-wrapper`}>
           <div>
-            <div className="lg:max-w-[600px] xl:max-w-[700px] 2xl:max-w-[700px] 3xl:max-w-[795px] ml-auto mb-4 xl:mb-50px 3xl:mb-17 vdo-content">
+            <div className={`lg:max-w-[600px] xl:max-w-[700px] 2xl:max-w-[700px] 3xl:max-w-[795px] ${isArabic ? "mr-auto" : "ml-auto"} mb-4 xl:mb-50px 3xl:mb-17 vdo-content`}>
               {/* <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}> */}
-                <H2Title titleText={data.title} titleColor="black" marginClass="mb-3 md:mb-4 lg:mb-5 3xl:mb-10 " maxW={maxW} delay={1.2} />
+                <H2Title titleText={t.title} titleColor="black" marginClass="mb-3 md:mb-4 lg:mb-5 3xl:mb-10 " maxW={maxW} delay={1.2} />
               {/* </motion.div> */}
               {
-                data.description.split("\n").map((item, i) => (
+                t.description.split("\n").map((item, i) => (
                   <motion.p key={i} variants={moveUp(1.4)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
                 ))
               }

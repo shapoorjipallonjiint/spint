@@ -13,7 +13,7 @@ const EngineeringConstruction = ({ data, projectData }) => {
             {/* <header className="">
         <MainNavbar /> 
       </header> */}
-            <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
+            <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} data={data}/>
             <VdoSection data={data.firstSection} />
             <ExpertiseSec data={data.secondSection} />
             <OurApproach data={data.thirdSection} />
