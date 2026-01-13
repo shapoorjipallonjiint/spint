@@ -3102,11 +3102,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         </div> */}
 
                                                                 {/* Bubble 3 */}
-                                                                <div
+                                                                {/* <div
                                                                     className={`bubble bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
-            absolute left-[51%] top-[55%] ${
-                activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
-            } transition-all duration-500 delay-300`}
+                                                                        absolute left-[51%] top-[55%] ${
+                                                                            activeDot === city.id ? "opacity-100 scale-full float-bubble3" : "scale-80 opacity-0"
+                                                                        } transition-all duration-500 delay-300`}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
                                                                         <CountUp
@@ -3122,7 +3122,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                     <p className="text-[14px] font-[200]">
                                                                         Dedicated Employees
                                                                     </p>
-                                                                </div>
+                                                                </div> */}
                                                             </div>
 
                                                             {/* Ring */}

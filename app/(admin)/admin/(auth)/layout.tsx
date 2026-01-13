@@ -40,8 +40,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <main className="flex-1 h-screen overflow-hidden">
                 {/* Fixed Top Bar */}
                 <div className="grid grid-cols-2 w-[calc(100vw-272px)] shadow-sm py-4 px-4 fixed top-0 left-68 z-10 border-b bg-white">
-                    <h2 className="font-bold text-primary noLetterSpacing">English Version</h2>
-                    <h2 className="font-bold text-primary text-right noLetterSpacing">Arabic Version</h2>
+                    <h3 className="font-bold text-primary noLetterSpacing">English Version</h3>
+                    <h3 className="font-bold text-primary text-right noLetterSpacing">Arabic Version</h3>
                 </div>
 
                 {/* Scrollable Content */}

@@ -19,11 +19,14 @@ const Facade = ({ data, projectData }) => {
                 <ExpertiseSec data={data.secondSection} />
                 <ImgPointsComponent data={data.thirdSection} bgColor="white" sectionSpacing="pt-text30 pb30" />
                 {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
-                {projectData.projects.filter((item) => item.secondSection.service._id === data._id).length > 0 && (
+                {projectData.projects.filter((item) => item.secondSection.service._id === data._id).length > 0 ? (
                     <FeaturedProjectSlider
                         data={projectData.projects.filter((item) => item.secondSection.service._id === data._id)}
                     />
-                )}
+                ): (  
+                <section className="-mt-6 md:-mt-11 lg:-mt-12 xl:-mt-16 3xl:-mt-30"></section> 
+            )
+            }
 
                 <LastSection data={data.fourthSection} />
             </main>

@@ -107,7 +107,7 @@ const Banner = ({ firstSection, secondSection }) => {
                     </div>
                 )}
             </div>
-            <div className="container  relative md:bottom-[70px] bottom-10 left-0 2xl:pb-[50px] px-0">
+            <div className="container  relative md:bottom-[70px] bottom-10 left-0 2xl:pb-[50px] md:px-0">
                 {/* <motion.h2 variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-60 font-light mb-7  xl:mb-10  2xl:mb-[58px] leading-[1.17]">About Project</motion.h2> */}
                 {/* <H2Title titleText={secondSection.title} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" /> */}
                 <H2Title titleText={"About the Project"} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" />
@@ -123,7 +123,7 @@ const Banner = ({ firstSection, secondSection }) => {
                         <p className="text-19 font-light   leading-[1.475] text-black">{firstSection.title}</p>
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Location:</p>
+                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">Location:</p>
                         <p className="text-19 font-light   leading-[1.475] text-black">
                             {secondSection.items.find((item) => item.key === "Location").value}
                         </p>
@@ -142,7 +142,7 @@ const Banner = ({ firstSection, secondSection }) => {
                         <p className="text-19 font-light   leading-[1.475] text-black">{secondSection.sector?.name}</p>
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Status:</p>
+                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">Status:</p>
                         <p className="text-19 font-light   leading-[1.475] text-black">{secondSection?.status}</p>
                     </div>
                 </motion.div>
@@ -171,8 +171,8 @@ const Banner = ({ firstSection, secondSection }) => {
 
                                 {/* Right item */}
                                 {secondSection.items[i + 2] && (
-                                    <div className="flex items-center gap-2 py-3 lg:py-6">
-                                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">
+                                    <div className="flex items-center  py-3 lg:py-6">
+                                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
                                             {secondSection.items[i + 2]?.key}:
                                         </p>
                                         <p className="text-19 font-light leading-[1.475] text-black">
