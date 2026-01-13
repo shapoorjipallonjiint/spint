@@ -81,7 +81,7 @@ export default function CommunityImageManager() {
 
   return (
     <div className="p-6 space-y-6">
-      <h2 className="text-xl font-bold">Manage Images – {zone}</h2>
+      <h3 className="text-xl font-bold">Manage Images – {zone}</h3>
 
       <ImageUploader multiple deleteAfterUpload onChange={addImage} />
 

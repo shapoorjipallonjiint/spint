@@ -17,11 +17,13 @@ const DesignStudio = ({ data, projectData }) => {
                 <ExpertiseSec data={data.secondSection} />
                 <DesignExcellence data={data.thirdSection} />
                 {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
-                {projectData.projects.filter((item) => item.secondSection.service._id === data._id).length > 0 && (
+                {projectData.projects.filter((item) => item.secondSection.service._id === data._id).length > 0 ? (
                     <FeaturedProjectSlider
                         data={projectData.projects.filter((item) => item.secondSection.service._id === data._id)}
                     />
-                )}
+                ): (  
+                <section className="-mt-6 md:-mt-11 lg:-mt-10 3xl:-mt-22"></section> 
+            )}
 
                 <LastSection data={data.fourthSection} />
             </main>
