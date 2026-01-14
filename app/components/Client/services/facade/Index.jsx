@@ -8,6 +8,10 @@ import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider
 import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
 import LastSection from "./sections/LastSection";
 const Facade = ({ data, projectData }) => {
+
+console.log(projectData)
+
+      
     return (
         <>
             {/* <header>
@@ -19,9 +23,9 @@ const Facade = ({ data, projectData }) => {
                 <ExpertiseSec data={data.secondSection} />
                 <ImgPointsComponent data={data.thirdSection} bgColor="white" sectionSpacing="pt-text30 pb30" />
                 {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
-                {projectData.projects.filter((item) => item.secondSection.service._id === data._id).length > 0 ? (
+                {projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null).length > 0 ? (
                     <FeaturedProjectSlider
-                        data={projectData.projects.filter((item) => item.secondSection.service._id === data._id)}
+                        data={projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null)}
                     />
                 ): (  
                 <section className="-mt-6 md:-mt-11 lg:-mt-12 xl:-mt-16 3xl:-mt-30"></section> 
