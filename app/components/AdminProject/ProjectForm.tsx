@@ -143,7 +143,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                     ...data.data.secondSection,
                     sector: data.data.secondSection.sector?._id || "",
                     location: data.data.secondSection.location?._id || "",
-                    service: data.data.secondSection.service._id || "",
+                    // service: data.data.secondSection.service._id || "",
                 });
 
                 setValue("firstSection", data.data.firstSection);

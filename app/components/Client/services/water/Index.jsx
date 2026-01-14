@@ -17,9 +17,9 @@ const Water = ({ data, projectData }) => {
             <DivisionExpertise data={data.thirdSection} />
             {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} />
              */}
-            {projectData.projects.filter((item) => item.secondSection.service._id === data._id).length > 0 && (
+            {projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null).length > 0 && (
                 <FeaturedProjectSlider
-                    data={projectData.projects.filter((item) => item.secondSection.service._id === data._id)}
+                    data={projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null)}
                 />
             )}
             {/* <WhyChooseSec data={wtrData.WhyChooseData} /> */}
