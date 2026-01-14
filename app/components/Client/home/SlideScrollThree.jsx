@@ -1791,9 +1791,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     className="flex flex-col lg:flex-row lg:items-center gap-[17px] lg:gap-2"
                                     ref={subtitleRef}
                                 >
-                                    <h2 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.5] lg:max-w-[13ch]">
+                                    <h4 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.5] lg:max-w-[13ch]">
                                         {data.firstSection.subTitle.text}
-                                    </h2>
+                                    </h4>
                                     <Link href={"/about-us"}>
                                         <Image
                                             src="../assets/images/arrowbl.svg"
@@ -2131,10 +2131,10 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 <div className="hidden lg:grid grid-cols-3 " ref={spStats}>
                                     {data.thirdSection.items.map((item, index) => (
                                         <div className="text-white" key={index}>
-                                            <h1 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
+                                            <h3 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
                                                 <CountUp value={item.value} trigger={currentVisibleSlide === "section3"} />
                                                 {getSuffix(item.value)}
-                                            </h1>
+                                            </h3>
                                             <p className="text-16 xl:text-19 opacity-70 font-light leading-[1.555555555555556]">
                                                 {item.key}
                                             </p>
