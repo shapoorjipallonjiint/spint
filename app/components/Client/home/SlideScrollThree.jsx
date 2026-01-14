@@ -2616,7 +2616,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                     const scale = isActive ? 1 : 0.95;
 
                                                     // Only render 7 items (3 above, 1 center, 3 below)
-                                                    if (Math.abs(sector.position) > 3) return null;
+                                                    if (Math.abs(sector.position) > 4) return null;
 
                                                     // Determine animation based on direction
                                                     const getAnimation = () => {
@@ -2985,7 +2985,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                           </div>
 
                           <div
-                            className={`bubble  bg-[#00C8FF80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)] 
+                            className={`bubble  bg-[#02aedd80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)] 
                                 absolute left-[48.3%] top-[5%] ${
                                   activeDot === city.id
                                     ? "opacity-100 scale-full float-bubble2"
@@ -3044,7 +3044,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             <div>
                                                                 {/* Bubble 1 */}
                                                                 <div
-                                                                    className={`bubble bg-[#00C8FF80]
+                                                                    className={`bubble bg-[#02aedd80]
   transition-all duration-500 delay-100
   border border-[#00C8FF26]
   backdrop-blur-sm text-white text-center
@@ -3077,14 +3077,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                             }
                                                                             delay={200}
                                                                         />
-                                                                        +
+                                                                        {/* + */}
                                                                     </p>
                                                                     <p className="text-[14px] font-[200]">Projects</p>
                                                                 </div>
 
                                                                 {/* Bubble 2 */}
                                                                 {/* <div
-          className={`bubble bg-[#00C8FF80] border border-[#00C8FF26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
+          className={`bubble bg-[#02aedd80] border border-[#00C8FF26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
             absolute left-[48.3%] top-[5%] ${
               activeDot === city.id
                 ? "opacity-100 scale-full float-bubble2"
@@ -3173,7 +3173,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             }}
                                             className={`me-2 bubble cursor-pointer
     transition-all duration-500 delay-100 backdrop-blur-sm
-    bg-[#00C8FF80] border border-[#00C8FF26]
+    bg-[#02aedd80] border border-[#00C8FF26]
     text-white text-center p-3 rounded-full
     ${activeDot === selectedCity.id ? "opacity-100 scale-100 float-bubble1" : "opacity-0 scale-80"}
   `}
@@ -3185,7 +3185,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         </div>
 
                                         {/* <div
-                                            className={`me-2  bubble  bg-[#00C8FF80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full  
+                                            className={`me-2  bubble  bg-[#02aedd80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full  
                                 lg:absolute left-[48.3%] top-[5%] ${
                                     activeDot === selectedCity.id
                                         ? "opacity-100 scale-full float-bubble2"
