@@ -94,6 +94,8 @@ const Banner = ({ title, image, imageAlt,data }) => {
   const maskRef = useRef(null);
   const t = useApplyLang(data)
 
+  console.log(data)
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -154,7 +156,7 @@ const Banner = ({ title, image, imageAlt,data }) => {
       {/* Content */}
       <div className="container relative z-30 h-full">
         <div className="flex flex-col justify-end h-full pb-5 sm:pb-8  md:pb-8 lg:pb-10 2xl:pb-16 3xl:pb-26">
-          <h1 ref={titleRef} className="text-white text-60 xl:text-70 font-light leading-[1.08] capitalize">{t?.pageTitle}</h1>
+          <h1 ref={titleRef} className="text-white text-60 xl:text-70 font-light leading-[1.08] capitalize">{t?.pageTitle ? t.pageTitle : title }</h1>
         </div>
       </div>
     </section>
