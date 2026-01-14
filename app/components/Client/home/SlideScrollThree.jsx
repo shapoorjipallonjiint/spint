@@ -1571,21 +1571,23 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         }, 400);
     };
 
-    const getVisibleSectors = () => {
-        const result = [];
-        const totalSectors = sectors.length;
+const getVisibleSectors = () => {
+  const result = [];
+  const totalSectors = sectors.length;
 
-        for (let i = -3; i <= 3; i++) {
-            const index = (activeIndex + i + totalSectors) % totalSectors;
-            result.push({
-                ...sectors[index],
-                originalIndex: index,
-                position: i,
-            });
-        }
+  // 3 above (-3, -2, -1), center (0), 4 below (1, 2, 3, 4)
+  for (let i = -3; i <= 4; i++) {
+    const index = (activeIndex + i + totalSectors) % totalSectors;
 
-        return result;
-    };
+    result.push({
+      ...sectors[index],
+      originalIndex: index,
+      position: i,
+    });
+  }
+
+  return result;
+};
 
     const visibleSectors = getVisibleSectors();
     const activeSector = sectors[displayedIndex];
@@ -2606,11 +2608,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 />
                                             </div>
 
-                                            <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pb-6 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
+                                            <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pt-5 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
                                                 {visibleSectors.map((sector) => {
                                                     const isActive = sector.position === 0;
                                                     const opacity =
-                                                        Math.abs(sector.position) > 3
+                                                        Math.abs(sector.position) > 4
                                                             ? 0
                                                             : 1 - Math.abs(sector.position) * 0.2;
                                                     const scale = isActive ? 1 : 0.95;
