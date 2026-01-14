@@ -59,12 +59,12 @@ const SplitTextAnimation = ({
       >
         {lines.map((line, lineIndex) => (
           <p key={lineIndex} className="overflow-hidden">
-            <motion.div
+            <motion.span
               variants={child}
             >
               {line}
               {lineIndex < lines.length - 1 && <br />}
-            </motion.div>
+            </motion.span>
           </p>
         ))}
       </motion.div>
