@@ -19,7 +19,7 @@ const QualitySafety = ({ data }) => {
             <Environmental data={environmentalData}/>
             <Certifications data={data.secondSection} />
             <SaftySlider data={data.thirdSection} />
-            <ImgPointsComponent data={data.fourthSection} bgColor="[#f5f5f5]" sectionSpacing="pt-text90 pb25" />
+            {/* <ImgPointsComponent data={data.fourthSection} bgColor="[#f5f5f5]" sectionSpacing="pt-text90 pb25" /> */}
             {/* <EnsuringSafety />   */}
             {/* <footer>
         <Footer />
