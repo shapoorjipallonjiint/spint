@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo,useLayoutEffect } from "react";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -313,6 +313,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const talentDescMob = useRef(null);
     const talentCareerMob = useRef(null);
 
+
     // Mobile screen refs(scrolling)
     const touchStartY = useRef(0);
     const touchStartX = useRef(0);
@@ -346,6 +347,28 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
             };
         }),
     ];
+
+    const handleServiceClick = () => {
+        console.log("Clikedd")
+        sessionStorage.setItem(
+          "servicesClicked",
+          true
+        );
+      };
+
+
+      useLayoutEffect(() => {
+        const wasServiceClicked = sessionStorage.getItem("servicesClicked");
+      
+        if (!wasServiceClicked) return;
+      
+        // wait one frame AFTER layout
+        requestAnimationFrame(() => {
+          updateSlides(3);
+          sessionStorage.removeItem("servicesClicked");
+        });
+      }, []);
+      
 
     useEffect(() => {
         if (window.innerWidth >= 1024) {
@@ -479,6 +502,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     }, []);
 
     const playEntryAnimation = (index) => {
+        console.log("Calleddddd",index)
         gsap.set([ttbxsRef.current, rightSecRef.current, leftSecRef.current], {
             x: 0,
             opacity: 1,
@@ -775,14 +799,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     .set(srvsCntb.current, { opacity: 0 })
                     .set(srvsArrw.current, { opacity: 0 })
                     .set(srvsRghtBx.current, { opacity: 0, x: 0 })
-                    .set(srvLftBx.current, { opacity: 0, x: 0 })
+                    .set(srvLftBx.current, { opacity: 0, x: -50 })
 
                     .fromTo(
                         srvBgimg.current,
                         { opacity: 0 },
                         { opacity: 1, duration: 1.5, ease: "power3.out", transformOrigin: "50% 50%" }
                     )
-                    .fromTo(srvLftBx.current, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out" }, "-=0.5")
+                    .fromTo(srvLftBx.current, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out",x:0 }, "-=0.5")
                     .fromTo(
                         srvttlRef.current,
                         { x: -30, opacity: 0 },
@@ -867,6 +891,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     );
                 break;
             case 4:
+                console.log("Section4 called")
                 e1.set(talenttitle.current, { opacity: 0, x: 0 })
                     .set(talentlist.current, { opacity: 0, x: 0 })
                     .set(talentimage.current, { opacity: 0, x: 0, width: "0%" })
@@ -2362,7 +2387,7 @@ const getVisibleSectors = () => {
                                                     }`}
                                                     ref={(el) => (textItemsRef.current[index] = el)}
                                                 >
-                                                    <Link href={isDesktop ? `services/${service.link}` : "#"}>
+                                                    <Link href={isDesktop ? `services/${service.link}` : "#"} onClick={() => handleServiceClick()}>
                                                         <p
                                                             className={`${
                                                                 activeServiceIndex === index
@@ -2512,7 +2537,7 @@ const getVisibleSectors = () => {
                                         />
                                     </div>
 
-                                    <Link href={`/services/${activeService?.link}`}>
+                                    <Link href={`/services/${activeService?.link}`} onClick={() => handleServiceClick()}>
                                         <h3 className="text-[20px] lg:text-29 leading-[1.344827586206897] font-light text-black lg:text-white">
                                             {activeService?.title}
                                         </h3>
