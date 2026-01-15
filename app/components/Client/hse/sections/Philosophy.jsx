@@ -31,7 +31,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
         [];
 
     const [activeIndex, setActiveIndex] = useState(0);
-    const [hoverIndex, setHoverIndex] = useState(2);
+    const [hoverIndex, setHoverIndex] = useState(1);
     const [isMobile, setIsMobile] = useState(false);
     const [activeImage, setActiveImage] = useState(FALLBACK_IMAGE);
     const [mounted, setMounted] = useState(false);
