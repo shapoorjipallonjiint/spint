@@ -1571,21 +1571,23 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         }, 400);
     };
 
-    const getVisibleSectors = () => {
-        const result = [];
-        const totalSectors = sectors.length;
+const getVisibleSectors = () => {
+  const result = [];
+  const totalSectors = sectors.length;
 
-        for (let i = -3; i <= 3; i++) {
-            const index = (activeIndex + i + totalSectors) % totalSectors;
-            result.push({
-                ...sectors[index],
-                originalIndex: index,
-                position: i,
-            });
-        }
+  // 3 above (-3, -2, -1), center (0), 4 below (1, 2, 3, 4)
+  for (let i = -3; i <= 4; i++) {
+    const index = (activeIndex + i + totalSectors) % totalSectors;
 
-        return result;
-    };
+    result.push({
+      ...sectors[index],
+      originalIndex: index,
+      position: i,
+    });
+  }
+
+  return result;
+};
 
     const visibleSectors = getVisibleSectors();
     const activeSector = sectors[displayedIndex];
@@ -1791,9 +1793,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     className="flex flex-col lg:flex-row lg:items-center gap-[17px] lg:gap-2"
                                     ref={subtitleRef}
                                 >
-                                    <h2 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.5] lg:max-w-[13ch]">
+                                    <h4 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.5] lg:max-w-[13ch]">
                                         {data.firstSection.subTitle.text}
-                                    </h2>
+                                    </h4>
                                     <Link href={"/about-us"}>
                                         <Image
                                             src="../assets/images/arrowbl.svg"
@@ -2131,10 +2133,10 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 <div className="hidden lg:grid grid-cols-3 " ref={spStats}>
                                     {data.thirdSection.items.map((item, index) => (
                                         <div className="text-white" key={index}>
-                                            <h1 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
+                                            <h3 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
                                                 <CountUp value={item.value} trigger={currentVisibleSlide === "section3"} />
                                                 {getSuffix(item.value)}
-                                            </h1>
+                                            </h3>
                                             <p className="text-16 xl:text-19 opacity-70 font-light leading-[1.555555555555556]">
                                                 {item.key}
                                             </p>
@@ -2606,17 +2608,17 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 />
                                             </div>
 
-                                            <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pb-6 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
+                                            <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pt-5 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
                                                 {visibleSectors.map((sector) => {
                                                     const isActive = sector.position === 0;
                                                     const opacity =
-                                                        Math.abs(sector.position) > 3
+                                                        Math.abs(sector.position) > 4
                                                             ? 0
                                                             : 1 - Math.abs(sector.position) * 0.2;
                                                     const scale = isActive ? 1 : 0.95;
 
                                                     // Only render 7 items (3 above, 1 center, 3 below)
-                                                    if (Math.abs(sector.position) > 3) return null;
+                                                    if (Math.abs(sector.position) > 4) return null;
 
                                                     // Determine animation based on direction
                                                     const getAnimation = () => {
@@ -2985,7 +2987,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                           </div>
 
                           <div
-                            className={`bubble  bg-[#00C8FF80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)] 
+                            className={`bubble  bg-[#02aedd80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)] 
                                 absolute left-[48.3%] top-[5%] ${
                                   activeDot === city.id
                                     ? "opacity-100 scale-full float-bubble2"
@@ -3044,7 +3046,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             <div>
                                                                 {/* Bubble 1 */}
                                                                 <div
-                                                                    className={`bubble bg-[#00C8FF80]
+                                                                    className={`bubble bg-[#02aedd80]
   transition-all duration-500 delay-100
   border border-[#00C8FF26]
   backdrop-blur-sm text-white text-center
@@ -3077,14 +3079,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                             }
                                                                             delay={200}
                                                                         />
-                                                                        +
+                                                                        {/* + */}
                                                                     </p>
                                                                     <p className="text-[14px] font-[200]">Projects</p>
                                                                 </div>
 
                                                                 {/* Bubble 2 */}
                                                                 {/* <div
-          className={`bubble bg-[#00C8FF80] border border-[#00C8FF26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
+          className={`bubble bg-[#02aedd80] border border-[#00C8FF26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
             absolute left-[48.3%] top-[5%] ${
               activeDot === city.id
                 ? "opacity-100 scale-full float-bubble2"
@@ -3173,7 +3175,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             }}
                                             className={`me-2 bubble cursor-pointer
     transition-all duration-500 delay-100 backdrop-blur-sm
-    bg-[#00C8FF80] border border-[#00C8FF26]
+    bg-[#02aedd80] border border-[#00C8FF26]
     text-white text-center p-3 rounded-full
     ${activeDot === selectedCity.id ? "opacity-100 scale-100 float-bubble1" : "opacity-0 scale-80"}
   `}
@@ -3185,7 +3187,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         </div>
 
                                         {/* <div
-                                            className={`me-2  bubble  bg-[#00C8FF80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full  
+                                            className={`me-2  bubble  bg-[#02aedd80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full  
                                 lg:absolute left-[48.3%] top-[5%] ${
                                     activeDot === selectedCity.id
                                         ? "opacity-100 scale-full float-bubble2"
