@@ -9,7 +9,13 @@ import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
 import LastSection from "./sections/LastSection";
 const Facade = ({ data, projectData }) => {
 
-console.log(projectData)
+    const filteredProjects = projectData.projects.filter((item) =>
+        item.secondSection.service?.some((service) =>
+          typeof service === "string"
+            ? service === data._id
+            : service._id === data._id
+        )
+      );
 
       
     return (
@@ -23,9 +29,9 @@ console.log(projectData)
                 <ExpertiseSec data={data.secondSection} />
                 <ImgPointsComponent data={data.thirdSection} bgColor="white" sectionSpacing="pt-text30 pb30" />
                 {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
-                {projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null).length > 0 ? (
+                {filteredProjects.length > 0 ? (
                     <FeaturedProjectSlider
-                        data={projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null)}
+                        data={filteredProjects}
                     />
                 ): (  
                 <section className="-mt-6 md:-mt-11 lg:-mt-12 xl:-mt-16 3xl:-mt-30"></section> 

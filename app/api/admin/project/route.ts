@@ -72,24 +72,29 @@ export async function GET(request: NextRequest) {
 
     /* ---------- MAPPER ---------- */
     const mapProject = (p: ProjectItem) => {
-      const serviceId = p.secondSection?.service?.toString();
-      const service = serviceId ? serviceMap.get(serviceId) ?? null : null;
-
+      const services =
+        Array.isArray(p.secondSection?.service)
+          ? p.secondSection.service
+              .map((id) => serviceMap.get(id.toString()))
+              .filter(Boolean)
+          : [];
+    
       const locationId = p.secondSection?.location;
       const location =
         typeof locationId === "string"
           ? locationMap.get(locationId) ?? null
           : null;
-
+    
       return {
         ...p,
         secondSection: {
           ...p.secondSection,
-          service,
+          service: services, // ✅ ARRAY
           location,
         },
       };
     };
+    
     /* ----------------------------- */
 
     /* ===== SINGLE PROJECT BY ID ===== */
