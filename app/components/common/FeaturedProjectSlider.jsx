@@ -230,7 +230,7 @@ const FeaturedProjectSlider = ({ data }) => {
                                                         }`}
                                                     >
                                                         <span>Location: </span>
-                                                        {item.secondSection.location.name}
+                                                        {item.secondSection.location?.name}
                                                     </h4>
                                                 </div>
                                             </div>
