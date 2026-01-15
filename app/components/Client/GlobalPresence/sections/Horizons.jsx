@@ -75,7 +75,7 @@ const Horizons = ({ data }) => {
                                             <InsideCounter
                                                 value={item.country}
                                                 delay={10}
-                                                suffix={item?.name === "Oceania" ? "" : "+"}
+                                                
                                             />
                                         </p>
 
