@@ -5,9 +5,10 @@ import { useMediaQuery } from "react-responsive";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { moveUp } from "../motionVarients";
-import H2Title from "./H2Title";
+import { moveUp } from "@/app/components/motionVarients";
+import H2Title from "@/app/components/common/H2Title";
 import Image from "next/image";
+import {philosophyData} from './data'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,17 +21,17 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
 
     /* ================= BACKEND DATA NORMALIZATION ================= */
-    const heading = data?.title ?? "";
+    const heading = philosophyData?.title ?? "";
     const points =
-        data?.points ??
-        data?.items?.map((item) => ({
+    philosophyData?.points ??
+    philosophyData?.items?.map((item) => ({
             text: item.title,
             image: item.image,
         })) ??
         [];
 
     const [activeIndex, setActiveIndex] = useState(0);
-    const [hoverIndex, setHoverIndex] = useState(null);
+    const [hoverIndex, setHoverIndex] = useState(2);
     const [isMobile, setIsMobile] = useState(false);
     const [activeImage, setActiveImage] = useState(FALLBACK_IMAGE);
     const [mounted, setMounted] = useState(false);
@@ -64,8 +65,6 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
     const imageY = useTransform(scrollYProgress ?? 0, [0, 1], imageOffset);
 
-    const index = 0
-
     /* ================= IMAGE UPDATE ================= */
     const updateImage = (index) => {
         if (points[index]?.image) {
@@ -83,32 +82,29 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
     if (!points.length) return null;
 
     return (
-        <section className={`w-full ${bgColor} text-black ${sectionSpacing}`}>
+        <section className={`w-full bg-primary text-white ${sectionSpacing} pt-[89px] pb-[100px] h-auto`}>
             <div className="container">
                 {/* ================= TITLE ================= */}
-                <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ once: true }}>
-                    <H2Title titleText={heading} titleColor="black" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-17" />
+                <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ once: true }} className="mb-[50px]">
+                    <H2Title titleText={heading} titleColor="white" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-[30px]" />
+                    <motion.p
+                        variants={moveUp(0.4)}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ amount: 0.2, once: true }}
+                        className="text-19 font-light leading-[1.474] max-w-[85ch] text-white"
+                    >
+                        We achieve excellence not by chance, but by design. Our quality assurance process covers every stage of the project lifecycle
+                    </motion.p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
+                <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[auto_916px] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
                     {/* ================= IMAGE (DESKTOP ONLY) ================= */}
-                    <div ref={imageRef} className="hidden md:block relative h-[250px] md:h-full overflow-hidden">
-                        <MotionImage
-                            
-                            src={'/assets/images/hse/philosophy-1.jpg'}
-                            alt=""
-                            width={1920}
-                            height={1000}
-                            style={{ y: imageY }}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.4 }}
-                            className="w-full h-full object-cover scale-110 md:scale-150 lg:scale-110"
-                        />
-                    </div>
+                    
 
                     {/* ================= TEXT ================= */}
-                    <div className="border-t border-b border-black/20 3xl:max-w-[50ch]">
+                    <div className="border-black/20 3xl:max-w-[50ch] flex flex-col items-center justify-center">
+                        {points.map((item, index) => (
                             <motion.div
                                 key={index}
                                 variants={moveUp(0.15 * index)}
@@ -130,7 +126,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                 // onMouseLeave={() => !isMobile && setHoverIndex(null)}
                                 onMouseLeave={() => {
                                     if (!isMobile) {
-                                        setHoverIndex(null);
+                                        setHoverIndex(1);
                                     }
                                 }}
                                 // onClick={() => {
@@ -143,32 +139,52 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         updateImage(index);
                                     }
                                 }}
-                                className="border-b border-black/20 last:border-b-0 py-5 3xl:py-8 cursor-pointer"
+                                className="border-b border-white/20 first:border-t py-[15px] 3xl:py-[16px] cursor-pointer"
                             >
                                 {/* TITLE */}
                                 <div
-                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${
-                                        isActive(index) ? "text-black font-semibold" : "text-paragraph font-light"
-                                    }`}
+                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${isActive(index) ? "text-white font-semibold" : " font-light"
+                                        }`}
                                 >
+                                    {/* LEFT BAR */}
                                     <span
-                                        className={`absolute left-0 top-0 h-full w-[3px] bg-secondary transition-transform origin-top ${
-                                            isActive(index) ? "scale-y-100" : "scale-y-0"
-                                        }`}
+                                        className={`absolute left-0 top-0 h-full w-[3px] bg-secondary transition-transform origin-top ${isActive(index) ? "scale-y-100" : "scale-y-0"
+                                            }`}
                                     />
+
+                                    {/* TITLE */}
                                     <span
-                                        className={`inline-block transition-transform ${
-                                            isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
-                                        }`}
+                                        className={`inline-block transition-transform ${isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
+                                            }`}
                                     >
-                                        Strategic Planning
+                                        {item.text}
                                     </span>
+
+                                    {/* DESCRIPTION (only when hovered / active) */}
+                                    <motion.p
+                                        initial={false}
+                                        animate={{
+                                            opacity: isActive(index) ? 1 : 0,
+                                            height: isActive(index) ? "auto" : 0,
+                                            marginTop: isActive(index) ? 10 : 0,
+                                        }}
+                                        transition={{ duration: 0.25, ease: "easeOut" }}
+                                        className={`overflow-hidden text-sm lg:text-base  font-light leading-relaxed ${isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
+                                            }`}
+                                    >
+                                        A project is only as durable as the materials used. We enforce strict approval processes for all materials and 
+                                        maintain effective management of subcontractors. By rigorously vetting the supply chain, 
+                                        we ensure that every component entering the site meets the highest standards of durability and performance.
+                                    </motion.p>
                                 </div>
+
+
+
 
                                 {/* ================= MOBILE IMAGE ================= */}
                                 {isMobile && isActive(index) && (
                                     <MotionImage
-                                        src={'/assets/images/hse/philosophy-1.jpg'}
+                                        src={item.image}
                                         alt=""
                                         width={800}
                                         height={400}
@@ -179,7 +195,24 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                     />
                                 )}
                             </motion.div>
+                        ))}
                     </div>
+
+                    <div ref={imageRef} className="hidden md:block relative 3xl:h-[700px] overflow-hidden">
+                        <MotionImage
+                            key={activeImage}
+                            src={activeImage}
+                            alt=""
+                            width={1920}
+                            height={1000}
+                            style={{ y: imageY }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.4 }}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+
                 </div>
             </div>
         </section>
