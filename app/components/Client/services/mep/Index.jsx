@@ -9,6 +9,16 @@ import WhyChooseSec from "@/app/components/common/ImgPointsComponent";
 import InnovationSustainability from "./sections/InnovationSustainability";
 // import { mepData } from "./data";
 const MEP = ({ data, projectData }) => {
+
+    const filteredProjects = projectData.projects.filter((item) =>
+        item.secondSection.service?.some((service) =>
+          typeof service === "string"
+            ? service === data._id
+            : service._id === data._id
+        )
+      );
+
+
     return (
         <>
             {/* <header className="">
@@ -19,9 +29,9 @@ const MEP = ({ data, projectData }) => {
             <ExpertiseSec data={data.secondSection} />
             <WhyChooseSec data={data.thirdSection} bgColor="white" sectionSpacing="pt-text30 pb30" />
             {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
-            {projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null).length > 0 && (
+            {filteredProjects.length > 0 && (
                 <FeaturedProjectSlider
-                    data={projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null)}
+                    data={filteredProjects}
                 />
             )}
 

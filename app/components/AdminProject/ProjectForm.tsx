@@ -38,7 +38,7 @@ interface ProjectFormProps {
         title_ar: string;
         location: string;
         sector: string;
-        service: string;
+        service: string[];
         status: string;
         items: {
             key: string;
@@ -98,7 +98,20 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
         watch,
         control,
         formState: { errors },
-    } = useForm<ProjectFormProps>();
+    } = useForm<ProjectFormProps>({
+        defaultValues: {
+          secondSection: {
+            service: [],
+            items: [],
+            title: "",
+            title_ar: "",
+            location: "",
+            sector: "",
+            status: "",
+          },
+          images: [],
+        },
+      });
 
     const {
         fields: secondSectionItems,
@@ -139,13 +152,6 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
             const response = await fetch(`/api/admin/project?id=${id}`);
             if (response.ok) {
                 const data = await response.json();
-                setValue("secondSection", {
-                    ...data.data.secondSection,
-                    sector: data.data.secondSection.sector?._id || "",
-                    location: data.data.secondSection.location?._id || "",
-                    // service: data.data.secondSection.service._id || "",
-                });
-
                 setValue("firstSection", data.data.firstSection);
                 setValue("secondSection.items", data.data.secondSection.items);
                 setValue("thirdSection", data.data.thirdSection);
@@ -162,6 +168,15 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                 setValue("images", data.data.images);
                 setValue("slug", data.data.slug);
                 setImageUrls(data.data.images);
+                setValue("secondSection", {
+                    ...data.data.secondSection,
+                    sector: data.data.secondSection.sector?._id || "",
+                    location: data.data.secondSection.location?._id || "",
+                    // service: data.data.secondSection.service._id || "",
+                    service: data.data.secondSection.service?.map(
+                        (s: any) => s._id
+                    ) || [],
+                });
             } else {
                 const data = await response.json();
                 toast.error(data.message);
@@ -445,7 +460,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
 
                         <div className="flex flex-col gap-2">
                             <Label className="">Service</Label>
-                            <Controller
+                            {/* <Controller
                                 name="secondSection.service"
                                 control={control}
                                 rules={{ required: "Service is required" }}
@@ -463,7 +478,39 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         </SelectContent>
                                     </Select>
                                 )}
+                            /> */}
+                            <Controller
+                                name="secondSection.service"
+                                control={control}
+                                rules={{ required: "Select at least one service" }}
+                                render={({ field }) => (
+                                    <div className="flex flex-col gap-2">
+                                        {serviceList.map((item) => {
+                                            const selected = field.value?.includes(item._id);
+
+                                            return (
+                                                <label key={item._id} className="flex items-center gap-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selected}
+                                                        onChange={() => {
+                                                            if (selected) {
+                                                                field.onChange(
+                                                                    field.value.filter((v) => v !== item._id)
+                                                                );
+                                                            } else {
+                                                                field.onChange([...(field.value || []), item._id]);
+                                                            }
+                                                        }}
+                                                    />
+                                                    {item.pageTitle}
+                                                </label>
+                                            );
+                                        })}
+                                    </div>
+                                )}
                             />
+
                             {errors.secondSection?.service && (
                                 <p className="text-red-500">{errors.secondSection.service.message}</p>
                             )}
@@ -927,22 +974,32 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             <Controller
                                 name="secondSection.service"
                                 control={control}
-                                rules={{ required: "Service is required" }}
+                                rules={{ required: "Select at least one service" }}
                                 render={({ field }) => (
-                                    <Select disabled onValueChange={field.onChange} value={field.value} defaultValue="">
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select Service" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {serviceList.map((item, index) => (
-                                                <SelectItem key={index} value={item._id}>
-                                                    {item.pageTitle_ar?.trim()
-                                                        ? `${item.pageTitle_ar} (${item.pageTitle})`
-                                                        : `${item.pageTitle}`}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    <div className="flex flex-col gap-2">
+                                        {serviceList.map((item) => {
+                                            const selected = field.value?.includes(item._id);
+
+                                            return (
+                                                <label key={item._id} className="flex items-center gap-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selected}
+                                                        onChange={() => {
+                                                            if (selected) {
+                                                                field.onChange(
+                                                                    field.value.filter((v) => v !== item._id)
+                                                                );
+                                                            } else {
+                                                                field.onChange([...(field.value || []), item._id]);
+                                                            }
+                                                        }}
+                                                    />
+                                                    {item.pageTitle}
+                                                </label>
+                                            );
+                                        })}
+                                    </div>
                                 )}
                             />
                             {errors.secondSection?.service && (
