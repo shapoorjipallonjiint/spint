@@ -2,11 +2,11 @@ import Banner from "./sections/Banner";
 import Certificates from "./sections/Certificates";
 
 
-const Accreditation = () => {
+const Accreditation = ({data}) => {
   return ( 
     <>
-      <Banner/>
-      <Certificates/>
+      <Banner data={data}/>
+      <Certificates data={data.secondSection}/>
     </>
    );
 }
