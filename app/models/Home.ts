@@ -222,4 +222,4 @@ const homeSchema = new mongoose.Schema({
 
 })
 
-export default mongoose.models.Home || mongoose.model("HomePresence", homeSchema);
+export default mongoose.models.HomePresence || mongoose.model("HomePresence", homeSchema);

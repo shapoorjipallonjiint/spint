@@ -179,9 +179,21 @@ export async function PATCH(request: NextRequest) {
     }
 
     if (!id) {
+      console.log(body)
+      const project = await Project.findOne({});
+      project.bannerAlt = body.bannerAlt
+      project.banner = body.banner
+      project.metaTitle = body.metaTitle
+      project.metaDescription = body.metaDescription
+      project.bannerAlt_ar =  body.bannerAlt_ar,
+      project.pageTitle_ar = body.pageTitle_ar,
+      project.metaTitle_ar = body.metaTitle_ar,
+      project.metaDescription_ar = body.metaDescription_ar,
+      project.firstSection = body.firstSection
+      await project.save()
       return NextResponse.json(
-        { message: "Invalid request" },
-        { status: 400 }
+        { data: project, message: "Project updated successfully" },
+        { status: 200 }
       );
     }
 
