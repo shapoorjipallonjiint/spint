@@ -179,7 +179,6 @@ export async function PATCH(request: NextRequest) {
     }
 
     if (!id) {
-      console.log(body)
       const project = await Project.findOne({});
       project.bannerAlt = body.bannerAlt
       project.banner = body.banner
