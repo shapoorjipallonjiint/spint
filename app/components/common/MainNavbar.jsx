@@ -505,7 +505,7 @@ const MainNavbar = () => {
 
             <>
                 <div className={`max-md:hidden fixed inset-0 bg-white/30 backdrop-blur-sm z-40 h-screen w-full duration-300 transition-opacity ${searchActive ? "translate-y-[5%] opacity-100" : "translate-y-[-110%] opacity-0"}`}></div>
-                <div ref={searchRef} className={`max-md:hidden w-full bg-white z-40 ${result?.length > 0 ? "h-[500px]" : "h-[140px]"} shadow-xl fixed top-24 lg:top-20 xl:top-24 right-0 duration-300 flex flex-col ${searchActive ? "translate-y-[-5%]" : "translate-y-[-110%]"}`}>
+                <div ref={searchRef} className={`max-md:hidden overflow-y-auto w-full bg-white z-40 ${result?.length > 0 ? "h-[500px]" : "h-[140px]"} shadow-xl fixed top-24 lg:top-20 xl:top-24 right-0 duration-300 flex flex-col ${searchActive ? "translate-y-[-5%]" : "translate-y-[-110%]"}`}>
                     <div className="container h-full">
                         {/* <div className="absolute top-[20px] xxxl:right-[60px] right-[30px]" onClick={() => setSearchActive(!searchActive)}>
             <IoClose className="text-lg text-green-950 cursor-pointer" />
@@ -531,7 +531,7 @@ const MainNavbar = () => {
                             </div>
                         </form>
 
-                        <div className="mt-5 px-4 flex flex-col gap-5 text-black h-3/4">
+                        <div className="mt-5 px-4 flex flex-col gap-5 text-black ">
                             {result && result.length > 0 ? <div className="text-md font-semibold">Results</div> : null}
                             {
                                 loading ? (<div className="flex justify-center">

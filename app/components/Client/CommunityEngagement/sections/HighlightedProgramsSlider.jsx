@@ -108,7 +108,7 @@ const HighlightedProgramsSlider = ({ data }) => {
                                         alt=""
                                         width={14}
                                         height={14}
-                                        className="w-[14px] h-[14px] group-hover:opacity-90  duration-300  transition-all delay-200"
+                                        className="w-[16px] h-[16px] group-hover:opacity-90  duration-300  transition-all delay-200"
                                     />
                                 </button>
                                 <button
@@ -121,7 +121,7 @@ const HighlightedProgramsSlider = ({ data }) => {
                                         alt=""
                                         width={14}
                                         height={14}
-                                        className="w-[14px] h-[14px] group-hover:opacity-90  duration-300  transition-all delay-200"
+                                        className="w-[16px] h-[16px] group-hover:opacity-90  duration-300  transition-all delay-200"
                                     />
                                 </button>
                                 <span className="text-19 leading-[1.473684210526316] ml-2">

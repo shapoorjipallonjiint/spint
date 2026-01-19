@@ -72,11 +72,12 @@ const Footer = () => {
           <motion.div variants={moveUp(0.4)} initial="hidden" animate="show">
             <h3 className="text-24 lg:text-29 leading-[1.344827586206897] font-light mb-2 lg:mb-[27px]">Commitments</h3>
             <ul>
+
+              <li className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-extralight"><Link href="/hse">Health safety & environmental</Link></li>
+              {/* <li className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-light"><Link href="/quality-safety">Safety & Quality</Link></li> */}
+              <li className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-extralight"><Link href="/quality">Quality</Link></li>
               <li className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-extralight"><Link href="/sustainability">Sustainability</Link></li>
               <li className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-extralight"><Link href="/community-engagement">Community Engagement</Link></li>
-              {/* <li className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-light"><Link href="/quality-safety">Safety & Quality</Link></li> */}
-              <li className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-extralight"><Link href="/hse">Health safety & environmental</Link></li>
-              <li className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-extralight"><Link href="/quality">Quality</Link></li>
             </ul>
           </motion.div>
           <motion.div variants={moveUp(0.5)} initial="hidden" animate="show">

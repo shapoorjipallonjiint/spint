@@ -11,7 +11,7 @@ export async function GET() {
         if (!integratedFacilityManagement) {
             return NextResponse.json({ message: "Integrated Facility Management not found" }, { status: 404 });
         }
-        return NextResponse.json({data:integratedFacilityManagement,message:"Facade fetched successfully"}, { status: 200 });
+        return NextResponse.json({data:integratedFacilityManagement,message:"Façade fetched successfully"}, { status: 200 });
     } catch (error) {
         console.log(error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
