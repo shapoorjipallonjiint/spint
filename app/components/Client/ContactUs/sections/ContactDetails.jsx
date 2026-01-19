@@ -225,7 +225,7 @@ const ContactDetails = ({ data }) => {
                     <div className="bg-primary px-5 pt-8 pb-9 lg:p-8 xl:p-10 3xl:p-[70px] 3xl:pt-[59px]">
                         <H2Title titleText="General Inquiry" titleColor="white" marginClass="mb-4 3xl:mb-50px" />
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-50px w-full mb-6 xl:mb-8 3xl:mb-15">
+                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-50px w-full mb-6 xl:mb-8 3xl:mb-[30px]">
                                 <motion.div
                                     variants={moveUp(0.4)}
                                     initial="hidden"
@@ -282,7 +282,7 @@ const ContactDetails = ({ data }) => {
                                     </label>
                                 </motion.div>
                             </div>
-                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-12 w-full mb-6 xl:mb-8 3xl:mb-15">
+                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-12 w-full mb-6 xl:mb-8 3xl:mb-[30px]">
                                 <motion.div
                                     variants={moveUp(0.7)}
                                     initial="hidden"
@@ -338,7 +338,7 @@ const ContactDetails = ({ data }) => {
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
-                                className="relative mb-6 xl:mb-8 3xl:mb-15"
+                                className="relative mb-6 xl:mb-8 3xl:mb-[30px]"
                             >
                                 {/* Floating Label */}
                                 <label
@@ -398,11 +398,11 @@ const ContactDetails = ({ data }) => {
                             </motion.div>
 
                             <div className="mb-6">
-                                <ReCAPTCHA
+                                {/* <ReCAPTCHA
                                     sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
                                     onChange={handleCaptchaChange}
                                     theme="dark"
-                                />
+                                /> */}
                             </div>
 
                             <motion.button

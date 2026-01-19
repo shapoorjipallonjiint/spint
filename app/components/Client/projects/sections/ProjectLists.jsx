@@ -710,9 +710,9 @@ const filteredCountryData = useMemo(() => {
 
                                     <div>
                                         <div>
-                                            <h2 className="text20 text-29 leading-[1.344827586206897] font-light  ">
+                                            <h3 className="text20 text-29 leading-[1.344827586206897] font-light  ">
                                                 {item.firstSection.title}
-                                            </h2>
+                                            </h3>
                                         </div>
                                     </div>
                                     <div>

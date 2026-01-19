@@ -531,7 +531,7 @@ const MainNavbar = () => {
                             </div>
                         </form>
 
-                        <div className="mt-5 px-4 flex flex-col gap-5 text-black h-3/4">
+                        <div className="mt-5 px-4 flex flex-col gap-5 text-black ">
                             {result && result.length > 0 ? <div className="text-md font-semibold">Results</div> : null}
                             {
                                 loading ? (<div className="flex justify-center">
