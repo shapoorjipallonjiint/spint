@@ -1539,9 +1539,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const [animationDirection, setAnimationDirection] = useState(0); // 1 for down, -1 for up
     const [displayedIndex, setDisplayedIndex] = useState(activeIndex);
     const animationRef = useRef(null);
+    const [clickedIndex, setClickedIndex] = useState(null);
+
 
     const handleSlideClick = (targetIndex) => {
         const isMobile = window.matchMedia("(max-width:1023px)").matches;
+
+        setClickedIndex(targetIndex);
 
         // 🔥 MOBILE BEHAVIOR — no rotation, no step animation
         if (isMobile) {
@@ -1554,6 +1558,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
         // ========= DESKTOP (your original rotation logic) =========
         if (isAnimating || targetIndex === activeIndex) return;
+
+        setClickedIndex(targetIndex);
 
         if (animationRef.current) {
             clearInterval(animationRef.current);
@@ -1592,6 +1598,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 setIsAnimating(false);
                 setAnimationDirection(0);
                 setDisplayedIndex(path[path.length - 1]);
+                setClickedIndex(null);
             }
         }, 400);
     };
@@ -3380,8 +3387,8 @@ const getVisibleSectors = () => {
                                                             setActiveItem(item);
                                                             startAutoSlide();
                                                         }}
-                                                        className={`hover:lg:border-b-[2px] hover:lg:border-primary lg:border-b-2 border-b border-[#ffffff30]  
-    ${activeItem.id === item.id ? "underline-anim-item " : "border-[#ffffff30]"} 
+                                                        className={`hover:lg:border-b-[2px] hover:lg:border-primary  
+    ${activeItem.id === item.id ? "underline-anim-item" : "border-transparent"} 
     lg:pb-1 transition-all duration-300 `}
                                                     >
                                                         <div

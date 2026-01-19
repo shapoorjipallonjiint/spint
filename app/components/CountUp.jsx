@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
-const CountUp = ({ value, duration = 2, trigger, delay = 1800 }) => {
+const CountUp = ({ value, duration = 2, trigger, delay = 500 }) => {
   const [display, setDisplay] = useState(0);
   const prev = useRef(0);
   const started = useRef(false);
