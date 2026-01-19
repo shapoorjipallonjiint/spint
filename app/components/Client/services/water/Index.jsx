@@ -6,6 +6,16 @@ import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider
 import { wtrData } from "./data";
 import DivisionExpertise from "./sections/DivisionExpertise";
 const Water = ({ data, projectData }) => {
+
+    const filteredProjects = projectData.projects.filter((item) =>
+        item.secondSection.service?.some((service) =>
+          typeof service === "string"
+            ? service === data._id
+            : service._id === data._id
+        )
+      );
+
+
     return (
         <>
             {/* <header className="">
@@ -17,9 +27,9 @@ const Water = ({ data, projectData }) => {
             <DivisionExpertise data={data.thirdSection} />
             {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} />
              */}
-            {projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null).length > 0 && (
+            {filteredProjects.length > 0 && (
                 <FeaturedProjectSlider
-                    data={projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null)}
+                    data={filteredProjects}
                 />
             )}
             {/* <WhyChooseSec data={wtrData.WhyChooseData} /> */}

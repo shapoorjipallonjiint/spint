@@ -13,20 +13,11 @@ import {
     UsersIcon,
 } from "@heroicons/react/24/outline";
 import { GalleryThumbnails, HeartHandshake, LeafIcon, Settings, ThumbsUp, Workflow } from "lucide-react";
+import { GiPaperBagFolded } from "react-icons/gi";
 
 const AdminNavbar = () => {
     const [openLink, setOpenLink] = useState<string | null>(null);
-    const [countries, setCountries] = useState([]);
 
-    const fetchCountries = async () => {
-        const response = await fetch("/api/admin/global-presence");
-        const data = await response.json();
-        setCountries(data.data?.thirdSection?.countries);
-    };
-
-    useEffect(() => {
-        fetchCountries();
-    }, []);
 
     const navItems = [
         { name: "Home", href: "/admin/home", icon: HomeIcon },
@@ -90,6 +81,7 @@ const AdminNavbar = () => {
         { name: "Community Engagement", href: "/admin/community-engagement", icon: UsersIcon },
         { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
         { name: "Sustainability", href: "/admin/sustainability", icon: LeafIcon },
+        { name: "Accreditation", href: "/admin/accreditation", icon: GiPaperBagFolded },
         { name: "Settings", href: "/admin/settings", icon: Settings },
     ];
 

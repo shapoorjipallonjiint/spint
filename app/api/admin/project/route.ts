@@ -72,24 +72,29 @@ export async function GET(request: NextRequest) {
 
     /* ---------- MAPPER ---------- */
     const mapProject = (p: ProjectItem) => {
-      const serviceId = p.secondSection?.service?.toString();
-      const service = serviceId ? serviceMap.get(serviceId) ?? null : null;
-
+      const services =
+        Array.isArray(p.secondSection?.service)
+          ? p.secondSection.service
+              .map((id) => serviceMap.get(id.toString()))
+              .filter(Boolean)
+          : [];
+    
       const locationId = p.secondSection?.location;
       const location =
         typeof locationId === "string"
           ? locationMap.get(locationId) ?? null
           : null;
-
+    
       return {
         ...p,
         secondSection: {
           ...p.secondSection,
-          service,
+          service: services, // ✅ ARRAY
           location,
         },
       };
     };
+    
     /* ----------------------------- */
 
     /* ===== SINGLE PROJECT BY ID ===== */
@@ -174,9 +179,20 @@ export async function PATCH(request: NextRequest) {
     }
 
     if (!id) {
+      const project = await Project.findOne({});
+      project.bannerAlt = body.bannerAlt
+      project.banner = body.banner
+      project.metaTitle = body.metaTitle
+      project.metaDescription = body.metaDescription
+      project.bannerAlt_ar =  body.bannerAlt_ar,
+      project.pageTitle_ar = body.pageTitle_ar,
+      project.metaTitle_ar = body.metaTitle_ar,
+      project.metaDescription_ar = body.metaDescription_ar,
+      project.firstSection = body.firstSection
+      await project.save()
       return NextResponse.json(
-        { message: "Invalid request" },
-        { status: 400 }
+        { data: project, message: "Project updated successfully" },
+        { status: 200 }
       );
     }
 

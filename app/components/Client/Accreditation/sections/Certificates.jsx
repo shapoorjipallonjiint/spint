@@ -1,15 +1,17 @@
 "use client";
 
 // import { regionalData } from "../data";
-import H2Title from "../../../common/H2Title";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from 'next/image'
 import { moveUp } from "../../../motionVarients";
-import {certificates} from '../data'
+import { useApplyLang } from "@/lib/applyLang";
+import ImageLightbox from "../../../common/ImagePopup";
+import { useState } from "react";
 
 const Certificates = ({ data }) => {
     const MotionImage = motion.create(Image);
+    const t = useApplyLang(data)
+    const [activeImage, setActiveImage] = useState(null);
     return (
         <section className="py-30">
             <div className="container ">
@@ -17,19 +19,20 @@ const Certificates = ({ data }) => {
                 <div className="relative">
 
                 <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-4 gap-y-[80px]">
-                {certificates.map((item,index)=>(
-                    <div className="">
+                {t.items.map((item,index)=>(
+                    <div className="" key={index}>
                                 <div className="pb-[50px] flex max-md:justify-center 3xl:pr-[137px]">
                                 <MotionImage
                                     variants={moveUp(0.5 + 0.2 * 2)}
                                     initial="hidden"
                                     whileInView="show"
                                     viewport={{ amount: 0.2, once: true }}
-                                    src={'/assets/images/accreditation/cert-1.jpg'}
-                                    alt={"Image"}
+                                    src={item.fileImage}
+                                    alt={item.fileImageAlt}
                                     width={276}
                                     height={400}
                                     className="h-[400px] object-cover w-[276px] "
+                                    onClick={() => setActiveImage(item.fileImage)}
                                 />
                                 </div>
                                 
@@ -48,7 +51,7 @@ const Certificates = ({ data }) => {
                                     viewport={{ amount: 0.2, once: true }}
                                     className="text-19 lg:text-29  text-black font-light leading-[38px]  max-w-[15ch]"
                                 >
-                                    EN ISO 9001
+                                    {item.fileName}
                                 </motion.h3>
                                 </div>
                                 
@@ -59,6 +62,7 @@ const Certificates = ({ data }) => {
                 </div>
                 </div>
             </div>
+            <ImageLightbox src={activeImage} alt="Certificate preview" onClose={() => setActiveImage(null)} />
         </section>
     );
 };

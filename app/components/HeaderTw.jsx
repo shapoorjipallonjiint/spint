@@ -757,7 +757,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                     <div className="left-spacing fixed ">
                         <div
                             ref={headerRef}
-                            className={`shadow ml-0 my-12 w-[125px] 3xl:w-[133px] h-[calc(100vh-100px)] relative
+                            className={`shadow ml-0 my-12 3xl:my-16 w-[125px] 3xl:w-[133px] h-[calc(100vh-100px)] 3xl:h-[814px] relative
       transition-all duration-300
       ${menuOpen ? "bg-white" : "bg-primary"}
   `}

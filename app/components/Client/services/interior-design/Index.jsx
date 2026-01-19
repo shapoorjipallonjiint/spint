@@ -9,6 +9,16 @@ import WhyChooseSec from "./sections/WhyChooseSec";
 import { interiorData } from "./data";
 import SectorsSec from "./sections/SectorsSec";
 const InteriorDesign = ({ data, projectData }) => {
+
+    const filteredProjects = projectData.projects.filter((item) =>
+        item.secondSection.service?.some((service) =>
+          typeof service === "string"
+            ? service === data._id
+            : service._id === data._id
+        )
+      );
+
+
     return (
         <>
             {/* <header>
@@ -20,9 +30,9 @@ const InteriorDesign = ({ data, projectData }) => {
             <ExpertiseSec data={data.thirdSection} />
             <SectorsSec data={data.fourthSection} />
             {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
-            {projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null).length > 0 ? (
+            {filteredProjects.length > 0 ? (
                 <FeaturedProjectSlider
-                    data={projectData.projects.filter((item) => item.secondSection.service !== null ? item.secondSection.service?._id === data._id : null)}
+                    data={filteredProjects}
                 />
             ): (  
                 <section className="-mt-6 md:-mt-11 lg:-mt-12 xl:-mt-16 3xl:-mt-30"></section> 

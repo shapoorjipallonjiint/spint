@@ -70,7 +70,7 @@ const filteredCountryData = useMemo(() => {
     // 🔹 Filter items based on all dropdowns
     const filteredItems = useMemo(() => {
         let items = [...data];
-
+        console.log(items)
         if (selectedSector.id !== 1) {
             items = items.filter(
                 (item) => item.secondSection?.sector?.name.toLowerCase() === selectedSector?.name.toLowerCase()
@@ -83,6 +83,7 @@ const filteredCountryData = useMemo(() => {
         }
 
         if (selectedCountry.id !== 1) {
+            
             items = items.filter(
                 (item) => item.secondSection?.location?.name.toLowerCase() === selectedCountry?.name.toLowerCase()
             );
@@ -91,7 +92,7 @@ const filteredCountryData = useMemo(() => {
         if (selectedService.id !== 1) {
             // assuming your data has item.service
             items = items.filter(
-                (item) => item.secondSection?.service?.title.toLowerCase() === selectedService?.title.toLowerCase()
+                (item) => item.secondSection?.service?.some((service)=>service.title.toLowerCase() === selectedService?.title.toLowerCase())
             );
         }
 
