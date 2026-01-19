@@ -57,7 +57,7 @@ const InnovationSustainability = ({ data }) => {
     } else {
         // Desktop / Larger
         activeSize = 79;
-        inactiveSize = 20;
+        inactiveSize = 25;
     }
 
     return (

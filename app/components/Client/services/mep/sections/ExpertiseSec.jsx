@@ -45,11 +45,11 @@ const ExpertiseSec = ({ data }) => {
         <H2Title titleText={data.title} titleColor="white" marginClass="mb-0" />
         <motion.div variants={moveUp(0.5)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="flex gap-2 xl:gap-5 ">
           <button className="custom-prv  w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-white/60 hover:border-secondary hover:bg-secondary/10 hover:text-white transition">
-            <Image  src="/assets/images/project-details/rightarrow.svg" className="w-[13.89px] h-[13.89px] xl:h-auto xl:w-auto rotate-180 group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
+            <Image  src="/assets/images/project-details/rightarrow.svg" className="w-[16px] h-[16px] xl:h-auto xl:w-auto rotate-180 group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
           </button>
           <button className="custom-nxt w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-white/60 
           hover:border-secondary hover:bg-secondary/10 hover:text-white transition">
-            <Image src="/assets/images/project-details/rightarrow.svg" className="w-[13.89px] h-[13.89px] xl:h-auto xl:w-auto group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
+            <Image src="/assets/images/project-details/rightarrow.svg" className="w-[16px] h-[16px] xl:h-auto xl:w-auto group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
           </button>
         </motion.div>
         </div>

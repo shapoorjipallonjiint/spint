@@ -130,7 +130,7 @@ const NavPage = ({ isOpen }) => {
                     </div>
 
                     {/* Submenu aligned by baseline */}
-                    <div ref={submenuRef} className="absolute pl-[74px] z-10" style={{ top: submenuTop }}>
+                    <div ref={submenuRef} className="hidden lg:block absolute pl-[74px] z-10" style={{ top: submenuTop }}>
                         {/* Animate EVERY hover (uses animKey) */}
                         <motion.div key={`${activeMenu}-${animKey}-${isOpen}`} initial="hidden" animate="show">
                             {hasSubmenu &&

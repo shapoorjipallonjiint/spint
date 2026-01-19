@@ -9,9 +9,9 @@ export async function GET() {
         await connectDB();
         const facade = await Facade.findOne({});
         if (!facade) {
-            return NextResponse.json({ message: "Facade not found" }, { status: 404 });
+            return NextResponse.json({ message: "Façade not found" }, { status: 404 });
         }
-        return NextResponse.json({data:facade,message:"Facade fetched successfully"}, { status: 200 });
+        return NextResponse.json({data:facade,message:"Façade fetched successfully"}, { status: 200 });
     } catch (error) {
         console.log(error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -28,9 +28,9 @@ export async function PATCH(request: NextRequest) {
         await connectDB();
         const facade = await Facade.findOneAndUpdate({}, body,{upsert:true,new:true});
         if (!facade) {
-            return NextResponse.json({ message: "Facade not found" }, { status: 404 });
+            return NextResponse.json({ message: "Façade not found" }, { status: 404 });
         }
-        return NextResponse.json({data:facade,message:"Facade updated successfully"}, { status: 200 });
+        return NextResponse.json({data:facade,message:"Façade updated successfully"}, { status: 200 });
     } catch (error) {
         console.log(error);
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });

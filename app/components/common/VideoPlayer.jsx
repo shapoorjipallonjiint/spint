@@ -21,7 +21,7 @@ export default function VideoPlayer({ src, poster }) {
  
   return (
     <div
-      className="relative w-full xl:w-[1000px] 3xl:xl:w-[1180px] xl:max-w-[1180px] h-[200px] md:h-[300px] xl:h-[400px] 2xl:h-[450px] 3xl:h-[523px] mx-auto cursor-pointer group"
+      className="relative w-full xl:w-[1000px] 3xl:xl:w-[1234px] xl:max-w-[1238px] h-[200px] md:h-[300px] xl:h-[400px] 2xl:h-[450px] 3xl:h-[523px] mx-auto cursor-pointer group"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       onClick={togglePlay}

@@ -69,7 +69,7 @@ const ExpertiseSec = ({data}) => {
 
         {/* Swiper Slider */}
         <div className="relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 3xl:gap-[70px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2  gap-8 3xl:gap-[30px]">
             {/* Image Section - Swiper */}
             <motion.div variants={moveRight(0.4)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}}>
               <Swiper
@@ -92,7 +92,7 @@ const ExpertiseSec = ({data}) => {
                 {data.items.map((item, index) => (
                   <SwiperSlide key={index}>
                     <div className="relative overflow-hidden shadow-2xl" ref={imageParRef}>
-                      <MotionImage width={900} height={700} style={{y:imageY}} src={item.image} alt={item.imageAlt} className="w-full h-[300px] lg:h-[400px] xl:h-[500px] 3xl:h-[625px]  object-cover" />
+                      <MotionImage width={795} height={700} style={{y:imageY}} src={item.image} alt={item.imageAlt} className="w-full h-[300px] lg:h-[400px] xl:h-[500px] 3xl:h-[625px]  object-cover" />
                     </div>
                   </SwiperSlide>
                 ))}
@@ -100,7 +100,7 @@ const ExpertiseSec = ({data}) => {
             </motion.div>
 
             {/* Content Section - Static with Navigation */}
-            <motion.div variants={moveLeft(0.6)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}}>
+            <motion.div className='3xl:ml-[40px]' variants={moveLeft(0.6)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}}>
               {/* Navigation - Fixed */}
               <div className="flex items-center gap-4 xl:gap-[51px] mb-5 xl:mb-[50px] border-b border-white/30 pt-5 lg:pt-5 xl:pt-10 pb-4 xl:pb-[30px]">
                 <div className='flex items-center gap-[12px]'>
@@ -108,13 +108,13 @@ const ExpertiseSec = ({data}) => {
                     className="w-10 h-10 xl:w-50px xl:h-50px  rounded-full border border-white/20 flex items-center justify-center transition-colors"
                   aria-label="Previous slide"
                 >
-                  <Image width={20} height={20} src={assets.arrowLeft2} alt="" className='w-[14px] h-[14px]' />
+                  <Image width={20} height={20} src={assets.arrowLeft2} alt="" className='w-[16px] h-[16px]' />
                 </button>
                 <button onClick={() => imageSwiper?.slideNext()}
                     className="w-10 h-10 xl:w-50px xl:h-50px rounded-full border border-white/20 flex items-center justify-center transition-colors"
                   aria-label="Next slide"
                 >
-                  <Image width={20} height={20} src={assets.arrowRight2} alt="" className='w-[14px] h-[14px]'  />
+                  <Image width={20} height={20} src={assets.arrowRight2} alt="" className='w-[16px] h-[16px]'  />
                 </button>
                 </div>
                 <span className="text-19 leading-[1.473684210526316] ml-2">
