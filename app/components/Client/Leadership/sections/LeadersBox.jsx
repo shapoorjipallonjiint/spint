@@ -356,7 +356,6 @@ const LeaderBox = ({ data }) => {
                                         src={item.image}
                                         alt={item.imageAlt}
                                         className={`relative w-fit object-contain z-20
-            h-[250px] xs:h-[400px] xl:h-[450px] 2xl:h-[600px] 3xl:h-[735.62px] max-w-[710px]
             ${isReverse ? "ml-auto mr-3 lg:mr-auto" : "mr-auto ml-3 lg:ml-auto 2xl:ml-3 3xl:ml-auto lg:mr-2"}
           `}
                                     />
