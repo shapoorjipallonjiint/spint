@@ -1,10 +1,10 @@
 export const philosophyData = {
     title:"Our HSE Philosophy: The 'S.P.I.R.I.T' of Safety",
-    subTitle:"A proactive safety culture is driven by the proprietary 'S.P.I.R.I.T' framework, designed to engineer risks out of the project lifecycle",
+    subTitle:"A proactive safety culture is driven by the proprietary 'S.P.I.R.I.T' framework, designed to engineer risks out of the project lifecycle:",
     points:[
         {
             text:"Strategic Planning",
-            description:"Moving beyond inspection to prediction. Hazards are identified and neutralized through rigorous audits before they become risks.",
+            description:"Safety is integrated during the pre-construction and design phases, ensuring seamless execution across complex trades.",
             image:"/assets/images/hse/philosophy-1.jpg"
         },
         {
@@ -14,22 +14,22 @@ export const philosophyData = {
         },
         {
             text:"Innovation",
-            description:"Moving beyond inspection to prediction. Hazards are identified and neutralized through rigorous audits before they become risks.",
+            description:"Utilising technology to monitor maintain real-time safety oversight.",
             image:"/assets/images/hse/philosophy-1.jpg"
         },
         {
             text:"Responsibility",
-            description:"Moving beyond inspection to prediction. Hazards are identified and neutralized through rigorous audits before they become risks.",
+            description:"Empowering every employee, from project leaders to site operatives, with the 'Stop Work Authority' if a hazard is perceived. Lives are valued over speed.",
             image:"/assets/images/hse/philosophy-1.jpg"
         },
         {
             text:"Integrity",
-            description:"Moving beyond inspection to prediction. Hazards are identified and neutralized through rigorous audits before they become risks.",
+            description:"Maintaining transparency in reporting and continuously learning from global best practices.",
             image:"/assets/images/hse/philosophy-1.jpg"
         },
         {
             text:"Training",
-            description:"Moving beyond inspection to prediction. Hazards are identified and neutralized through rigorous audits before they become risks.",
+            description:"Investing in the workforce through dedicated Training Centres and on-site coaching to ensure continuous upskilling.",
             image:"/assets/images/hse/philosophy-1.jpg"
         },
     ]

@@ -87,7 +87,7 @@ const SaftySlider = ({ data }) => {
                             {data.description}
                         </motion.p>
 
-                        <motion.div
+                        {/* <motion.div
                             variants={moveLeft(0.2)}
                             initial="hidden"
                             whileInView="show"
@@ -95,7 +95,7 @@ const SaftySlider = ({ data }) => {
                             className="grid grid-cols-1 md:grid-cols-3 3xl:grid-cols-[406px_300px_auto] p-5 lg:px-12 lg:py-10  2xl:pt-[43px] 2xl:pb-[42px] bg-f5f5 gap-8 md:gap-0"
                         >
                             {data.itemsOne.map((item, index) => (
-                                <div key={index} className="last:2xl:w-[90%]" >
+                                <div key={index} className="last:2xl:w-[90%]">
                                     <motion.p
                                         variants={moveLeft(0.3 * index)}
                                         initial="hidden"
@@ -117,7 +117,7 @@ const SaftySlider = ({ data }) => {
                                     </motion.p>
                                 </div>
                             ))}
-                        </motion.div>
+                        </motion.div> */}
                     </div>
                 </div>
             </div>
