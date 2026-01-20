@@ -73,7 +73,7 @@ const SaftySlider = ({data}) => {
                                 {data.description}
                             </motion.p>
                         </div>
-                        <motion.div
+                        {/* <motion.div
                             variants={moveLeft(0.2)}
                             initial="hidden"
                             whileInView="show"
@@ -102,7 +102,7 @@ const SaftySlider = ({data}) => {
                                     </motion.p>
                                 </div>
                             ))}
-                        </motion.div>
+                        </motion.div> */}
                     </div>
                 </div>
             </div>

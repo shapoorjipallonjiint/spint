@@ -101,8 +101,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { assets } from "../../assets";
 import { moveUp } from "@/app/components/motionVarients";
 import Image from "next/image";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const AccordionStyle1 = ({ accData }) => {
+    const isArabic = useIsPreferredLanguageArabic();
     const [openIndex, setOpenIndex] = useState(1);
     const contentRefs = useRef([]);
 
@@ -119,26 +121,35 @@ const AccordionStyle1 = ({ accData }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className={`border-b border-cmnbdr relative transition-all duration-500 mb-0 ${
-                        openIndex === index ? "pl-50px" : "pl-0"
-                    }`}
+className={`border-b border-cmnbdr relative transition-colors duration-500 mb-0 ${
+  openIndex === index
+    ? isArabic
+      ? "pr-50px"
+      : "pl-50px"
+    : ""
+}`}
+
                 >
                     {/* LEFT ACTIVE BAR */}
-                    <div
-                        className={`absolute left-0 top-1/2 -translate-y-1/2 bg-[#30B6F9] ${
-                            openIndex === index
-                                ? "w-[3px] h-[80%] transition-all duration-500"
-                                : "w-0 h-[80%] transition-all duration-150"
-                        }
-            `}
-                    />
+<div
+  className={`absolute top-1/2 -translate-y-1/2 bg-[#30B6F9] ${
+    isArabic ? "right-0" : "left-0"
+  } ${
+    openIndex === index
+      ? "w-[3px] h-[80%] transition-all duration-500"
+      : "w-0 h-[80%] transition-all duration-150"
+  }`}
+/>
                     {/* HEADER */}
-                    <button
-                        onClick={() => toggleAccordion(index)}
-                        className={`w-full ${
-                            openIndex === index ? "pt-30px " : "pt-30px pb-30px"
-                        } flex items-center justify-between text-left group transition-all duration-500 cursor-pointer`}
-                    >
+<button
+  onClick={() => toggleAccordion(index)}
+  className={`w-full ${
+    openIndex === index ? "pt-30px" : "pt-30px pb-30px"
+  } flex items-center justify-between ${
+    isArabic ? "text-right" : "text-left"
+  } group transition-all duration-500 cursor-pointer`}
+>
+
                         <div className="flex-1">
                             <h3 className="text-24 xl:text-24 3xl:text-32 leading-[1.3125] font-normal text-gray-900">
                                 {item.title}
@@ -157,15 +168,19 @@ const AccordionStyle1 = ({ accData }) => {
                         </div>
 
                         {/* ARROW BUTTON */}
-                        <motion.div
-                            animate={{ rotate: openIndex === index ? 180 : 0 }}
-                            transition={{ duration: 0.35, ease: "easeInOut" }}
-                            className={`ml-4 w-6 h-6 md:w-10 md:h-10 xl:w-[50px] xl:h-[50px] rounded-full flex items-center justify-center border transition-colors duration-300 ${
-                                openIndex === index
-                                    ? "bg-[#30B6F9] text-white border-[#30B6F9]"
-                                    : "bg-white border-black/20"
-                            }`}
-                        >
+<motion.div
+  animate={{ rotate: openIndex === index ? 180 : 0 }}
+  transition={{ duration: 0.35, ease: "easeInOut" }}
+  className={`${
+    isArabic ? "mr-4" : "ml-4"
+  } w-6 h-6 md:w-10 md:h-10 xl:w-[50px] xl:h-[50px]
+  rounded-full flex items-center justify-center border transition-colors duration-300 ${
+    openIndex === index
+      ? "bg-[#30B6F9] text-white border-[#30B6F9]"
+      : "bg-white border-black/20"
+  }`}
+>
+
                             <Image
                                 src={assets.arrowDown}
                                 alt="arrow"

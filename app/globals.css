@@ -1180,7 +1180,9 @@ body::-webkit-scrollbar {
 .expertise-stretch .swiper-wrapper { 
     display: grid !important; 
     grid-auto-flow: column;
-}.our-expertise-item-desc ul {
+}
+
+.our-expertise-item-desc ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -1188,7 +1190,8 @@ body::-webkit-scrollbar {
 
 .our-expertise-item-desc li {
   position: relative;
-  padding-left: 20px;
+  /* padding-left: 20px; */
+    padding-inline-start: 20px;
   font-size: 19px;
   margin-bottom: 8px;
 }
@@ -1196,7 +1199,8 @@ body::-webkit-scrollbar {
 .our-expertise-item-desc li::before {
   content: "";
   position: absolute;
-  left: 0;
+  /* left: 0; */
+    inset-inline-start: 0; /* auto left/right */
   top: 0.55em;
   /* aligns dot with text */
   width: 6px;

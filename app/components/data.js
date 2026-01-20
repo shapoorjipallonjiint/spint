@@ -7,7 +7,6 @@ export const navData = {
       submenu: [
         { label: "Overview", href: "/about-us" },
         { label: "Leadership", href: "/leadership" },
- { label: "Accreditations", href: "/accreditation" },
       ]
     },
     {

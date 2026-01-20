@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { moveUp } from "@/app/components/motionVarients";
 import H2Title from "@/app/components/common/H2Title";
 import Image from "next/image";
-import {philosophyData} from './data'
+import { philosophyData } from "./data";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,9 +22,10 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
     /* ================= BACKEND DATA NORMALIZATION ================= */
     const heading = philosophyData?.title ?? "";
+    const subTitle = philosophyData?.subTitle ?? "";
     const points =
-    philosophyData?.points ??
-    philosophyData?.items?.map((item) => ({
+        philosophyData?.points ??
+        philosophyData?.items?.map((item) => ({
             text: item.title,
             image: item.image,
         })) ??
@@ -85,7 +86,13 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
         <section className={`w-full bg-primary text-white ${sectionSpacing} pt-[89px] pb-[100px] h-auto`}>
             <div className="container">
                 {/* ================= TITLE ================= */}
-                <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ once: true }} className="mb-[50px]">
+                <motion.div
+                    variants={moveUp(0.2)}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    className="mb-[50px]"
+                >
                     <H2Title titleText={heading} titleColor="white" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-[30px]" />
                     <motion.p
                         variants={moveUp(0.4)}
@@ -94,16 +101,15 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                         viewport={{ amount: 0.2, once: true }}
                         className="text-19 font-light leading-[1.474] max-w-[85ch] text-white"
                     >
-                        We achieve excellence not by chance, but by design. Our quality assurance process covers every stage of the project lifecycle
+                        {subTitle}
                     </motion.p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[auto_916px] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
                     {/* ================= IMAGE (DESKTOP ONLY) ================= */}
-                    
 
                     {/* ================= TEXT ================= */}
-                    <div className="border-black/20 3xl:max-w-[50ch] flex flex-col items-center justify-center">
+                    <div className="border-black/20 3xl:max-w-[50ch] flex flex-col items-start justify-center">
                         {points.map((item, index) => (
                             <motion.div
                                 key={index}
@@ -143,19 +149,22 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                             >
                                 {/* TITLE */}
                                 <div
-                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${isActive(index) ? "text-white font-semibold" : " font-light"
-                                        }`}
+                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${
+                                        isActive(index) ? "text-white font-semibold" : " font-light"
+                                    }`}
                                 >
                                     {/* LEFT BAR */}
                                     <span
-                                        className={`absolute left-0 top-0 h-full w-[3px] bg-secondary transition-transform origin-top ${isActive(index) ? "scale-y-100" : "scale-y-0"
-                                            }`}
+                                        className={`absolute left-0 top-0 h-full w-[3px] bg-secondary transition-transform origin-top duration-400 ${
+                                            isActive(index) ? "scale-y-100" : "scale-y-0"
+                                        }`}
                                     />
 
                                     {/* TITLE */}
                                     <span
-                                        className={`inline-block transition-transform ${isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
-                                            }`}
+                                        className={`inline-block transition-transform duration-300${
+                                            isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
+                                        }`}
                                     >
                                         {item.text}
                                     </span>
@@ -169,17 +178,17 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                             marginTop: isActive(index) ? 10 : 0,
                                         }}
                                         transition={{ duration: 0.25, ease: "easeOut" }}
-                                        className={`overflow-hidden text-sm lg:text-base  font-light leading-relaxed ${isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
-                                            }`}
+                                        className={`overflow-hidden text-sm lg:text-base  font-light leading-relaxed ${
+                                            isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
+                                        }`}
                                     >
-                                        A project is only as durable as the materials used. We enforce strict approval processes for all materials and 
-                                        maintain effective management of subcontractors. By rigorously vetting the supply chain, 
-                                        we ensure that every component entering the site meets the highest standards of durability and performance.
+                                        {/* A project is only as durable as the materials used. We enforce strict approval
+                                        processes for all materials and maintain effective management of subcontractors. By
+                                        rigorously vetting the supply chain, we ensure that every component entering the
+                                        site meets the highest standards of durability and performance. */}
+                                        {item.description}
                                     </motion.p>
                                 </div>
-
-
-
 
                                 {/* ================= MOBILE IMAGE ================= */}
                                 {isMobile && isActive(index) && (
@@ -212,7 +221,6 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                             className="w-full h-full object-cover"
                         />
                     </div>
-
                 </div>
             </div>
         </section>
