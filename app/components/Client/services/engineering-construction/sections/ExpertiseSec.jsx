@@ -32,19 +32,21 @@ const ExpertiseSec = ({ data }) => {
         if (!sectionRef.current) return;
 
         const overlay = sectionRef.current.querySelector(".reveal-overlay4");
+        if (!overlay) return;
 
-        gsap.set(overlay, { xPercent: 0 }); // start covering
+        gsap.set(overlay, { xPercent: 0 });
+
         gsap.to(overlay, {
-            xPercent: 100, // slide out to the right
+            xPercent: isArabic ? -100 : 100,
             duration: 2.7,
             ease: "expo.out",
             scrollTrigger: {
                 trigger: sectionRef.current,
-                start: "top 50%", // when section comes into view
+                start: "top 50%",
                 toggleActions: "play none none none",
             },
         });
-    }, []);
+    }, [isArabic]);
 
     // Parallax for shape
     const { scrollYProgress: shapeProgress } = useScroll({
