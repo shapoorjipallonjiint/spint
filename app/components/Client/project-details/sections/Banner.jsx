@@ -9,8 +9,10 @@ import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
 import ImageLightbox from "../../../../components/common/ImagePopup";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
+ 
 const Banner = ({ firstSection, secondSection }) => {
+  const router = useRouter();
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
@@ -39,7 +41,7 @@ const Banner = ({ firstSection, secondSection }) => {
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
                         >
-                            <Link href={"/projects"}>
+                             <button onClick={() => router.back()} className="cursor-pointer">
                                 <Image
                                     src={"/assets/images/icons/arrow-right.svg"}
                                     width={26}
@@ -47,7 +49,7 @@ const Banner = ({ firstSection, secondSection }) => {
                                     alt={"left"}
                                     className="w-8 h-8 mb-5 rotate-180"
                                 />
-                            </Link>
+                            </button>
                             <h1 className="text-40 2xl:text-70 font-light leading-[1.07] mb-3 lg:mb-5">
                                 <SplitTextAnimation
                                     children={firstSection.title}
