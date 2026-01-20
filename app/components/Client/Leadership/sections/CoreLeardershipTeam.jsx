@@ -134,7 +134,7 @@ const CoreLeardershipTeam = ({ data }) => {
 
                 <div className="grid grid-cols-2 xs:grid-cols-3 lg:grid-cols-4 gap-6 3xl:gap-y-[70px] 3xl:gap-[30px]">
                     {filteredTeam.map((member, index) => (
-                        <Link href={member.socialLink} target="blank" key={index}>
+                        // <Link href={member.socialLink} target="blank" key={index}>
                             <motion.div
                                 key={index}
                                 variants={moveUp(0.5 + 0.2 * index)}
@@ -152,7 +152,7 @@ const CoreLeardershipTeam = ({ data }) => {
                                         className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0"
                                     />
                                     <div className="bg-f5f5 xl:w-full h-[60%] 2xl:h-[234px] z-[-1]"></div>
-                                    <div className={`opacity-0 group-hover:opacity-100 transition-all duration-300 absolute ${isArabic ? "right-0" : "left-0"} bottom-0 w-[50px] h-[50px] xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}>
+                                    {/* <div className={`opacity-0 group-hover:opacity-100 transition-all duration-300 absolute ${isArabic ? "right-0" : "left-0"} bottom-0 w-[50px] h-[50px] xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             className={`${isArabic ? "translate-x-2  rotate-270" : "-translate-x-2"}  group-hover:translate-x-0 translate-y-2 group-hover:translate-y-0 transition-all duration-500 w-[25px] h-[25px]`}
@@ -174,7 +174,7 @@ const CoreLeardershipTeam = ({ data }) => {
                                                 strokeLinejoin="round"
                                             />
                                         </svg>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="mt-3 xl:mt-[27px]">
                                     <h3 className="text-20 xl:text-24 2xl:text-29 font-light leading-[1.344827586206897] mb-0 xl:mb-[7px]">
@@ -183,7 +183,7 @@ const CoreLeardershipTeam = ({ data }) => {
                                     <p className="text-paragraph text-16 2xl:text-19 font-light">{member.designation}</p>
                                 </div>
                             </motion.div>
-                        </Link>
+                        // </Link>
                     ))}
                 </div>
 
