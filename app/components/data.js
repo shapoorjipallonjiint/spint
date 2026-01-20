@@ -39,6 +39,7 @@ export const navData = {
       title: "Our Commitments",
       href: "#",
       submenu: [
+        { label: "Accreditations", href: "/accreditation" },
         { label: "Health, Safety and Environment", href: "/hse" },
         { label: "Quality", href: "/quality" },
         { label: "Sustainability", href: "/sustainability" },

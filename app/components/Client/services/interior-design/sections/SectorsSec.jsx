@@ -1,5 +1,6 @@
 "use client";
 import { Swiper, SwiperSlide} from "swiper/react";
+  import { useEffect, useRef } from "react";
 import { Autoplay,Controller } from "swiper/modules";
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -8,9 +9,30 @@ import { motion } from "framer-motion";
 import { moveUp } from "@/app/components/motionVarients";
 import Image from "next/image";
 const SectorsSec = ({data}) => {
+
+ 
+  const containerRef = useRef(null);
+  const dynamicRef = useRef(null);
+
+  useEffect(() => {
+    if (!containerRef.current || !dynamicRef.current) return;
+
+    const updateMargin = () => {
+      const containerLeft =
+        containerRef.current.getBoundingClientRect().left;
+
+      dynamicRef.current.style.marginLeft = `${containerLeft}px`;
+    };
+
+    updateMargin();
+    window.addEventListener("resize", updateMargin);
+
+    return () => window.removeEventListener("resize", updateMargin);
+  }, []);
   return (
     <section className="pt-text30 pb30 overflow-hidden">
-      <div className="container !overflow-visible">
+      <div ref={containerRef} className="container"></div>
+      <div ref={dynamicRef} className="ml-dynamic">
         <div>
           <H2Title titleText={data.title} titleColor="black" marginClass="mb-5 xl:mb-50px" />
         </div>
@@ -44,9 +66,9 @@ const SectorsSec = ({data}) => {
               },
             }
           }
-          className="expertise-swiper !overflow-visible"
+          className="expertise-swiper "
         >
-          {data.items.map((item, index) => (
+          {[...data.items, ...data.items].map((item, index) => (
             <SwiperSlide key={index} className="cursor-grab">
               <div className="relative overflow-hidden border-l border-white/30">
                 <motion.div variants={moveUp(0.2*index)} initial="hidden" animate="show" viewport={{ amount: 0.6, once: true }} className="w-15 h-15 xl:w-20 xl:h-20 bg-secondary rounded-full flex items-center justify-center mb-5">
