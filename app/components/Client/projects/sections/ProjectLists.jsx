@@ -31,8 +31,18 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         offset: ["start end", "end start"],
     });
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
-    const [view, setView] = useState("grid");
+   
+const [view, setView] = useState("grid"); 
 
+  useEffect(() => {
+    const urlView = searchParams.get("view");
+
+    if (urlView === "list") {
+      setView("list");
+    } else {
+      setView("grid");
+    }
+  }, [searchParams]);
     // Project with Countries
     const projectCountries = useMemo(() => {
         if (!data?.length) return new Set();
@@ -187,6 +197,18 @@ const filteredCountryData = useMemo(() => {
 
         isInitialized.current = true;
     }, [country, searchParams]);
+const handleView = () => {
+  const params = new URLSearchParams(searchParams);
+  params.set("view", "list");
+  router.push(`${pathname}?${params.toString()}`);
+setView("list")
+};
+const handleGrid = () => {
+  const params = new URLSearchParams(searchParams);
+  params.set("view", "grid");
+  router.push(`${pathname}?${params.toString()}`);
+setView("grid")
+};
 
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
@@ -512,7 +534,8 @@ const filteredCountryData = useMemo(() => {
                         <div className="flex items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-end">
                             <div
                                 className="flex group items-center gap-[6px] cursor-pointer"
-                                onClick={() => setView("grid")}
+                               
+                                  onClick={handleGrid}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -533,7 +556,8 @@ const filteredCountryData = useMemo(() => {
                             </div>
                             <div
                                 className="flex group items-center gap-[6px] cursor-pointer"
-                                onClick={() => setView("list")}
+                                // onClick={() => setView("list")}
+                                onClick={handleView}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -739,8 +763,8 @@ const filteredCountryData = useMemo(() => {
                                     <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 hidden lg:block">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            width="35"
-                                            height="35"
+                                            width="32"
+                                            height="32"
                                             viewBox="0 0 35 35"
                                             fill="none"
                                         >

@@ -103,7 +103,7 @@ const InsideCounter = ({ value, duration = 2, delay = 0, suffix = "" }) => {
 
     return (
         <span ref={ref}>
-            {display < 10 ? `${display}` : display.toLocaleString()}
+            {display < 10 ? `0${display}` : display.toLocaleString()}
             {suffix}
         </span>
     );
