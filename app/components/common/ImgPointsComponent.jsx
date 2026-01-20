@@ -8,22 +8,26 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { moveUp } from "../motionVarients";
 import H2Title from "./H2Title";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FALLBACK_IMAGE = "/assets/images/placeholder.jpg";
 
 const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
 
     const isMob = useMediaQuery({ maxWidth: 767 });
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
 
     /* ================= BACKEND DATA NORMALIZATION ================= */
-    const heading = data?.title ?? "";
+    const heading = t?.title ?? "";
     const points =
-        data?.points ??
-        data?.items?.map((item) => ({
+        t?.points ??
+        t?.items?.map((item) => ({
             text: item.title,
             image: item.image,
         })) ??
@@ -151,13 +155,19 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                     }`}
                                 >
                                     <span
-                                        className={`absolute left-0 top-0 h-full w-[3px] bg-secondary transition-transform origin-top ${
+                                        className={`absolute ${
+                                            isArabic ? "right-0" : "left-0"
+                                        } top-0 h-full w-[3px] bg-secondary transition-transform origin-top ${
                                             isActive(index) ? "scale-y-100" : "scale-y-0"
                                         }`}
                                     />
                                     <span
                                         className={`inline-block transition-transform ${
-                                            isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
+                                            isActive(index)
+                                                ? isArabic
+                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]"
+                                                    : "translate-x-[20px] xl:translate-x-[43px]"
+                                                : "translate-x-0"
                                         }`}
                                     >
                                         {item.text}

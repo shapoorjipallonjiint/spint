@@ -6,7 +6,12 @@ import H2Title from "@/app/components/common/H2Title";
 import { assets } from "@/app/assets";
 import { useRef } from "react";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+
 const WhyChooseSec = ({ data }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
     const imageParRef = useRef(null);
     // Parallax for main image container
@@ -18,8 +23,10 @@ const WhyChooseSec = ({ data }) => {
     return (
         <section className="pt30 pb30 relative overflow-hidden">
             <div
-                className="absolute -bottom-30 lg:bottom-0 right-0 lg:left-[-100px] xl:left-0 w-fit h-fit pb-20 lg:pb-25 xl:pb-30"
                 ref={imageParRef}
+                className={`absolute -bottom-30 lg:bottom-0 w-fit h-fit pb-20 lg:pb-25 xl:pb-30
+    ${isArabic ? "left-0 lg:right-[-100px] xl:right-0 -scale-x-100" : "right-0 lg:left-[-100px] xl:left-0"}
+  `}
             >
                 <MotionImage
                     width={1000}
@@ -31,9 +38,9 @@ const WhyChooseSec = ({ data }) => {
                 />
             </div>
             <div className="container relative">
-                <div className="max-w-[800px] 2xl:max-w-[900px] 3xl:max-w-[1207px] ml-auto">
+                <div className={`max-w-[800px] 2xl:max-w-[900px] 3xl:max-w-[1207px] ${isArabic ? "mr-auto" : "ml-auto"}`}>
                     <div className="border-b border-cmnbdr pb-5 xl:pb-50px">
-                        <H2Title titleText={data.title} titleColor="black" marginClass=" mb-5  xl:mb-5" />
+                        <H2Title titleText={t.title} titleColor="black" marginClass=" mb-5  xl:mb-5" />
                         <motion.p
                             variants={paragraphItem}
                             initial="hidden"
@@ -41,11 +48,11 @@ const WhyChooseSec = ({ data }) => {
                             viewport={{ amount: 0.2, once: true }}
                             className="text-19 leading-[1.526315789473684] font-light text-paragraph"
                         >
-                            {data.description}
+                            {t.description}
                         </motion.p>
                     </div>
                     <div className="">
-                        <AccordionStyle1 accData={data} />
+                        <AccordionStyle1 accData={t} />
                     </div>
                 </div>
             </div>

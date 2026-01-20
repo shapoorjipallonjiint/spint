@@ -6,6 +6,9 @@ import Banner from "../../../components/common/Banner";
 import OurValues from "./sections/OurValues";
 import PartOfUs from "./sections/PartOfUs";
 import JourneySlider from "./sections/JourneySlider";
+import DiversitySection from './sections/Diversity'
+import { diversityData } from './data'
+
 // import { workplaceData } from "./data";
 
 const Index = ({ data }) => {
@@ -19,6 +22,7 @@ const Index = ({ data }) => {
             <ImageAcc data={data.thirdSection}  />
             <OurValues data={data.fourthSection} />
             {/* <JourneySlider data={data.fifthSection} /> */}
+            <DiversitySection data={diversityData} />
             <PartOfUs data={data.sixthSection} />
         </>
     );

@@ -58,12 +58,12 @@ const ValuesSection = ({ data }) => {
             ref={sectionRef}
         >
             {/* Wrapper */}
-            <div
-                className="flex flex-col md:flex-row w-full "
-                style={{ paddingLeft: isWideScreen ? `${leftOffset}px` : undefined }}
-            >
+            <div className="flex flex-col md:flex-row w-full md:items-stretch">
                 {/* Left Section */}
-                <div className="relative w-full md:w-1/2 flex flex-col justify-center pb-6 md:py-0 ">
+                <div
+                    className="relative w-full md:w-1/2 flex flex-col justify-center pb-6 md:py-0 "
+                    style={{ paddingLeft: isWideScreen ? `${leftOffset}px` : undefined }}
+                >
                     {/* Background SVG (always fixed bottom-right) */}
                     <MotionImage
                         width={425}
@@ -81,13 +81,13 @@ const ValuesSection = ({ data }) => {
                         {/* <motion.h2 variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} className="text-60 font-light leading-[1.166666666666667] max-w-[390px] mb-[24px] md:mb-[30px]">
               {title}
             </motion.h2> */}
-                        <H2Title titleText={title} marginClass={"mb-[24px] md:mb-[30px]"} />
+                        <H2Title titleText={title} marginClass={"mb-[24px] md:mb-[30px] max-w-[10ch]"} />
                         <motion.p
                             variants={moveUp(0.2)}
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
-                            className="text-19 font-light leading-[1.473684210526316] max-w-2xl"
+                            className="text-19 font-light text-white leading-[1.473684210526316] max-w-[43ch]"
                         >
                             {description}
                         </motion.p>
@@ -100,7 +100,7 @@ const ValuesSection = ({ data }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className="w-full md:w-1/2 h-[260px] sm:h-[340px] md:h-[420px] lg:h-[90dvh] px-[15px] md:px-0 relative overflow-hidden"
+                    className="w-full md:w-1/2 h-[260px] sm:h-[340px] md:h-full px-[15px] md:px-0 relative overflow-hidden"
                     ref={imageContainerRefTwo}
                 >
                     <MotionImage
@@ -109,7 +109,7 @@ const ValuesSection = ({ data }) => {
                         style={{ y: imageY }}
                         src={image}
                         alt={imageAlt}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover scale-110"
                     />
                 </motion.div>
             </div>

@@ -5,14 +5,17 @@ import { moveUp } from "@/app/components/motionVarients";
 import { engineeringData } from "../data";
 import H2Title from "@/app/components/common/H2Title";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+
 const OurApproach = ({data}) => {
+  const t = useApplyLang(data)
   return (
     <section className="pt-text30 pb30">
       <div className="container">
-        <H2Title titleText={data.title} titleColor="black" marginClass="mb-4 md:mb-6 lg:mb-6 xl:mb-10 2xl:mb-50px" />
+        <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 md:mb-6 lg:mb-6 xl:mb-10 2xl:mb-50px" />
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-30px gap-y-8">
           {
-            data.items.map((item, index) => (
+            t.items.map((item, index) => (
               <motion.div variants={moveUp(0.2 * index)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} key={index}>
                 <div className="border-b border-cmnbdr pb-4 xl:pb-8">
                   <Image src={item.image} alt={item.imageAlt} width={40} height={40} className="w-fit lg:h-[65px]   h-10 3xl:h-[65px] object-contain" />

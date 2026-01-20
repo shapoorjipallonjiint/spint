@@ -11,9 +11,13 @@ import "./featuredProjectSlider.css";
 import H2Title from "./H2Title";
 import Image from "next/image";
 import Link from "next/link";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+
 
 const FeaturedProjectSlider = ({ data }) => {
-    console.log(data);
+    const t = useApplyLang(data)
+    const isArabic = useIsPreferredLanguageArabic();
     const swiperRef = useRef(null);
     const containerRef = useRef(null);
     const targetRef = useRef(null);
@@ -41,7 +45,7 @@ const FeaturedProjectSlider = ({ data }) => {
         let slideToAnimate;
         if (slidesPerView === 2) {
             // On 2-slide view: animate the slide next to active
-            slideToAnimate = (activeIndex + 1) % data.length;
+            slideToAnimate = (activeIndex + 1) % t.length;
         } else {
             // On 1-slide view: animate the active slide
             slideToAnimate = activeIndex;
@@ -88,7 +92,7 @@ const FeaturedProjectSlider = ({ data }) => {
                             <button className="custom-prev  w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20   hover:bg-secondary hover:text-white transition">
                                 <Image
                                     src="/assets/images/project-details/rightarrow.svg"
-                                    className="w-[16px] h-[16px] rotate-180 group-hover:brightness-0 group-hover:invert-100 transition-all duration-300"
+                                    className={`w-[16px] h-[16px] ${isArabic ? "" : "rotate-180"} group-hover:brightness-0 group-hover:invert-100 transition-all duration-300`}
                                     alt=""
                                     width={14}
                                     height={14}
@@ -97,7 +101,7 @@ const FeaturedProjectSlider = ({ data }) => {
                             <button className="custom-next w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20   hover:bg-secondary hover:text-white transition">
                                 <Image
                                     src="/assets/images/project-details/rightarrow.svg"
-                                    className="w-[16px] h-[16px] group-hover:brightness-0 group-hover:invert-100 transition-all duration-300"
+                                    className={`w-[16px] h-[16px] ${isArabic ? "rotate-180" : ""} group-hover:brightness-0 group-hover:invert-100 transition-all duration-300`}
                                     alt=""
                                     width={14}
                                     height={14}
@@ -145,7 +149,7 @@ const FeaturedProjectSlider = ({ data }) => {
                             }}
                             className="!overflow-visible"
                         >
-                            {data.map((item, i) => (
+                            {t.map((item, i) => (
                                 <SwiperSlide key={i}>
                                     <div>
                                         <Link href={`/projects/${item.slug}`}>
