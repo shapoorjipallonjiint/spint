@@ -74,7 +74,7 @@ const Environmental = ({data}) => {
                         We achieve excellence not by chance, but by design. Our quality assurance process covers every stage of the project lifecycle
                     </motion.p>
 
-        <div className="md:max-w-[70%] lg:max-w-[80%] 2xl:max-w-[74.51%] border-t border-black/20">
+        <div className="lg:max-w-[80%] 2xl:max-w-[74.51%] border-t border-black/20">
           {t.items.map((item, index) => (
             // <ValueItem key={index} item={item} />
             <motion.div key={index} variants={paragraphItem} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}>
@@ -108,7 +108,7 @@ const Environmental = ({data}) => {
 
                 <div className={`hidden lg:flex w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 ${isHovered === index ? "" : "rotate-180"
                   }`}>
-                  <Image src="/assets/images/about-us/arrow-top1.svg" width={20} height={20} alt="arrow" className="w-3 h-3 xl:w-[14px] xl:h-[14px]" />
+                  <Image src="/assets/images/about-us/arrow-top1.svg" width={20} height={20} alt="arrow" className="w-3 h-3 xl:w-[16px] xl:h-[16px]" />
                 </div>
               </div>
             </div>

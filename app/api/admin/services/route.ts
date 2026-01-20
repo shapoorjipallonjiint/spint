@@ -26,7 +26,7 @@ export async function GET() {
     const types = [
       "DesignStudio",
       "Engineering",
-      "Facade",
+      "Façade",
       "IntegratedFacilityManagement",
       "InteriorDesign",
       "Mep",

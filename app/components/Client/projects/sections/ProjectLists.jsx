@@ -518,7 +518,7 @@ const filteredCountryData = useMemo(() => {
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 19 19"
                                     fill="none"
-                                    className={`w-[14px] h-[14px] md:w-[19px] md:h-[19px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${
+                                    className={`w-[16px] h-[16px] md:w-[19px] md:h-[19px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${
                                         view === "grid" ? "brightness-100" : "brightness-0"
                                     }`}
                                 >
@@ -711,9 +711,9 @@ const filteredCountryData = useMemo(() => {
 
                                     <div>
                                         <div>
-                                            <h2 className="text20 text-29 leading-[1.344827586206897] font-light  ">
+                                            <h3 className="text20 text-29 leading-[1.344827586206897] font-light  ">
                                                 {item.firstSection.title}
-                                            </h2>
+                                            </h3>
                                         </div>
                                     </div>
                                     <div>

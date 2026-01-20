@@ -64,7 +64,11 @@ const ExpertiseSec = ({ data }) => {
     return (
         <section className="relative pt-text90 pb25 bg-primary text-white overflow-hidden" ref={sectionRef}>
             <div className="reveal-overlay4 absolute inset-0 bg-black/20 z-20"></div>
-            <div className={`hidden md:block absolute bottom-0 ${isArabic ? "left-0 -scale-x-100" : "right-0"} w-[280px]  lg:w-[519px]  md:w-[350px] md:h-[500px]  2xl:w-[519px] h-[525px] lg:h-[725px]`}>
+            <div
+                className={`hidden md:block absolute bottom-0 ${
+                    isArabic ? "left-0 -scale-x-100" : "right-0"
+                } w-[280px]  lg:w-[519px]  md:w-[350px] md:h-[500px]  2xl:w-[519px] h-[525px] lg:h-[725px]`}
+            >
                 <MotionImage width={1500} height={1000} style={{ y: shapeY }} src={assets.mainShape} alt="" />
             </div>
             <div className="container">
@@ -84,7 +88,7 @@ const ExpertiseSec = ({ data }) => {
 
                 {/* Swiper Slider */}
                 <div className="relative">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 3xl:gap-[70px]">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 3xl:gap-[30px]">
                         {/* Image Section - Swiper */}
                         <motion.div
                             variants={moveRight(0.4)}
@@ -109,7 +113,7 @@ const ExpertiseSec = ({ data }) => {
                                 }}
                                 className="expertise-swiper"
                             >
-                                {t.items.map((item, index) => (
+                                {data.items.map((item, index) => (
                                     <SwiperSlide key={index}>
                                         <div className="relative overflow-hidden shadow-2xl" ref={imageParRef}>
                                             <MotionImage
@@ -131,6 +135,7 @@ const ExpertiseSec = ({ data }) => {
                             variants={moveLeft(0.6)}
                             initial="hidden"
                             whileInView="show"
+                            className={`${isArabic ? "3xl:mr-[40px]" : "3xl:ml-[40px]"}`}
                             viewport={{ amount: 0.2, once: true }}
                         >
                             {/* Navigation - Fixed */}
@@ -138,7 +143,7 @@ const ExpertiseSec = ({ data }) => {
                                 <div className="flex items-center gap-[12px]">
                                     <button
                                         onClick={() => imageSwiper?.slidePrev()}
-                                        className="w-10 h-10 xl:w-50px xl:h-50px cursor-pointer rounded-full border border-white/20 flex items-center justify-center transition-colors"
+                                        className="w-10 h-10 xl:w-50px xl:h-50px  rounded-full border border-white/20 flex items-center justify-center transition-colors"
                                         aria-label="Previous slide"
                                     >
                                         <Image
@@ -146,12 +151,12 @@ const ExpertiseSec = ({ data }) => {
                                             height={20}
                                             src={assets.arrowLeft2}
                                             alt=""
-                                            className={`w-[14px] h-[14px] ${isArabic ? "rotate-180" : ""}`}
+                                            className="w-[14px] h-[14px]"
                                         />
                                     </button>
                                     <button
                                         onClick={() => imageSwiper?.slideNext()}
-                                        className="w-10 h-10 xl:w-50px xl:h-50px cursor-pointer rounded-full border border-white/20 flex items-center justify-center transition-colors"
+                                        className="w-10 h-10 xl:w-50px xl:h-50px rounded-full border border-white/20 flex items-center justify-center transition-colors"
                                         aria-label="Next slide"
                                     >
                                         <Image
@@ -159,13 +164,13 @@ const ExpertiseSec = ({ data }) => {
                                             height={20}
                                             src={assets.arrowRight2}
                                             alt=""
-                                            className={`w-[14px] h-[14px] ${isArabic ? "rotate-180" : ""}`}
+                                            className="w-[14px] h-[14px]"
                                         />
                                     </button>
                                 </div>
                                 <span className="text-19 leading-[1.473684210526316] ml-2">
                                     <span className="font-bold "> {String(currentSlide + 1).padStart(2, "0")}</span>/
-                                    {String(t.items.length).padStart(2, "0")}
+                                    {String(expertiseData.items.length).padStart(2, "0")}
                                 </span>
                             </div>
 

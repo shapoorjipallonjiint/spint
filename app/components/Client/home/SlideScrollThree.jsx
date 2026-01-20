@@ -1812,7 +1812,7 @@ const getVisibleSectors = () => {
                                     className="border-b border-white/30 pb-[33px] mb-1 lg:border-b-0 lg:pb-0 lg:mb-0"
                                     ref={titleOneRef}
                                 >
-                                    <h1 className="text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[20ch] leading-[1.15] lg:leading-[80px] pe-2">
+                                    <h1 className="text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] lg:leading-[80px] pe-2">
                                         {data.firstSection.title}
                                     </h1>
                                 </div>
@@ -1825,7 +1825,7 @@ const getVisibleSectors = () => {
                                     className="flex flex-col lg:flex-row lg:items-center gap-[17px] lg:gap-2"
                                     ref={subtitleRef}
                                 >
-                                    <h4 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.5] lg:max-w-[13ch]">
+                                    <h4 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.407] lg:max-w-[13ch]">
                                         {data.firstSection.subTitle.text}
                                     </h4>
                                     <Link href={"/about-us"}>
@@ -1920,7 +1920,7 @@ const getVisibleSectors = () => {
                                     {data.secondSection.title}
                                 </h1>
                                 <div dangerouslySetInnerHTML={{ __html: data.secondSection.subTitle }}></div>
-                                {/* <Link
+                               <Link
                                     ref={spbtn}
                                     href={data.thirdSection.link}
                                     className=" hidden lg:flex text-[14px] mb-4 lg:mb-0 mt-5  3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-white lg:text-white uppercase  items-center gap-2 cursor-pointer group "
@@ -1949,7 +1949,7 @@ const getVisibleSectors = () => {
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </Link> */}
+                                </Link>  
                                 {/* <h3 className="text-[20px] lg:text-18 xl:text-24 font-light max-w-xl mb-[33px] lg:mb-0">
                                     With a legacy of over{" "}
                                     <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
@@ -2605,7 +2605,7 @@ const getVisibleSectors = () => {
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
                 <section id="section5" className="h-screen relative overflow-hidden whitebgref scroll-area">
-                    <div className="lg:grid lg:grid-cols-[600px_auto] xl:grid-cols-[800px_auto]  3xl:grid-cols-[1021px_auto] h-full">
+                    <div className="lg:grid lg:grid-cols-[600px_auto] xl:grid-cols-[800px_auto]  3xl:grid-cols-[884px_auto] h-full">
                         {/* left start */}
                         <div ref={sectorLeft} className="flex lg:h-full bg-primary lg:bg-transparent">
                             <div className="w-full pt-[16.5dvh] pl-5 lg:pt-25 xl:pt-25 3xl:pt-33 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]">
@@ -2701,7 +2701,7 @@ const getVisibleSectors = () => {
                                                             )}
 
                                                             <h3
-                                                                className={`hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
+                                                                className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
                                                                     isActive
                                                                         ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
                                                                         : "text-[14px] lg:text-19 leading-[1.842105263157895]"

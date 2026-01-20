@@ -238,7 +238,7 @@ const LeaderBox = ({ data }) => {
             />
 
             <div className="container">
-                <div className=" border-cmnbdr relative overflow-hidden mb-5 xl:mb-20 2xl:mb-25" ref={imageContainerRef}>
+                <div className=" border-cmnbdr relative overflow-hidden mb-8 md:mb-11 xl:mb-15 2xl:mb-22 3xl:mb-30" ref={imageContainerRef}>
                     {/* ================= LEADER ONE ================= */}
                     {/* {data.items.map((item,index)=>(
                         <div key={index} className="grid items-center grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[739px_auto] pt-5 lg:pt-10 3xl:pt-18 pb-10 3xl:pb-[135px] gap-y-6 lg:gap-y-10">
@@ -338,8 +338,8 @@ const LeaderBox = ({ data }) => {
                         return (
                             <div
                                 key={index}
-                                className={`grid  grid-cols-1 lg:grid-cols-2 first:pt-5 lg:first:pt-10 3xl:first:pt-18
-         pb-10 3xl:pb-[100px] gap-y-6 lg:gap-y-10
+                                className={`grid  grid-cols-1 lg:grid-cols-2  
+       last:pb-0  pb-10 3xl:pb-[100px] gap-y-6 lg:gap-y-10
         ${isReverse ? "lg:[&>*:first-child]:order-2 lg:[&>*:last-child]:order-1 3xl:grid-cols-[auto_739px]" : "3xl:grid-cols-[739px_auto]"}
       `}
                             >
@@ -348,41 +348,40 @@ const LeaderBox = ({ data }) => {
                                     <MotionImage
                                         width={1000}
                                         height={1920}
-                                        style={{ y: imageY }}
-                                        variants={fadeIn(0.6)}
-                                        initial="hidden"
-                                        whileInView="show"
-                                        viewport={{ amount: 0.1, once: true }}
+                                        // style={{ y: imageY }}
+                                        // variants={fadeIn(0.6)}
+                                        // initial="hidden"
+                                        // whileInView="show"
+                                        // viewport={{ amount: 0.1, once: true }}
                                         src={item.image}
                                         alt={item.imageAlt}
                                         className={`relative w-fit object-contain z-20
-            h-[250px] xs:h-[400px] xl:h-[450px] 2xl:h-[600px] 3xl:h-[735.62px] max-w-[710px]
             ${isReverse ? "ml-auto mr-3 lg:mr-auto" : "mr-auto ml-3 lg:ml-auto 2xl:ml-3 3xl:ml-auto lg:mr-2"}
           `}
                                     />
 
                                     <motion.div
-                                        style={{ y: imageY }}
-                                        variants={fadeIn(0.2)}
-                                        initial="hidden"
-                                        whileInView="show"
-                                        viewport={{ amount: 0.1, once: true }}
+                                        // style={{ y: imageY }}
+                                        // variants={fadeIn(0.2)}
+                                        // initial="hidden"
+                                        // whileInView="show"
+                                        // viewport={{ amount: 0.1, once: true }}
                                         className="absolute bottom-0 left-0 h-[80%] lg:h-[70%] xl:h-[80%] 3xl:h-[612px] w-full bg-primary z-10"
                                     />
 
                                     <motion.div
-                                        style={{ y: imageY }}
-                                        variants={fadeIn(0.4)}
-                                        initial="hidden"
-                                        whileInView="show"
-                                        viewport={{ amount: 0.1, once: true }}
+                                        // style={{ y: imageY }}
+                                        // variants={fadeIn(0.4)}
+                                        // initial="hidden"
+                                        // whileInView="show"
+                                        // viewport={{ amount: 0.1, once: true }}
                                         className="absolute bottom-0 left-0 h-[60%] lg:h-[60%] xl:h-[60%] 3xl:h-[66%] w-full bg-gradient-to-t from-primary to-transparent z-30"
                                     />
                                 </div>
 
                                 {/* CONTENT */}
                                 <div
-                                    className={`pt-0 2xl:pt-[68px]
+                                    className={` lg:pt-[69px]
           ${isReverse ? ( isArabic ? "lg:pl-8 xl:pl-15 2xl:pl-17 3xl:pl-[97px]" : "lg:pr-8 xl:pr-15 2xl:pr-17 3xl:pr-[97px]") : (isArabic ? "lg:pr-8 xl:pr-15 2xl:pr-17 3xl:pr-[97px]" : "lg:pl-8 xl:pl-15 2xl:pl-17 3xl:pl-[97px]")}
         `}
                                 >
@@ -399,7 +398,7 @@ const LeaderBox = ({ data }) => {
                                     </motion.h3>
 
                                     <div
-                                        className={`md:max-h-[200px] lg:max-h-[250px] xl:max-h-[385px] lg:overflow-y-auto scrollbar-thin scrollbar-pointer ${isArabic ? "pl-2" : "pr-2"}`}
+                                        className={` lg:max-h-[250px] xl:max-h-[385px] lg:overflow-y-auto scrollbar-thin scrollbar-pointer ${isArabic ? "pl-2" : "pr-2"}`}
                                         style={{ overscrollBehavior: "contain" }}
                                         onWheel={(e) => {
                                             const el = e.currentTarget;

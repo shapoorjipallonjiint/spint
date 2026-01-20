@@ -49,7 +49,7 @@ const CoreLeardershipTeam = ({ data }) => {
 
     return (
         <section className="pb30 relative overflow-hidden" ref={sectionRef}>
-            <div className={`${selected.id === "all" ? "visible" : "hidden"}`}>
+            {/* <div className={`${selected.id === "all" ? "visible" : "hidden"}`}>
                 <MotionImage
                     style={{ y: shapeY }}
                     src={assets.mainShape4}
@@ -58,9 +58,9 @@ const CoreLeardershipTeam = ({ data }) => {
                     alt=""
                     className={`absolute -z-10 ${isArabic ? "left-0 -scale-x-100" : "right-0"} bottom-0 2xl:bottom-50 w-[300px] h-fit 3xl:w-[648px] max-h-[908px]`}
                 />
-            </div>
+            </div> */}
 
-            <div className="container">
+            <div className="container border-t border-black/20 pt25">
                 <div className="flex flex-wrap gap-y-5 justify-between items-center mb-6 lg:mb-10 xl:mb-12 2xl:mb-15 3xl:mb-18">
                     <H2Title titleText={t?.title} />
 
@@ -149,7 +149,7 @@ const CoreLeardershipTeam = ({ data }) => {
                                         height={600}
                                         src={member.image}
                                         alt={member.imageAlt}
-                                        className="w-full xs:w-fit max-h-full object-contain rounded-xl absolute bottom-0"
+                                        className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0"
                                     />
                                     <div className="bg-f5f5 xl:w-full h-[60%] 2xl:h-[234px] z-[-1]"></div>
                                     <div className={`opacity-0 group-hover:opacity-100 transition-all duration-300 absolute ${isArabic ? "right-0" : "left-0"} bottom-0 w-[50px] h-[50px] xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}>

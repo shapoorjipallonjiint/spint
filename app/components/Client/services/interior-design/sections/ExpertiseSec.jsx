@@ -33,7 +33,7 @@ const ExpertiseSec = ({data}) => {
                 <div className="relative overflow-hidden" >
                     <MotionImage width={500} height={400} variants={moveUp(0.2*index)} initial="hidden" whileInView="show" viewport={{ amount: 0.6, once: true }} src={item.image} alt={item.imageAlt} className="w-full h-[200px] lg:h-[250px] 2xl:h-[300px] 3xl:h-[333px] object-cover " />
                   <div className="border-b lg:border-l lg:border-b-0 border-cmnbdr p-4 xl:p-10 h-full">
-                    <motion.h3 variants={moveDown(0.2*index)} initial="hidden" whileInView="show" viewport={{ amount: 0.6, once: true }} className="text-24 2xl:text-29 leading-tight 3xl:leading-[1.724137931034483] font-light mb-2 2xl:mb-3">{item.title}</motion.h3>
+                    <motion.h3 variants={moveDown(0.2*index)} initial="hidden" whileInView="show" viewport={{ amount: 0.6, once: true }} className="text-24 2xl:text-29 leading-tight 3xl:leading-[1.724137931034483] font-light mb-2 2xl:mb-3 tracking-[-.5px]">{item.title}</motion.h3>
                     <motion.p variants={moveDown(0.2*index)} initial="hidden" whileInView="show" viewport={{ amount: 0.6, once: true }} className="text-paragraph text-19 leading-[1.526315789473684] font-light">{item.description}</motion.p>
                   </div>
                 </div>

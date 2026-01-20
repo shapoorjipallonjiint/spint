@@ -754,17 +754,17 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                             </nav>
                         )}
                     </div>
-                    <div className="left-spacing fixed ">
+                    <div className="left-spacing fixed h-full py-[50px]">
                         <div
                             ref={headerRef}
-                            className={`shadow ml-0 my-12 3xl:my-16 w-[125px] 3xl:w-[133px] h-[calc(100vh-100px)] 3xl:h-[814px] relative
+                            className={`shadow ml-0  w-[125px] 3xl:w-[133px] h-full relative
       transition-all duration-300
       ${menuOpen ? "bg-white" : "bg-primary"}
   `}
                         >
                             <div className="bg-transparent  w-full absolute z-[-2] bxone"></div>
                             <div className="bg-primary h-[20%] w-full absolute z-[-1] bottom-0 bxtwo"></div>
-                            <div className="flex flex-col justify-between h-full pt-10 pb-6 z-10 w-full">
+                            <div className="flex flex-col justify-between h-full pt-10 pb-[21px] z-10 w-full">
                                 <div className="flex justify-center items-center">
                                     {!menuOpen ? (
                                         <Image
@@ -817,20 +817,20 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
 
                                     <button
                                         onClick={() => {setSearchActive(false);setMenuOpen((prev) => !prev)}}
-                                        className="relative w-[31px] h-[28px] flex items-center justify-center cursor-pointer 2xl:pt-[70px]"
+                                        className="relative w-[31px] h-[24px] flex items-center justify-center cursor-pointer 2xl:pt-[70px]"
                                         aria-label="Menu Toggle"
                                     >
                                         <svg
                                             width="31"
-                                            height="28"
-                                            viewBox="0 0 31 28"
+                                            height="24"
+                                            viewBox="0 0 31 24"
                                             fill="none"
                                             xmlns="http://www.w3.org/2000/svg"
                                             className={`menu-icon ${menuOpen ? "open" : ""} logsc-btn`}
                                         >
                                             <line x1="0" y1="2" x2="31" y2="2" className="line line1" />
-                                            <line x1="0" y1="14" x2="31" y2="14" className="line line2" />
-                                            <line x1="0" y1="26" x2="31" y2="26" className="line line3" />
+                                            <line x1="0" y1="12" x2="31" y2="12" className="line line2" />
+                                            <line x1="0" y1="22" x2="31" y2="22" className="line line3" />
                                         </svg>
                                     </button>
                                 </div>

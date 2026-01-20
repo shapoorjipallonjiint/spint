@@ -73,11 +73,11 @@ const DivisionExpertise = ({ data }) => {
                     <div className="flex gap-3    ">
                                 <button className="custom-prev w-10 h-10 xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20 hover:bg-secondary hover:text-white transition"
                                  onClick={() => swiperRef.current?.slidePrev()} >
-                                  <Image src="/assets/images/project-details/rightarrow.svg" className="w-[14px] h-[14px]  rotate-180 group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
+                                  <Image src="/assets/images/project-details/rightarrow.svg" className="w-[16px] h-[16px]  rotate-180 group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
                                 </button>
                                 <button className="custom-next w-10 h-10 xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20 hover:bg-secondary hover:text-white transition"
                                 onClick={() => swiperRef.current?.slideNext()}>
-                             <Image src="/assets/images/project-details/rightarrow.svg" className="w-[14px] h-[14px]  group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
+                             <Image src="/assets/images/project-details/rightarrow.svg" className="w-[16px] h-[16px]  group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
                                 </button>
                               </div>
                 </div>
