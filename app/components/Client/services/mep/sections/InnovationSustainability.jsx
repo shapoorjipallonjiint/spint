@@ -6,8 +6,12 @@ import H2Title from "@/app/components/common/H2Title";
 import { assets } from "@/app/assets";
 import { moveUp, moveLeft } from "@/app/components/motionVarients";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const InnovationSustainability = ({ data }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     const [activeIndex, setActiveIndex] = useState(1);
@@ -71,8 +75,16 @@ const InnovationSustainability = ({ data }) => {
                 style={{ y: shapeY }}
                 src={assets.mainShape2}
                 alt=""
-                className="absolute bottom-50 lg:bottom-3 right-0 lg:left-0  2xl:left-[-40px]  3xl:left-0 w-[152px] lg:w-[30%] 2xl:w-[430px] 3xl:w-[460px] lg:bottom-40   2xl:bottom-50  3xl:bottom-80  h-auto object-contain"
+                className={`absolute bottom-50 lg:bottom-3 w-[152px] lg:w-[30%] 2xl:w-[430px] 3xl:w-[460px]
+    lg:bottom-40 2xl:bottom-50 3xl:bottom-80 h-auto object-contain
+    ${
+        isArabic
+            ? "left-0 lg:right-0 2xl:right-[-40px] 3xl:right-0 -scale-x-100"
+            : "right-0 lg:left-0 2xl:left-[-40px] 3xl:left-0"
+    }
+  `}
             />
+
             <div className="container mx-auto px-4">
                 <motion.div
                     variants={moveUp(0.2)}
@@ -80,25 +92,30 @@ const InnovationSustainability = ({ data }) => {
                     whileInView="show"
                     viewport={{ amount: 0.6, once: true }}
                 >
-                    <H2Title titleText={data.title} titleColor="black" marginClass="mb-5 lg:mb-10 xl:mb-50px 3xl:mb-18" />
+                    <H2Title titleText={t.title} titleColor="black" marginClass="mb-5 lg:mb-10 xl:mb-50px 3xl:mb-18" />
                 </motion.div>
                 <div className="grid lg:grid-cols-2 xl:grid-cols-[0.8fr_1.1fr] 3xl:grid-cols-[1fr_916px] gap-8 lg:gap-13 items-center">
                     {/* LEFT SIDE */}
                     <div className="relative h-full">
                         {/* Vertical line – perfectly centered with circles */}
-                        <div className="pointer-events-none absolute top-0 bottom-0 left-4 w-px bg-gradient-to-b from-primary to-secondary" />
+                        <div
+                            className={`pointer-events-none absolute top-0 bottom-0 w-px bg-gradient-to-b from-primary to-secondary ${
+                                isArabic ? "right-4" : "left-4"
+                            }`}
+                        />
+
                         <div className="flex flex-col justify-center h-full">
-                            {data.items.map((item, index) => (
+                            {t.items.map((item, index) => (
                                 <motion.div
                                     key={item.id}
                                     className="flex"
                                     style={{
-                                        marginBottom: index < data.items.length - 1 ? getSpacing(index) : "0",
+                                        marginBottom: index < t.items.length - 1 ? getSpacing(index) : "0",
                                     }}
                                     initial={false}
                                     animate={{
                                         marginBottom:
-                                            index < data.items.length - 1 ? (isMobile ? "30px" : getSpacing(index)) : "0",
+                                            index < t.items.length - 1 ? (isMobile ? "30px" : getSpacing(index)) : "0",
                                     }}
                                     transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                                 >
@@ -149,12 +166,16 @@ const InnovationSustainability = ({ data }) => {
                                         initial="hidden"
                                         whileInView="show"
                                         viewport={{ amount: 0.6, once: true }}
-                                        className="flex-1 pl-8 md:pl-10 2xl:pl-12 "
+                                        className={`flex-1 ${
+                                            isArabic ? "pr-8 md:pr-10 2xl:pr-12" : "pl-8 md:pl-10 2xl:pl-12"
+                                        }`}
                                     >
                                         <motion.button
                                             onClick={() => handleAccordionClick(index)}
-                                            className="w-full text-left group flex items-start cursor-pointer"
-                                            whileHover={{ x: 4 }}
+                                            className={`w-full group flex items-start cursor-pointer ${
+                                                isArabic ? "text-right" : "text-left"
+                                            }`}
+                                            whileHover={{ x: isArabic ? -4 : 4 }}
                                             transition={{ duration: 0.2 }}
                                         >
                                             <motion.h3
@@ -194,7 +215,9 @@ const InnovationSustainability = ({ data }) => {
                                                         animate={{ y: 0 }}
                                                         exit={{ y: -10 }}
                                                         transition={{ duration: 0.4 }}
-                                                        className="text-16 2xl:text-19 leading-[1.473684210526316] text-paragraph font-light pr-8 mt-4 2xl:mt-[25px] max-w-full xl:max-w-[37ch]"
+                                                        className={`text-16 2xl:text-19 leading-[1.473684210526316] text-paragraph font-light mt-4 2xl:mt-[25px] max-w-full xl:max-w-[37ch] ${
+                                                            isArabic ? "pl-8" : "pr-8"
+                                                        }`}
                                                     >
                                                         {item.description}
                                                     </motion.p>
@@ -209,7 +232,7 @@ const InnovationSustainability = ({ data }) => {
 
                     {/* RIGHT SIDE – unchanged */}
                     <motion.div
-                        variants={moveLeft(0.2)}
+                        variants={isArabic ? moveLeft(-0.2) : moveLeft(0.2)}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ amount: 0.6, once: true }}
@@ -225,8 +248,8 @@ const InnovationSustainability = ({ data }) => {
                                     width={1000}
                                     height={1000}
                                     style={{ y: imageY }}
-                                    src={data.items[prevIndexRef.current]?.image}
-                                    alt={data.items[prevIndexRef.current]?.title}
+                                    src={t.items[prevIndexRef.current]?.image}
+                                    alt={t.items[prevIndexRef.current]?.title}
                                     className="absolute inset-0 w-full h-full object-cover scale-125 lg:scale-100"
                                 />
 
@@ -242,8 +265,8 @@ const InnovationSustainability = ({ data }) => {
                                         width={1000}
                                         height={1000}
                                         style={{ y: imageY }}
-                                        src={data.items[activeIndex]?.image}
-                                        alt={data.items[activeIndex]?.title}
+                                        src={t.items[activeIndex]?.image}
+                                        alt={t.items[activeIndex]?.title}
                                         className="absolute inset-0 w-full h-full object-cover scale-125 lg:scale-100"
                                         initial={{ opacity: 0, scale: 1.1 }}
                                         animate={{ opacity: 1, scale: 1 }}
@@ -266,8 +289,11 @@ const InnovationSustainability = ({ data }) => {
                                 repeat: Infinity,
                                 ease: "linear",
                             }}
-                            className="absolute -top-4 -right-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -z-10"
+                            className={`absolute -top-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -z-10 ${
+                                isArabic ? "-left-4" : "-right-4"
+                            }`}
                         />
+
                         <motion.div
                             animate={{
                                 rotate: [360, 0],
@@ -278,7 +304,9 @@ const InnovationSustainability = ({ data }) => {
                                 repeat: Infinity,
                                 ease: "linear",
                             }}
-                            className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl -z-10"
+                            className={`absolute -bottom-4 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl -z-10 ${
+                                isArabic ? "-right-4" : "-left-4"
+                            }`}
                         />
                     </motion.div>
                 </div>
