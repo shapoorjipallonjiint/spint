@@ -63,14 +63,14 @@ const NextProject = ({ slug, title, thumbnail }) => {
                 <div className="grid grid-cols-1 lg:grid-cols-[auto_550px] xl:grid-cols-[auto_1fr] 3xl:grid-cols-[auto_961px] gap-8 lg:gap-20 xl:gap-[137px]">
                     <div className="mb-2 md:mb-3 lg:mb-10 xl:mb-[90px] flex flex-col justify-between items-left pt-0 2xl:pt-[45px] ">
                         <div className=" h-full">
-                            <h2 className="text-20 2xl:text-29 font-light leading-[1.17] lg:pb-5 text-paragraph">
+                            <div className="text-20 2xl:text-29 font-light leading-[1.17] lg:pb-5 text-paragraph">
                                 <SplitTextAnimation
                                     children={"Next Project"}
                                     staggerDelay={0.1}
                                     animationDuration={0.8}
                                     delay={0.2}
                                 />
-                            </h2>
+                            </div>
                             <div className=" flex lg:flex-col justify-between lg:justify-start xl:justify-between items-center lg:items-start h-full  ">
                                 {/* <p className="text-60 font-light leading-[1.17] text-black lg:max-w-[12ch] md:mb-3 lg:mb-[21px]">
                 <SplitTextAnimation
