@@ -5,11 +5,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { moveUp } from "@/app/components/motionVarients";
 import Image from "next/image";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 export default function TabStyle1({ data }) {
-    const [activeId, setActiveId] = useState(data[1]?._id || data[0]._id);
+    const isArabic = useIsPreferredLanguageArabic();
+    const t = useApplyLang(data);
+    const [activeId, setActiveId] = useState(t[1]?._id || t[0]._id);
     const tabsContainerRef = useRef(null);
     const itemRefs = useRef({});
+
+    function normalizeHtml(html) {
+        if (!html) return "";
+        return html.replace(/&nbsp;/g, " ");
+    }
+
     useEffect(() => {
         if (!tabsContainerRef.current) return;
         const buttons = tabsContainerRef.current.querySelectorAll(".tab-style1-btn");
@@ -23,11 +33,11 @@ export default function TabStyle1({ data }) {
                 duration: 0.5,
                 ease: "power3.out",
                 stagger: 0.08,
-            }
+            },
         );
     }, []);
 
-    const activeTab = data.find((t) => t._id === activeId);
+    const activeTab = t.find((t) => t._id === activeId);
 
     return (
         <div className="w-full">
@@ -35,9 +45,11 @@ export default function TabStyle1({ data }) {
             <div className="max-w-[1345px]">
                 <div
                     ref={tabsContainerRef}
-                    className="flex flex-col md:flex-row flex-wrap w-full overflow-hidden gap-5 lg:gap-[32px]"
+                    className={`flex flex-col md:flex-row ${
+                        isArabic ? "md:flex-row-reverse" : ""
+                    } flex-wrap w-full overflow-hidden gap-5 lg:gap-[32px]`}
                 >
-                    {data.map((tab, index) => {
+                    {t.map((tab, index) => {
                         const isActive = tab._id === activeId;
 
                         return (
@@ -60,7 +72,9 @@ export default function TabStyle1({ data }) {
                                             }, 250); // wait for accordion animation
                                         }
                                     }}
-                                    className={`tab-style1-btn w-full pb-4 flex flex-col  text-left border-b h-full 
+                                    className={`tab-style1-btn w-full pb-4 flex flex-col  ${
+                                        isArabic ? "text-right" : "text-left"
+                                    } border-b h-full 
                     ${isActive ? "border-b-3 border-secondary" : "border-white bg-transparent "}`}
                                 >
                                     <span
@@ -119,7 +133,9 @@ export default function TabStyle1({ data }) {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -18 }}
                             transition={{ duration: 0.45, ease: "easeOut" }}
-                            className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-[650px_auto] gap-10 xl:gap-x-18 items-center"
+                            className={`grid grid-cols-1 lg:grid-cols-2 ${
+                                isArabic ? "2xl:grid-cols-[auto_650px]" : "2xl:grid-cols-[650px_auto]"
+                            } gap-10 xl:gap-x-18 items-center`}
                         >
                             {/* Left image */}
                             <motion.div
@@ -150,36 +166,11 @@ export default function TabStyle1({ data }) {
                                 </motion.h3>
 
                                 <div
-                                    dangerouslySetInnerHTML={{ __html: activeTab.description }}
-                                    className="tab-style1-description text-19"
-                                ></div>
-                                {/* <motion.p
-                  variants={moveUp(0.8)}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ amount: 0.2, once: true }}
-                  className="text-19 font-extralight"
-                >
-                  {activeTab.desc}
-                </motion.p> */}
-
-                                {/* {activeTab.points?.length > 0 && (
-                  <ul className="space-y-2 mt-4 xl:mt-[25px]">
-                    {activeTab.points.map((point, idx) => (
-                      <motion.li
-                        key={idx}
-                        variants={moveUp(0.6 + 0.2 * idx)}
-                        initial="hidden"
-                        whileInView="show"
-                        viewport={{ amount: 0.2, once: true }}
-                        className="flex items-start gap-2 xl:gap-[18px] font-extralight"
-                      >
-                        <span className="mt-[7px] h-[7px] w-[7px] bg-secondary" />
-                        <span>{point}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                )} */}
+                                    className="tab-style1-description"
+                                    dangerouslySetInnerHTML={{
+                                        __html: normalizeHtml(activeTab.description),
+                                    }}
+                                />
                             </div>
                         </motion.div>
                     )}

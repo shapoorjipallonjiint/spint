@@ -2825,7 +2825,7 @@ const getVisibleSectors = () => {
                                                             trigger={currentVisibleSlide === "section5"}
                                                             delay={delayProjects}
                                                         />
-                                                        +
+                                                        {/* + */}
                                                     </h3>
                                                 </div>
                                                 <p className="text-[14px]  md:text-[16px]  lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]">
@@ -2848,7 +2848,7 @@ const getVisibleSectors = () => {
                                                             trigger={currentVisibleSlide === "section5"}
                                                             delay={delayProjects}
                                                         />
-                                                        +
+                                                        {/* + */}
                                                     </h3>
                                                 </div>
                                                 <p className="text-[14px] md:text-[16px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]">
