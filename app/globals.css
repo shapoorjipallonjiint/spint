@@ -777,6 +777,26 @@ body::-webkit-scrollbar {
 }
 
 
+@media (min-width: 1280px) {
+  [dir="rtl"] .bdrrst:nth-child(3n),
+  [dir="rtl"] .bdrrst:nth-child(7n) {
+    @apply border-l border-r;
+  }
+}
+
+@media (max-width: 1279px) {
+  [dir="rtl"] .bdrrst:nth-child(2n),
+  [dir="rtl"] .bdrrst:nth-child(7n) {
+    @apply border-l border-r-0;
+  }
+}
+
+@media (max-width: 767px) {
+  [dir="rtl"] .bdrrst {
+    @apply border-l border-r-0 border-t;
+  }
+}
+
 
 /* hide native scrollbar when desired */
 .scrollbar-hidden::-webkit-scrollbar {
@@ -811,6 +831,7 @@ body::-webkit-scrollbar {
 .ulst li:nth-last-child(1) .laststs {
   display: none;
 }
+
 
 .pt25 {
   @apply pt-8 md:pt-11 xl:pt-15 2xl:pt-22 3xl:pt-25;
