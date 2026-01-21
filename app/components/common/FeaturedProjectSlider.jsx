@@ -14,9 +14,8 @@ import Link from "next/link";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
-
 const FeaturedProjectSlider = ({ data }) => {
-    const t = useApplyLang(data)
+    const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
     const swiperRef = useRef(null);
     const containerRef = useRef(null);
@@ -76,6 +75,8 @@ const FeaturedProjectSlider = ({ data }) => {
         return () => window.removeEventListener("resize", updateMargin);
     }, []);
 
+    const hasValidImage = (src) => typeof src === "string" && src?.trim().length > 0;
+
     return (
         <section className="pt-text90 pb25 relative bg-f5f5 overflow-hidden" ref={sectionRef}>
             <div className="xl:px-[15px] md:pe-0 relative">
@@ -92,7 +93,9 @@ const FeaturedProjectSlider = ({ data }) => {
                             <button className="custom-prev  w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20   hover:bg-secondary hover:text-white transition">
                                 <Image
                                     src="/assets/images/project-details/rightarrow.svg"
-                                    className={`w-[16px] h-[16px] ${isArabic ? "" : "rotate-180"} group-hover:brightness-0 group-hover:invert-100 transition-all duration-300`}
+                                    className={`w-[16px] h-[16px] ${
+                                        isArabic ? "" : "rotate-180"
+                                    } group-hover:brightness-0 group-hover:invert-100 transition-all duration-300`}
                                     alt=""
                                     width={14}
                                     height={14}
@@ -101,7 +104,9 @@ const FeaturedProjectSlider = ({ data }) => {
                             <button className="custom-next w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20   hover:bg-secondary hover:text-white transition">
                                 <Image
                                     src="/assets/images/project-details/rightarrow.svg"
-                                    className={`w-[16px] h-[16px] ${isArabic ? "rotate-180" : ""} group-hover:brightness-0 group-hover:invert-100 transition-all duration-300`}
+                                    className={`w-[16px] h-[16px] ${
+                                        isArabic ? "rotate-180" : ""
+                                    } group-hover:brightness-0 group-hover:invert-100 transition-all duration-300`}
                                     alt=""
                                     width={14}
                                     height={14}
@@ -154,21 +159,40 @@ const FeaturedProjectSlider = ({ data }) => {
                                     <div>
                                         <Link href={`/projects/${item.slug}`}>
                                             <div className="overflow-hidden">
-                                                <Image
-                                                    width={700}
-                                                    height={500}
-                                                    src={item.thumbnail}
-                                                    className={`w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] object-cover ${
-                                                        !hasScrolledIntoView
-                                                            ? "initial-hidden-img"
-                                                            : animatingSlide === i || initialAnimating
-                                                            ? "animate-slide-img"
-                                                            : "initial-visible"
-                                                    }`}
-                                                    alt={item.thumbnailAlt}
-                                                />
+                                                {hasValidImage(item.thumbnail) ? (
+                                                    <Image
+                                                        width={700}
+                                                        height={500}
+                                                        src={item.thumbnail}
+                                                        alt={item.thumbnailAlt || "Project image"}
+                                                        className={`w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] object-cover ${
+                                                            !hasScrolledIntoView
+                                                                ? "initial-hidden-img"
+                                                                : animatingSlide === i || initialAnimating
+                                                                ? "animate-slide-img"
+                                                                : "initial-visible"
+                                                        }`}
+                                                    />
+                                                ) : (
+                                                    <div
+                                                        className={`w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px]
+        bg-primary flex items-center justify-center text-white
+        ${
+            !hasScrolledIntoView
+                ? "initial-hidden-img"
+                : animatingSlide === i || initialAnimating
+                ? "animate-slide-img"
+                : "initial-visible"
+        }`}
+                                                    >
+                                                        <span className="text-29  font-medium">
+                                                            {"700"} × {"500"}
+                                                        </span>
+                                                    </div>
+                                                )}
                                             </div>
                                         </Link>
+
                                         <div>
                                             <div className="border-b border-cmnbdr pt-5 3xl:pt-7 pb-5 xl:pb-7">
                                                 <div className="overflow-hidden">

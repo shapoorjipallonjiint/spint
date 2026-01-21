@@ -6,12 +6,16 @@ import { assets } from "@/app/assets/index";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-// import { wtrData } from '../data';
 import H2Title from "@/app/components/common/H2Title";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp } from "@/app/components/motionVarients";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+
 const ExpertiseSec = ({ data }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
@@ -80,24 +84,39 @@ const ExpertiseSec = ({ data }) => {
         setActiveIndex(activeIndex);
     };
 
-    const activeImage = data?.items?.[activeIndex]?.image ?? data?.items?.[0]?.image;
-    const activelist = data?.items?.[activeIndex]?.description ?? data?.items?.[0]?.description;
-    const activeItem = data?.items?.[activeIndex];
+    const activeImage = t?.items?.[activeIndex]?.image ?? t?.items?.[0]?.image;
+    const activelist = t?.items?.[activeIndex]?.description ?? t?.items?.[0]?.description;
+    const activeItem = t?.items?.[activeIndex];
 
-    console.log(activelist);
+    const normalizeHtml = (html = "") => html.replace(/&nbsp;/g, " ");
 
     return (
         <section className="relative pt-text90 pb25 bg-primary text-white overflow-hidden" ref={sectionRef}>
-            <div className="absolute bottom-[-358px] lg:bottom-[-150px] 3xl:bottom-0 right-0 w-[200px] lg:w-[400px] 3xl:w-[573px] h-[803px]">
+            <div
+                className={`absolute bottom-[-358px] lg:bottom-[-150px] 3xl:bottom-0 w-[200px] lg:w-[400px] 3xl:w-[573px] h-[803px]
+    ${isArabic ? "left-0 -scale-x-100" : "right-0"}`}
+            >
                 <MotionImage width={1500} height={1000} style={{ y: shapeY }} src={assets.mainShape} alt="" />
             </div>
+
             <div className="container">
                 {/* Header */}
-                <H2Title titleText={data.title} titleColor="white" marginClass="mb-4 xl:mb-50px" />
+                <H2Title titleText={t.title} titleColor="white" marginClass="mb-4 xl:mb-50px" />
 
                 {/* Swiper Slider */}
                 <div className="relative overflow-hidden">
-                    <div className="grid grid-cols-1 md:grid-cols-[50%_1fr] 2xl:grid-cols-[55%_1fr] 3xl:grid-cols-[961px_1fr] gap-4 lg:gap-8 xl:gap-[70px]  ">
+                    <div
+                        className={`grid grid-cols-1
+    md:grid-cols-[50%_1fr]
+    2xl:grid-cols-[55%_1fr]
+    3xl:grid-cols-[961px_1fr]
+    ${
+        isArabic
+            ? "md:[grid-template-columns:1fr_50%] 2xl:[grid-template-columns:1fr_55%] 3xl:[grid-template-columns:1fr_961px]"
+            : ""
+    }
+    gap-4 lg:gap-8 xl:gap-[70px]`}
+                    >
                         <div className="h-full relative overflow-hidden" ref={imageContainerRef}>
                             {/* HEIGHT HOLDER (keeps layout same) */}
                             <div className="h-[200px] md:h-full w-full" />
@@ -107,7 +126,7 @@ const ExpertiseSec = ({ data }) => {
                                 width={1500}
                                 height={1000}
                                 style={{ y: imageY }}
-                                src={data.items[prevIndexRef.current]?.image}
+                                src={t.items[prevIndexRef.current]?.image}
                                 alt=""
                                 className="absolute inset-0 h-[200px] scale-y-110 md:h-full w-full object-cover"
                             />
@@ -143,12 +162,12 @@ const ExpertiseSec = ({ data }) => {
                                     onMouseMove={handleMouseMove}
                                     onMouseLeave={handleLeave}
                                 >
-                                    {data.items.map((item, index) => (
+                                    {t.items.map((item, index) => (
                                         <motion.div
                                             variants={moveUp(0.4 + 0.1 * index)}
                                             initial="hidden"
                                             whileInView={"show"}
-                                            viewport={{ amount: 0.2, once: false }}
+                                            viewport={{ amount: 0.2, once: true }}
                                             className="flex items-center gap-2 group w-fit"
                                             key={index}
                                             ref={(el) => setItemRef(el, index)}
@@ -203,14 +222,14 @@ const ExpertiseSec = ({ data }) => {
                                         variants={moveUp(0.8)}
                                         initial="hidden"
                                         whileInView="show"
-                                        viewport={{ amount: 0.2, once: false }}
+                                        viewport={{ amount: 0.2, once: true }}
                                         className="w-[66px] h-[66px] bg-secondary rounded-full flex items-center justify-center"
                                     >
                                         <motion.div
                                             variants={moveUp(0.8)}
                                             initial="hidden"
                                             whileInView="show"
-                                            viewport={{ amount: 0.2, once: false }}
+                                            viewport={{ amount: 0.2, once: true }}
                                             className="w-[66px] h-[66px] bg-secondary rounded-full flex items-center justify-center"
                                         >
                                             {activeItem?.logo && (
@@ -225,16 +244,12 @@ const ExpertiseSec = ({ data }) => {
                                         </motion.div>
                                     </motion.div>
                                     <hr className="border-0 border-t border-white/20 my-6" />
-
-                                    {/* <div className="mt-4 xl:mt-5 border-t border-white/20 pt-4 xl:pt-[28px]">
-                    <ul className="list-disc max-w-[45.5ch] ml-[18px]"  >
-                      {activelist.map((desc, i) => (
-                        <motion.li variants={moveUp(0.8 + 0.1 * i)} initial="hidden" whileInView={"show"} viewport={{amount:0.2,once:false}} key={i} className='text-19 font-light'>{desc}</motion.li>
-                      ))}
-                    </ul>
-                  </div> */}
                                     <div className="water-our-expertise text-19 font-light">
-                                        <div dangerouslySetInnerHTML={{ __html: activelist }}></div>
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: normalizeHtml(activelist),
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             </div>
