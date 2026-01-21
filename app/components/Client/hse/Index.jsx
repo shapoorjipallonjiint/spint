@@ -5,9 +5,10 @@ import Certifications from "./sections/Certifications";
 import SaftySlider from "./sections/SaftySlider";
 import Philosophy from "./sections/Philosophy";
 import Environmental from "./sections/Environmental";
-import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
-import { environmentalData } from "./sections/data";
+// import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
+// import { environmentalData } from "./sections/data";
 const QualitySafety = ({ data }) => {
+    console.log(data, "hse")
     return (
         <>
             {/* <header className="">
@@ -15,8 +16,8 @@ const QualitySafety = ({ data }) => {
       </header> */}
             <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
             <CoreValues data={data.firstSection} />
-            <Philosophy/>
-            <Environmental data={environmentalData}/>
+            <Philosophy data={data.philosophySection}/>
+            <Environmental data={data.environmentalSection}/>
             <Certifications data={data.secondSection} />
             <SaftySlider data={data.thirdSection} />
             {/* <ImgPointsComponent data={data.fourthSection} bgColor="[#f5f5f5]" sectionSpacing="pt-text90 pb25" /> */}

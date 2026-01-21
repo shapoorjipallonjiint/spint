@@ -2,85 +2,115 @@
 import { useMediaQuery } from "react-responsive";
 import { assets } from "@/app/assets";
 import H2Title from "@/app/components/common/H2Title";
-import { motion,useScroll,useTransform } from "framer-motion";
-import {paragraphItem } from "@/app/components/motionVarients";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { paragraphItem } from "@/app/components/motionVarients";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef, useEffect } from "react";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 gsap.registerPlugin(ScrollTrigger);
-const LastSection = ({data}) => {
-  const sectionRef = useRef(null); 
-  const imageContainerRefOne = useRef(null);
-  const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
-  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
-  const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
-  const shapeOffset = isMobile ? [-50, 50] : isTablet ? [-100, 100] : [-200, 200];
 
-  const MotionImage = motion.create(Image)
+const LastSection = ({ data }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
+    const sectionRef = useRef(null);
+    const imageContainerRefOne = useRef(null);
+    const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
+    const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
+    const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
+    const shapeOffset = isMobile ? [-50, 50] : isTablet ? [-100, 100] : [-200, 200];
 
-  // Parallax for main image container
-  const { scrollYProgress: imageProgress } = useScroll({
-    target: imageContainerRefOne,
-    offset: ["start end", "end start"]
-  });
-  const imageY = useTransform(imageProgress, [0, 1], imageOffset);
+    const MotionImage = motion.create(Image);
 
-  // Parallax for shape
-  const { scrollYProgress: shapeProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-  const shapeY = useTransform(shapeProgress, [0, 1], shapeOffset);
-
-  const imageContainerRefTwo = useRef(null);
-  const overlayRefTwo = useRef(null);
-
-
-  useEffect(() => {
-    const container = imageContainerRefTwo.current;
-    const overlay = overlayRefTwo.current;
-    if (!container || !overlay) return;
-
-    // Set initial state - overlay covers the image
-    gsap.set(overlay, { scaleX: 1, transformOrigin: 'right' });
-
-    // Create ScrollTrigger animation with scrub
-    gsap.to(overlay, {
-      scaleX: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: container,
-        start: 'top 80%',
-        end: 'top 20%',
-        // scrub: 1,
-      }
+    // Parallax for main image container
+    const { scrollYProgress: imageProgress } = useScroll({
+        target: imageContainerRefOne,
+        offset: ["start end", "end start"],
     });
+    const imageY = useTransform(imageProgress, [0, 1], imageOffset);
 
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, []);
+    // Parallax for shape
+    const { scrollYProgress: shapeProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"],
+    });
+    const shapeY = useTransform(shapeProgress, [0, 1], shapeOffset);
 
-  return ( 
-    <section className="py30 relative overflow-hidden" ref={sectionRef}>
-      <MotionImage style={{y:shapeY}} src={assets.mainShape2} alt="" className="absolute -bottom-15 lg:bottom-0 right-0 lg:left-0 w-[152px] lg:w-[45%] xl:w-[365px] 3xl:w-[465px] h-auto object-contain" />
-      <div className="container">
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[0.8fr_1.2fr] items-center lg:gap-10 xl:gap-x-18 gap-y-6">
-          <div className="order-2 xl:order-1">
-              <H2Title titleText={data.title} titleColor="black" marginClass="mb-3 xl:mb-10" />
-            <motion.p variants={paragraphItem} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-19 leading-[1.473684210526316] font-light text-paragraph ">{data.description}</motion.p>
-          </div>
-          <div className="order-1 xl:order-2 relative overflow-hidden" ref={imageContainerRefTwo}>
-           <div className="relative" ref={imageContainerRefOne}>
-              <MotionImage style={{y:imageY}} src="../../assets/images/design-studio/design-inpires.jpg" alt="" width={932} height={532} className="w-full h-[200px] md:h-[300px] xl:h-[350px] 2xl:h-[470px] 3xl:h-[532px] scale-110 md:scale-150 lg:scale-110 object-cover"  />
-           </div>
-            <div ref={overlayRefTwo} className="absolute top-0 left-0 w-full h-full bg-white z-10"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-   );
-}
- 
+    const imageContainerRefTwo = useRef(null);
+    const overlayRefTwo = useRef(null);
+
+    useEffect(() => {
+        const container = imageContainerRefTwo.current;
+        const overlay = overlayRefTwo.current;
+        if (!container || !overlay) return;
+
+        // Set initial state - overlay covers the image
+        gsap.set(overlay, {
+            scaleX: 1,
+            transformOrigin: isArabic ? "left" : "right",
+        });
+
+        // Create ScrollTrigger animation
+        gsap.to(overlay, {
+            scaleX: 0,
+            ease: "none",
+            scrollTrigger: {
+                trigger: container,
+                start: "top 80%",
+                end: "top 20%",
+                // scrub: 1,
+            },
+        });
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, [isArabic]);
+
+    return (
+        <section className="py30 relative overflow-hidden" ref={sectionRef}>
+            <MotionImage
+                style={{ y: shapeY }}
+                src={assets.mainShape2}
+                alt=""
+                className={`absolute -bottom-15 lg:bottom-0 w-[152px] lg:w-[45%] xl:w-[365px] 3xl:w-[465px] h-auto object-contain ${
+                    isArabic ? "left-0 lg:right-0 -scale-x-100" : "right-0 lg:left-0"
+                }`}
+            />
+
+            <div className="container">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[0.8fr_1.2fr] items-center lg:gap-10 xl:gap-x-18 gap-y-6">
+                    <div className="order-2 xl:order-1">
+                        <H2Title titleText={t.title} titleColor="black" marginClass="mb-3 xl:mb-10" />
+                        <motion.p
+                            variants={paragraphItem}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ amount: 0.2, once: true }}
+                            className="text-19 leading-[1.473684210526316] font-light text-paragraph "
+                        >
+                            {t.description}
+                        </motion.p>
+                    </div>
+                    <div className="order-1 xl:order-2 relative overflow-hidden" ref={imageContainerRefTwo}>
+                        <div className="relative" ref={imageContainerRefOne}>
+                            <MotionImage
+                                style={{ y: imageY }}
+                                src="../../assets/images/design-studio/design-inpires.jpg"
+                                alt=""
+                                width={932}
+                                height={532}
+                                className="w-full h-[200px] md:h-[300px] xl:h-[350px] 2xl:h-[470px] 3xl:h-[532px] scale-110 md:scale-150 lg:scale-110 object-cover"
+                            />
+                        </div>
+                        <div ref={overlayRefTwo} className="absolute top-0 left-0 w-full h-full bg-white z-10"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
 export default LastSection;

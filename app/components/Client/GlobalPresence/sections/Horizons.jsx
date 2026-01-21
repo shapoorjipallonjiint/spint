@@ -5,21 +5,27 @@ import { motion } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import InsideCounter from "../../../InsideCounter";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const Horizons = ({ data }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     return (
         <section className="relative overflow-hidden pt-text90 pb30 bg-f5f5">
             <div className="container">
-                <H2Title titleText={data.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-50px"/>
+                <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-50px" />
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-6 lg:gap-y-10 xl:gap-y-[120px]">
-                    {data.items.map((item, index) => (
+                    {t.items.map((item, index) => (
                         <motion.div
                             key={index}
                             variants={moveUp(0.1 * index)}
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
-                            className="group border-l border-black/20 border-t-cmnbdr lg:border-t-transparent border-y lg:border-y-2 lg:border-y-transparent bdrrst hover:border-y-2 hover:border-y-[#30B6F9]"
+                            className={`group border-black/20 border-t-cmnbdr lg:border-t-transparent border-y lg:border-y-2 lg:border-y-transparent bdrrst hover:border-y-2 hover:border-y-[#30B6F9] ${
+                                isArabic ? "border-r border-l-0" : "border-l"
+                            }`}
                         >
                             <h3 className="text-20 xl:text-24 2xl:text-29 font-light leading-[1.311] mb-4 lg:mb-[22px]  px-3 lg:px-10 pt-4 lg:pt-7">
                                 {item.name}
@@ -27,7 +33,11 @@ const Horizons = ({ data }) => {
                             <div className="relative">
                                 <div className="absolute bottom-0 w-full h-0 group-hover:h-full group-hover:bg-[linear-gradient(180deg,rgba(48,182,249,0)_0%,rgba(48,182,249,0.75)_100%)] transition-all duration-300 ">
                                     <div className="h-0 w-8 group-hover:h-8 lg:w-10 group-hover:lg:h-10 2xl:w-20 group-hover:2xl:h-20 bg-primary flex items-center justify-center absolute bottom-0 transition-all duration-300 delay-100 ">
-                                        <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 delay-150">
+                                        <div
+                                            className={`opacity-0 group-hover:opacity-100 transition-all duration-300 delay-150 ${
+                                                isArabic ? "-scale-x-100" : ""
+                                            }`}
+                                        >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="32"
@@ -66,17 +76,21 @@ const Horizons = ({ data }) => {
                                 <div className="flex gap-5 lg:gap-[45px]   max-w-[413px]">
                                     <div className="w-[185px]">
                                         <p className="text-20 2xl:text-32 3xl:text-40 leading-[1.3] font-light mb-[2px]">
-                                            <InsideCounter value={item.projects} delay={10} />+
+                                            {isArabic ? (
+                                                <>
+                                                    +<InsideCounter value={item.projects} delay={10} />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <InsideCounter value={item.projects} delay={10} />+
+                                                </>
+                                            )}
                                         </p>
                                         <p className="text-19 font-light text-black/70">Projects</p>
                                     </div>
                                     <div>
                                         <p className="text-20 2xl:text-32 3xl:text-40 leading-[1.3] font-light mb-[2px]">
-                                            <InsideCounter
-                                                value={item.country}
-                                                delay={10}
-                                                
-                                            />
+                                            <InsideCounter value={item.country} delay={10} />
                                         </p>
 
                                         <p className="text-19 font-light text-black/70">Countries</p>
@@ -86,7 +100,13 @@ const Horizons = ({ data }) => {
                                     {item.countries.map((country, i) => (
                                         <li key={i} className="text-16 2xl:text-19 text-paragraph font-light ">
                                             {country.name}
-                                            <span className="text-[#30B6F9] pl-1 xl:pl-2 laststs">|</span>{" "}
+                                            <span
+                                                className={`text-[#30B6F9] ${
+                                                    isArabic ? "pr-1 xl:pr-2" : "pl-1 xl:p1-2"
+                                                } laststs`}
+                                            >
+                                                |
+                                            </span>{" "}
                                         </li>
                                     ))}
                                 </ul>

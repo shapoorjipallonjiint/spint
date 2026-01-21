@@ -36,6 +36,45 @@ interface HseFormProps {
         imageAlt_ar?: string;
     };
 
+    philosophySection: {
+        title?: string;
+        title_ar?: string;
+
+        subTitle?: string;
+        subTitle_ar?: string;
+
+        items: {
+            title?: string;
+            title_ar?: string;
+
+            description?: string;
+            description_ar?: string;
+
+            image?: string;
+            imageAlt?: string;
+            imageAlt_ar?: string;
+        }[];
+    };
+
+    environmentalSection: {
+        title?: string;
+        title_ar?: string;
+
+        subTitle?: string;
+        subTitle_ar?: string;
+
+        items: {
+            title?: string;
+            title_ar?: string;
+            subTitle?: string;
+            subTitle_ar?: string;
+        }[];
+
+        description_bottom?: string;
+        description_bottom_ar?: string;
+    };
+
+    // fourth section in ui
     secondSection: {
         title: string;
         title_ar?: string;
@@ -52,6 +91,7 @@ interface HseFormProps {
         }[];
     };
 
+    // fifthSection in ui
     thirdSection: {
         title: string;
         title_ar?: string;
@@ -69,19 +109,6 @@ interface HseFormProps {
             imageAlt_ar?: string;
         }[];
     };
-
-    fourthSection: {
-        title: string;
-        title_ar?: string;
-
-        items: {
-            title?: string;
-            title_ar?: string;
-            image?: string;
-            imageAlt?: string;
-            imageAlt_ar?: string;
-        }[];
-    };
 }
 
 const HsePage = () => {
@@ -92,6 +119,24 @@ const HsePage = () => {
         control,
         formState: { errors },
     } = useForm<HseFormProps>();
+
+    const {
+        fields: philosophySectionItems,
+        append: philosophySectionAppend,
+        remove: philosophySectionRemove,
+    } = useFieldArray({
+        control,
+        name: "philosophySection.items",
+    });
+
+    const {
+        fields: enviroementalSectionItems,
+        append: environmentalSectionAppend,
+        remove: environmentalSectionRemove,
+    } = useFieldArray({
+        control,
+        name: "environmentalSection.items",
+    });
 
     const {
         fields: secondSectionItems,
@@ -118,15 +163,6 @@ const HsePage = () => {
     } = useFieldArray({
         control,
         name: "thirdSection.itemsTwo",
-    });
-
-    const {
-        fields: fourthSectionItems,
-        append: fourthSectionAppend,
-        remove: fourthSectionRemove,
-    } = useFieldArray({
-        control,
-        name: "fourthSection.items",
     });
 
     const handleAddHse = async (data: HseFormProps) => {
@@ -168,8 +204,10 @@ const HsePage = () => {
                 setValue("thirdSection", data.data.thirdSection);
                 setValue("thirdSection.itemsOne", data.data.thirdSection.itemsOne);
                 setValue("thirdSection.itemsTwo", data.data.thirdSection.itemsTwo);
-                setValue("fourthSection", data.data.fourthSection);
-                setValue("fourthSection.items", data.data.fourthSection.items);
+                setValue("philosophySection", data.data.philosophySection);
+                setValue("philosophySection.items", data.data.philosophySection.items);
+                setValue("environmentalSection", data.data.environmentalSection);
+                setValue("environmentalSection.items", data.data.environmentalSection.items);
             } else {
                 const data = await response.json();
                 alert(data.message);
@@ -273,6 +311,235 @@ const HsePage = () => {
                                     <Input
                                         type="text"
                                         placeholder="Title"
+                                        {...register("philosophySection.title", {
+                                            required: "Title is required",
+                                        })}
+                                    />
+                                    <FormError error={errors.philosophySection?.title?.message} />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Sub Title</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Sub Title"
+                                        {...register("philosophySection.subTitle", {
+                                            required: "Sub Title is required",
+                                        })}
+                                    />
+                                    <FormError error={errors.philosophySection?.subTitle?.message} />
+                                </div>
+                                <div>
+                                    <Label className="font-bold">Items</Label>
+                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                        {philosophySectionItems.map((field, index) => (
+                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                                <div className="absolute top-2 right-2">
+                                                    <RiDeleteBinLine
+                                                        onClick={() => philosophySectionRemove(index)}
+                                                        className="cursor-pointer text-red-600"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Title"
+                                                            {...register(`philosophySection.items.${index}.title`)}
+                                                        />
+                                                        <FormError
+                                                            error={errors.philosophySection?.items?.[index]?.title?.message}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Description</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Description"
+                                                            {...register(`philosophySection.items.${index}.description`)}
+                                                        />
+                                                        <FormError
+                                                            error={
+                                                                errors.philosophySection?.items?.[index]?.description
+                                                                    ?.message
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Image</Label>
+                                                    <Controller
+                                                        name={`philosophySection.items.${index}.image`}
+                                                        control={control}
+                                                        rules={{ required: "Image is required" }}
+                                                        render={({ field }) => (
+                                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                                        )}
+                                                    />
+                                                    {errors.philosophySection?.items?.[index]?.image && (
+                                                        <FormError
+                                                            error={errors.philosophySection?.items?.[index]?.image?.message}
+                                                        />
+                                                    )}
+                                                    <Label className="font-bold">Image Alt Tag</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Alt Tag"
+                                                        {...register(`philosophySection.items.${index}.imageAlt`)}
+                                                    />
+                                                    <FormError
+                                                        error={errors.philosophySection?.items?.[index]?.imageAlt?.message}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        <div className="flex justify-end">
+                                            <Button
+                                                type="button"
+                                                className=""
+                                                addItem
+                                                onClick={() =>
+                                                    philosophySectionAppend({
+                                                        title: "",
+                                                        title_ar: "",
+                                                        description: "",
+                                                        description_ar: "",
+                                                        image: "",
+                                                        imageAlt: "",
+                                                        imageAlt_ar: "",
+                                                    })
+                                                }
+                                            >
+                                                Add Item
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+                <AdminItemContainer>
+                    <Label main>Third Section</Label>
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="grid grid-cols-1 gap-2">
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Title</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Title"
+                                        {...register("environmentalSection.title", {
+                                            required: "Title is required",
+                                        })}
+                                    />
+                                    <FormError error={errors.environmentalSection?.title?.message} />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Sub Title</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Sub Title"
+                                        {...register("environmentalSection.subTitle", {
+                                            required: "Sub Title is required",
+                                        })}
+                                    />
+                                    <FormError error={errors.environmentalSection?.subTitle?.message} />
+                                </div>
+                                <div>
+                                    <Label className="font-bold">Items</Label>
+                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                        {enviroementalSectionItems.map((field, index) => (
+                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                                <div className="absolute top-2 right-2">
+                                                    <RiDeleteBinLine
+                                                        onClick={() => environmentalSectionRemove(index)}
+                                                        className="cursor-pointer text-red-600"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Title"
+                                                            {...register(`environmentalSection.items.${index}.title`)}
+                                                        />
+                                                        <FormError
+                                                            error={
+                                                                errors.environmentalSection?.items?.[index]?.title?.message
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Description</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Sub Title"
+                                                            {...register(`environmentalSection.items.${index}.subTitle`)}
+                                                        />
+                                                        <FormError
+                                                            error={
+                                                                errors.environmentalSection?.items?.[index]?.subTitle
+                                                                    ?.message
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        <div className="flex justify-end">
+                                            <Button
+                                                type="button"
+                                                className=""
+                                                addItem
+                                                onClick={() =>
+                                                    environmentalSectionAppend({
+                                                        title: "",
+                                                        title_ar: "",
+                                                        subTitle: "",
+                                                        subTitle_ar: "",
+                                                    })
+                                                }
+                                            >
+                                                Add Item
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Bottom Description</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Bottom Description"
+                                        {...register("environmentalSection.description_bottom", {
+                                            required: "Bottom Description is required",
+                                        })}
+                                    />
+                                    <FormError error={errors.environmentalSection?.description_bottom?.message} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+                <AdminItemContainer>
+                    <Label main>Fourth Section</Label>
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="grid grid-cols-1 gap-2">
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Title</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Title"
                                         {...register("secondSection.title", {
                                             required: "Title is required",
                                         })}
@@ -368,7 +635,7 @@ const HsePage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Third Section</Label>
+                    <Label main>Fifth Section</Label>
 
                     <div className="p-5 rounded-md flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
@@ -503,107 +770,6 @@ const HsePage = () => {
                     </div>
                 </AdminItemContainer>
 
-                <AdminItemContainer>
-                    <Label main>Fourth Section</Label>
-                    <div className="p-5 rounded-md flex flex-col gap-2">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register("fourthSection.title", {
-                                        required: "Title is required",
-                                    })}
-                                />
-                                <FormError error={errors.fourthSection?.title?.message} />
-                            </div>
-                        </div>
-
-                        <div>
-                            <Label className="font-bold">First Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
-                                {fourthSectionItems.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => fourthSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Title</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Title"
-                                                        {...register(`fourthSection.items.${index}.title`, {
-                                                            required: "Value is required",
-                                                        })}
-                                                    />
-                                                    <FormError
-                                                        error={errors.fourthSection?.items?.[index]?.title?.message}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Image</Label>
-                                                <Controller
-                                                    name={`fourthSection.items.${index}.image`}
-                                                    control={control}
-                                                    rules={{ required: "Image is required" }}
-                                                    render={({ field }) => (
-                                                        <ImageUploader value={field.value} onChange={field.onChange} />
-                                                    )}
-                                                />
-                                                <FormError error={errors.fourthSection?.items?.[index]?.image?.message} />
-                                            </div>
-
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Image Alt Tag</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Alt Tag"
-                                                        {...register(`fourthSection.items.${index}.imageAlt`, {
-                                                            required: "Value is required",
-                                                        })}
-                                                    />
-                                                    <FormError
-                                                        error={errors.fourthSection?.items?.[index]?.imageAlt?.message}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        fourthSectionAppend({
-                                            title: "",
-                                            title_ar: "",
-                                            image: "",
-                                            imageAlt: "",
-                                            imageAlt_ar: "",
-                                        })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </AdminItemContainer>
-
                 <div className="p-5">
                     <div className="flex flex-col gap-2 mb-4">
                         <Label className="pl-3 font-bold">Meta Title</Label>
@@ -703,6 +869,189 @@ const HsePage = () => {
                             <div className="grid grid-cols-1 gap-2">
                                 <div className="flex flex-col gap-1">
                                     <Label className="font-bold">Title</Label>
+                                    <Input type="text" placeholder="Title" {...register("philosophySection.title_ar")} />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Sub Title</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Sub Title"
+                                        {...register("philosophySection.subTitle_ar")}
+                                    />
+                                </div>
+                                <div>
+                                    <Label className="font-bold">Items</Label>
+                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                        {philosophySectionItems.map((field, index) => (
+                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                                <div className="absolute top-2 right-2">
+                                                    <RiDeleteBinLine
+                                                        onClick={() => philosophySectionRemove(index)}
+                                                        className="cursor-pointer text-red-600"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Title"
+                                                            {...register(`philosophySection.items.${index}.title_ar`)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Description</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Description"
+                                                            {...register(`philosophySection.items.${index}.description_ar`)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Image</Label>
+                                                    <Controller
+                                                        name={`philosophySection.items.${index}.image`}
+                                                        control={control}
+                                                        rules={{ required: "Image is required" }}
+                                                        render={({ field }) => (
+                                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                                        )}
+                                                    />
+                                                    <Label className="font-bold">Image Alt Tag</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Alt Tag"
+                                                        {...register(`philosophySection.items.${index}.imageAlt_ar`)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        <div className="flex justify-end">
+                                            <Button
+                                                type="button"
+                                                className=""
+                                                addItem
+                                                onClick={() =>
+                                                    philosophySectionAppend({
+                                                        title: "",
+                                                        title_ar: "",
+                                                        description: "",
+                                                        description_ar: "",
+                                                        image: "",
+                                                        imageAlt: "",
+                                                        imageAlt_ar: "",
+                                                    })
+                                                }
+                                            >
+                                                Add Item
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+
+                <AdminItemContainer>
+                    <Label main>Third Section</Label>
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="grid grid-cols-1 gap-2">
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Title</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Title"
+                                        {...register("environmentalSection.title_ar")}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Sub Title</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Sub Title"
+                                        {...register("environmentalSection.subTitle_ar")}
+                                    />
+                                </div>
+                                <div>
+                                    <Label className="font-bold">Items</Label>
+                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                        {enviroementalSectionItems.map((field, index) => (
+                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                                <div className="absolute top-2 right-2">
+                                                    <RiDeleteBinLine
+                                                        onClick={() => environmentalSectionRemove(index)}
+                                                        className="cursor-pointer text-red-600"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Title"
+                                                            {...register(`environmentalSection.items.${index}.title_ar`)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Description</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Sub Title"
+                                                            {...register(`environmentalSection.items.${index}.subTitle_ar`)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        <div className="flex justify-end">
+                                            <Button
+                                                type="button"
+                                                className=""
+                                                addItem
+                                                onClick={() =>
+                                                    environmentalSectionAppend({
+                                                        title: "",
+                                                        title_ar: "",
+                                                        subTitle: "",
+                                                        subTitle_ar: "",
+                                                    })
+                                                }
+                                            >
+                                                Add Item
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Bottom Description</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Bottom Description"
+                                        {...register("environmentalSection.description_bottom_ar")}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+                <AdminItemContainer>
+                    <Label main>Fourth Section</Label>
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="grid grid-cols-1 gap-2">
+                                <div className="flex flex-col gap-1">
+                                    <Label className="font-bold">Title</Label>
                                     <Input
                                         type="text"
                                         placeholder="Title"
@@ -792,7 +1141,7 @@ const HsePage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Third Section</Label>
+                    <Label main>Fifth Section</Label>
 
                     <div className="p-5 rounded-md flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
@@ -910,100 +1259,6 @@ const HsePage = () => {
                                     addItem
                                     onClick={() =>
                                         thirdSectionAppendTwo({
-                                            image: "",
-                                            imageAlt: "",
-                                            imageAlt_ar: "",
-                                        })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </AdminItemContainer>
-
-                <AdminItemContainer>
-                    <Label main>Fourth Section</Label>
-                    <div className="p-5 rounded-md flex flex-col gap-2">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register("fourthSection.title_ar", {
-                                        required: "Title is required",
-                                    })}
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <Label className="font-bold">First Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
-                                {fourthSectionItems.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => fourthSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Title</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Title"
-                                                        {...register(`fourthSection.items.${index}.title_ar`, {
-                                                            required: "Value is required",
-                                                        })}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Image</Label>
-                                                <Controller
-                                                    name={`fourthSection.items.${index}.image`}
-                                                    control={control}
-                                                    rules={{ required: "Image is required" }}
-                                                    render={({ field }) => (
-                                                        <ImageUploader value={field.value} onChange={field.onChange} />
-                                                    )}
-                                                />
-                                                <FormError error={errors.fourthSection?.items?.[index]?.image?.message} />
-                                            </div>
-
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Image Alt Tag</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Alt Tag"
-                                                        {...register(`fourthSection.items.${index}.imageAlt_ar`, {
-                                                            required: "Value is required",
-                                                        })}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        fourthSectionAppend({
-                                            title: "",
-                                            title_ar: "",
                                             image: "",
                                             imageAlt: "",
                                             imageAlt_ar: "",
