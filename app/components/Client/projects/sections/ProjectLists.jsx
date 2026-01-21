@@ -12,14 +12,15 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const ITEMS_PER_PAGE = 12;
 
 const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
-    console.log(countryData, "cntry")
+    // console.log(countryData, "cntry");
     const router = useRouter();
     const pathname = usePathname();
-
+    const isArabic = useIsPreferredLanguageArabic();
     const searchParams = useSearchParams();
     const isInitialized = useRef(false);
     const MotionImage = motion.create(Image);
@@ -31,18 +32,18 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         offset: ["start end", "end start"],
     });
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
-   
-const [view, setView] = useState("grid"); 
 
-  useEffect(() => {
-    const urlView = searchParams.get("view");
+    const [view, setView] = useState("grid");
 
-    if (urlView === "list") {
-      setView("list");
-    } else {
-      setView("grid");
-    }
-  }, [searchParams]);
+    useEffect(() => {
+        const urlView = searchParams.get("view");
+
+        if (urlView === "list") {
+            setView("list");
+        } else {
+            setView("grid");
+        }
+    }, [searchParams]);
     // Project with Countries
     const projectCountries = useMemo(() => {
         if (!data?.length) return new Set();
@@ -51,7 +52,7 @@ const [view, setView] = useState("grid");
             data
                 .map((item) => item?.secondSection?.location?.name)
                 .filter(Boolean)
-                .map((name) => name.toLowerCase())
+                .map((name) => name.toLowerCase()),
         );
     }, [data]);
 
@@ -62,10 +63,9 @@ const [view, setView] = useState("grid");
         ...statusData.filter((item) => item.name && item.name.toLowerCase() !== "nill"),
     ];
 
-const filteredCountryData = useMemo(() => {
-    return countryData.filter((c) => c.showInProjectFilter);
-}, [countryData]);
-
+    const filteredCountryData = useMemo(() => {
+        return countryData.filter((c) => c.showInProjectFilter);
+    }, [countryData]);
 
     const country = [{ id: 1, name: "All" }, ...filteredCountryData];
 
@@ -80,10 +80,10 @@ const filteredCountryData = useMemo(() => {
     // 🔹 Filter items based on all dropdowns
     const filteredItems = useMemo(() => {
         let items = [...data];
-        console.log(items)
+        console.log(items);
         if (selectedSector.id !== 1) {
             items = items.filter(
-                (item) => item.secondSection?.sector?.name.toLowerCase() === selectedSector?.name.toLowerCase()
+                (item) => item.secondSection?.sector?.name.toLowerCase() === selectedSector?.name.toLowerCase(),
             );
         }
 
@@ -93,16 +93,17 @@ const filteredCountryData = useMemo(() => {
         }
 
         if (selectedCountry.id !== 1) {
-            
             items = items.filter(
-                (item) => item.secondSection?.location?.name.toLowerCase() === selectedCountry?.name.toLowerCase()
+                (item) => item.secondSection?.location?.name.toLowerCase() === selectedCountry?.name.toLowerCase(),
             );
         }
 
         if (selectedService.id !== 1) {
             // assuming your data has item.service
-            items = items.filter(
-                (item) => item.secondSection?.service?.some((service)=>service.title.toLowerCase() === selectedService?.title.toLowerCase())
+            items = items.filter((item) =>
+                item.secondSection?.service?.some(
+                    (service) => service.title.toLowerCase() === selectedService?.title.toLowerCase(),
+                ),
             );
         }
 
@@ -197,18 +198,18 @@ const filteredCountryData = useMemo(() => {
 
         isInitialized.current = true;
     }, [country, searchParams]);
-const handleView = () => {
-  const params = new URLSearchParams(searchParams);
-  params.set("view", "list");
-  router.push(`${pathname}?${params.toString()}`);
-setView("list")
-};
-const handleGrid = () => {
-  const params = new URLSearchParams(searchParams);
-  params.set("view", "grid");
-  router.push(`${pathname}?${params.toString()}`);
-setView("grid")
-};
+    const handleView = () => {
+        const params = new URLSearchParams(searchParams);
+        params.set("view", "list");
+        router.push(`${pathname}?${params.toString()}`);
+        setView("list");
+    };
+    const handleGrid = () => {
+        const params = new URLSearchParams(searchParams);
+        params.set("view", "grid");
+        router.push(`${pathname}?${params.toString()}`);
+        setView("grid");
+    };
 
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
@@ -532,11 +533,7 @@ setView("grid")
 
                         {/* View toggles */}
                         <div className="flex items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-end">
-                            <div
-                                className="flex group items-center gap-[6px] cursor-pointer"
-                               
-                                  onClick={handleGrid}
-                            >
+                            <div className="flex group items-center gap-[6px] cursor-pointer" onClick={handleGrid}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 19 19"
@@ -657,14 +654,7 @@ setView("grid")
                                         Sector: {item?.secondSection?.sector?.name}
                                     </p>
                                     {(() => {
-                                        const buaItem = item?.secondSection?.items?.find(
-                                            (i) =>
-                                                i.key === "BUA (Sq.ft)" ||
-                                                i.key === "BUA (Sq. ft)" ||
-                                                i.key === "BUA (Sq.m)" ||
-                                                i.key === "BUA (Sq. m)" ||
-                                                i.key === "BUA"
-                                        );
+                                        const buaItem = item?.secondSection?.items?.find((i) => i?.key?.includes("BUA"));
 
                                         const label = buaItem?.key ?? "BUA (Sq.ft)";
                                         const value = buaItem?.value ?? "";
@@ -853,13 +843,13 @@ setView("grid")
                                 : currentItems.length < 4
                                 ? "top-[27%] 3xl:bottom-[-16%]"
                                 : "top-[25%] lg:bottom-[30%] xl:bottom-[30%] 3xl:bottom-3/7"
-                        } absolute  3xl:top-auto  translate-y-[58px]    right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
+                        } absolute  3xl:top-auto  translate-y-[58px] right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
                     >
                         <MotionImage
                             width={1500}
                             height={1000}
                             style={{ y: shapeY }}
-                            src="./assets/images/projects/pjtbdy1.svg"
+                            src="/assets/images/projects/pjtbdy1.svg"
                             alt=""
                             className="w-[150px] sm:w-[270px] lg:w-[670px] object-contain"
                         />
@@ -877,7 +867,7 @@ setView("grid")
                             width={1500}
                             height={1000}
                             style={{ y: shapeY }}
-                            src="./assets/images/projects/pjtbdy2.svg"
+                            src="/assets/images/projects/pjtbdy2.svg"
                             alt=""
                             className="w-[150px] sm:w-[270px] lg:w-[670px] object-contain"
                         />

@@ -244,14 +244,14 @@ export default function Projects() {
             if (response.ok) {
                 const data = await response.json();
                 setValue("metaTitle", data.data.metaTitle);
-                setValue("metaTitle_ar", data.data.metaTitle);
+                setValue("metaTitle_ar", data.data.metaTitle_ar);
                 setValue("metaDescription", data.data.metaDescription);
-                setValue("metaDescription_ar", data.data.metaDescription);
+                setValue("metaDescription_ar", data.data.metaDescription_ar);
                 setValue("banner", data.data.banner);
                 setValue("bannerAlt", data.data.bannerAlt);
                 setValue("bannerAlt_ar", data.data.bannerAlt);
                 setValue("pageTitle", data.data.pageTitle);
-                setValue("pageTitle_ar", data.data.pageTitle);
+                setValue("pageTitle_ar", data.data.pageTitle_ar);
                 setValue("firstSection", data.data.firstSection);
                 setValue("firstSection.items", data.data.firstSection.items);
             } else {
