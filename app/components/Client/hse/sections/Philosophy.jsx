@@ -8,28 +8,30 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { moveUp } from "@/app/components/motionVarients";
 import H2Title from "@/app/components/common/H2Title";
 import Image from "next/image";
-import { philosophyData } from "./data";
+// import { philosophyData } from "./data";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FALLBACK_IMAGE = "/assets/images/placeholder.jpg";
 
 const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
+    console.log(data, "inside hse");
     const MotionImage = motion.create(Image);
 
     const isMob = useMediaQuery({ maxWidth: 767 });
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
 
     /* ================= BACKEND DATA NORMALIZATION ================= */
-    const heading = philosophyData?.title ?? "";
-    const subTitle = philosophyData?.subTitle ?? "";
+    const heading = data?.title ?? "";
+    const subTitle = data?.subTitle ?? "";
+
     const points =
-        philosophyData?.points ??
-        philosophyData?.items?.map((item) => ({
+        data?.items?.map((item) => ({
             text: item.title,
+            description: item.description,
             image: item.image,
-        })) ??
-        [];
+            imageAlt: item.imageAlt || "",
+        })) ?? [];
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [hoverIndex, setHoverIndex] = useState(1);

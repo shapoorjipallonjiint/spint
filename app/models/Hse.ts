@@ -120,22 +120,79 @@ const hseSchema = new mongoose.Schema({
             imageAlt_ar: String
         }]
     },
-    fourthSection: {
+    philosophySection: {
         title: {
-            type: String,
-            required: true
+            type: String
         },
         title_ar: {
-            type: String,
+            type: String
+        },
+        subTitle: {
+            type: String
+        },
+        subTitle_ar: {
+            type: String
         },
         items: [{
-            title: String,
-            title_ar: String,
-            image: String,
-            imageAlt: String,
-            imageAlt_ar: String
+            title: {
+                type: String
+            },
+            title_ar: {
+                type: String
+            },
+            description: {
+                type: String
+            },
+            description_ar: {
+                type: String
+            },
+            image: {
+                type: String
+            },
+            imageAlt: {
+                type: String
+            },
+            imageAlt_ar: {
+                type: String
+            }
+
         }]
     },
+    environmentalSection: {
+        title: {
+            type: String
+        },
+        title_ar: {
+            type: String
+        },
+        subTitle: {
+            type: String
+        },
+        subTitle_ar: {
+            type: String
+        },
+        items: [{
+            title: {
+                type: String
+            },
+            subTitle: {
+                type: String
+            },
+            title_ar: {
+                type: String
+            },
+            subTitle_ar: {
+                type: String
+            },
+
+        }],
+        description_bottom: {
+            type: String
+        },
+        description_bottom_ar: {
+            type: String
+        }
+    }
 })
 
 export default mongoose.models.Hse || mongoose.model("Hse", hseSchema);
