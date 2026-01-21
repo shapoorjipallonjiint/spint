@@ -6,15 +6,12 @@ import DesignExcellence from "./sections/DesignExcellence";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
 import LastSection from "./sections/LastSection";
 const DesignStudio = ({ data, projectData }) => {
-
     const filteredProjects = projectData.projects.filter((item) =>
         item.secondSection.service?.some((service) =>
-          typeof service === "string"
-            ? service === data._id
-            : service._id === data._id
-        )
-      );
-      
+            typeof service === "string" ? service === data._id : service._id === data._id,
+        ),
+    );
+
     return (
         <>
             {/* <header>
@@ -27,12 +24,10 @@ const DesignStudio = ({ data, projectData }) => {
                 <DesignExcellence data={data.thirdSection} />
                 {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
                 {filteredProjects.length > 0 ? (
-                    <FeaturedProjectSlider
-                        data={filteredProjects}
-                    />
-                ): (  
-                <section className="-mt-6 md:-mt-11 lg:-mt-10 3xl:-mt-22"></section> 
-            )}
+                    <FeaturedProjectSlider data={filteredProjects} />
+                ) : (
+                    <section className="-mt-6 md:-mt-11 lg:-mt-10 3xl:-mt-22"></section>
+                )}
 
                 <LastSection data={data.fourthSection} />
             </main>
