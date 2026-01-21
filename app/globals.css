@@ -1278,23 +1278,9 @@ body::-webkit-scrollbar {
   right: 0;
 }
 
-
-
-/* Wrapper */
-.water-our-expertise {
-  max-width: 45ch;
-  /* readable line length */
-  width: 100%;
-  /* responsive */
-}
-
-/* Text */
+/* Water Service */
 .water-our-expertise p,
 .water-our-expertise li {
-  white-space: normal;
-  overflow-wrap: break-word;
-  word-break: normal;
-  hyphens: none;
   line-height: 1.75;
 }
 
@@ -1310,14 +1296,14 @@ body::-webkit-scrollbar {
   margin: 0;
 }
 
-/* List item */
+/* List item (LTR default) */
 .water-our-expertise li {
   position: relative;
   padding-left: 24px;
   margin-bottom: 8px;
 }
 
-/* Custom bullet */
+/* Custom bullet (LTR default) */
 .water-our-expertise li::before {
   content: "";
   position: absolute;
@@ -1328,6 +1314,19 @@ body::-webkit-scrollbar {
   border-radius: 50%;
   background-color: white;
 }
+
+/* ================= RTL (Arabic) ================= */
+
+[dir="rtl"] .water-our-expertise li {
+  padding-left: 0;
+  padding-right: 24px;
+}
+
+[dir="rtl"] .water-our-expertise li::before {
+  left: auto;
+  right: 0;
+}
+
 
 
 .border-gradient {
