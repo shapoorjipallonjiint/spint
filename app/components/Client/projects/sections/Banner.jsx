@@ -1,14 +1,16 @@
 "use client";
 import React, { useRef, useEffect } from "react";
-import { projectDetails } from "../data";
+// import { projectDetails } from "../data";
 import gsap from "gsap";
 import { moveUp, moveLeft, moveRight } from "../../../motionVarients";
 import { motion } from "framer-motion";
 import InsideCounter from "@/app/components/InsideCounter";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const Banner = ({ banner, bannerAlt, pageTitle, data }) => {
+    const tData = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
     const containerRef = useRef(null);
     const targetRef = useRef(null);
@@ -119,7 +121,7 @@ const Banner = ({ banner, bannerAlt, pageTitle, data }) => {
                             className="py-3 lg:py-[48px] ps-6 lg:ps-[83px] pe-6 bg-primary min-w-[70.68%]"
                         >
                             <div className="flex items-center gap-12 xl:gap-[148px]">
-                                {data.items.map((item, i) => (
+                                {tData.items.map((item, i) => (
                                     <div key={i}>
                                         <h3 className="text-20 lg:text-29 xl:text-32 2xl:text-40 font-light leading-[1.5] text-white">
                                             {/* {item.value} */}
