@@ -5,7 +5,7 @@ import Certifications from "./sections/Certifications";
 import SaftySlider from "./sections/SaftySlider";
 import Philosophy from "./sections/Philosophy";
 import Environmental from "./sections/Environmental";
-import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
+// import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
 // import { environmentalData } from "./sections/data";
 const QualitySafety = ({ data }) => {
     console.log(data, "hse")
