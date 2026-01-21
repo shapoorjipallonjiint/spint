@@ -119,7 +119,7 @@ useEffect(() => {
                                 className="relative will-change-transform"
                                 style={{
                                     width: "100%",
-                                    height: "clamp(340px, 28vw, 510px)",
+                                    height: "clamp(340px, 32vw, 510px)",
                                 }}
                             >
                                 <Image
