@@ -38,6 +38,7 @@ export async function GET() {
         _id: item._id,
         pageTitle: item.pageTitle,
         title: item.title,
+        title_ar: item.title_ar,
         description: item.description,
         homeImage:item.homeImage,
         homeImageAlt:item.homeImageAlt,

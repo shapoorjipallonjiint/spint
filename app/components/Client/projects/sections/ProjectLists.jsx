@@ -7,17 +7,22 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { dropdownItemVariants, dropdownListVariants, moveUp } from "../../../motionVarients";
 import Link from "next/link";
 import { useRef } from "react";
-import { statusData } from "@/app/components/AdminProject/statusData";
+import { statusData, UI_LABELS } from "@/app/components/AdminProject/statusData";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const ITEMS_PER_PAGE = 12;
 
 const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
-    // console.log(countryData, "cntry");
+    console.log(serviceData);
+    const tSectorData = useApplyLang(sectorData);
+    const tCountryData = useApplyLang(countryData);
+    const tServiceData = useApplyLang(serviceData);
+    const tData = useApplyLang(data);
     const router = useRouter();
     const pathname = usePathname();
     const isArabic = useIsPreferredLanguageArabic();
@@ -46,30 +51,37 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     }, [searchParams]);
     // Project with Countries
     const projectCountries = useMemo(() => {
-        if (!data?.length) return new Set();
+        if (!tData?.length) return new Set();
 
         return new Set(
-            data
+            tData
                 .map((item) => item?.secondSection?.location?.name)
                 .filter(Boolean)
                 .map((name) => name.toLowerCase()),
         );
-    }, [data]);
+    }, [tData]);
 
-    const sector = [{ id: 1, name: "All" }, ...sectorData];
+    const { ALL_OPTION } = UI_LABELS;
+
+    const sector = [ALL_OPTION, ...tSectorData];
 
     const status = [
-        { id: 1, name: "All" },
-        ...statusData.filter((item) => item.name && item.name.toLowerCase() !== "nill"),
+        ALL_OPTION,
+        ...statusData
+            .filter((item) => item.name && item.name.toLowerCase() !== "nill")
+            .map((item, index) => ({
+                id: index + 2,
+                ...item,
+            })),
     ];
 
     const filteredCountryData = useMemo(() => {
-        return countryData.filter((c) => c.showInProjectFilter);
-    }, [countryData]);
+        return tCountryData.filter((c) => c.showInProjectFilter);
+    }, [tCountryData]);
 
-    const country = [{ id: 1, name: "All" }, ...filteredCountryData];
+    const country = [ALL_OPTION, ...filteredCountryData];
 
-    const service = [{ id: 1, title: "All" }, ...serviceData];
+    const service = [ALL_OPTION, ...tServiceData];
 
     // 🔹 Filter states
     const [selectedSector, setSelectedSector] = useState(sector[0]);
@@ -79,7 +91,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
     // 🔹 Filter items based on all dropdowns
     const filteredItems = useMemo(() => {
-        let items = [...data];
+        let items = [...tData];
         console.log(items);
         if (selectedSector.id !== 1) {
             items = items.filter(
@@ -229,7 +241,14 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <Listbox value={selectedSector} onChange={handleSectorChange}>
                                         <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
                                             <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {selectedSector?.name === "All" ? "Sector" : selectedSector?.name}
+                                                {/* {selectedSector?.name === "All" ? "Sector" : selectedSector?.name} */}
+                                                {selectedSector?.name === "All"
+                                                    ? isArabic
+                                                        ? UI_LABELS.SECTOR.ar
+                                                        : UI_LABELS.SECTOR.en
+                                                    : isArabic
+                                                    ? selectedSector?.name_ar ?? selectedSector?.name
+                                                    : selectedSector?.name}
                                             </span>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -293,7 +312,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
           group-hover:scale-[1.03]
         "
                                                     >
-                                                        {opt?.name}
+                                                        {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
                                                     </span>
                                                 </Listbox.Option>
                                             ))}
@@ -306,7 +325,14 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <Listbox value={selectedStatus} onChange={handleStatusChange}>
                                         <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
                                             <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {selectedStatus?.name === "All" ? "Status" : selectedStatus?.name}
+                                                {/* {selectedStatus?.name === "All" ? "Status" : selectedStatus?.name} */}
+                                                {selectedStatus?.name === "All"
+                                                    ? isArabic
+                                                        ? UI_LABELS.STATUS.ar
+                                                        : UI_LABELS.STATUS.en
+                                                    : isArabic
+                                                    ? selectedStatus?.name_ar
+                                                    : selectedStatus?.name}
                                             </span>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -329,7 +355,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             initial="hidden"
                                             animate="show"
                                             variants={dropdownListVariants}
-                                            className="border-0 outline-0 absolute w-full md:w-[120px] bg-white rounded-sm shadow-sm z-[1]"
+                                            className="border-0 outline-0 absolute w-full md:w-[150px] bg-white rounded-sm shadow-sm z-[1]"
                                         >
                                             {status.map((opt) => (
                                                 <Listbox.Option
@@ -346,7 +372,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
       "
                                                 >
                                                     <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                        {opt?.name}
+                                                        {/* {opt?.name} */}
+                                                        {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
                                                     </span>
                                                 </Listbox.Option>
                                             ))}
@@ -359,7 +386,14 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <Listbox value={selectedCountry} onChange={handleCountryChange}>
                                         <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
                                             <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {selectedCountry?.name === "All" ? "Country" : selectedCountry?.name}
+                                                {/* {selectedCountry?.name === "All" ? "Country" : selectedCountry?.name} */}
+                                                {selectedCountry?.name === "All"
+                                                    ? isArabic
+                                                        ? UI_LABELS.COUNTRY.ar
+                                                        : UI_LABELS.COUNTRY.en
+                                                    : isArabic
+                                                    ? selectedCountry?.name_ar ?? selectedCountry?.name
+                                                    : selectedCountry?.name}
                                             </span>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -406,7 +440,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
       "
                                                 >
                                                     <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                        {opt?.name}
+                                                        {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
                                                     </span>
                                                 </Listbox.Option>
                                             ))}
@@ -419,7 +453,14 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <Listbox value={selectedService} onChange={handleServiceChange}>
                                         <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
                                             <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {selectedService?.title === "All" ? "Service" : selectedService?.title}
+                                                {/* {selectedService?.title === "All" ? "Service" : selectedService?.title} */}
+                                                {selectedService?.title === "All"
+                                                    ? isArabic
+                                                        ? UI_LABELS.SERVICE.ar
+                                                        : UI_LABELS.SERVICE.en
+                                                    : isArabic
+                                                    ? selectedService?.title_ar ?? selectedService?.title
+                                                    : selectedService?.title}
                                             </span>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -493,40 +534,44 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     onClick={handleClearFilters}
                                     className="flex items-center gap-[8px] lg:gap-[10px] cursor-pointer"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 27 17"
-                                        fill="none"
-                                        className="w-[20px] h-[14px] lg:w-[27px] lg:h-[17px]"
-                                    >
-                                        <g clipPath="url(#clip0_3119_4427)">
-                                            <path
-                                                d="M9.36719 1.93262L1.98894 8.5134L9.34206 15.0679"
-                                                stroke="#30B6F9"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                            <path
-                                                d="M2.40464 8.5H25.0195"
-                                                stroke="#30B6F9"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_3119_4427">
-                                                <rect
-                                                    width="27"
-                                                    height="17"
-                                                    fill="white"
-                                                    transform="matrix(-1 0 0 1 27 0)"
+                                    <div className={`${isArabic ? "rotate-180" : ""}`}>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 27 17"
+                                            fill="none"
+                                            className="w-[20px] h-[14px] lg:w-[27px] lg:h-[17px]"
+                                        >
+                                            <g clipPath="url(#clip0_3119_4427)">
+                                                <path
+                                                    d="M9.36719 1.93262L1.98894 8.5134L9.34206 15.0679"
+                                                    stroke="#30B6F9"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
                                                 />
-                                            </clipPath>
-                                        </defs>
-                                    </svg>
-                                    <p className="uppercase text-16 text-paragraph font-light w-max">Clear Filter</p>
+                                                <path
+                                                    d="M2.40464 8.5H25.0195"
+                                                    stroke="#30B6F9"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_3119_4427">
+                                                    <rect
+                                                        width="27"
+                                                        height="17"
+                                                        fill="white"
+                                                        transform="matrix(-1 0 0 1 27 0)"
+                                                    />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                    <p className="uppercase text-16 text-paragraph font-light w-max">
+                                        {isArabic ? UI_LABELS.CLEAR_FILTER.ar : UI_LABELS.CLEAR_FILTER.en}
+                                    </p>
                                 </button>
                             </div>
                         </div>
@@ -548,7 +593,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <rect x="11" y="11" width="8" height="8" fill="#30B6F9" />
                                 </svg>
                                 <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
-                                    Grid View
+                                        {isArabic ? UI_LABELS.GRID_VIEW.ar : UI_LABELS.GRID_VIEW.en}
                                 </p>
                             </div>
                             <div
@@ -568,7 +613,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <line y1="12.5" x2="19" y2="12.5" stroke="#30B6F9" />
                                 </svg>
                                 <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
-                                    list View
+                                   {isArabic ? UI_LABELS.LIST_VIEW.ar : UI_LABELS.LIST_VIEW.en}
                                 </p>
                             </div>
                         </div>
@@ -618,7 +663,11 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         </div>
                                     )}
 
-                                    <div className=" opacity-0 group-hover:opacity-100 transition-all duration-300 absolute left-0 bottom-0 w-[50px] h-[50px]  xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary">
+                                    <div
+                                        className={` ${
+                                            isArabic ? "-scale-x-100 right-0" : "left-0"
+                                        } opacity-0 group-hover:opacity-100 transition-all duration-300 absolute bottom-0 w-[50px] h-[50px]  xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}
+                                    >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             className="-translate-x-2 group-hover:translate-x-0 translate-y-2 group-hover:translate-y-0 transition-all duration-500 w-[25px] h-[25px] lg:w-[25px] lg:h-[25px]"
@@ -651,12 +700,12 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                 </div>
                                 <div className="flex justify-between border-t border-t-black/20 border-b border-b-black/20">
                                     <p className="text-paragraph text-19 font-light leading-[2.44] max-w-[18ch] truncate">
-                                        Sector: {item?.secondSection?.sector?.name}
+                                        {isArabic ? UI_LABELS.SECTOR.ar : UI_LABELS.SECTOR.en}: {item?.secondSection?.sector?.name}
                                     </p>
                                     {(() => {
                                         const buaItem = item?.secondSection?.items?.find((i) => i?.key?.includes("BUA"));
 
-                                        const label = buaItem?.key ?? "BUA (Sq.ft)";
+                                        const label = buaItem?.key ?? "BUA";
                                         const value = buaItem?.value ?? "";
 
                                         return (
@@ -668,7 +717,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                 </div>
                                 <div className="border-b border-b-black/20">
                                     <p className="text-paragraph text-19 font-light leading-[2.44]">
-                                        Location:{" "}
+                                        {isArabic ? UI_LABELS.ProjectCardDetails.Location.ar : UI_LABELS.ProjectCardDetails.Location.en}:{" "}
                                         {item?.secondSection?.items?.find((i) => i.key === "Location")?.value ??
                                             item?.secondSection?.location?.name ??
                                             ""}
@@ -738,8 +787,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                     {item?.secondSection?.sector?.name}
                                                 </p>
                                                 <p className="text-paragraph text-19 font-light leading-[1.4] md:leading-[2] xl:pe-6">
-                                                    BUA (Sq.ft): <br className="hidden lg:block 2xl:hidden"></br>
-                                                    {item?.secondSection?.items?.find((i) => i.key === "BUA (Sq.ft)")
+                                                    BUA (Sq.ft): <br className="hidden lg:block 2xl:hidden" />
+                                                    {item?.secondSection?.items?.find((i) => i?.key?.includes("BUA"))
                                                         ?.value ?? ""}
                                                 </p>
                                             </div>
@@ -750,7 +799,11 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 hidden lg:block">
+                                    <div
+                                        className={` ${
+                                            isArabic ? "-scale-x-100" : ""
+                                        } opacity-0 group-hover:opacity-100 transition-all duration-300 hidden lg:block`}
+                                    >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="32"
@@ -788,7 +841,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 <div className="flex items-center justify-center gap-2 w-full pb-10 xl:pb-15 2xl:pb-[120px]">
                     <div className="pagination flex items-center gap-5 justify-center ">
                         <button
-                            className={`prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${
+                            className={`prev cursor-pointer transition-all duration-200 hover:scale-110 ${
+                                isArabic ? "rotate-180" : ""
+                            }  disabled:opacity-30 disabled:cursor-not-allowed ${
                                 currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
                             }`}
                             onClick={handlePrev}
@@ -814,7 +869,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         </p>
 
                         <button
-                            className={`next cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${
+                            className={`next cursor-pointer transition-all duration-200 hover:scale-110 ${
+                                isArabic ? "rotate-180" : ""
+                            } disabled:opacity-30 disabled:cursor-not-allowed ${
                                 currentPage === totalPages || isAnimating ? "opacity-30" : "opacity-100"
                             }`}
                             onClick={handleNext}
@@ -843,7 +900,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                 : currentItems.length < 4
                                 ? "top-[27%] 3xl:bottom-[-16%]"
                                 : "top-[25%] lg:bottom-[30%] xl:bottom-[30%] 3xl:bottom-3/7"
-                        } absolute  3xl:top-auto  translate-y-[58px] right-0 lg:left-[-140px] 3xl:left-0 z-[-1]`}
+                        } absolute 3xl:top-auto translate-y-[58px] z-[-1]
+    ${isArabic ? "left-0 lg:right-[-140px] 3xl:right-0" : "right-0 lg:left-[-140px] 3xl:left-0"}`}
                     >
                         <MotionImage
                             width={1500}
@@ -851,9 +909,12 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                             style={{ y: shapeY }}
                             src="/assets/images/projects/pjtbdy1.svg"
                             alt=""
-                            className="w-[150px] sm:w-[270px] lg:w-[670px] object-contain"
+                            className={` ${
+                                isArabic ? "-scale-x-100" : ""
+                            } w-[150px] sm:w-[270px] lg:w-[670px] object-contain`}
                         />
                     </div>
+
                     <div
                         className={`${
                             currentItems.length === 0
@@ -861,7 +922,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                 : currentItems.length < 4
                                 ? "bottom-[5%] hidden"
                                 : "bottom-[5%] lg:bottom-0"
-                        } absolute  right-0 lg:right-[-150px] 3xl:right-0 z-[-1]`}
+                        } absolute z-[-1]
+    ${isArabic ? "left-0 lg:left-[-150px] 3xl:left-0 scale-x-[-1]" : "right-0 lg:right-[-150px] 3xl:right-0"}`}
                     >
                         <MotionImage
                             width={1500}
