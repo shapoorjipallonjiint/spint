@@ -150,9 +150,7 @@ const Environmental = ({ data }) => {
                         </motion.div>
                     ))}
                 </div>
-                <h4 className="text-29 pt-[40px] 3xl:pt-[70px] max-w-[75%]">
-                    {t.description_bottom}
-                </h4>
+                <h4 className="text-29 pt-[40px] 3xl:pt-[70px] max-w-[75%]">{t.description_bottom}</h4>
             </div>
         </section>
     );

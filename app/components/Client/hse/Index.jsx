@@ -8,23 +8,17 @@ import Environmental from "./sections/Environmental";
 // import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
 // import { environmentalData } from "./sections/data";
 const QualitySafety = ({ data }) => {
-    console.log(data, "hse")
+    console.log(data, "hse");
     return (
         <>
-            {/* <header className="">
-        <MainNavbar /> 
-      </header> */}
-            <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
+            <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} data={data} />
             <CoreValues data={data.firstSection} />
-            <Philosophy data={data.philosophySection}/>
-            <Environmental data={data.environmentalSection}/>
+            <Philosophy data={data.philosophySection} />
+            <Environmental data={data.environmentalSection} />
             <Certifications data={data.secondSection} />
             <SaftySlider data={data.thirdSection} />
             {/* <ImgPointsComponent data={data.fourthSection} bgColor="[#f5f5f5]" sectionSpacing="pt-text90 pb25" /> */}
             {/* <EnsuringSafety />   */}
-            {/* <footer>
-        <Footer />
-      </footer> */}
         </>
     );
 };

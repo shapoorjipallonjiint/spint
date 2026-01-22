@@ -136,6 +136,55 @@ const qualitySchema = new mongoose.Schema({
             imageAlt_ar: String
         }]
     },
+    unifiedStandardSection: {
+        items: [{
+            logo: {
+                type: String
+            },
+            title: {
+                type: String
+            },
+            title_ar: {
+                type: String
+            },
+            description: {
+                type: String
+            },
+            description_ar: {
+                type: String
+            }
+        }]
+    },
+    sixthSection: {
+        image: {
+            type: String
+        },
+        imageAlt: {
+            type: String
+        },
+        imageAlt_ar: {
+            type: String
+        },
+        title: {
+            type: String
+        },
+        title_ar: {
+            type: String
+        },
+        description: {
+            type: String
+        },
+        description_ar: {
+            type: String
+        },
+        subTitle: {
+            type: String
+        },
+        subTitle_ar: {
+            type: String
+        }
+    }
+
 })
 
 export default mongoose.models.Quality || mongoose.model("Quality", qualitySchema);

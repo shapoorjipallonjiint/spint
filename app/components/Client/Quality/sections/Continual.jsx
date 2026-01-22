@@ -54,26 +54,24 @@ const Continual = ({data}) => {
           >
             <MotionImage
               style={{ y: imageY }}
-              src={"/assets/images/qualitysafety/continual.jpg"}
+              src={data.image}
               width={932}
               height={532}
               className="w-full h-[250px] md:h-[320px] lg:h-[350px] md:w-full lg:w-full xl:h-[400px] 2xl:h-[555px] 2xl:w-[932px] object-cover scale-105 "
-              alt={"Image"}
+              alt={data.imageAlt}
             />
             {/* <div ref={overlayRefTwo} className="absolute top-0 left-0 w-full h-full bg-white z-10"></div> */}
           </div>
           
           <div>
           <div className="border-b border-[#CCCCCC] pb-[50px]">
-            <H2Title titleText={"Continual Improvement"} titleColor="black" marginClass="mb-5 2xl:mb-10" />
+            <H2Title titleText={data?.title} titleColor="black" marginClass="mb-5 2xl:mb-10" />
             <motion.p variants={paragraphItem} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-19 leading-[1.473684210526316] font-light text-paragraph ">
-            To maintain leadership in a competitive market, Shapoorji Pallonji International fosters a dynamic learning culture. 
-            Through systematic internal audits, data analysis, and "Lessons Learned" sessions, insights from current projects are harvested to refine future processes. 
-            This cycle of proactive improvement ensures that our methods remain agile and our solutions remain durable.
+            {data?.description}
             </motion.p>
           </div>
 
-          <h4 className="text-29 pt-[30px]">Disciplined planning. Controlled execution. Tangible results.</h4>
+          <h4 className="text-29 pt-[30px]">{data?.subTitle}</h4>
 
           </div>
           

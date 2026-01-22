@@ -6,16 +6,19 @@ import { moveUp } from "@/app/components/motionVarients";
 import Image from "next/image";
 import { useState } from "react";
 import ImageLightbox from "@/app/components/common/ImagePopup";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const Certifications = ({ data }) => {
     const MotionImage = motion.create(Image);
     const [activeImage, setActiveImage] = useState(null);
+    const t = useApplyLang(data);
 
     return (
         <section className="pt-text90 pb25 bg-primary">
             <div className="container ">
                 <div>
-                    <H2Title titleText={data.title} titleColor="white" marginClass="mb-4 2xl:mb-50px" />
+                    <H2Title titleText={t.title} titleColor="white" marginClass="mb-4 2xl:mb-50px" />
                     <motion.p
                         variants={moveUp(0.4)}
                         initial="hidden"
@@ -23,12 +26,12 @@ const Certifications = ({ data }) => {
                         viewport={{ amount: 0.2, once: true }}
                         className="text-19 font-light leading-[1.474] max-w-[85ch] text-white"
                     >
-                        {data.description}
+                        {t.description}
                     </motion.p>
                 </div>
                 <div>
                     <div className="grid grid-cols-1  md:grid-cols-3  3xl:grid-cols-[520px_550px_550px]  gap-2 lg:gap-23 3xl:gap-0 mt-5 xl:mt-50px border-t border-white/20">
-                        {data.items.map((item, index) => (
+                        {t.items.map((item, index) => (
                             <div
                                 key={index}
                                 className="p-6 lg:p-10 md:border-l border-white/20 md:last:border-r border-b md:border-b-0"
