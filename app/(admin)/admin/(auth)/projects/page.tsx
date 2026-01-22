@@ -195,6 +195,7 @@ export default function Projects() {
             if (response.ok) {
                 const data = await response.json();
                 setServiceList(data.data);
+                console.log(data.data)
             } else {
                 const data = await response.json();
                 toast.error(data.message);

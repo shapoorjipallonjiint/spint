@@ -88,7 +88,9 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
 
     const [sectorList, setSectorList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
     const [locationList, setLocationList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
-    const [serviceList, setServiceList] = useState<{ _id: string; pageTitle: string; pageTitle_ar: string }[]>([]);
+    const [serviceList, setServiceList] = useState<
+        { _id: string; pageTitle: string; pageTitle_ar: string; title_ar: string }[]
+    >([]);
     const [reorderMode, setReorderMode] = useState(false);
 
     const {
@@ -100,18 +102,18 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
         formState: { errors },
     } = useForm<ProjectFormProps>({
         defaultValues: {
-          secondSection: {
-            service: [],
-            items: [],
-            title: "",
-            title_ar: "",
-            location: "",
-            sector: "",
-            status: "",
-          },
-          images: [],
+            secondSection: {
+                service: [],
+                items: [],
+                title: "",
+                title_ar: "",
+                location: "",
+                sector: "",
+                status: "",
+            },
+            images: [],
         },
-      });
+    });
 
     const {
         fields: secondSectionItems,
@@ -173,9 +175,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                     sector: data.data.secondSection.sector?._id || "",
                     location: data.data.secondSection.location?._id || "",
                     // service: data.data.secondSection.service._id || "",
-                    service: data.data.secondSection.service?.map(
-                        (s: any) => s._id
-                    ) || [],
+                    service: data.data.secondSection.service?.map((s: any) => s._id) || [],
                 });
             } else {
                 const data = await response.json();
@@ -262,7 +262,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
         setImageUrls((prev) => prev.filter((_, index) => index !== indexToRemove));
         setValue(
             "images",
-            imageUrls.filter((_, index) => index !== indexToRemove)
+            imageUrls.filter((_, index) => index !== indexToRemove),
         );
     };
 
@@ -495,9 +495,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                         checked={selected}
                                                         onChange={() => {
                                                             if (selected) {
-                                                                field.onChange(
-                                                                    field.value.filter((v) => v !== item._id)
-                                                                );
+                                                                field.onChange(field.value.filter((v) => v !== item._id));
                                                             } else {
                                                                 field.onChange([...(field.value || []), item._id]);
                                                             }
@@ -987,15 +985,14 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                         checked={selected}
                                                         onChange={() => {
                                                             if (selected) {
-                                                                field.onChange(
-                                                                    field.value.filter((v) => v !== item._id)
-                                                                );
+                                                                field.onChange(field.value.filter((v) => v !== item._id));
                                                             } else {
                                                                 field.onChange([...(field.value || []), item._id]);
                                                             }
                                                         }}
                                                     />
-                                                    {item.pageTitle}
+                                                    {item.pageTitle}{" "}
+                                                    <span className="text-primary text-sm">AR:({item.title_ar})</span>
                                                 </label>
                                             );
                                         })}
