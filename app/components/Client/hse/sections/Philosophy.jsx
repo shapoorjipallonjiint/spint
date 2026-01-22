@@ -8,6 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { moveUp } from "@/app/components/motionVarients";
 import H2Title from "@/app/components/common/H2Title";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 // import { philosophyData } from "./data";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,18 +17,19 @@ gsap.registerPlugin(ScrollTrigger);
 const FALLBACK_IMAGE = "/assets/images/placeholder.jpg";
 
 const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
-    console.log(data, "inside hse");
+    const t = useApplyLang(data)
+    const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
 
     const isMob = useMediaQuery({ maxWidth: 767 });
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
 
     /* ================= BACKEND DATA NORMALIZATION ================= */
-    const heading = data?.title ?? "";
-    const subTitle = data?.subTitle ?? "";
+    const heading = t?.title ?? "";
+    const subTitle = t?.subTitle ?? "";
 
     const points =
-        data?.items?.map((item) => ({
+        t?.items?.map((item) => ({
             text: item.title,
             description: item.description,
             image: item.image,
@@ -157,33 +160,43 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                 >
                                     {/* LEFT BAR */}
                                     <span
-                                        className={`absolute left-0 top-0 h-full w-[3px] bg-secondary transition-transform origin-top duration-400 ${
+                                        className={`absolute ${isArabic ? "right-0" : "left-0"} top-0 h-full w-[3px] bg-secondary transition-transform origin-top duration-400 ${
                                             isActive(index) ? "scale-y-100" : "scale-y-0"
                                         }`}
                                     />
 
                                     {/* TITLE */}
-                                    <span
-                                        className={`inline-block transition-transform duration-300${
-                                            isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
-                                        }`}
-                                    >
+<span
+  className={`inline-block transition-transform duration-300 ${
+    isActive(index)
+      ? isArabic
+        ? "-translate-x-[20px] xl:-translate-x-[43px]"
+        : "translate-x-[20px] xl:translate-x-[43px]"
+      : "translate-x-0"
+  }`}
+>
+
                                         {item.text}
                                     </span>
 
                                     {/* DESCRIPTION (only when hovered / active) */}
-                                    <motion.p
-                                        initial={false}
-                                        animate={{
-                                            opacity: isActive(index) ? 1 : 0,
-                                            height: isActive(index) ? "auto" : 0,
-                                            marginTop: isActive(index) ? 10 : 0,
-                                        }}
-                                        transition={{ duration: 0.25, ease: "easeOut" }}
-                                        className={`overflow-hidden text-sm lg:text-base  font-light leading-relaxed ${
-                                            isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
-                                        }`}
-                                    >
+<motion.p
+  initial={false}
+  animate={{
+    opacity: isActive(index) ? 1 : 0,
+    height: isActive(index) ? "auto" : 0,
+    marginTop: isActive(index) ? 10 : 0,
+  }}
+  transition={{ duration: 0.25, ease: "easeOut" }}
+  className={`overflow-hidden text-sm lg:text-base font-light leading-relaxed ${
+    isActive(index)
+      ? isArabic
+        ? "-translate-x-[20px] xl:-translate-x-[43px]"
+        : "translate-x-[20px] xl:translate-x-[43px]"
+      : "translate-x-0"
+  }`}
+>
+
                                         {/* A project is only as durable as the materials used. We enforce strict approval
                                         processes for all materials and maintain effective management of subcontractors. By
                                         rigorously vetting the supply chain, we ensure that every component entering the

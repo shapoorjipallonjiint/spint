@@ -86,6 +86,7 @@ import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const Banner = ({ title, image, imageAlt, data }) => {
+    console.log(data, "js")
     const sectionRef = useRef(null);
     const imgRef = useRef(null);
     const overlayRef = useRef(null);
@@ -93,8 +94,6 @@ const Banner = ({ title, image, imageAlt, data }) => {
     const maskRef = useRef(null);
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
-
-    console.log(data);
 
     useEffect(() => {
         const ctx = gsap.context(() => {

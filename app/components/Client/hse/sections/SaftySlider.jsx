@@ -10,10 +10,14 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 
 import H2Title from "@/app/components/common/H2Title";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
-import InsideCounter from "@/app/components/InsideCounter";
+// import InsideCounter from "@/app/components/InsideCounter";
 
-const SaftySlider = ({data}) => {
+const SaftySlider = ({ data }) => {
+    const isArabic = useIsPreferredLanguageArabic();
+    const t = useApplyLang(data);
     const [activeIndex, setActiveIndex] = useState(0);
     const sectionRef = useRef(null);
     const imageContainerRefTwo = useRef(null);
@@ -47,19 +51,27 @@ const SaftySlider = ({data}) => {
     return (
         <section className="max-w-[1920px] mx-auto overflow-hidden " ref={sectionRef}>
             <div className="relative mb-3">
-                <MotionImage
-                    style={{ y: shapeY }}
-                    src="/assets/images/svg/sv-02.svg"
-                    alt=""
-                    className="absolute top-0 lg:bottom-0 2xl:bottom-[-58px] right-0 lg:left-[-150px]   3xl:left-[-60px] z-[-1] w-[150px] h-[355px] lg:w-[468px] lg:h-[655px] 2xl:h-[555px] 3xl:h-[655px]"
-                    width={468}
-                    height={655}
-                />
+<MotionImage
+  style={{ y: shapeY }}
+  src="/assets/images/svg/sv-02.svg"
+  alt=""
+  className={`absolute top-0 lg:bottom-0 2xl:bottom-[-58px]
+    ${
+      isArabic
+        ? "left-0 lg:right-[-150px] 3xl:right-[-60px] -scale-x-100"
+        : "right-0 lg:left-[-150px] 3xl:left-[-60px]"
+    }
+    z-[-1] w-[150px] h-[355px] lg:w-[468px] lg:h-[655px] 2xl:h-[555px] 3xl:h-[655px]"
+  `}
+  width={468}
+  height={655}
+/>
+
                 <div className="container pt-text30">
-                    <div className=" max-w-[1206px] 2xl:max-w-[1056px] 3xl:max-w-[1206px] ml-auto  ">
+                    <div className={`max-w-[1206px] 2xl:max-w-[1056px] 3xl:max-w-[1206px] ${isArabic ? "mr-auto" : "ml-auto"}`}>
                         <div>
                             <H2Title
-                                titleText={data.title}
+                                titleText={t.title}
                                 titleColor="black"
                                 marginClass="mb-4 2xl:mb-50px max-w-[15ch]"
                             />
@@ -70,7 +82,7 @@ const SaftySlider = ({data}) => {
                                 viewport={{ amount: 0.2, once: true }}
                                 className="text-19 font-light leading-[1.474] max-w-[59ch] text-paragraph"
                             >
-                                {data.description}
+                                {t.description}
                             </motion.p>
                         </div>
                         {/* <motion.div
@@ -80,7 +92,7 @@ const SaftySlider = ({data}) => {
                             viewport={{ amount: 0.2, once: true }}
                             className="flex flex-col md:flex-row p-5 lg:px-12  lg:py-10 bg-f5f5  gap-8 md:gap-0"
                         >
-                            {data.itemsOne.map((item, index) => (
+                            {t.itemsOne.map((item, index) => (
                                 <div key={index} className="md:w-[33.33%] w-auto">
                                     <motion.p
                                         variants={moveLeft(0.3 * index)}
@@ -134,7 +146,7 @@ const SaftySlider = ({data}) => {
                         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                         className="h-[400px] md:h-[470px]  lg:h-[570px] xl:h-[586px] 2xl:h-[611px] 3xl:h-[597px]"
                     >
-                        {[...data.itemsTwo, ...data.itemsTwo].map((img, i) => (
+                        {[...t.itemsTwo, ...t.itemsTwo].map((img, i) => (
                             <SwiperSlide
                                 key={i}
                                 className="flex justify-center items-center transition-all duration-500 ease-in-out"
@@ -159,7 +171,7 @@ const SaftySlider = ({data}) => {
                                                 ? 0.8
                                                 : window.innerWidth >= 768
                                                 ? 0.7
-                                                : 0.6
+                                                : 0.6,
                                         ),
                                         width: "100%",
                                     }}
