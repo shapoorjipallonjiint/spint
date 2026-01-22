@@ -757,13 +757,13 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                     <div className="left-spacing fixed h-full py-[50px]">
                         <div
                             ref={headerRef}
-                            className={`shadow ml-0  w-[125px] 3xl:w-[133px] h-full relative
+                            className={` ml-0  w-[125px] 3xl:w-[133px] h-full relative
       transition-all duration-300
-      ${menuOpen ? "bg-white" : "bg-primary"}
+      ${menuOpen ? "bg-white" : "bg-transparent"}
   `}
                         >
                             <div className="bg-transparent  w-full absolute z-[-2] bxone"></div>
-                            <div className="bg-primary h-[20%] w-full absolute z-[-1] bottom-0 bxtwo"></div>
+                            <div className="shadow bg-primary h-[20%] w-full absolute z-[-1] bottom-0 bxtwo"></div>
                             <div className="flex flex-col justify-between h-full pt-10 pb-[21px] z-10 w-full">
                                 <div className="flex justify-center items-center">
                                     {!menuOpen ? (

@@ -299,10 +299,12 @@ body::-webkit-scrollbar {
 }
 
 .st01,
-.st11 {
+.st11,
+.st12 {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
+  stroke-dashoffset: 0px;
   stroke-width: 3px;
 }
 
@@ -311,6 +313,9 @@ body::-webkit-scrollbar {
 }
 
 .st11 {
+  stroke: #264a9b;
+}
+.st12 {
   stroke: #264a9b;
 }
 
@@ -1542,3 +1547,8 @@ h2.text-19,
 h1.text-19 {
   letter-spacing: -1px;
 }
+.st00 {
+        fill: #fff;
+        stroke: #fff;
+      }
+
