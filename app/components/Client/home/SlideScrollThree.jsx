@@ -2925,7 +2925,7 @@ const getVisibleSectors = () => {
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
                                                 className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
-                                                    activeDot === city.id && city.groupId === "sp-international"
+                                                    activeDot === city.id
                                                         ? "z-[999]"
                                                         : "z-[1]"
                                                 }`}
@@ -3231,7 +3231,10 @@ const getVisibleSectors = () => {
                                             </p>
                                             <p className="text-[14px] font-[200]">Project Completed</p>
                                         </div> */}
-                                        <div
+
+
+                                        
+                                        {/* <div
                                             className={`bubble  bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm  text-white text-center p-3 rounded-full 
                                 lg:absolute left-[51%] top-[55%] ${
                                     activeDot === selectedCity.id
@@ -3243,7 +3246,7 @@ const getVisibleSectors = () => {
                                                 {selectedCity.dedicatedemployees}
                                             </p>
                                             <p className="text-[14px] font-[200]">Employees</p>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     <div

@@ -1524,9 +1524,10 @@ body::-webkit-scrollbar {
   }
 }
 
+
 h2,
 h1 {
-  letter-spacing: -3px;
+  letter-spacing: -2.5px;
 }
 
 @media (max-width:1200px) {
