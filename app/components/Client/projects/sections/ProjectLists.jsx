@@ -783,7 +783,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         <div className="bg-f5f5 p-5 xl:py-[18px] xl:px-[30px]">
                                             <div className="flex gap-5 3xl:gap-[168px] justify-between border-b border-b-black/20 pb-[11px] mb-[7px] ">
                                                 <p className="text-paragraph text-19 font-light  leading-[1.4] md:leading-[2] ">
-                                                    Sector: <br className="hidden lg:block 2xl:hidden"></br>
+                                                    {isArabic ? UI_LABELS.SECTOR.ar : UI_LABELS.SECTOR.en}: <br className="hidden lg:block 2xl:hidden"></br>
                                                     {item?.secondSection?.sector?.name}
                                                 </p>
                                                 <p className="text-paragraph text-19 font-light leading-[1.4] md:leading-[2] xl:pe-6">
@@ -794,7 +794,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             </div>
                                             <div className="">
                                                 <p className="text-paragraph text-19 font-light leading-[2]">
-                                                    Location: {item.secondSection?.location?.name}
+                                                    {isArabic ? UI_LABELS.ProjectCardDetails.Location.ar : UI_LABELS.ProjectCardDetails.Location.en}: {item.secondSection?.location?.name}
                                                 </p>
                                             </div>
                                         </div>
