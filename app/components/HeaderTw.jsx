@@ -600,6 +600,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
 
     console.log(logostatus);
     const nextSection = sections.find((section) => section.id === `section${parseInt(activeSection[length - 1]) + 1}`);
+    console.log(nextSection);
     const scrollStep = 700;
     const scrollLock = useRef(false);
 
@@ -614,6 +615,9 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
         console.log("clicked", sectionId);
 
         switch (sectionId) {
+            case "section1":
+                setIndexToScroll(0);
+                break;
             case "section2":
                 setIndexToScroll(1);
                 break;
@@ -642,7 +646,9 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
         <>
             <div className="fixed top-7 lg:top-13 right-0 lg:right-10 3xl:right-38 z-50 w-full">
                 <div className="flex gap-8 items-center justify-between lg:justify-end ps-5 lg:ps-0">
-                    <div className="flex justify-center items-center lg:hidden">
+                    <div className="flex justify-center items-center lg:hidden" 
+                        onClick={() => handleScroll('section1')}       >
+
                         <Image
                             src="/assets/images/main-logo.png"
                             width={90}
@@ -765,7 +771,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                             <div className="bg-transparent  w-full absolute z-[-2] bxone"></div>
                             <div className="shadow bg-primary h-[20%] w-full absolute z-[-1] bottom-0 bxtwo"></div>
                             <div className="flex flex-col justify-between h-full pt-10 pb-[21px] z-10 w-full">
-                                <div className="flex justify-center items-center">
+                                <div className="flex justify-center items-center"  onClick={() => handleScroll('section1')} >
                                     {!menuOpen ? (
                                         <Image
                                             className="logsc invert brightness-0"
