@@ -71,9 +71,9 @@ const ContactPage = () => {
         },
     });
 
-    const watchedFirstSectionLocation = useWatch({
+    const watchedFirstSection = useWatch({
         control,
-        name: "firstSection.location",
+        name: "firstSection",
     });
 
     const watchedSecondSectionItems = useWatch({
@@ -326,26 +326,32 @@ const ContactPage = () => {
 
                         <div>
                             <Label className="font-bold">Phone</Label>
-                            <Input {...register("firstSection.phone", { required: "Phone is required" })} />
-                            <FormError error={errors.firstSection?.phone?.message} />
+                            <Input
+                                value={watchedFirstSection?.phone || ""}
+                                readOnly
+                                disabled
+                                className="bg-muted cursor-default"
+                            />
                         </div>
 
                         <div>
                             <Label className="font-bold">Email</Label>
-                            <Input {...register("firstSection.email", { required: "Email is required" })} />
-                            <FormError error={errors.firstSection?.email?.message} />
+                            <Input
+                                value={watchedFirstSection?.email || ""}
+                                readOnly
+                                disabled
+                                className="bg-muted cursor-default"
+                            />
                         </div>
 
                         <div>
                             <Label className="font-bold">Location</Label>
                             <Input
-                                value={watchedFirstSectionLocation || ""}
+                                value={watchedFirstSection?.location || ""}
                                 readOnly
                                 disabled
                                 className="bg-muted cursor-default"
                             />
-
-                            <FormError error={errors.firstSection?.location?.message} />
                         </div>
                     </div>
                 </AdminItemContainer>
