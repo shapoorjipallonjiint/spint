@@ -2446,10 +2446,10 @@ const getVisibleSectors = () => {
                                                         width={21}
                                                         height={21}
                                                         className={`
-    lg:block hidden
-    transition-all duration-500 ease-in-out
-    ${activeServiceIndex === index ? "opacity-100 scale-100" : "opacity-0 scale-75"}
-  `}
+                                                            lg:block hidden
+                                                            transition-all duration-500 ease-in-out
+                                                            ${activeServiceIndex === index ? "opacity-100 scale-100" : "opacity-0 scale-75"}
+                                                        `}
                                                     />
                                                 </div>
                                             ))}
@@ -2651,7 +2651,7 @@ const getVisibleSectors = () => {
                                     </h1>
                                     <div
                                         ref={talentlist}
-                                        className="iosswipe xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible lg:pl-4 3xl:pl-0"
+                                        className=" xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible lg:pl-4 3xl:pl-0"
                                     >
                                         <div className="lg:pb-4 relative h-full flex items-center">
                                             {/* curved line svg */}
