@@ -57,7 +57,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const InsideCounter = ({ value, duration = 2, delay = 0, suffix = "" }) => {
+const InsideCounter = ({ nozero, value, duration = 2, delay = 0, suffix = "" }) => {
     const [display, setDisplay] = useState(0);
     const ref = useRef(null);
     const hasTriggered = useRef(false);
@@ -73,7 +73,7 @@ const InsideCounter = ({ value, duration = 2, delay = 0, suffix = "" }) => {
                 hasTriggered.current = true;
                 observer.unobserve(element);
 
-                const target = Number(String(value).replace(/[^0-9]/g, ""));
+                const target = Number(String(value).replace(/[^0-9]/g, "")); 
                 const totalFrames = Math.round(duration * 60);
                 let frame = 0;
 
@@ -102,10 +102,17 @@ const InsideCounter = ({ value, duration = 2, delay = 0, suffix = "" }) => {
     }, [value, duration, delay]);
 
     return (
-        <span ref={ref}>
-            {display < 10 ? `0${display}` : display.toLocaleString()}
-            {suffix}
-        </span>
+       <>
+         <span ref={ref}>
+      {nozero
+        ? display.toLocaleString()
+        : display < 10
+          ? `0${display}`
+          : display.toLocaleString()
+      }
+      {suffix}
+    </span>
+    </>
     );
 };
 
