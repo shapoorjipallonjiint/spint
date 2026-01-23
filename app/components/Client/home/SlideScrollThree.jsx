@@ -5,6 +5,9 @@ import { useEffect, useRef, useState, useMemo,useLayoutEffect } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode } from "swiper/modules";
+import "swiper/css/free-mode";
 
 import Link from "next/link";
 
@@ -338,6 +341,24 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const containersRef = useRef(null);
 
     console.log(data);
+
+    const [isLargeScreen, setIsLargeScreen] = useState(false);
+    const swiperRef = useRef(null); // Add this ref for Swiper
+
+// Add this useEffect to detect screen size
+useEffect(() => {
+    const checkScreen = () => {
+        setIsLargeScreen(window.innerWidth >= 1024);
+    };
+    
+    checkScreen(); // Initial check
+    window.addEventListener('resize', checkScreen);
+    
+    return () => window.removeEventListener('resize', checkScreen);
+}, []);
+
+
+
 
     const items = [
         ...data.seventhSection.items.map((item) => {
@@ -1689,6 +1710,20 @@ const getVisibleSectors = () => {
         }
     }, [data, projectCities]);
 
+    useEffect(() => {
+    if (!isLargeScreen && swiperRef.current && swiperRef.current.swiper) {
+        const swiper = swiperRef.current.swiper;
+        
+        // Find the index of the active sector (position === 0)
+        const activeSectorIndex = visibleSectors.findIndex(s => s.position === 0);
+        
+        if (activeSectorIndex !== -1) {
+            // Scroll to the active slide with smooth animation
+            swiper.slideTo(activeSectorIndex, 500); // 500ms animation
+        }
+    }
+}, [activeIndex, isLargeScreen]); // Re-run when activeIndex changes
+
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
             <div className="fixed w-screen h-screen z-[500] mswd pointer-events-none grid content-center load-sec2">
@@ -1703,14 +1738,14 @@ const getVisibleSectors = () => {
                         <style></style>
                     </defs>
                       <g>
-                            <path class="st00" d="M0,0v1080h1920V0H0ZM952.9,406.3h0c0,8.4-4.4,16.1-11.5,20.5l-162.9,88.2c-4.3,2.6-7,7.3-7,12.4v15.3l149.7-76.7c14-8.1,31.7,2,31.7,18.2v117.1c0,14.2-7.9,27.1-20.6,33.6l-210.1,96.8c-4.9,2.5-10.7-1.1-10.7-6.5v-47.4c0-6.2,3.4-11.9,8.8-15l164.4-81c5-2.8,8.2-8.1,8.2-13.9v-13.7l-147.8,72.4c-15,8.4-33.6-2.5-33.6-19.7v-100.1c0-14.8,7.6-28.5,20.1-36.4l209.2-121.4c5.2-3.3,12,.5,12,6.6v50.8ZM1208.4,606.5c0,17.2-18.6,28.1-33.6,19.7l-147.7-72.3v141.7l-39.4-20.1c-12.6-6.4-20.6-19.4-20.6-33.6v-286.6c0-6.2,6.8-9.9,12-6.6l209.3,121.5h0c12.5,7.8,20.1,21.5,20.1,36.2v100Z"/>
-    <path class="st00" d="M1148.4,526.9c0-4.8-2.5-9.3-6.6-11.8l-114.8-62.2v27.4l121.4,62.2v-15.6Z"/>
+                            <path className="st00" d="M0,0v1080h1920V0H0ZM952.9,406.3h0c0,8.4-4.4,16.1-11.5,20.5l-162.9,88.2c-4.3,2.6-7,7.3-7,12.4v15.3l149.7-76.7c14-8.1,31.7,2,31.7,18.2v117.1c0,14.2-7.9,27.1-20.6,33.6l-210.1,96.8c-4.9,2.5-10.7-1.1-10.7-6.5v-47.4c0-6.2,3.4-11.9,8.8-15l164.4-81c5-2.8,8.2-8.1,8.2-13.9v-13.7l-147.8,72.4c-15,8.4-33.6-2.5-33.6-19.7v-100.1c0-14.8,7.6-28.5,20.1-36.4l209.2-121.4c5.2-3.3,12,.5,12,6.6v50.8ZM1208.4,606.5c0,17.2-18.6,28.1-33.6,19.7l-147.7-72.3v141.7l-39.4-20.1c-12.6-6.4-20.6-19.4-20.6-33.6v-286.6c0-6.2,6.8-9.9,12-6.6l209.3,121.5h0c12.5,7.8,20.1,21.5,20.1,36.2v100Z"/>
+    <path className="st00" d="M1148.4,526.9c0-4.8-2.5-9.3-6.6-11.8l-114.8-62.2v27.4l121.4,62.2v-15.6Z"/>
   
   </g>
   <g>
-       <path ref={polygon4Ref} class="st01" d="M952.9,406.3v-50.8c0-6.2-6.8-9.9-12-6.6l-209.2,121.4c-12.5,7.9-20.1,21.6-20.1,36.4v100.1c0,17.2,18.5,28.1,33.6,19.7l147.8-72.4v13.7c0,5.8-3.1,11.1-8.2,13.9l-164.4,81c-5.4,3-8.8,8.7-8.8,15v47.4c0,5.5,5.8,9,10.7,6.5l210.1-96.8c12.6-6.4,20.6-19.4,20.6-33.6v-117.1c0-16.2-17.6-26.4-31.7-18.2l-149.7,76.7v-15.3c0-5,2.6-9.7,7-12.4l162.9-88.2c7.2-4.3,11.5-12.1,11.5-20.5"/>
-    <path ref={polygon5Ref} class="st11" d="M1188.4,470.3l-209.3-121.5c-5.2-3.3-12,.5-12,6.6v50.8h0v77.7h0v158.1c0,14.2,7.9,27.1,20.6,33.6l39.4,20.1v-112.2h0v-29.5l147.7,72.3c15.1,8.4,33.6-2.5,33.6-19.7v-100c0-14.7-7.6-28.4-20.1-36.3h0Z"/>
-    <path ref={polygon6Ref} class="st12" d="M1148.5,542.6l-121.4-62.2v-27.4l114.8,62.2c4.1,2.5,6.6,7,6.6,11.8v15.7h0Z"/>
+       <path ref={polygon4Ref} className="st01" d="M952.9,406.3v-50.8c0-6.2-6.8-9.9-12-6.6l-209.2,121.4c-12.5,7.9-20.1,21.6-20.1,36.4v100.1c0,17.2,18.5,28.1,33.6,19.7l147.8-72.4v13.7c0,5.8-3.1,11.1-8.2,13.9l-164.4,81c-5.4,3-8.8,8.7-8.8,15v47.4c0,5.5,5.8,9,10.7,6.5l210.1-96.8c12.6-6.4,20.6-19.4,20.6-33.6v-117.1c0-16.2-17.6-26.4-31.7-18.2l-149.7,76.7v-15.3c0-5,2.6-9.7,7-12.4l162.9-88.2c7.2-4.3,11.5-12.1,11.5-20.5"/>
+    <path ref={polygon5Ref} className="st11" d="M1188.4,470.3l-209.3-121.5c-5.2-3.3-12,.5-12,6.6v50.8h0v77.7h0v158.1c0,14.2,7.9,27.1,20.6,33.6l39.4,20.1v-112.2h0v-29.5l147.7,72.3c15.1,8.4,33.6-2.5,33.6-19.7v-100c0-14.7-7.6-28.4-20.1-36.3h0Z"/>
+    <path ref={polygon6Ref} className="st12" d="M1148.5,542.6l-121.4-62.2v-27.4l114.8,62.2c4.1,2.5,6.6,7,6.6,11.8v15.7h0Z"/>
    {/*  <path   ref={polygon4Ref} class="st01" d="M952.9,406.3v-50.8c0-6.2-6.8-9.9-12-6.6l-209.2,121.4c-12.5,7.9-20.1,21.6-20.1,36.4v100.1c0,17.2,18.5,28.1,33.6,19.7l147.8-72.4v13.7c0,5.8-3.1,11.1-8.2,13.9l-164.4,81c-5.4,3-8.8,8.7-8.8,15v47.4c0,5.5,5.8,9,10.7,6.5l210.1-96.8c12.6-6.4,20.6-19.4,20.6-33.6v-117.1c0-16.2-17.6-26.4-31.7-18.2l-149.7,76.7v-15.3c0-5,2.6-9.7,7-12.4l162.9-88.2c7.2-4.3,11.5-12.1,11.5-20.5"/>
     <path  ref={polygon5Ref} class="st11" d="M1188.4,470.3l-209.3-121.5c-5.2-3.3-12,.5-12,6.6v50.8h0v77.7h0v158.1c0,14.2,7.9,27.1,20.6,33.6l39.4,20.1v-112.2h0v-29.5l147.7,72.3c15.1,8.4,33.6-2.5,33.6-19.7v-100c0-14.7-7.6-28.4-20.1-36.3h0ZM1148.5,542.6l-121.4-62.2v-27.4l114.8,62.2c4.1,2.5,6.6,7,6.6,11.8v15.7h0Z"/>
    */}
@@ -2407,53 +2442,112 @@ const getVisibleSectors = () => {
                         0{activeService.index + 1}/ 06
                       </p> */}
                                         </div>
-                                        <div className="flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden   border-b border-[#ffffff20]  mb-5 lg:mb-0 xs-pt-1 pt-[4dvh] lg:pt-18  lg:pb-21 3xl:pt-14 3xl:pb-21 pr-2">
-                                            {serviceData.map((service, index) => (
-                                                <div
-                                                    key={index}
-                                                    className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0  ${
-                                                        activeServiceIndex === index
-                                                            ? "border-white "
-                                                            : "border-transparent"
-                                                    }`}
-                                                    ref={(el) => (textItemsRef.current[index] = el)}
-                                                >
-                                                    <Link href={isDesktop ? `services/${service.link}` : "#"} onClick={() => handleServiceClick()}>
-                                                        <p
-                                                            className={`${
-                                                                activeServiceIndex === index
-                                                                    ? "text-white lg:text-black font-light lg:font-bold bo "
-                                                                    : "text-white/70 lg:text-black font-light"
-                                                            } text-[14px] lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9]  2xl:leading-[1.70]  3xl:leading-[1.607142857142857]  cursor-pointer group-hover:lg:text-black group-hover:lg:font-bold`}
-                                                            onMouseOver={() => [
-                                                                setActiveService({
-                                                                    image: service.homeImage,
-                                                                    title: service.title,
-                                                                    description: service.description,
-                                                                    link: service.link,
-                                                                    index,
-                                                                }),
+{/* Desktop (>= 1024px): Original div with flex-col */}
+{isLargeScreen ? (
+    <div className="flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden border-b border-[#ffffff20] mb-5 lg:mb-0 xs-pt-1 pt-[4dvh] lg:pt-18 lg:pb-21 3xl:pt-14 3xl:pb-21 pr-2">
+        {serviceData.map((service, index) => (
+            <div
+                key={index}
+                className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0 ${
+                    activeServiceIndex === index
+                        ? "border-white "
+                        : "border-transparent"
+                }`}
+                ref={(el) => (textItemsRef.current[index] = el)}
+            >
+                <Link href={isDesktop ? `services/${service.link}` : "#"} onClick={() => handleServiceClick()}>
+                    <p
+                        className={`${
+                            activeServiceIndex === index
+                                ? "text-white lg:text-black font-light lg:font-bold bo "
+                                : "text-white/70 lg:text-black font-light"
+                        } text-[14px] lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9] 2xl:leading-[1.70] 3xl:leading-[1.607142857142857] cursor-pointer group-hover:lg:text-black group-hover:lg:font-bold`}
+                        onMouseOver={() => [
+                            setActiveService({
+                                image: service.homeImage,
+                                title: service.title,
+                                description: service.description,
+                                link: service.link,
+                                index,
+                            }),
+                            setActiveServiceIndex(index),
+                        ]}
+                    >
+                        <span className="duration-400">{service.title}</span>
+                    </p>
+                </Link>
+                <Image
+                    src="../assets/images/services/arrowblw.svg"
+                    alt="Arrow"
+                    width={21}
+                    height={21}
+                    className={`
+                        lg:block hidden
+                        transition-all duration-500 ease-in-out
+                        ${activeServiceIndex === index ? "opacity-100 scale-100" : "opacity-0 scale-75"}
+                    `}
+                />
+            </div>
+        ))}
+    </div>
+) : (
+    /* Mobile (< 1024px): Swiper for iOS horizontal scroll */
+    <Swiper
+        modules={[FreeMode]}
+        freeMode={true}
+        slidesPerView="auto"
+        spaceBetween={24}
+        className="border-b border-[#ffffff20] mb-5 xs-pt-1 pt-[4dvh] pr-2"
+        touchStartPreventDefault={false}
+        preventClicks={false}
+        preventClicksPropagation={false}
+        allowTouchMove={true}
+        threshold={5}
+        touchRatio={1}
+        resistance={true}
+        resistanceRatio={0.85}
+        style={{
+            WebkitOverflowScrolling: 'touch',
+        }}
+    >
+        {serviceData.map((service, index) => (
+            <SwiperSlide
+                key={index}
+                style={{ width: 'auto' }}
+                className="!w-auto !mt-1"
+            >
+                <div
+                    className={`pb-[7px] flex items-center gap-3 cursor-pointer group w-fit border-b ${
+                        activeServiceIndex === index
+                            ? "border-white"
+                            : "border-transparent"
+                    }`}
+                    onClick={() => {
+                        setActiveService({
+                            image: service.homeImage,
+                            title: service.title,
+                            description: service.description,
+                            link: service.link,
+                            index,
+                        });
+                        setActiveServiceIndex(index);
+                    }}
+                >
+                    <p
+                        className={`${
+                            activeServiceIndex === index
+                                ? "text-white font-light"
+                                : "text-white/70 font-light"
+                        } text-[14px] leading-[1.607142857142857] cursor-pointer`}
+                    >
+                        <span className="duration-400">{service.title}</span>
+                    </p>
+                </div>
+            </SwiperSlide>
+        ))}
+    </Swiper>
+)}
 
-                                                                setActiveServiceIndex(index),
-                                                            ]}
-                                                        >
-                                                            <span className="duration-400"> {service.title}</span>
-                                                        </p>
-                                                    </Link>
-                                                    <Image
-                                                        src="../assets/images/services/arrowblw.svg"
-                                                        alt="Arrow"
-                                                        width={21}
-                                                        height={21}
-                                                        className={`
-    lg:block hidden
-    transition-all duration-500 ease-in-out
-    ${activeServiceIndex === index ? "opacity-100 scale-100" : "opacity-0 scale-75"}
-  `}
-                                                    />
-                                                </div>
-                                            ))}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2664,85 +2758,142 @@ const getVisibleSectors = () => {
                                                 />
                                             </div>
 
-                                            <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pt-5 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
-                                                {visibleSectors.map((sector) => {
-                                                    const isActive = sector.position === 0;
-                                                    const opacity =
-                                                        Math.abs(sector.position) > 4
-                                                            ? 0
-                                                            : 1 - Math.abs(sector.position) * 0.2;
-                                                    const scale = isActive ? 1 : 0.95;
+{isLargeScreen ? (
+    /* Desktop (>= 1024px): Original vertical list */
+    <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pt-5 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
+        {visibleSectors.map((sector) => {
+            const isActive = sector.position === 0;
+            const opacity =
+                Math.abs(sector.position) > 4
+                    ? 0
+                    : 1 - Math.abs(sector.position) * 0.2;
+            const scale = isActive ? 1 : 0.95;
 
-                                                    // Only render 7 items (3 above, 1 center, 3 below)
-                                                    if (Math.abs(sector.position) > 4) return null;
+            // Only render 7 items (3 above, 1 center, 3 below)
+            if (Math.abs(sector.position) > 4) return null;
 
-                                                    // Determine animation based on direction
-                                                    const getAnimation = () => {
-                                                        if (!isActive || animationDirection === 0) return "none";
+            // Determine animation based on direction
+            const getAnimation = () => {
+                if (!isActive || animationDirection === 0) return "none";
 
-                                                        if (animationDirection === 1) {
-                                                            // Clicked item below center - slide up
-                                                            return "slideUpToCenter 0.5s ease-out";
-                                                        } else {
-                                                            // Clicked item above center - slide down
-                                                            return "slideDownToCenter 0.5s ease-out";
-                                                        }
-                                                    };
+                if (animationDirection === 1) {
+                    // Clicked item below center - slide up
+                    return "slideUpToCenter 0.5s ease-out";
+                } else {
+                    // Clicked item above center - slide down
+                    return "slideDownToCenter 0.5s ease-out";
+                }
+            };
 
-                                                    return (
-                                                        <div
-                                                            key={`${sector.originalIndex}-${sector.position}`}
-                                                            className={`flex items-center gap-5 cursor-pointer ${
-                                                                isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
-                                                            }`}
-                                                            style={{
-                                                                opacity: opacity,
-                                                                transform: `scale(${scale})`,
-                                                                transformOrigin: "left center",
-                                                                transition: "all 0.5s ease-out",
-                                                                willChange: "transform, opacity",
-                                                                animation: getAnimation(),
-                                                            }}
-                                                            onClick={() => handleSlideClick(sector.originalIndex)}
-                                                        >
-                                                            {/* Show icon ONLY when at center */}
-                                                            {isActive && (
-                                                                <div className="hidden lg:flex bg-[#30B6F94D] rounded-full w-[83px] h-[83px]  items-center justify-center relative opacity-0">
-                                                                    <Image
-                                                                        width={200}
-                                                                        height={200}
-                                                                        src={sector.icon}
-                                                                        alt={`${sector.name} icon`}
-                                                                        className="h-[40px]"
-                                                                        style={{
-                                                                            animation:
-                                                                                animationDirection !== 0
-                                                                                    ? "iconFadeInScale 0.4s ease-out 0.2s both"
-                                                                                    : "none",
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            )}
+            return (
+                <div
+                    key={`${sector.originalIndex}-${sector.position}`}
+                    className={`flex items-center gap-5 cursor-pointer ${
+                        isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
+                    }`}
+                    style={{
+                        opacity: opacity,
+                        transform: `scale(${scale})`,
+                        transformOrigin: "left center",
+                        transition: "all 0.5s ease-out",
+                        willChange: "transform, opacity",
+                        animation: getAnimation(),
+                    }}
+                    onClick={() => handleSlideClick(sector.originalIndex)}
+                >
+                    {/* Show icon ONLY when at center */}
+                    {isActive && (
+                        <div className="hidden lg:flex bg-[#30B6F94D] rounded-full w-[83px] h-[83px] items-center justify-center relative opacity-0">
+                            <Image
+                                width={200}
+                                height={200}
+                                src={sector.icon}
+                                alt={`${sector.name} icon`}
+                                className="h-[40px]"
+                                style={{
+                                    animation:
+                                        animationDirection !== 0
+                                            ? "iconFadeInScale 0.4s ease-out 0.2s both"
+                                            : "none",
+                                }}
+                            />
+                        </div>
+                    )}
 
-                                                            <h3
-                                                                className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
-                                                                    isActive
-                                                                        ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
-                                                                        : "text-[14px] lg:text-19 leading-[1.842105263157895]"
-                                                                }`}
-                                                                style={{
-                                                                    transition: "all 0.5s ease-out",
-                                                                    willChange: "font-size, font-weight",
-                                                                }}
-                                                            >
-                                                                {sector.name?.toLowerCase() === "industrial"
-                                                                    ? "Entertainment and Leisure"
-                                                                    : sector.name}
-                                                            </h3>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
+                    <h3
+                        className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
+                            isActive
+                                ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
+                                : "text-[14px] lg:text-19 leading-[1.842105263157895]"
+                        }`}
+                        style={{
+                            transition: "all 0.5s ease-out",
+                            willChange: "font-size, font-weight",
+                        }}
+                    >
+                        {sector.name?.toLowerCase() === "industrial"
+                            ? "Entertainment and Leisure"
+                            : sector.name}
+                    </h3>
+                </div>
+            );
+        })}
+    </div>
+) : (
+    /* Mobile (< 1024px): Swiper for horizontal scroll */
+    <Swiper
+        ref={swiperRef}
+        modules={[FreeMode]}
+        freeMode={true}
+        slidesPerView="auto"
+        spaceBetween={20}
+        centeredSlides={false}
+        className="border-b border-white/20 mb-5"
+        touchStartPreventDefault={false}
+        preventClicks={false}
+        preventClicksPropagation={false}
+        allowTouchMove={true}
+        threshold={5}
+        touchRatio={1}
+        resistance={true}
+        resistanceRatio={0.85}
+        style={{
+            WebkitOverflowScrolling: 'touch',
+        }}
+    >
+        {visibleSectors.map((sector) => {
+            const isActive = sector.position === 0;
+
+            // Only render visible items
+            if (Math.abs(sector.position) > 4) return null;
+
+            return (
+                <SwiperSlide
+                    key={`${sector.originalIndex}-${sector.position}`}
+                    style={{ width: 'auto' }}
+                    className="!w-auto"
+                >
+                    <div
+                        className="flex items-center gap-5 cursor-pointer"
+                        onClick={() => handleSlideClick(sector.originalIndex)}
+                    >
+                        <h3
+                            className={`whitespace-nowrap hover:opacity-100 transition-opacity duration-500 text-white ${
+                                isActive
+                                    ? "text-[14px] leading-[1.842105263157895] border-b border-white"
+                                    : "text-[14px] leading-[1.842105263157895]"
+                            }`}
+                        >
+                            {sector.name?.toLowerCase() === "industrial"
+                                ? "Entertainment and Leisure"
+                                : sector.name}
+                        </h3>
+                    </div>
+                </SwiperSlide>
+            );
+        })}
+    </Swiper>
+)}
 
                                             <div className="hidden lg:block absolute left-[-10px] top-1/2 -translate-y-[75%] z-10">
                                                 <div className="bg-[#30B6F94D] rounded-full w-[83px] h-[83px] flex items-center justify-center relative">
