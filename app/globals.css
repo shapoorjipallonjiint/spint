@@ -1136,7 +1136,7 @@ body::-webkit-scrollbar {
 }
 
 .menu-icon.open .line1 {
-  transform: translateY(12px) rotate(45deg);
+  transform: translateY(10px) rotate(45deg);
   stroke: #30B6F9;
 }
 
@@ -1145,7 +1145,7 @@ body::-webkit-scrollbar {
 }
 
 .menu-icon.open .line3 {
-  transform: translateY(-12px) rotate(-45deg);
+  transform: translateY(-10px) rotate(-45deg);
   stroke: #30B6F9;
 }
 
