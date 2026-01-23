@@ -2080,7 +2080,7 @@ const getVisibleSectors = () => {
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
-                                className="   absolute  right-0 bottom-0 z-[1] w-[394px] h-[554px]"
+                                className="   absolute  right-0 bottom-0 z-[1] w-[394px] h-[554px] opacity-50"
                             />
                         </div>
                     </div>
@@ -2119,7 +2119,7 @@ const getVisibleSectors = () => {
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
-                                className="   absolute  right-0 bottom-0 z-[0] w-[394px] h-[554px]"
+                                className="   absolute  right-0 bottom-0 z-[0] w-[394px] h-[554px] opacity-50"
                             />
                         </div>
                         <div
@@ -2651,7 +2651,7 @@ const getVisibleSectors = () => {
                                     </h1>
                                     <div
                                         ref={talentlist}
-                                        className="xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible lg:pl-4 3xl:pl-0"
+                                        className="iosswipe xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible lg:pl-4 3xl:pl-0"
                                     >
                                         <div className="lg:pb-4 relative h-full flex items-center">
                                             {/* curved line svg */}

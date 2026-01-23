@@ -1552,3 +1552,8 @@ h1.text-19 {
         stroke: #fff;
       }
 
+.h-screen {
+  height: 100dvh;
+}
+.iosswipe{overflow-x: auto;
+  -webkit-overflow-scrolling: touch;}
