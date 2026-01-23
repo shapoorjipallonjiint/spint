@@ -71,6 +71,11 @@ const ContactPage = () => {
         },
     });
 
+    const watchedFirstSectionLocation = useWatch({
+        control,
+        name: "firstSection.location",
+    });
+
     const watchedSecondSectionItems = useWatch({
         control,
         name: "secondSection.items",
@@ -229,22 +234,21 @@ const ContactPage = () => {
                                     </div>
 
                                     <div className="flex flex-col gap-2">
-                                        <Label className="font-bold">Phone <span className="text-sm text-primary">(use comma to separate multiple numbers)</span></Label>
-                                        <Input
-                                            {...register(`secondSection.items.${index}.phone`)}
-                                        />
+                                        <Label className="font-bold">
+                                            Phone{" "}
+                                            <span className="text-sm text-primary">
+                                                (use comma to separate multiple numbers)
+                                            </span>
+                                        </Label>
+                                        <Input {...register(`secondSection.items.${index}.phone`)} />
                                         <FormError error={errors.secondSection?.items?.[index]?.phone?.message} />
 
                                         <Label className="font-bold">Fax</Label>
-                                        <Input
-                                            {...register(`secondSection.items.${index}.fax`)}
-                                        />
+                                        <Input {...register(`secondSection.items.${index}.fax`)} />
                                         <FormError error={errors.secondSection?.items?.[index]?.fax?.message} />
 
                                         <Label className="font-bold">Location</Label>
-                                        <Input
-                                            {...register(`secondSection.items.${index}.location`)}
-                                        />
+                                        <Input {...register(`secondSection.items.${index}.location`)} />
                                         <FormError error={errors.secondSection?.items?.[index]?.location?.message} />
                                     </div>
                                 </div>
@@ -334,7 +338,13 @@ const ContactPage = () => {
 
                         <div>
                             <Label className="font-bold">Location</Label>
-                            <Input {...register("firstSection.location", { required: "Location is required" })} />
+                            <Input
+                                value={watchedFirstSectionLocation || ""}
+                                readOnly
+                                disabled
+                                className="bg-muted cursor-default"
+                            />
+
                             <FormError error={errors.firstSection?.location?.message} />
                         </div>
                     </div>
