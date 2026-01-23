@@ -1763,7 +1763,7 @@ const getVisibleSectors = () => {
         /> */}
 
                 <div className="h-full absolute top-0 left-0 w-full bg-amber-50">
-                    <video src={data.firstSection.video} autoPlay loop muted className="w-full h-full object-cover"></video>
+                    <video src={data.firstSection.video} autoPlay loop muted playsInline webkit-playsinline="true" className="w-full h-full object-cover"></video>
                 </div>
             </div>
 
