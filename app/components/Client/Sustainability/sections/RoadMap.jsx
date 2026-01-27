@@ -8,19 +8,23 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from 'next/image'
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const RoadMap = ({data}) => {
+  const t = useApplyLang(data);
+  const isArabic = useIsPreferredLanguageArabic();
   const MotionImage = motion.create(Image)
   const sectionRef = useRef(null);
   
   useEffect(() => {
     if (!sectionRef.current) return;
     const overlay = sectionRef.current.querySelector(".reveal-overlay4");
-    gsap.set(overlay, { xPercent: 0 }); // start covering
+    gsap.set(overlay, { xPercent: isArabic ? 0 : 0 }); // start covering
     gsap.to(overlay, {
-      xPercent: 100, // slide out to the right
+      xPercent: isArabic ? -100 : 100, // slide out to the right
       duration: 2.7,
       ease: "expo.out",
       scrollTrigger: {
@@ -40,15 +44,32 @@ const RoadMap = ({data}) => {
   return (
     <section className="relative pt-text90 pb25  overflow-hidden" ref={sectionRef}>
       <div className="reveal-overlay4 absolute inset-0 bg-black/20 z-20"></div>
-      <div className="absolute bottom-30 right-0 2xl:right-0 3xl:right-0 w-[200px] md:w-[359px] h-[340px] md:h-[625px] 3xl:w-[561px] 3xl:h-[725px] z-[-1]">
-        <MotionImage width={1920} height={800} style={{y:shapeY}} src={assets.mainShape2} alt="" />
-        </div>
+<div
+  className={`absolute bottom-30
+    w-[200px] md:w-[359px] h-[340px] md:h-[625px]
+    3xl:w-[561px] 3xl:h-[725px] z-[-1]
+    ${
+      isArabic
+        ? "left-0 2xl:left-0 3xl:left-0 -scale-x-100"
+        : "right-0 2xl:right-0 3xl:right-0"
+    }
+  `}
+>
+  <MotionImage
+    width={1920}
+    height={800}
+    style={{ y: shapeY }}
+    src={assets.mainShape2}
+    alt=""
+  />
+</div>
+
       <div className="container">
         {/* Header */}
         <div className="mb-50px">
-          <H2Title titleText={data.title} titleColor="black" marginClass="mb-4 xl:mb-50px" />
+          <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 xl:mb-50px" />
         </div>
-        <TabStyle1Light data={data.items} />
+        <TabStyle1Light data={t.items} />
       </div>
     </section>
   );

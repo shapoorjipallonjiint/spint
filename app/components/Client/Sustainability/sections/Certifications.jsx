@@ -4,15 +4,17 @@ import H2Title from "../../../../components/common/H2Title";
 import {motion} from "framer-motion"
 import { moveUp } from "../../../motionVarients";
 import Image from "next/image";
+import { useApplyLang } from '@/lib/applyLang'
+
 const Certifications = ({ data }) => {
-  console.log(data, "datas")
+  const t = useApplyLang(data);
   return (
     <section className="pt-text30 pb30">
       <div className="container">
-        <H2Title titleText={data.title} marginClass="mb-5 lg:mb-10 2xl:mb-15" />
+        <H2Title titleText={t.title} marginClass="mb-5 lg:mb-10 2xl:mb-15" />
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-10">
           {
-            data.itemsOne.map((item, index) => (
+            t.itemsOne.map((item, index) => (
               <div key={index}>
                 <motion.div variants={moveUp(0.4 + 0.1 * index)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}>
                   <div className="border-b border-cmnbdr pb-30px mb-4">

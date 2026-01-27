@@ -10,14 +10,18 @@ import H2Title from "../../../common/H2Title";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const ExpertiseSec = (data) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
     const shapeOffset = isMobile ? [-50, 50] : isTablet ? [-100, 100] : [-200, 200];
-    const expertiseData = data.data;
+    const expertiseData = t.data;
 
     const itemRefs = useRef([]);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -91,7 +95,13 @@ const ExpertiseSec = (data) => {
 
     return (
         <section className="relative pt-text90 pb25 bg-f5f5 overflow-hidden" ref={sectionRef}>
-            <div className="absolute bottom-0 lg:bottom-[-150px] 3xl:bottom-0 right-0 w-[200px] md:w-[300px] lg:w-[400px] 3xl:w-[522px] h-[281px] md:h-[431px] lg:h-[731px]">
+            <div
+                className={`absolute bottom-0 lg:bottom-[-150px] 3xl:bottom-0
+    w-[200px] md:w-[300px] lg:w-[400px] 3xl:w-[522px]
+    h-[281px] md:h-[431px] lg:h-[731px]
+    ${isArabic ? "left-0 -scale-x-100" : "right-0"}
+  `}
+            >
                 <MotionImage style={{ y: shapeY }} src={assets.mainShape} alt="" width={522} height={731} />
             </div>
 
@@ -148,8 +158,12 @@ const ExpertiseSec = (data) => {
 
                                             <div
                                                 className={`transition-all duration-300 opacity-0 ${
+                                                    isArabic ? "-scale-x-100" : ""
+                                                } ${
                                                     activeIndex === index
                                                         ? "rotate-0 opacity-100"
+                                                        : isArabic
+                                                        ? "group-hover:opacity-100 -rotate-45"
                                                         : "group-hover:opacity-100 rotate-45"
                                                 }`}
                                             >

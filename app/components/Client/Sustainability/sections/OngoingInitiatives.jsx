@@ -9,8 +9,13 @@ import "swiper/css/navigation";
 import { motion } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import H2Title from "../../../common/H2Title";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+
 
 const OngoingInitiatives = ({ data }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     // const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     // const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     // const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
@@ -65,10 +70,10 @@ const OngoingInitiatives = ({ data }) => {
             <div className="xl:px-[15px] md:pe-0 relative">
                 {/* Counter + Arrows */}
                 <div className="container" ref={containerRef}>
-                    <H2Title titleText={data.title} titleColor="black" marginClass="mb-4 xl:mb-50px" />
+                    <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 xl:mb-50px" />
                 </div>
                 {/* Swiper */}
-                <div className="flex flex-col md:flex-row gap-3 md:pe-0">
+                <div className={`flex flex-col md:flex-row gap-3 ${isArabic ? "md:pe-0" : "md:ps-0"}`}>
                     <div className="container">
                         <div className="border-b border-cmnbdr pb30">
                             <Swiper
@@ -115,7 +120,7 @@ const OngoingInitiatives = ({ data }) => {
                                 }}
                                 className="md:!overflow-visible h-full "
                             >
-                                {data.items.map((item, i) => (
+                                {t.items.map((item, i) => (
                                     <SwiperSlide key={i}>
                                         <div className="overflow-hidden  h-full">
                                             <div className="relative overflow-hidden" ref={imageContainerRefTwo}>
@@ -129,7 +134,15 @@ const OngoingInitiatives = ({ data }) => {
                                                     className="w-full h-[200px] md:h-[250px] 2xl:h-[333px] scale-y-110 object-cover"
                                                 />
                                             </div>
-                                            <div className="pt-3 md:pl-4 lg:pt-8 lg:pl-8 lg:pb-8 2xl:pt-10 2xl:pl-10 2xl:pb-12 md:border-l border-black/20">
+                                            <div
+                                                className={`pt-3 lg:pt-8 lg:pb-8 2xl:pt-10 2xl:pb-12 border-black/20
+    ${isArabic
+                                                        ? "md:pr-4 lg:pr-8 2xl:pr-10 md:border-r"
+                                                        : "md:pl-4 lg:pl-8 2xl:pl-10 md:border-l"
+                                                    }
+  `}
+                                            >
+
                                                 <motion.div
                                                     variants={moveUp(0.6 + 0.1 * i)}
                                                     initial="hidden"

@@ -6,6 +6,7 @@ import { moveUp } from "../motionVarients";
 import gsap from "gsap";
 import SplitTextAnimation from "./SplitTextAnimation";
 import Image from 'next/image'
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 export default function TabStyle1Light({ data }) {
   
@@ -17,6 +18,7 @@ export default function TabStyle1Light({ data }) {
   const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
   const imageContainerRefOne = useRef(null);
   const MotionImage = motion.create(Image);
+  const isArabic = useIsPreferredLanguageArabic();
 
   // Move useScroll inside the AnimatePresence content so it updates per tab
   // We'll create a separate component for the image with its own parallax
