@@ -10,8 +10,12 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import InsideCounter from "../../../InsideCounter";
 import Image from "next/image";
 import H2Title from "../../../common/H2Title";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const SaftySlider = ({ data }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
 
     const [activeIndex, setActiveIndex] = useState(0);
@@ -64,18 +68,26 @@ const SaftySlider = ({ data }) => {
     return (
         <section ref={sectionRef} className="max-w-[1920px] mx-auto overflow-hidden">
             <div className="relative mb-3">
-                <MotionImage
-                    style={{ y: shapeY }}
-                    src="/assets/images/svg/sv-02.svg"
-                    alt=""
-                    width={468}
-                    height={655}
-                    className="absolute top-0 lg:bottom-0 2xl:bottom-[-58px] right-0 lg:left-[-150px]   3xl:left-0 z-[-1] w-[150px] h-[355px] lg:w-[468px] lg:h-[655px] 2xl:h-[555px] 3xl:h-[655px]"
-                />
+<MotionImage
+  style={{ y: shapeY }}
+  src="/assets/images/svg/sv-02.svg"
+  alt=""
+  width={468}
+  height={655}
+  className={`absolute top-0 lg:bottom-0 2xl:bottom-[-58px] z-[-1]
+    w-[150px] h-[355px] lg:w-[468px] lg:h-[655px] 2xl:h-[555px] 3xl:h-[655px]
+    ${
+      isArabic
+        ? "left-0 lg:right-[-150px] 3xl:right-0 -scale-x-100"
+        : "right-0 lg:left-[-150px] 3xl:left-0"
+    }
+  `}
+/>
+
 
                 <div className="container pt-text30">
-                    <div className="max-w-[1206px] 2xl:max-w-[1056px] 3xl:max-w-[1206px] ml-auto">
-                        <H2Title titleText={data.title} titleColor="black" marginClass="mb-4 2xl:mb-50px max-w-[15ch]" />
+                    <div className={`max-w-[1206px] 2xl:max-w-[1056px] 3xl:max-w-[1206px] ${isArabic ? "mr-auto" : "ml-auto"}`}>
+                        <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 2xl:mb-50px max-w-[15ch]" />
 
                         <motion.p
                             variants={moveUp(0.2)}
@@ -84,7 +96,7 @@ const SaftySlider = ({ data }) => {
                             viewport={{ amount: 0.2, once: true }}
                             className="text-19 font-light leading-[1.474] max-w-[59ch] text-paragraph"
                         >
-                            {data.description}
+                            {t.description}
                         </motion.p>
 
                         {/* <motion.div
@@ -150,7 +162,7 @@ const SaftySlider = ({ data }) => {
                         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                         className="h-[400px] md:h-[470px] lg:h-[570px] xl:h-[586px] 2xl:h-[611px] 3xl:h-[597px]"
                     >
-                        {[...data.itemsTwo, ...data.itemsTwo].map((img, i) => (
+                        {[...t.itemsTwo, ...t.itemsTwo].map((img, i) => (
                             <SwiperSlide
                                 key={i}
                                 className="flex justify-center items-center transition-all duration-500 ease-in-out"

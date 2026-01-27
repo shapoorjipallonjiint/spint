@@ -128,9 +128,17 @@ const qualitySchema = new mongoose.Schema({
         title_ar: {
             type: String,
         },
+        subTitle: {
+            type: String,
+        },
+        subTitle_ar: {
+            type: String,
+        },
         items: [{
             title: String,
             title_ar: String,
+            description: String,
+            description_ar: String,
             image: String,
             imageAlt: String,
             imageAlt_ar: String
