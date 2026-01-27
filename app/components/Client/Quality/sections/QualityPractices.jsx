@@ -8,26 +8,31 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { moveUp } from "@/app/components/motionVarients";
 import H2Title from "@/app/components/common/H2Title";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FALLBACK_IMAGE = "/assets/images/placeholder.jpg";
 
 const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
 
     const isMob = useMediaQuery({ maxWidth: 767 });
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
 
     /* ================= BACKEND DATA NORMALIZATION ================= */
-    const heading = data?.title ?? "";
-    const points =
-        data?.points ??
-        data?.items?.map((item) => ({
-            text: item.title,
-            image: item.image,
-        })) ??
-        [];
+    // const heading = t?.title ?? "";
+    // const subTitle = t?.subTitle ?? "";
+    // const points =
+    //     t?.points ??
+    //     t?.items?.map((item) => ({
+    //         text: item.title,
+    //         image: item.image,
+    //     })) ??
+    //     [];
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [hoverIndex, setHoverIndex] = useState(null);
@@ -52,10 +57,10 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
     /* ================= INITIAL IMAGE ================= */
     useEffect(() => {
-        if (points.length) {
-            setActiveImage(points[0].image ?? FALLBACK_IMAGE);
+        if (t.items.length) {
+            setActiveImage(t.items[0].image ?? FALLBACK_IMAGE);
         }
-    }, [points]);
+    }, [t.items]);
 
     /* ================= SCROLL PARALLAX ================= */
     const imageOffset = isMob ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
@@ -66,8 +71,8 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
     /* ================= IMAGE UPDATE ================= */
     const updateImage = (index) => {
-        if (points[index]?.image) {
-            setActiveImage(points[index].image);
+        if (t.items[index]?.image) {
+            setActiveImage(t.items[index].image);
         }
     };
 
@@ -78,14 +83,20 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
     const isActive = (index) => (isMobile ? activeIndex === index : hoverIndex === index);
 
-    if (!points.length) return null;
+    if (!t.items.length) return null;
 
     return (
         <section className={`w-full ${bgColor} text-black ${sectionSpacing}`}>
             <div className="container">
                 {/* ================= TITLE ================= */}
-                <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ once: true }} className="mb-[50px]">
-                    <H2Title titleText={heading} titleColor="black" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-[30px]" />
+                <motion.div
+                    variants={moveUp(0.2)}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    className="mb-[50px]"
+                >
+                    <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-[30px]" />
                     <motion.p
                         variants={moveUp(0.4)}
                         initial="hidden"
@@ -93,7 +104,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                         viewport={{ amount: 0.2, once: true }}
                         className="text-19 font-light leading-[1.474] max-w-[85ch] text-[#464646]"
                     >
-                        We achieve excellence not by chance, but by design. Our quality assurance process covers every stage of the project lifecycle
+                        {t.subTitle}
                     </motion.p>
                 </motion.div>
 
@@ -116,7 +127,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
                     {/* ================= TEXT ================= */}
                     <div className="border-t border-b border-black/20 3xl:max-w-[50ch]">
-                        {points.map((item, index) => (
+                        {t.items.map((item, index) => (
                             <motion.div
                                 key={index}
                                 variants={moveUp(0.15 * index)}
@@ -155,21 +166,30 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                             >
                                 {/* TITLE */}
                                 <div
-                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${isActive(index) ? "text-black font-semibold" : "text-paragraph font-light"
-                                        }`}
+                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${
+                                        isActive(index) ? "text-black font-semibold" : "text-paragraph font-light"
+                                    }`}
                                 >
                                     {/* LEFT BAR */}
                                     <span
-                                        className={`absolute left-0 top-0 h-full w-[3px] bg-secondary transition-transform origin-top ${isActive(index) ? "scale-y-100" : "scale-y-0"
-                                            }`}
+                                        className={`absolute ${
+                                            isArabic ? "right-0" : "left-0"
+                                        } top-0 h-full w-[3px] bg-secondary transition-transform origin-top ${
+                                            isActive(index) ? "scale-y-100" : "scale-y-0"
+                                        }`}
                                     />
 
                                     {/* TITLE */}
                                     <span
-                                        className={`inline-block transition-transform ${isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
-                                            }`}
+                                        className={`inline-block transition-transform ${
+                                            isActive(index)
+                                                ? isArabic
+                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]"
+                                                    : "translate-x-[20px] xl:translate-x-[43px]"
+                                                : "translate-x-0"
+                                        }`}
                                     >
-                                        {item.text}
+                                        {item.title}
                                     </span>
 
                                     {/* DESCRIPTION (only when hovered / active) */}
@@ -181,17 +201,17 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                             marginTop: isActive(index) ? 10 : 0,
                                         }}
                                         transition={{ duration: 0.25, ease: "easeOut" }}
-                                        className={`overflow-hidden text-sm lg:text-base text-paragraph font-light leading-relaxed ${isActive(index) ? "translate-x-[20px] xl:translate-x-[43px]" : "translate-x-0"
-                                            }`}
+                                        className={`overflow-hidden text-sm lg:text-base text-paragraph font-light leading-relaxed ${
+                                            isActive(index)
+                                                ? isArabic
+                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]"
+                                                    : "translate-x-[20px] xl:translate-x-[43px]"
+                                                : "translate-x-0"
+                                        }`}
                                     >
-                                        A project is only as durable as the materials used. We enforce strict approval processes for all materials and 
-                                        maintain effective management of subcontractors. By rigorously vetting the supply chain, 
-                                        we ensure that every component entering the site meets the highest standards of durability and performance.
+                                        {item.description}
                                     </motion.p>
                                 </div>
-
-
-
 
                                 {/* ================= MOBILE IMAGE ================= */}
                                 {isMobile && isActive(index) && (

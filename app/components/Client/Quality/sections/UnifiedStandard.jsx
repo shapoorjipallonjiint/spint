@@ -4,6 +4,8 @@ import { assets } from "@/app/assets";
 import { useRef } from "react";
 import Image from "next/image";
 import { moveUp } from "@/app/components/motionVarients";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const UnifiedStandard = ({ data }) => {
     const MotionImage = motion.create(Image);
@@ -14,12 +16,22 @@ const UnifiedStandard = ({ data }) => {
         offset: ["start end", "end start"],
     });
     const imageY = useTransform(imageProgress, [0, 1], [-150, 150]);
+    const isArabic = useIsPreferredLanguageArabic();
+    const t = useApplyLang(data);
 
     return (
         <section className="pt25 pb25 relative overflow-hidden bg-primary text-white">
             <div
-                className="absolute -bottom-30 lg:bottom-0 right-0  lg:left-[-180px] xl:left-[-170px] 2xl:left-[-19px]  w-fit h-fit "
                 ref={imageParRef}
+                className={`absolute 
+    -bottom-30 lg:bottom-0 
+    w-fit h-fit
+    ${
+        isArabic
+            ? "left-0 lg:right-[-180px] xl:right-[-170px] 2xl:right-[-19px] -scale-x-100"
+            : "right-0 lg:left-[-180px] xl:left-[-170px] 2xl:left-[-19px]"
+    }
+  `}
             >
                 <MotionImage
                     width={1000}
@@ -30,10 +42,15 @@ const UnifiedStandard = ({ data }) => {
                     className="object-contain w-[152px] h-[350px] lg:w-[325px] lg:h-[494px] xl:w-[425px] xl:h-[594px]"
                 />
             </div>
+
             <div className="container relative">
-                <div className="max-w-[800px] 2xl:max-w-[900px] 3xl:max-w-[1207px] ml-auto h-auto">
+                <div
+                    className={`max-w-[800px] 2xl:max-w-[900px] 3xl:max-w-[1207px] ${
+                        isArabic ? "mr-auto" : "ml-auto"
+                    } h-auto`}
+                >
                     <div className="flex flex-col gap-7 xl:gap-10 2xl:gap-[60px]">
-                        {data.items.map((item, index) => (
+                        {t.items.map((item, index) => (
                             <motion.div
                                 key={index}
                                 variants={moveUp(0.4 + 1 * 0.15)}
@@ -45,7 +62,7 @@ const UnifiedStandard = ({ data }) => {
                                 } relative mb-0 flex flex-col gap-4 xl:gap-[30px] pb-7 xl:pb-9  2xl:pb-[54px] border-b border-white/20 last:border-b-0`}
                             >
                                 <button
-                                    className={`w-full flex text-left group transition-all duration-500 cursor-pointer`}
+                                    className={`w-full flex ${isArabic ? "text-right" : "text-left"} group transition-all duration-500 cursor-pointer`}
                                 >
                                     <div className="flex flex-col gap-4 xl:gap-5 3xl:gap-[30px]">
                                         <Image
