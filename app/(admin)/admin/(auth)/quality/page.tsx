@@ -73,10 +73,14 @@ interface QualityFormProps {
     fourthSection: {
         title: string;
         title_ar?: string;
+        subTitle: string;
+        subTitle_ar?: string;
 
         items: {
             title?: string;
             title_ar?: string;
+            description?: string;
+            description_ar?: string;
             image?: string;
             imageAlt?: string;
             imageAlt_ar?: string;
@@ -405,6 +409,19 @@ const QualityPage = () => {
                                 <FormError error={errors.fourthSection?.title?.message} />
                             </div>
                         </div>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Sub Title</Label>
+                                <Input
+                                    type="text"
+                                    placeholder="Sub Title"
+                                    {...register("fourthSection.subTitle", {
+                                        required: "Sub Title is required",
+                                    })}
+                                />
+                                <FormError error={errors.fourthSection?.subTitle?.message} />
+                            </div>
+                        </div>
 
                         <div>
                             <Label className="font-bold">First Items</Label>
@@ -434,6 +451,21 @@ const QualityPage = () => {
                                                     />
                                                     <FormError
                                                         error={errors.fourthSection?.items?.[index]?.title?.message}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Description</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Description"
+                                                        {...register(`fourthSection.items.${index}.description`, {
+                                                            required: "Value is required",
+                                                        })}
+                                                    />
+                                                    <FormError
+                                                        error={errors.fourthSection?.items?.[index]?.description?.message}
                                                     />
                                                 </div>
                                             </div>
@@ -477,6 +509,8 @@ const QualityPage = () => {
                                         fourthSectionAppend({
                                             title: "",
                                             title_ar: "",
+                                            description: "",
+                                            description_ar: "",
                                             image: "",
                                             imageAlt: "",
                                             imageAlt_ar: "",
@@ -962,13 +996,13 @@ const QualityPage = () => {
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register("fourthSection.title_ar", {
-                                        required: "Title is required",
-                                    })}
-                                />
+                                <Input type="text" placeholder="Title" {...register("fourthSection.title_ar")} />
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Sub Title</Label>
+                                <Input type="text" placeholder="Title" {...register("fourthSection.subTitle_ar")} />
                             </div>
                         </div>
 
@@ -994,9 +1028,17 @@ const QualityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Title"
-                                                        {...register(`fourthSection.items.${index}.title_ar`, {
-                                                            required: "Value is required",
-                                                        })}
+                                                        {...register(`fourthSection.items.${index}.title_ar`)}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Description</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Description"
+                                                        {...register(`fourthSection.items.${index}.description_ar`)}
                                                     />
                                                 </div>
                                             </div>
@@ -1283,11 +1325,7 @@ const QualityPage = () => {
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register("sixthSection.title_ar")}
-                                />
+                                <Input type="text" placeholder="Title" {...register("sixthSection.title_ar")} />
                             </div>
                             <div>
                                 <Label className="text-sm font-bold">Description</Label>
@@ -1325,7 +1363,11 @@ const QualityPage = () => {
                                         />
                                     </div>
                                     <Label className="font-bold">Image Alt Tag</Label>
-                                    <Input type="text" placeholder="Image Alt Tag" {...register("sixthSection.imageAlt_ar")} />
+                                    <Input
+                                        type="text"
+                                        placeholder="Image Alt Tag"
+                                        {...register("sixthSection.imageAlt_ar")}
+                                    />
                                 </div>
                             </div>
                         </div>
