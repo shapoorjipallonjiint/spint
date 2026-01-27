@@ -10,9 +10,9 @@ import Image from "next/image";
 import ImageLightbox from "../../../../components/common/ImagePopup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
- 
+
 const Banner = ({ firstSection, secondSection }) => {
-  const router = useRouter();
+    const router = useRouter();
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
@@ -29,6 +29,7 @@ const Banner = ({ firstSection, secondSection }) => {
     const imageY = useTransform(imageProgress, [0, 1], imageOffset);
     const hasAnimatedRef = useRef(false);
 
+    const itemsWithoutLocation = secondSection.items.filter((item) => item.key !== "Location");
 
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
@@ -41,7 +42,7 @@ const Banner = ({ firstSection, secondSection }) => {
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
                         >
-                             <button onClick={() => router.back()} className="cursor-pointer">
+                            <button onClick={() => router.back()} className="cursor-pointer">
                                 <Image
                                     src={"/assets/images/icons/arrow-right.svg"}
                                     width={26}
@@ -90,12 +91,12 @@ const Banner = ({ firstSection, secondSection }) => {
                         style={{ y: imageY }}
                         variants={fadeIn(0.6)}
                         initial={hasAnimatedRef.current ? false : "hidden"}
-  animate="show"
+                        animate="show"
                         viewport={{ amount: 0.2, once: true }}
                         src={firstSection.coverImage}
                         onAnimationComplete={() => {
                             hasAnimatedRef.current = true;
-                          }}
+                        }}
                         width={1620}
                         height={750}
                         alt={firstSection.coverImageAlt || firstSection.title}
@@ -125,7 +126,9 @@ const Banner = ({ firstSection, secondSection }) => {
                         <p className="text-19 font-light   leading-[1.475] text-black">{firstSection.title}</p>
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">Location:</p>
+                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
+                            Location:
+                        </p>
                         <p className="text-19 font-light   leading-[1.475] text-black">
                             {secondSection.items.find((item) => item.key === "Location").value}
                         </p>
@@ -144,12 +147,14 @@ const Banner = ({ firstSection, secondSection }) => {
                         <p className="text-19 font-light   leading-[1.475] text-black">{secondSection.sector?.name}</p>
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">Status:</p>
+                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
+                            Status:
+                        </p>
                         <p className="text-19 font-light   leading-[1.475] text-black">{secondSection?.status}</p>
                     </div>
                 </motion.div>
 
-                {secondSection.items
+                {/* {secondSection.items
                     .filter((item) => item.key !== "Location")
                     .map((item, i) => {
                         if (i % 2 !== 0) return null;
@@ -163,7 +168,7 @@ const Banner = ({ firstSection, secondSection }) => {
                                 viewport={{ amount: 0.2, once: true }}
                                 className={`grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr] border-t border-black/20 last:border-b`}
                             >
-                                {/* Left item */}
+    
                                 <div className="flex items-center py-3 lg:py-6 border-black/20 lg:border-b-0 border-b">
                                     <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">
                                         {item?.key}:
@@ -171,7 +176,6 @@ const Banner = ({ firstSection, secondSection }) => {
                                     <p className="text-19 font-light leading-[1.475] text-black">{item?.value}</p>
                                 </div>
 
-                                {/* Right item */}
                                 {secondSection.items[i + 2] && (
                                     <div className="flex items-center  py-3 lg:py-6">
                                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
@@ -184,18 +188,42 @@ const Banner = ({ firstSection, secondSection }) => {
                                 )}
                             </motion.div>
                         );
-                    })}
+                    })} */}
 
-                {/* <motion.div variants={moveUp(1)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-[825px_1fr]  border-t border-b border-black/20  ">
-          <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 md:border-b-0">
-            <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Consultant:</p>
-            <p className="text-19 font-light   leading-[1.475] text-black">{projectdetails.Consultant}</p>
-          </div>
-          <div className="flex items-center  py-3 lg:py-6">
-            <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Contract Model:</p>
-            <p className="text-19 font-light   leading-[1.475] text-black">{projectdetails.Contractmodel}</p>
-          </div>
-        </motion.div> */}
+                {itemsWithoutLocation.map((item, i) => {
+                    if (i % 2 !== 0) return null;
+
+                    return (
+                        <motion.div
+                            key={item.key}
+                            variants={moveUp(0.8)}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ amount: 0.2, once: true }}
+                            className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr] border-t border-black/20 last:border-b"
+                        >
+                            {/* Left item */}
+                            <div className="flex items-center py-3 lg:py-6 border-black/20 border-b lg:border-b-0">
+                                <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">
+                                    {item.key}:
+                                </p>
+                                <p className="text-19 font-light leading-[1.475] text-black">{item.value}</p>
+                            </div>
+
+                            {/* Right item */}
+                            {itemsWithoutLocation[i + 1] && (
+                                <div className="flex items-center py-3 lg:py-6">
+                                    <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
+                                        {itemsWithoutLocation[i + 1].key}:
+                                    </p>
+                                    <p className="text-19 font-light leading-[1.475] text-black">
+                                        {itemsWithoutLocation[i + 1].value}
+                                    </p>
+                                </div>
+                            )}
+                        </motion.div>
+                    );
+                })}
             </div>
             <div className="absolute top-[61px] lg:-top-20 right-0 z-0">
                 <Image
