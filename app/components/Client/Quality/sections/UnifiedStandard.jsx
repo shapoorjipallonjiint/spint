@@ -16,7 +16,7 @@ const UnifiedStandard = ({ data }) => {
     const imageY = useTransform(imageProgress, [0, 1], [-150, 150]);
 
     return (
-        <section className="py-25 relative overflow-hidden bg-primary text-white">
+        <section className="pt25 pb25 relative overflow-hidden bg-primary text-white">
             <div
                 className="absolute -bottom-30 lg:bottom-0 right-0  lg:left-[-180px] xl:left-[-170px] 2xl:left-[-19px]  w-fit h-fit "
                 ref={imageParRef}
@@ -32,7 +32,7 @@ const UnifiedStandard = ({ data }) => {
             </div>
             <div className="container relative">
                 <div className="max-w-[800px] 2xl:max-w-[900px] 3xl:max-w-[1207px] ml-auto h-auto">
-                    <div className="flex flex-col gap-[60px]">
+                    <div className="flex flex-col gap-7 xl:gap-10 2xl:gap-[60px]">
                         {data.items.map((item, index) => (
                             <motion.div
                                 key={index}
@@ -41,22 +41,22 @@ const UnifiedStandard = ({ data }) => {
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
                                 className={`${
-                                    item.hasBorder ? "border-b border-cmnbdr pb-[54px]" : ""
-                                } relative mb-0 flex flex-col gap-[30px]`}
+                                    item.hasBorder ? "border-b border-cmnbdr  pb-[54px]" : ""
+                                } relative mb-0 flex flex-col gap-4 xl:gap-[30px] pb-7 xl:pb-9  2xl:pb-[54px] border-b border-white/20 last:border-b-0`}
                             >
                                 <button
                                     className={`w-full flex text-left group transition-all duration-500 cursor-pointer`}
                                 >
-                                    <div className="flex flex-col gap-[30px]">
+                                    <div className="flex flex-col gap-4 xl:gap-5 3xl:gap-[30px]">
                                         <Image
                                             src={item.logo}
                                             alt={"Image"}
                                             width={65}
                                             height={65}
-                                            className="w-[65px] h-[65px]"
+                                            className="w-[45px] h-[45px] lg:w-[65px] lg:h-[65px]"
                                         />
 
-                                        <h3 className="text-24 xl:text-60 3xl:text-60 leading-[70px] font-normal">
+                                        <h3 className="text-24 lg:text-60 3xl:text-60 leading-[1.166666666666667] font-normal letterspacing-2-5">
                                             {item.title}
                                         </h3>
                                     </div>

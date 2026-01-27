@@ -88,7 +88,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
     if (!points.length) return null;
 
     return (
-        <section className={`w-full bg-primary text-white ${sectionSpacing} pt-[89px] pb-[100px] h-auto`}>
+        <section className={`w-full bg-primary text-white ${sectionSpacing} pt-text25 pb25 h-auto`}>
             <div className="container">
                 {/* ================= TITLE ================= */}
                 <motion.div
@@ -96,7 +96,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true }}
-                    className="mb-[50px]"
+                    className=" mb-7 lg:mb-10 2xl:mb-[50px]"
                 >
                     <H2Title titleText={heading} titleColor="white" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-[30px]" />
                     <motion.p
@@ -150,7 +150,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         updateImage(index);
                                     }
                                 }}
-                                className="border-b border-white/20 first:border-t py-[15px] 3xl:py-[16px] cursor-pointer"
+                                className="border-b border-white/20 first:border-t py-[15px] 3xl:py-[16px] cursor-pointer w-full"
                             >
                                 {/* TITLE */}
                                 <div
@@ -188,7 +188,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
     marginTop: isActive(index) ? 10 : 0,
   }}
   transition={{ duration: 0.25, ease: "easeOut" }}
-  className={`overflow-hidden text-sm lg:text-base font-light leading-relaxed ${
+  className={`overflow-hidden text-19 font-light leading-relaxed ${
     isActive(index)
       ? isArabic
         ? "-translate-x-[20px] xl:-translate-x-[43px]"

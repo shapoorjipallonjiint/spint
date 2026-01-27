@@ -67,14 +67,14 @@ const Environmental = ({ data }) => {
          className="text-60 font-light leading-[1.18] text-black mb-5 2xl:mb-10 3xl:mb-[54px]">
           {values.title}
         </motion.h2> */}
-                <H2Title titleText={t.title} marginClass={"xl:mb-5 3xl:mb-[30px]"} />
+                <H2Title titleText={t.title} marginClass={"mb-4 3xl:mb-[30px]"} />
 
                 <motion.p
                     variants={moveUp(0.4)}
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className="text-19 font-light leading-[1.474] max-w-[85ch] text-black mb-[70px]"
+                    className="text-19 font-light leading-[1.474] max-w-[85ch] text-paragraph mb-7 lg:mb-10 2xl:mb-12 3xl:mb-[70px]"
                 >
                     {t.subTitle}
                 </motion.p>
@@ -90,7 +90,7 @@ const Environmental = ({ data }) => {
                             viewport={{ amount: 0.2, once: true }}
                         >
                             <div
-                                className={`group grid lg:grid-cols-[1.2fr_1.2fr_auto] py-2 2xl:py-[16px] cursor-pointer border-b border-black/20  transition-all duration-300
+                                className={`group grid lg:grid-cols-[1.2fr_1.2fr_auto] py-3 md:py-4 2xl:py-[16px] cursor-pointer border-b border-black/20  transition-all duration-300
                  ${isHovered === index ? "items-start" : "items-center"}`}
                                 onMouseEnter={() => handleMouseEnter(index)}
                                 onMouseLeave={() => handleMouseLeave(index)}
@@ -119,14 +119,14 @@ const Environmental = ({ data }) => {
                                 <div className="grid grid-cols-[2fr_auto] overflow-hidden gap-10 lg:gap-[123px]">
                                     {/* Expanding List */}
                                     <div
-                                        className={`transition-all duration-500 ease-in-out overflow-hidden  ${
-                                            isHovered === index ? `opacity-100 h-[${height}px]` : "opacity-0 h-0"
+                                        className={`transition-all duration-500 ease-in-out overflow-hidden   ${
+                                            isHovered === index ? `opacity-100 h-[${height}px] pb-1 md:pb-2 lg:pb-0` : "opacity-0 h-0"
                                         }`}
                                     >
                                         <div
                                             key={isHovered === index ? "open" : "closed"}
                                             dangerouslySetInnerHTML={{ __html: item.subTitle }}
-                                            className={`xl:pt-[11px] xl:pb-[15px] ${
+                                            className={`xl:pt-[11px] xl:pb-[15px] text-19 text-paragraph font-light ${
                                                 isArabic ? "our-values-about-ar" : "our-values-about"
                                             }`}
                                         ></div>
@@ -150,7 +150,7 @@ const Environmental = ({ data }) => {
                         </motion.div>
                     ))}
                 </div>
-                <h4 className="text-29 pt-[40px] 3xl:pt-[70px] max-w-[75%]">{t.description_bottom}</h4>
+                <h4 className="text-20 xl:text-29 pt-5 3xl:pt-[70px] leading-[1.35] 2xl:max-w-[75%]">{t.description_bottom}</h4>
             </div>
         </section>
     );

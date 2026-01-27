@@ -1557,3 +1557,8 @@ h1.text-19 {
 }
 .iosswipe{overflow-x: auto;
   -webkit-overflow-scrolling: touch;}
+  .letterspacing-2-5{letter-spacing: -2.5px;}
+
+@media (max-width:992px) {
+  .letterspacing-2-5{letter-spacing: -.5px;}
+}
