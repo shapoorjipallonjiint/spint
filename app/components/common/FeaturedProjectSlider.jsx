@@ -125,7 +125,7 @@ const FeaturedProjectSlider = ({ data }) => {
                             slidesPerView={1}
                             loop={true}
                             centeredSlides={false}
-                            loopAdditionalSlides={1}
+                            // loopAdditionalSlides={1}
                             watchSlidesProgress={true}
                             navigation={{
                                 prevEl: ".custom-prev",
