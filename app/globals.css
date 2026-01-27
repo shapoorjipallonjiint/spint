@@ -818,8 +818,18 @@ body::-webkit-scrollbar {
   direction: rtl;
 }
 
-.custom-scroll-left>* {
+.custom-scroll-left > * {
   direction: ltr;
+}
+
+/* ================= ARABIC ================= */
+/* invert behavior ONLY when .is-ar is present */
+.is-ar .custom-scroll-left {
+  direction: ltr;
+}
+
+.is-ar .custom-scroll-left > * {
+  direction: rtl;
 }
 
 /* optional styling for native scrollbar thumb (if kept) */

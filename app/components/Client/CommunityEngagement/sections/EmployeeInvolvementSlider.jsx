@@ -10,8 +10,12 @@ import { motion } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import H2Title from "../../../common/H2Title";
 import Image from "next/image";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const EmployeeInvolvementSlider = ({ data }) => {
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
     const swiperRef = useRef(null);
     const containerRef = useRef(null);
@@ -45,17 +49,17 @@ const EmployeeInvolvementSlider = ({ data }) => {
 
     return (
         <section className="pt-text30 pb30 relative bg-f5f5 overflow-hidden">
-            <div className="px-[15px] md:pe-0 relative">
+            <div className={`px-[15px] ${isArabic ? "md:ps-0" : "md:pe-0"} relative`}>
                 {/* Counter + Arrows */}
                 <div className="container" ref={containerRef}>
                     {/* <div className="flex justify-between items-center mb-50px">
             <div className="text-lg font-semibold text-black flex items-center gap-1"> */}
-                    <H2Title titleText={data.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-50px" />
+                    <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-50px" />
                     {/* </div>
           </div> */}
                 </div>
                 {/* Swiper */}
-                <div className="flex flex-col md:flex-row gap-3   md:pe-0">
+                <div className={`flex flex-col md:flex-row gap-3  ${isArabic ? "md:ps-0" : "md:pe-0"}`}>
                     <div className="container">
                         <Swiper
                             ref={swiperRef}
@@ -89,7 +93,7 @@ const EmployeeInvolvementSlider = ({ data }) => {
                             }}
                             className="!overflow-visible"
                         >
-                            {[...data.items, ...data.items].map((item, i) => (
+                            {[...t.items, ...t.items].map((item, i) => (
                                 <SwiperSlide key={i}>
                                     <div className="overflow-hidden ">
                                         <div className="after:h-full after:w-full  after:bg-[linear-gradient(180deg,rgba(0,0,0,0)_42.43%,rgba(0,0,0,0.75)_91.64%)] after:absolute after:top-0 after:left-0 after:right-0 after:bottom-0">

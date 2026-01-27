@@ -5,6 +5,8 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { moveUp } from "../../../motionVarients";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
 import Image from 'next/image'
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const size = {
   big: "2xl:min-w-full h-[120px] sm:h-[160px] md:h-[200px]  lg:h-[200px] xl:h-[240px] 2xl:h-[305px] 3xl:h-[405px]",
@@ -15,6 +17,8 @@ const size = {
 };
 
 const EmpoweringCommunities = ({ data }) => {
+  const t = useApplyLang(data);
+  const isArabic = useIsPreferredLanguageArabic();
   const sectionRef = useRef(null);
   const MotionImage = motion.create(Image)
 
@@ -104,16 +108,16 @@ const EmpoweringCommunities = ({ data }) => {
       <div className="container">
         <div className="pb30">
           <h1 className="text-[32px] lg:text-60 font-light leading-[1.18] max-w-[20ch] text-center mb-5 m-auto">
-            <SplitTextAnimation children={data.title} staggerDelay={0.2} animationDuration={0.8} delay={0.4} />
+            <SplitTextAnimation children={t.title} staggerDelay={0.2} animationDuration={0.8} delay={0.4} />
           </h1>
 
           <motion.p variants={moveUp(0.6)} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-19 lg:text-29 text-paragraph font-light leading-[1.285] max-w-[46ch] m-auto text-center">
-            {data.description}
+            {t.description}
           </motion.p>
         </div>
       </div>
 
-      <div className="absolute top-20 lg:top-15 right-0 z-[-1]">
+      <div className={`absolute top-20 lg:top-15 ${isArabic ? 'left-0 -scale-x-100' : 'right-0'} z-[-1]`}>
         <MotionImage width={500} height={1500} style={{ y: shapeY }} src="/assets/images/svg/sv-03.svg" alt="" className="w-[150px] lg:w-[500px]" />
       </div>
     </section>

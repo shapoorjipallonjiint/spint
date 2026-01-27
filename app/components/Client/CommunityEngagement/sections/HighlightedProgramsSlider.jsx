@@ -13,8 +13,12 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const HighlightedProgramsSlider = ({ data }) => {
+    const isArabic = useIsPreferredLanguageArabic();
+    const t = useApplyLang(data);
     const MotionImage = motion.create(Image);
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
@@ -41,13 +45,18 @@ const HighlightedProgramsSlider = ({ data }) => {
 
     return (
         <section className="relative pt-text90 pb25 bg-primary text-white overflow-hidden" ref={sectionRef}>
-            <div className="absolute bottom-0 right-0 w-[150px] h-[525px] lg:w-[519px] lg:h-[725px]">
+            <div
+                className={`absolute bottom-0 right-0 w-[150px] h-[525px] lg:w-[519px] lg:h-[725px]
+    ${isArabic ? "left-0 right-auto -scale-x-100" : ""}
+  `}
+            >
                 <MotionImage width={519} height={725} style={{ y: shapeY }} src={assets.mainShape} alt="" />
             </div>
+
             <div className="container">
                 {/* Header */}
 
-                <H2Title titleText={data.title} titleColor="white" marginClass="mb-5 lg:mb-6 2xl:mb-50px" />
+                <H2Title titleText={t.title} titleColor="white" marginClass="mb-5 lg:mb-6 2xl:mb-50px" />
 
                 {/* Swiper Slider */}
                 <div className="relative">
@@ -71,7 +80,7 @@ const HighlightedProgramsSlider = ({ data }) => {
                                 }}
                                 className="expertise-swiper"
                             >
-                                {data.items.map((item, index) => (
+                                {t.items.map((item, index) => (
                                     <SwiperSlide key={index}>
                                         <div className="relative overflow-hidden shadow-2xl" ref={imageContainerRef}>
                                             <MotionImage
@@ -100,7 +109,7 @@ const HighlightedProgramsSlider = ({ data }) => {
                             >
                                 <button
                                     onClick={() => imageSwiper?.slidePrev()}
-                                    className="group hover:-translate-x-1 transition-all duration-300  cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px]  rounded-full border border-white/20 flex items-center justify-center  "
+                                    className={`group ${isArabic ? "hover:translate-x-1 rotate-180" : "hover:-translate-x-1"} transition-all duration-300  cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px]  rounded-full border border-white/20 flex items-center justify-center`}
                                     aria-label="Previous slide"
                                 >
                                     <Image
@@ -113,7 +122,7 @@ const HighlightedProgramsSlider = ({ data }) => {
                                 </button>
                                 <button
                                     onClick={() => imageSwiper?.slideNext()}
-                                    className="group hover:translate-x-1 transition-all duration-300 cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px] rounded-full border border-white/20 flex items-center justify-center  "
+                                    className={`group ${isArabic ? "hover:-translate-x-1 -rotate-180" : "hover:translate-x-1"} transition-all duration-300 cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px] rounded-full border border-white/20 flex items-center justify-center`}
                                     aria-label="Next slide"
                                 >
                                     <Image
@@ -125,7 +134,7 @@ const HighlightedProgramsSlider = ({ data }) => {
                                     />
                                 </button>
                                 <span className="text-19 leading-[1.473684210526316] ml-2">
-                                    {String(currentSlide + 1).padStart(2, "0")}/{String(data.items.length).padStart(2, "0")}
+                                    {String(currentSlide + 1).padStart(2, "0")}/{String(t.items.length).padStart(2, "0")}
                                 </span>
                             </motion.div>
 
@@ -145,7 +154,7 @@ const HighlightedProgramsSlider = ({ data }) => {
                                 allowTouchMove={false}
                                 className="content-swiper w-full"
                             >
-                                {data.items.map((item, index) => (
+                                {t.items.map((item, index) => (
                                     <SwiperSlide key={index}>
                                         <motion.div
                                             variants={moveUp(0.7 + 0.1 * index)}
