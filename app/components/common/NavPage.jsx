@@ -67,7 +67,7 @@ const NavPage = ({ isOpen }) => {
                                     <a href={item.href}>
                                         <span
                                             className={`
-            text-36 3xl:text-40 font-light transition-all duration-300
+            text-24 3xl:text-40 font-light transition-all duration-300
             ${activeMenu === item.id ? "text-white" : "text-white/25 group-hover:text-white"}
         `}
                                         >

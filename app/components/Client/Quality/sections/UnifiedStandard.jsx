@@ -20,7 +20,7 @@ const UnifiedStandard = ({ data }) => {
     const t = useApplyLang(data);
 
     return (
-        <section className="py-25 relative overflow-hidden bg-primary text-white">
+        <section className="pt25 pb25 relative overflow-hidden bg-primary text-white">
             <div
                 ref={imageParRef}
                 className={`absolute 
@@ -49,7 +49,7 @@ const UnifiedStandard = ({ data }) => {
                         isArabic ? "mr-auto" : "ml-auto"
                     } h-auto`}
                 >
-                    <div className="flex flex-col gap-[60px]">
+                    <div className="flex flex-col gap-7 xl:gap-10 2xl:gap-[60px]">
                         {t.items.map((item, index) => (
                             <motion.div
                                 key={index}
@@ -58,22 +58,22 @@ const UnifiedStandard = ({ data }) => {
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
                                 className={`${
-                                    item.hasBorder ? "border-b border-cmnbdr pb-[54px]" : ""
-                                } relative mb-0 flex flex-col gap-[30px]`}
+                                    item.hasBorder ? "border-b border-cmnbdr  pb-[54px]" : ""
+                                } relative mb-0 flex flex-col gap-4 xl:gap-[30px] pb-7 xl:pb-9  2xl:pb-[54px] border-b border-white/20 last:border-b-0`}
                             >
                                 <button
                                     className={`w-full flex ${isArabic ? "text-right" : "text-left"} group transition-all duration-500 cursor-pointer`}
                                 >
-                                    <div className="flex flex-col gap-[30px]">
+                                    <div className="flex flex-col gap-4 xl:gap-5 3xl:gap-[30px]">
                                         <Image
                                             src={item.logo}
                                             alt={"Image"}
                                             width={65}
                                             height={65}
-                                            className="w-[65px] h-[65px]"
+                                            className="w-[45px] h-[45px] lg:w-[65px] lg:h-[65px]"
                                         />
 
-                                        <h3 className="text-24 xl:text-60 3xl:text-60 leading-[70px] font-normal">
+                                        <h3 className="text-24 lg:text-60 3xl:text-60 leading-[1.166666666666667] font-normal letterspacing-2-5">
                                             {item.title}
                                         </h3>
                                     </div>
