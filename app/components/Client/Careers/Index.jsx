@@ -12,7 +12,6 @@ import { diversityData } from './data'
 // import { workplaceData } from "./data";
 
 const Index = ({ data }) => {
-  console.log(data, "dsd")
     return (
         <>
             <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />

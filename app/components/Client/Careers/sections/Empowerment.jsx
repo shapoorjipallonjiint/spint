@@ -10,9 +10,13 @@ import H2Title from "../../../../components/common/H2Title";
 import InsideCounter from "../../../InsideCounter";
 import Image from 'next/image';
 import { getSuffix } from "@/helpers/getSuffix.ts";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 gsap.registerPlugin(ScrollTrigger);
-const EmpowerSection = ({data}) => {
+const EmpowerSection = ({ data }) => {
+  const isArabic = useIsPreferredLanguageArabic();
+  const t = useApplyLang(data)
   const MotionImage = motion.create(Image)
   const [rightPadding, setRightPadding] = useState(0);
 
@@ -30,7 +34,7 @@ const EmpowerSection = ({data}) => {
 
     gsap.set(overlay, { xPercent: 0 }); // start covering
     gsap.to(overlay, {
-      xPercent: 100, // slide out to the right
+      xPercent: isArabic ? -100 : 100, // slide out to the right
       duration: 2.7,
       ease: "expo.out",
       scrollTrigger: {
@@ -69,9 +73,24 @@ const EmpowerSection = ({data}) => {
       className="w-full py-8 xl:py-15 2xl:py-22 3xl:py-23 bg-primary text-white lg:max-h-[611px] lg:overflow-hidden relative overflow-hidden " >
       <div className="reveal-overlay4 absolute inset-0 bg-black/20 z-20"></div>
       {/* Below XL: custom padding; XL and up: container */}
-      <motion.div  className="shapelt50  flex-shrink-0">
-        <MotionImage width={394} height={549} style={{ y: shapeY }} src={"/assets/images/svg/svsv.svg"} alt="logo-svg" className="w-md200 lg:w-[250px]  2xl:w-[324px] 3xl:w-[394px] h-fit object-contain absolute bottom-0 lg:bottom-0 right-0 lg:right:auto lg:left-[-84px]  xl:left-0" />
-      </motion.div>  <div
+      <motion.div className="shapelt50 flex-shrink-0">
+        <MotionImage
+          width={394}
+          height={549}
+          style={{ y: shapeY }}
+          src="/assets/images/svg/svsv.svg"
+          alt="logo-svg"
+          className={`w-md200 lg:w-[250px] 2xl:w-[324px] 3xl:w-[394px] h-fit object-contain
+      absolute bottom-0 lg:bottom-0
+      ${isArabic
+              ? "left-0 lg:left-auto lg:right-[-84px] xl:right-0 -scale-x-100"
+              : "right-0 lg:right-auto lg:left-[-84px] xl:left-0"
+            }
+    `}
+        />
+      </motion.div>
+
+      <div
         className={
           rightPadding > 0
             ? "flex flex-col xl:flex-row gap-x-[170px] container mx-auto"
@@ -80,22 +99,22 @@ const EmpowerSection = ({data}) => {
       >
 
         {/* Right Content */}
-        <div className="w-full flex flex-col justify-center lg:max-w-[800px] xl:max-w-[900px] 2xl:max-w-[1008px] 3xl:max-w-[1208px] ml-auto">
+        <div className={`w-full flex flex-col justify-center lg:max-w-[800px] xl:max-w-[900px] 2xl:max-w-[1008px] 3xl:max-w-[1208px] ${isArabic ? 'mr-auto' : 'ml-auto'}`}>
           {/* <motion.h2 variants={paragraphItem} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-60 leading-[1.1666666667] font-light mb-6 lg:mb-[30px] max-w-[20ch]">
             {heading}
           </motion.h2> */}
-          <H2Title titleText={data.title} marginClass={"mb-6 lg:mb-30px max-w-[20ch]"}/>
+          <H2Title titleText={t.title} marginClass={"mb-6 lg:mb-30px max-w-[20ch]"} />
 
           <motion.p variants={paragraphItem} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-19 text-white font-light leading-[1.4736842105] mb-8 md:mb-[62px] max-w-[72ch]">
-            {data.description}
+            {t.description}
           </motion.p>
 
           {/* Stats */}
           <div className="relative flex flex-col md:flex-row w-full gap-5 md:gap-0">
-            {data.items.map((stat, index) => (
+            {t.items.map((stat, index) => (
               <motion.div variants={moveUp(0.2 * index)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}
                 key={index}
-                className="flex flex-col items-start text-left   min-w-[25%]   xl:min-w-[290px] last:w-[100%] "
+                className={`flex flex-col items-start ${isArabic ? 'text-right' : 'text-left'}   min-w-[25%]   xl:min-w-[290px] last:w-[100%]`}
               >
                 <h3 className="text-[32px] sm:text-[36px] md:text-[38px] xl:text-[40px] leading-[1] font-light w-full mb-4 2xl:mb-[15px] pb-4 2xl:pb-[15px] border-b border-white/30">
                   <InsideCounter value={stat.value} delay={100} />
