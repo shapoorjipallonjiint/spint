@@ -95,11 +95,13 @@
 
 import { useRef, useLayoutEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { moveUp } from "../motionVarients";
+import { moveUp } from "../motionVarients"
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const AccordionCareer = ({ accData, openIndex, setOpenIndex }) => {
   const contentRefs = useRef([]);
   const [heights, setHeights] = useState({});
+  const isArabic = useIsPreferredLanguageArabic();
 
   const toggleAccordion = (index) => {
     setOpenIndex((prev) => (prev === index ? null : index));
@@ -127,35 +129,39 @@ const AccordionCareer = ({ accData, openIndex, setOpenIndex }) => {
           initial="hidden"
           whileInView="show"
           viewport={{ amount: 0.2, once: true }}
-          className={`border-b border-black/20 relative transition-all duration-500 ${
-            openIndex === index ? "pl-5 2xl:pl-[40px]" : "pl-0"
-          }`}
+className={`border-b border-black/20 relative transition-all duration-500
+  ${
+    openIndex === index
+      ? isArabic
+        ? "pr-5 2xl:pr-[40px]"
+        : "pl-5 2xl:pl-[40px]"
+      : ""
+  }
+`}
+
         >
           {/* LEFT ACTIVE BAR */}
           <div
-            className={`absolute left-0 top-1/2 -translate-y-1/2 bg-[#30B6F9] ${
-              openIndex === index
+            className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2 bg-[#30B6F9] ${openIndex === index
                 ? "w-[3px] h-[80%] transition-all duration-500"
                 : "w-0 h-[80%] transition-all duration-150"
-            }`}
+              }`}
           />
 
           {/* HEADER */}
           <button
             onClick={() => toggleAccordion(index)}
-            className={`w-full ${
-              openIndex === index
+            className={`w-full ${openIndex === index
                 ? "pt-[20px] "
                 : "py-3 2xl:py-[32px]"
-            } flex items-center justify-between text-left group transition-all duration-500`}
+              } flex items-center justify-between ${isArabic ? "text-right" : "text-left"} group transition-all duration-500`}
           >
             <div className="flex-1">
               <h3
-                className={`text-[20px] 2xl:text-29 leading-[1.3125] text-paragraph ${
-                  openIndex === index
+                className={`text-[20px] 2xl:text-29 leading-[1.3125] text-paragraph ${openIndex === index
                     ? "font-bold"
                     : "font-light 2xl:font-extralight"
-                }`}
+                  }`}
               >
                 {item.title}
               </h3>

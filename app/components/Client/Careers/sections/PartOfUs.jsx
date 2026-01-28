@@ -9,6 +9,8 @@ import H2Title from "../../../../components/common/H2Title";
 import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
 import Link from "next/link";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 // Register ScrollTrigger plugin
 if (typeof window !== "undefined") {
@@ -16,7 +18,9 @@ if (typeof window !== "undefined") {
 }
 
 const CultureSection = ({ data }) => {
-    const { title, description, image, button } = data || {};
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
+    const { title, description, image, button } = t || {};
 
     const sectionRef = useRef(null);
     const contentRef = useRef(null);
@@ -43,14 +47,28 @@ const CultureSection = ({ data }) => {
 
         if (!section || !content || !overlay || !clipPath) return;
 
-        // Set initial states
+        // ---- Direction helpers ----
+        const overlayOrigin = isArabic ? "right" : "left";
+
+        const clipStart = isArabic
+            ? "inset(0% 0% 0% 100%)"   // hide from right
+            : "inset(0% 100% 0% 0%)"; // hide from left
+
+        const clipEnd = "inset(0% 0% 0% 0%)";
+
+        // ---- Initial states ----
         gsap.set(content, { opacity: 0, y: 50 });
-        gsap.set(overlay, { scaleX: 1, transformOrigin: "left" });
-        gsap.set(clipPath, {
-            clipPath: "inset(0% 100% 0% 0%)",
+
+        gsap.set(overlay, {
+            scaleX: 1,
+            transformOrigin: overlayOrigin,
         });
 
-        // Create timeline with scrub
+        gsap.set(clipPath, {
+            clipPath: clipStart,
+        });
+
+        // ---- Timeline ----
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: section,
@@ -59,13 +77,11 @@ const CultureSection = ({ data }) => {
             },
         });
 
-        // Animate clip path to reveal image with a modern wipe effect
         tl.to(clipPath, {
-            clipPath: "inset(0% 0% 0% 0%)",
+            clipPath: clipEnd,
             duration: 1,
             ease: "power2.inOut",
         })
-            // Fade out the overlay
             .to(
                 overlay,
                 {
@@ -75,7 +91,6 @@ const CultureSection = ({ data }) => {
                 },
                 "-=0.5"
             )
-            // Fade in and slide up content
             .to(
                 content,
                 {
@@ -90,7 +105,8 @@ const CultureSection = ({ data }) => {
         return () => {
             ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
         };
-    }, []);
+    }, [isArabic]);
+
 
     return (
         <section id="careers-stop-section" ref={sectionRef} className="pb30 pt-text30 overflow-hidden">
@@ -103,14 +119,25 @@ const CultureSection = ({ data }) => {
                     ref={clipPathRef}
                     className="absolute h-full inset-0"
                     style={{
-                        backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.8) 7.22%, rgba(0, 0, 0, 0) 74.6%), url(${image})`,
+                        backgroundImage: isArabic
+                            ? `linear-gradient(
+        270deg,
+        rgba(0, 0, 0, 0.8) 7.22%,
+        rgba(0, 0, 0, 0) 74.6%
+     ), url(${image})`
+                            : `linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.8) 7.22%,
+        rgba(0, 0, 0, 0) 74.6%
+     ), url(${image})`,
+
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         y: imageY,
                     }}
                 />
                 {/* Overlay for additional reveal effect */}
-                <div ref={overlayRef} className="absolute inset-0 bg-black/50" style={{ transformOrigin: "left" }} />
+                <div ref={overlayRef} className="absolute inset-0 bg-black/50" style={{ transformOrigin: isArabic ? "right" : "left" }} />
                 {/* Content */}
                 <div ref={contentRef} className="relative z-10 text-white px-6 sm:px-10 md:px-14 lg:px-[100px]">
                     {/* <h2 className="text-60 font-light leading-[1.166666666666667] mb-6 xl:mb-[30px] lg:max-w-[500px]">
@@ -126,18 +153,18 @@ const CultureSection = ({ data }) => {
                     </p>
                     {/* Button with centered text over SVG */}
                     <Link href={button.btnLink} target="blank">
-                      <button className="relative inline-flex items-center justify-center">
-                          <Image
-                              width={240}
-                              height={600}
-                              src="/assets/images/careers/partofus/btn-svg.svg"
-                              alt="button"
-                              className="w-[180px] sm:w-[200px] md:w-[220px] lg:w-[240px] h-full"
-                          />
-                          <span className="absolute text-white font-light uppercase text-12 md:text-14 lg:text-16 leading-[1.75]">
-                              {button.text}
-                          </span>
-                      </button>
+                        <button className="relative inline-flex items-center justify-center">
+                            <Image
+                                width={240}
+                                height={600}
+                                src="/assets/images/careers/partofus/btn-svg.svg"
+                                alt="button"
+                                className="w-[180px] sm:w-[200px] md:w-[220px] lg:w-[240px] h-full"
+                            />
+                            <span className="absolute text-white font-light uppercase text-12 md:text-14 lg:text-16 leading-[1.75]">
+                                {button.text}
+                            </span>
+                        </button>
                     </Link>
                 </div>
             </div>

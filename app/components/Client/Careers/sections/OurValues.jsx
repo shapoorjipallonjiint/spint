@@ -6,14 +6,18 @@ import { moveLeft, moveUp } from "../../../motionVarients";
 import { motion, useScroll, useTransform } from "framer-motion";
 import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const ValuesSection = ({ data }) => {
+    const isArabic = useIsPreferredLanguageArabic();
+    const t = useApplyLang(data);
     const MotionImage = motion.create(Image);
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
     const shapeOffset = isMobile ? [-50, 50] : isTablet ? [-100, 100] : [-200, 200];
-    const { title, description, image, imageAlt } = data;
+    const { title, description, image, imageAlt } = t;
     const [leftOffset, setLeftOffset] = useState(0);
     const [isWideScreen, setIsWideScreen] = useState(false);
 
@@ -62,7 +66,14 @@ const ValuesSection = ({ data }) => {
                 {/* Left Section */}
                 <div
                     className="relative w-full md:w-1/2 flex flex-col justify-center pb-6 md:py-0 "
-                    style={{ paddingLeft: isWideScreen ? `${leftOffset}px` : undefined }}
+                    style={
+                        isWideScreen
+                            ? isArabic
+                                ? { paddingRight: `${leftOffset}px` }
+                                : { paddingLeft: `${leftOffset}px` }
+                            : undefined
+                    }
+
                 >
                     {/* Background SVG (always fixed bottom-right) */}
                     <MotionImage
@@ -73,10 +84,14 @@ const ValuesSection = ({ data }) => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ amount: 0.2, once: true }}
-                        src={"/assets/images/careers/our-values/left-svg.svg"}
+                        src="/assets/images/careers/our-values/left-svg.svg"
                         alt="background design"
-                        className="absolute bottom-0 right-0 pointer-events-none object-contain md:object-cover opacity-90 w-[200px]  md:w-[360px] lg:w-[420px]  2xl:w-[425px] h-auto "
+                        className={`absolute bottom-0 pointer-events-none object-contain md:object-cover opacity-90
+    w-[200px] md:w-[360px] lg:w-[420px] 2xl:w-[425px] h-auto
+    ${isArabic ? "left-0 -scale-x-100" : "right-0"}
+  `}
                     />
+
                     <div className={`relative z-10 ${!isWideScreen ? "container" : ""}`}>
                         {/* <motion.h2 variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} className="text-60 font-light leading-[1.166666666666667] max-w-[390px] mb-[24px] md:mb-[30px]">
               {title}
