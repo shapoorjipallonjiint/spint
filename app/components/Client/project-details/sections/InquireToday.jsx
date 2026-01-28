@@ -29,7 +29,7 @@ const InquireToday = ({ data }) => {
 
     gsap.set(overlay, { xPercent: 0 }); // start covering
     gsap.to(overlay, {
-      xPercent: 100, // slide out to the right
+      xPercent: isArabic ? -100 : 100, // slide out to the right
       duration: 2.7,
       ease: "expo.out",
       scrollTrigger: {
