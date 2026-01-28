@@ -7,17 +7,24 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
 import Image from "next/image";
-
-const ITEMS_PER_PAGE = 12;
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const Gallery = ({ data }) => {
-    console.log(data, "gallery data");
+    const t = useApplyLang(data);
+    const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
 
-    const normalizedItems = useMemo(() => {
-        if (!data?.gallery) return [];
+    const ITEMS_PER_PAGE = 12;
+    const ALL_CATEGORY = useMemo(
+        () => (isArabic ? "الكل" : "All"),
+        [isArabic]
+    );
 
-        return data.gallery.flatMap((section) =>
+    const normalizedItems = useMemo(() => {
+        if (!t?.gallery) return [];
+
+        return t.gallery.flatMap((section) =>
             section.categories.flatMap((category) => {
                 if (!category.images?.length) return [];
 
@@ -29,10 +36,10 @@ const Gallery = ({ data }) => {
                 };
             })
         );
-    }, [data]);
+    }, [t]);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedCategory, setSelectedCategory] = useState("All");
+    const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORY);
     const [isAnimating, setIsAnimating] = useState(false);
     const sectionRef = useRef(null);
     const { scrollYProgress: shapeProgress } = useScroll({
@@ -43,9 +50,10 @@ const Gallery = ({ data }) => {
 
     // Filter items based on selected category
     const filteredItems = useMemo(() => {
-        if (selectedCategory === "All") return normalizedItems;
-        return normalizedItems.filter((item) => item.category === selectedCategory);
-    }, [selectedCategory, normalizedItems]);
+        if (selectedCategory === ALL_CATEGORY) return normalizedItems;
+        return normalizedItems.filter(item => item.category === selectedCategory);
+    }, [selectedCategory, normalizedItems, ALL_CATEGORY]);
+
 
     // Calculate total pages based on filtered data
     const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
@@ -188,7 +196,14 @@ const Gallery = ({ data }) => {
     return (
         <>
             <section className="relative" ref={sectionRef}>
-                <div className="absolute top-[61px] lg:top-0 right-0 sm:right-[-25px] 2xl:right-[-50px] z-0">
+                <div
+                    className={`absolute top-[61px] lg:top-0 z-0
+    ${isArabic
+                            ? "left-0 sm:left-[-25px] 2xl:left-[-50px] -scale-x-100"
+                            : "right-0 sm:right-[-25px] 2xl:right-[-50px]"
+                        }
+  `}
+                >
                     <Image
                         height={1000}
                         width={1920}
@@ -198,11 +213,12 @@ const Gallery = ({ data }) => {
                         className="w-[150px] h-[376px] sm:w-[477px] sm:h-[476px] lg:w-[577px] lg:h-[576px] object-fit"
                     />
                 </div>
+
                 <div className="container">
                     <div className="mb-7 md:mb-10 xl:mb-12 3xl:mb-20 mt-12 xl:mt-15 3xl:mt-30">
                         <h1 className="text-70 font-light leading-[1.071428571428571]">
                             <SplitTextAnimation
-                                children={data.pageTitle}
+                                children={t.pageTitle}
                                 staggerDelay={0.2}
                                 animationDuration={0.8}
                                 delay={0.2}
@@ -218,26 +234,23 @@ const Gallery = ({ data }) => {
                         className="flex flex-col md:flex-row gap-6 md:gap-0 justify-between border-y border-cmnbdr pt-[15px] md:pt-[25px] xl:pt-[35px] mb-10 lg:mb-15 3xl:mb-25"
                     >
                         <div className="flex flex-wrap justify-between xl:justify-start gap-3 md:gap-15 xl:gap-[75px] mb-4 md:mb-0">
-                            {["All", ...(data?.gallery?.map((g) => g.title) || [])].map((cat) => (
+                            {[ALL_CATEGORY, ...(t?.gallery?.map((g) => g.title) || [])].map((cat) => (
                                 <div
                                     key={cat}
-                                    className={`relative pb-0 md:pb-35px transition-all duration-300 group cursor-pointer ${
-                                        selectedCategory === cat ? "text-black" : ""
-                                    }`}
+                                    className={`relative pb-0 md:pb-35px transition-all duration-300 group cursor-pointer ${selectedCategory === cat ? "text-black" : ""
+                                        }`}
                                     onClick={() => handleCategoryChange(cat)}
                                 >
                                     <span
-                                        className={`text-16 font-semibold leading-[1.75] uppercase group-hover:text-black ${
-                                            selectedCategory === cat ? "text-black" : "text-paragraph"
-                                        }`}
+                                        className={`text-16 font-semibold leading-[1.75] uppercase group-hover:text-black ${selectedCategory === cat ? "text-black" : "text-paragraph"
+                                            }`}
                                     >
                                         {cat}
                                     </span>
 
                                     <div
-                                        className={`absolute bottom-[-2px] left-0 w-full h-1 bg-secondary transition-all duration-300 ${
-                                            selectedCategory === cat ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                                        }`}
+                                        className={`absolute bottom-[-2px] left-0 w-full h-1 bg-secondary transition-all duration-300 ${selectedCategory === cat ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                                            }`}
                                     />
                                 </div>
                             ))}
@@ -245,9 +258,8 @@ const Gallery = ({ data }) => {
                     </motion.div>
 
                     <div
-                        className={`relative grid xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-10 xl:gap-y-15 2xl:gap-y-18 3xl:gap-y-20 mb-10 xl:mb-12 2xl:mb-18 3xl:mb-[100.32px] transition-all duration-300 ${
-                            isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
-                        }`}
+                        className={`relative grid xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-10 xl:gap-y-15 2xl:gap-y-18 3xl:gap-y-20 mb-10 xl:mb-12 2xl:mb-18 3xl:mb-[100.32px] transition-all duration-300 ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
+                            }`}
                         style={{
                             transform: isAnimating ? "translateY(16px)" : "translateY(0)",
                             transition: "opacity 300ms ease-in-out, transform 300ms ease-in-out",
@@ -448,9 +460,8 @@ const Gallery = ({ data }) => {
 
                 <div className="pagination flex items-center gap-2 2xl:gap-5 justify-center mb-10 xl:mb-15 3xl:mb-[131.68px]">
                     <button
-                        className={`prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${
-                            currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
-                        }`}
+                        className={` ${isArabic ? "rotate-180" : ""} prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
+                            }`}
                         onClick={handlePrev}
                         disabled={currentPage === 1 || isAnimating}
                     >
@@ -474,9 +485,8 @@ const Gallery = ({ data }) => {
                     </p>
 
                     <button
-                        className={`next cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${
-                            currentPage === totalPages || isAnimating ? "opacity-30" : "opacity-100"
-                        }`}
+                        className={` ${isArabic ? "rotate-180" : ""} next cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === totalPages || isAnimating ? "opacity-30" : "opacity-100"
+                            }`}
                         onClick={handleNext}
                         disabled={currentPage === totalPages || isAnimating}
                     >
