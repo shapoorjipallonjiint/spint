@@ -757,6 +757,10 @@ body::-webkit-scrollbar {
     padding-left: 0 !important;
   }
 
+    .no-pr0:nth-child(3n+1) {
+    padding-right: 0 !important;
+  }
+
 }
 
 @media (min-width: 1280px) {
