@@ -8,35 +8,39 @@ import { moveUp } from "../../motionVarients";
 import Link from "next/link";
 import SplitTextAnimation from "../../../components/common/SplitTextAnimation";
 import Image from "next/image";
-
-const years = [
-  { id: 1, title: "Year" }, // default (no filter)
-  { id: 2, title: "2025" },
-  { id: 3, title: "2024" },
-  { id: 4, title: "2023" },
-  { id: 5, title: "2022" },
-  { id: 6, title: "2021" },
-];
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const ITEMS_PER_PAGE = 12;
 
-const Index = ({newsData,topicData}) => {
+const Index = ({ newsData, topicData }) => {
+  const isArabic = useIsPreferredLanguageArabic();
+  const tNewsData = useApplyLang(newsData);
+  const tTopicData = useApplyLang(topicData);
 
-    const topics = [
-        { id: 1, name: "Topic" }, // default (no filter)
-        ...topicData
-      ];
+  const years = [
+    { id: 1, title: isArabic ? "السنة" : "Year" },
+    { id: 2, title: "2025" },
+    { id: 3, title: "2024" },
+    { id: 4, title: "2023" },
+    { id: 5, title: "2022" },
+    { id: 6, title: "2021" },
+  ];
 
+  const topics = [
+    { id: 1, name: isArabic ? "Topic ar" : "Topic" }, // default (no filter)
+    ...tTopicData
+  ];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState(topics[0]); 
+  const [selectedTopic, setSelectedTopic] = useState(topics[0]);
 
   const MotionImage = motion.create(Image)
 
 
 
-  
+
 
   const [selectedYear, setSelectedYear] = useState(years[0]);
   const sectionRef = useRef(null)
@@ -47,7 +51,7 @@ const Index = ({newsData,topicData}) => {
   const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
   // 🔹 Filter items by topic + year
   const filteredItems = useMemo(() => {
-    let items = [...newsData.news];
+    let items = [...tNewsData.news];
 
     // Topic filter (ignore default "Topic")
     if (selectedTopic.id !== 1) {
@@ -56,13 +60,13 @@ const Index = ({newsData,topicData}) => {
 
     // Year filter (ignore default "Year")
     if (selectedYear.id !== 1) {
-        items = items.filter((item) => {
-          const year = new Date(item.date).getUTCFullYear();
-          console.log(year)
-          return year === Number(selectedYear.title);
-        });
-      }
-      
+      items = items.filter((item) => {
+        const year = new Date(item.date).getUTCFullYear();
+        console.log(year)
+        return year === Number(selectedYear.title);
+      });
+    }
+
 
     return items;
   }, [selectedTopic, selectedYear]);
@@ -106,13 +110,13 @@ const Index = ({newsData,topicData}) => {
   // 🔹 When topic changes → reset to page 1
   const handleTopicChange = (topic) => {
     setSelectedTopic(topic);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   // 🔹 When year changes → reset to page 1
   const handleYearChange = (year) => {
     setSelectedYear(year);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   // 🔹 Clear all filters
@@ -129,9 +133,24 @@ const Index = ({newsData,topicData}) => {
       </header> */}
       <main>
         <section className="relative overflow-hidden" ref={sectionRef}>
-          <div className="absolute top-[61px] lg:top-0 right-0 2xl:right-[-50px] z-[-1]">
-            <MotionImage width={1500} height={1000} style={{ y: shapeY }} src="/assets/images/project-details/bannerbg.svg" alt="" className="w-[150px] h-[376px] md:w-[377px] md:h-[476px] lg:w-[577px] lg:h-[576px] object-fit" />
+          <div
+            className={`absolute top-[61px] lg:top-0 z-[-1]
+    ${isArabic
+                ? "left-0 2xl:left-[-50px] -scale-x-100"
+                : "right-0 2xl:right-[-50px]"
+              }
+  `}
+          >
+            <MotionImage
+              width={1500}
+              height={1000}
+              style={{ y: shapeY }}
+              src="/assets/images/project-details/bannerbg.svg"
+              alt=""
+              className="w-[150px] h-[376px] md:w-[377px] md:h-[476px] lg:w-[577px] lg:h-[576px] object-fit"
+            />
           </div>
+
           {/* <img src="./assets/images/shape-left.svg" alt="" className="absolute  bottom-30 left-0 z-[-1]" /> */}
           <div className="container">
             <div className="mb-7 md:mb-10 xl:mb-12 3xl:mb-20 mt-12 xl:mt-15 3xl:mt-30">
@@ -143,7 +162,7 @@ const Index = ({newsData,topicData}) => {
                 className="text-40 2xl:text-70 font-light leading-[1.071428571428571]"
               >
 
-                <SplitTextAnimation children={newsData.title} staggerDelay={0.1} animationDuration={0.8} delay={0.8} />
+                <SplitTextAnimation children={tNewsData.title} staggerDelay={0.1} animationDuration={0.8} delay={0.8} />
               </motion.h1>
             </div>
 
@@ -229,9 +248,9 @@ const Index = ({newsData,topicData}) => {
 
               {/* Clear Filter */}
               <button type="button" onClick={handleClearFilters} className="flex items-center gap-1 md:gap-[10px] group cursor-pointer justify-end" >
-                <Image width={150} height={150} src="./assets/images/icons/arrow-tail-left.svg" alt="" className="w-4 h-4 sm:w-auto sm:h-auto group-hover:translate-x-[-3px] transition-all duration-300" />
+                <Image width={150} height={150} src="/assets/images/icons/arrow-tail-left.svg" alt="" className={`w-4 h-4 sm:w-auto sm:h-auto ${isArabic ? "rotate-180 group-hover:translate-x-[3px]" : "group-hover:translate-x-[-3px]"} transition-all duration-300`} />
                 <p className="text-paragraph text-16 font-light leading-[1.75] uppercase transition-all duration-300">
-                  Clear Filter
+                  {isArabic ? "مسح الفلاتر" : "Clear Filter"}
                 </p>
               </button>
             </motion.div>
@@ -249,31 +268,31 @@ const Index = ({newsData,topicData}) => {
             >
               {currentItems.map((item, index) => (
                 <Link key={index} href={`/press-releases/${item.slug}`}>
-                <motion.div variants={moveUp(1 + 0.1 * index)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}
-                  key={item.id}
-                  className="border-b border-black/20 pb-5 lg:border-b-0 lg:pb-0"
-                >
-                  <Image  src={item.thumbnail} alt={item.thumbnailAlt} width={520} height={339} className="w-full h-[200px] md:h-[250px] lg:h-[300px] 3xl:h-[339px] object-cover" />
-                  <div className="pt-5">
-                    <div className="flex items-center justify-between pt-[14px] pb-[13px] pl-[23.15px] pr-[23.17px] bg-f5f5">
-                      <h4 className="text-paragraph text-16 font-light leading-[1.75] uppercase">
-                        {new Date(item.date).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </h4>
-                      <h4 className="text-paragraph text-16 font-light leading-[1.75] uppercase">
-                        {item.topic.name}
-                      </h4>
-                    </div>
-                    
+                  <motion.div variants={moveUp(1 + 0.1 * index)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}
+                    key={item.id}
+                    className="border-b border-black/20 pb-5 lg:border-b-0 lg:pb-0"
+                  >
+                    <Image src={item.thumbnail} alt={item.thumbnailAlt} width={520} height={339} className="w-full h-[200px] md:h-[250px] lg:h-[300px] 3xl:h-[339px] object-cover" />
+                    <div className="pt-5">
+                      <div className={`flex items-center justify-between pt-[14px] pb-[13px] ${isArabic ? "pl-[23.15px] pr-[23.17px]" : "pl-[23.17px] pr-[23.15px]"} bg-f5f5`}>
+                        <h4 className="text-paragraph text-16 font-light leading-[1.75] uppercase">
+                          {new Date(item.date).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </h4>
+                        <h4 className="text-paragraph text-16 font-light leading-[1.75] uppercase">
+                          {item.topic.name}
+                        </h4>
+                      </div>
+
                       <h3 className="text-20 2xl:text-29 leading-[1.344827586206897] font-light mt-2 xl:mt-30px 3xl:max-w-[90%]">
                         {item.title}
                       </h3>
-                    
-                  </div>
-                </motion.div>
+
+                    </div>
+                  </motion.div>
                 </Link>
               ))}
 
@@ -288,7 +307,7 @@ const Index = ({newsData,topicData}) => {
             {/* Pagination */}
             <div className="pagination flex items-center  gap-5 justify-center mb-10 xl:mb-15 2xl:mb-[131.68px]">
               <button
-                className={`prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
+                className={`${isArabic ? "rotate-180" : ""} prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
                   }`}
                 onClick={handlePrev}
                 disabled={currentPage === 1 || isAnimating}
@@ -321,7 +340,7 @@ const Index = ({newsData,topicData}) => {
               </p>
 
               <button
-                className={`next cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === totalPages || isAnimating
+                className={`${isArabic ? "rotate-180" : ""} next cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === totalPages || isAnimating
                   ? "opacity-30"
                   : "opacity-100"
                   }`}
@@ -348,10 +367,30 @@ const Index = ({newsData,topicData}) => {
           </div>
 
 
-          <div className={`absolute    lg:left-[-141px] 3xl:left-0 z-[-1] right-0 lg:right-auto w-fit    
-          ${currentItems.length === 0 ? 'hidden' : currentItems.length < 6 ? '3xl:bottom-[-16%] 2xl:bottom-[-24%] lg:bottom-[14%] bottom-[-14%]' : '3xl:bottom-[18%] 2xl:bottom-[32%]   bottom-[28%]'}`}>
-            <MotionImage width={1500} height={1000} style={{ y: shapeY }} src="/assets/images/press-releases/listbody.svg" alt="" className=" object-fit w-md200 lg:w-[350px] 2xl:w-[754px] 2xl:h-[1056px] relative 2xl:top-[14px] " />
+          <div
+            className={`absolute z-[-1] w-fit
+    ${isArabic
+                ? "left-0 lg:right-[-141px] 3xl:right-0 -scale-x-100"
+                : "right-0 lg:left-[-141px] 3xl:left-0"
+              }
+    ${currentItems.length === 0
+                ? "hidden"
+                : currentItems.length < 6
+                  ? "3xl:bottom-[-16%] 2xl:bottom-[-24%] lg:bottom-[14%] bottom-[-14%]"
+                  : "3xl:bottom-[18%] 2xl:bottom-[32%] bottom-[28%]"
+              }
+  `}
+          >
+            <MotionImage
+              width={1500}
+              height={1000}
+              style={{ y: shapeY }}
+              src="/assets/images/press-releases/listbody.svg"
+              alt=""
+              className="object-fit w-md200 lg:w-[350px] 2xl:w-[754px] 2xl:h-[1056px] relative 2xl:top-[14px]"
+            />
           </div>
+
         </section>
       </main>
       {/* <footer>

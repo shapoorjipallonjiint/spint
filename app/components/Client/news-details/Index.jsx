@@ -11,7 +11,7 @@ const Index = ({newsData,allNewsData}) => {
       <main>
         <Banner newsData={newsData}/> 
         <MoreDetrails data={newsData.content}/> 
-        <RelatedNews allNewsData={allNewsData.news} topic={newsData.topic.name} slug={newsData.slug}/> 
+        <RelatedNews allNewsData={allNewsData.news} topic={newsData.topic} slug={newsData.slug}/> 
       </main>
       {/* <footer>
         <Footer />
