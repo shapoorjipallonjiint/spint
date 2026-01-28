@@ -16,7 +16,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
 import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 const NextProject = ({ slug, title, thumbnail }) => {
+    const isArabic = useIsPreferredLanguageArabic();
+    const tTitle = useApplyLang(title);
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
@@ -65,7 +69,7 @@ const NextProject = ({ slug, title, thumbnail }) => {
                         <div className=" h-full">
                             <div className="text-20 2xl:text-29 font-light leading-[1.17] lg:pb-5 text-paragraph">
                                 <SplitTextAnimation
-                                    children={"Next Project"}
+                                    children={`${isArabic ? "المشروع التالي" : "Next Project"}`}
                                     staggerDelay={0.1}
                                     animationDuration={0.8}
                                     delay={0.2}
@@ -80,11 +84,11 @@ const NextProject = ({ slug, title, thumbnail }) => {
                   delay={0.8}
                 />
               </p> */}
-                                <H2Title titleText={title} marginClass={"md:mb-3 lg:mb-[21px]"} maxW={"lg:max-w-[12ch]"} />
+                                <H2Title titleText={tTitle} marginClass={"md:mb-3 lg:mb-[21px]"} maxW={"lg:max-w-[12ch]"} />
                                 <Link href={`/projects/${slug}`} className="w-fit">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="cursor-pointer w-[35px] h-[35px] xl:w-[71px] xl:h-[71px]"
+                                        className={`cursor-pointer w-[35px] h-[35px] xl:w-[71px] xl:h-[71px] ${isArabic ? "-scale-x-100" : ""}`}
                                         width="71"
                                         height="71"
                                         viewBox="0 0 71 71"

@@ -9,6 +9,6 @@ const useIsPreferredLanguageArabic = () => {
     }else{
         return false
     }
-}
+}                       
 
 export default useIsPreferredLanguageArabic

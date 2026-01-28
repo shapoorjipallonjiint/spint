@@ -5,7 +5,6 @@ import ProjectSlider from "./sections/ProjectSlider";
 import InquireToday from "./sections/InquireToday";
 import NextProject from "./sections/NextProject";
 const Index = ({ data, nextProject }) => {
-    console.log(nextProject, "his");
     return (
         <>
             {/* <header>

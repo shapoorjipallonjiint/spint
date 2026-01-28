@@ -10,8 +10,13 @@ import Image from "next/image";
 import ImageLightbox from "../../../../components/common/ImagePopup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const Banner = ({ firstSection, secondSection }) => {
+    const tFirstSection = useApplyLang(firstSection);
+    const tSecondSection = useApplyLang(secondSection);
+    const isArabic = useIsPreferredLanguageArabic();
     const router = useRouter();
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
@@ -29,13 +34,13 @@ const Banner = ({ firstSection, secondSection }) => {
     const imageY = useTransform(imageProgress, [0, 1], imageOffset);
     const hasAnimatedRef = useRef(false);
 
-    const itemsWithoutLocation = secondSection.items.filter((item) => item.key !== "Location");
+    const itemsWithoutLocation = tSecondSection.items.filter((item) => item.key !== "Location");
 
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
             <div className="pt-12 xl:pt-15  3xl:pt-30 pb-26 md:pb-38  lg:pb-[170px] xl:pb-[230px] bg-f5f5 2xl:pb-[232px]  ">
                 <div className="container relative   z-[2] px-0">
-                    <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-3 lg:gap-0 ">
+                    <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-3 lg:gap-0">
                         <motion.div
                             variants={paragraphItem}
                             initial="hidden"
@@ -48,12 +53,12 @@ const Banner = ({ firstSection, secondSection }) => {
                                     width={26}
                                     height={26}
                                     alt={"left"}
-                                    className="w-8 h-8 mb-5 rotate-180"
+                                    className={`w-8 h-8 mb-5 ${isArabic ? "" : "rotate-180"}`}
                                 />
                             </button>
                             <h1 className="text-40 2xl:text-70 font-light leading-[1.07] mb-3 lg:mb-5">
                                 <SplitTextAnimation
-                                    children={firstSection.title}
+                                    children={tFirstSection.title}
                                     staggerDelay={0.2}
                                     animationDuration={0.8}
                                     delay={0.3}
@@ -61,17 +66,17 @@ const Banner = ({ firstSection, secondSection }) => {
                             </h1>
                             <div className="text-20 2xl:text-29 font-light text-paragraph leading-[1.33]">
                                 <SplitTextAnimation
-                                    children={firstSection.subTitle}
+                                    children={tFirstSection.subTitle}
                                     staggerDelay={0.2}
                                     animationDuration={0.8}
                                     delay={0.6}
                                 />
                             </div>
                         </motion.div>
-                        <div className="w-fit ml-auto">
+                        <div className={`w-fit ${isArabic ? "mr-auto" : "ml-auto"}`}>
                             <div className="text-[18px] font-light text-paragraph/70 leading-[1.8] border-b [border-image-source:linear-gradient(270deg,#1E45A2_0%,#30B6F9_100%)] [border-image-slice:1]">
                                 <SplitTextAnimation
-                                    children={secondSection?.sector?.name}
+                                    children={tSecondSection?.sector?.name}
                                     staggerDelay={0.2}
                                     animationDuration={0.8}
                                     delay={0.8}
@@ -85,21 +90,21 @@ const Banner = ({ firstSection, secondSection }) => {
                 className="container relative bottom-19 md:bottom-28 lg:bottom-[120px] xl:bottom-[150px] left-0 z-[2] overflow-hidden"
                 ref={imageContainerRefTwo}
             >
-                {firstSection?.coverImage ? (
+                {tFirstSection?.coverImage ? (
                     <MotionImage
-                        onClick={() => setActiveImage(firstSection.coverImage)}
+                        onClick={() => setActiveImage(tFirstSection.coverImage)}
                         style={{ y: imageY }}
                         variants={fadeIn(0.6)}
                         initial={hasAnimatedRef.current ? false : "hidden"}
                         animate="show"
                         viewport={{ amount: 0.2, once: true }}
-                        src={firstSection.coverImage}
+                        src={tFirstSection.coverImage}
                         onAnimationComplete={() => {
                             hasAnimatedRef.current = true;
                         }}
                         width={1620}
                         height={750}
-                        alt={firstSection.coverImageAlt || firstSection.title}
+                        alt={tFirstSection.coverImageAlt || tFirstSection.title}
                         className={`w-full h-[250px] lg:h-[400px] xl:h-[500px] 
                             2xl:h-[600px] 3xl:h-[750px] object-cover scale-110
                             ${activeImage ? "pointer-events-none" : ""}`}
@@ -110,7 +115,7 @@ const Banner = ({ firstSection, secondSection }) => {
                     </div>
                 )}
             </div>
-            <div className="container  relative md:bottom-[70px] bottom-10 left-0 2xl:pb-[50px] md:px-0">
+            <div className={`container  relative md:bottom-[70px] bottom-10 ${isArabic ? "right-0" : "left-0"} 2xl:pb-[50px] md:px-0`}>
                 {/* <motion.h2 variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-60 font-light mb-7  xl:mb-10  2xl:mb-[58px] leading-[1.17]">About Project</motion.h2> */}
                 {/* <H2Title titleText={secondSection.title} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" /> */}
                 <H2Title titleText={"About the Project"} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" />
@@ -123,14 +128,14 @@ const Banner = ({ firstSection, secondSection }) => {
                 >
                     <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 lg:border-b-0">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Project:</p>
-                        <p className="text-19 font-light   leading-[1.475] text-black">{firstSection.title}</p>
+                        <p className="text-19 font-light   leading-[1.475] text-black">{tFirstSection.title}</p>
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
                             Location:
                         </p>
                         <p className="text-19 font-light   leading-[1.475] text-black">
-                            {secondSection.items.find((item) => item.key === "Location").value}
+                            {tSecondSection.items.find((item) => item.key === "Location").value}
                         </p>
                     </div>
                 </motion.div>
@@ -144,13 +149,13 @@ const Banner = ({ firstSection, secondSection }) => {
                 >
                     <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 lg:border-b-0">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Sector:</p>
-                        <p className="text-19 font-light   leading-[1.475] text-black">{secondSection.sector?.name}</p>
+                        <p className="text-19 font-light   leading-[1.475] text-black">{tSecondSection.sector?.name}</p>
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
                             Status:
                         </p>
-                        <p className="text-19 font-light   leading-[1.475] text-black">{secondSection?.status}</p>
+                        <p className="text-19 font-light   leading-[1.475] text-black">{tSecondSection?.status}</p>
                     </div>
                 </motion.div>
 
