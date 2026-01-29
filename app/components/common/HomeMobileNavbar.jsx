@@ -4,8 +4,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
 import { navData } from "../data";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
+  const isArabic = useIsPreferredLanguageArabic();
   const [openSubmenu, setOpenSubmenu] = useState(null);
 
   const toggleSubmenu = (title) => {
@@ -15,7 +17,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
   /* animations */
   const menuVariants = {
     closed: {
-      x: "100%",
+      x: isArabic ? "-100%" : "100%",
       transition: { type: "tween", duration: 0.3, ease: "easeInOut" },
     },
     open: {
@@ -30,7 +32,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
   };
 
   const itemVariants = {
-    closed: { x: 20, opacity: 0 },
+    closed: { x: isArabic ? "-20" : "20", opacity: 0 },
     open: (i) => ({
       x: 0,
       opacity: 1,
@@ -58,10 +60,10 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
             animate="open"
             exit="closed"
             variants={menuVariants}
-            className="fixed top-0 right-0 h-full w-full max-w-[320px] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto"
+            className={`fixed top-0 ${isArabic ? "left-0" : "right-0"} h-full w-full max-w-[320px] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto`}
           >
             {/* CLOSE */}
-            <div className="absolute right-5 top-5">
+            <div className={`absolute ${isArabic ? "left-5" : "right-5"} top-5`}>
               <button
                 onClick={onClose}
                 className="w-10 h-10 flex items-center justify-center"
@@ -145,7 +147,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                               animate={{ height: "auto", opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
                               transition={{ duration: 0.3 }}
-                              className="pl-4 mt-3 space-y-3"
+                              className={`${isArabic ? "pr-4" : "pl-4"} mt-3 space-y-[10px]`}
                             >
                               {item.submenu.map((sub, i) => (
                                 <li key={i}>
@@ -176,17 +178,17 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                 className="space-y-4 pt-6 border-t border-gray-200"
               >
                 <button className="w-full bg-gradient-to-r from-[#30B6F9] to-[#1E45A2] text-white text-sm uppercase rounded-full px-5 py-3">
-                  العربية
+                  {isArabic ? "English" : "العربية"}
                 </button>
 
                 <div className="p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9]">
                   <Link href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji" target="_blank" ><button className="w-full uppercase px-5 py-2 bg-white rounded-full">
-                    Employee login
+                    {isArabic ? "Employee login" : "Employee login"}
                   </button></Link>
                 </div>
 
                 <button className="w-full bg-black/80 rounded-full p-3 flex items-center justify-center gap-2 text-white" onClick={()=>setMobileMenuOpenSearch(true)}>
-                  <span className="text-sm uppercase">Search</span>
+                  <span className="text-sm uppercase">{isArabic ? "Search" : "Search"}</span>
                 </button>
               </motion.div>
             </div>

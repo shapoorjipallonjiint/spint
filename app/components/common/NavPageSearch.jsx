@@ -8,8 +8,10 @@ import Link from 'next/link'
 import { useSearchContext } from "@/contexts/searchContext";
 import {  AnimatePresence } from "framer-motion";
 import { useDebounce } from '@/hooks/useDebounce'
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const NavPageSearch = ({ isOpen, searchActive }) => {
+    const isArabic = useIsPreferredLanguageArabic();
     const [activeMenu, setActiveMenu] = useState(2);
 
     const lastMenuRef = useRef(null);
@@ -128,12 +130,12 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
             initial={{ y: "-100%" }}
             animate={{ y: isOpen ? 0 : "-100%" }}
             transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-            className="fixed top-0 left-0 w-full h-full bg-[#1E45A2] z-10 flex"
+            className={`fixed top-0 ${isArabic ? "right-0" : "left-0"} w-full h-full bg-[#1E45A2] z-10 flex`}
         >
-            <div className="left-spacing w-full flex relative">
+            <div className={`${isArabic ? "right-spacing" : "left-spacing"} w-full flex relative`}>
                 {/* LEFT = 45% */}
                 <div className="absolute inset-0 bg-black/20 w-full" />
-                <div className="w-[45%] h-full pl-[16%] 3xl:pl-[15%] border-r border-white/30 text-white flex items-center relative">
+                <div className={`w-[45%] h-full ${isArabic ? "pr-[16%] 3xl:pr-[15%] border-l" : "pl-[16%] 3xl:pl-[15%] border-r"} border-white/30 text-white flex items-center relative`}>
 
 
                     <div className="w-[90%] h-[calc(100vh-100px)] mt-[90px]">
@@ -144,10 +146,10 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     type="text"
-                                    placeholder="Search Website"
-                                    className="w-full h-full pl-4 pr-10 text-sm
+                                    placeholder={isArabic ? "ابحث في الموقع" : "Search Website"}
+                                    className={`w-full h-full ${isArabic ? "pr-4 pl-10" : "pl-4 pr-10"} text-sm
                outline-none rounded-[15px]
-               text-white placeholder-white bg-transparent"
+               text-white placeholder-white bg-transparent`}
                                 />
 
                                 <Image
@@ -155,10 +157,10 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
                                     alt="search"
                                     width={18}
                                     height={18}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2
+                                    className={`absolute ${isArabic ? "left-4" : "right-4"} top-1/2 -translate-y-1/2
                w-[12px] h-[12px] 2xl:w-[18px] 2xl:h-[18px]
                transition-transform duration-300
-               pointer-events-none"
+               pointer-events-none`}
                                 />
                             </div>
 
@@ -240,7 +242,7 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
 
 
                     {/* Submenu aligned by baseline */}
-                    <div ref={submenuRef} className="absolute pl-[74px] z-10" style={{ top: submenuTop }}>
+                    <div ref={submenuRef} className={`absolute ${isArabic ? "pr-[74px]" : "pl-[74px]"} z-10`} style={{ top: submenuTop }}>
                         {/* Animate EVERY hover (uses animKey) */}
                         <motion.div key={`${activeMenu}-${animKey}-${isOpen}`} initial="hidden" animate="show">
                             {!searchActive && hasSubmenu &&
@@ -251,7 +253,7 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
                                         className="mb-5 last:mb-0"
                                     >
                                         <a href={sub.href}>
-                                            <p className="text-29 font-light hover:font-semibold hover:translate-x-1 transition-all duration-300">
+                                            <p className={`text-29 font-light hover:font-semibold transition-all duration-300 ${isArabic ? "hover:-translate-x-1" : "hover:translate-x-1"}`}>
                                                 {sub.label}
                                             </p>
                                         </a>
@@ -265,10 +267,10 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
                         variants={moveUp(0.2)}
                         initial="hidden"
                         whileInView="show"
-                        className="absolute bottom-[95px] right-0 lg:right-10 3xl:right-38 flex items-center gap-4 z-10"
+                        className={`absolute bottom-[95px] ${isArabic ? "left-0 lg:left-10 3xl:left-38" : "right-0 lg:right-10 3xl:right-38"} flex items-center gap-4 z-10`}
                     >
                         <div className="flex flex-col items-center gap-3">
-                            <p className="text-13 uppercase font-light">Stay Connected</p>
+                            <p className="text-13 uppercase font-light">{isArabic ? "Stay Connected" : "Stay Connected"}</p>
                             <div className="flex items-center gap-2">
                                 <motion.div
                                     variants={moveUp(0.2)}

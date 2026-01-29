@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo,useLayoutEffect } from "react";
+import { useEffect, useRef, useState, useMemo, useLayoutEffect } from "react";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -25,198 +25,17 @@ import { mapBackendCitiesToMapCities } from "../../../../lib/mapDataHelper";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { getSuffix } from "@/helpers/getSuffix.ts";
-
-// const cityGroups = [
-//     {
-//         id: "sp-international",
-//         label: "SP International",
-//         cities: [
-//             // Middle East
-//             {
-//                 id: "uae",
-//                 name: "UAE",
-//                 position: { x: 46, y: 14 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "saudiarabia",
-//                 name: "Saudi Arabia",
-//                 position: { x: 42.5, y: 14 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "oman",
-//                 name: "Oman",
-//                 position: { x: 46, y: 16 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "kuwait",
-//                 name: "Kuwait",
-//                 position: { x: 43.6, y: 12 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "qatar",
-//                 name: "Qatar",
-//                 position: { x: 44.2, y: 14 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "bahrain",
-//                 name: "Bahrain",
-//                 position: { x: 44.2, y: 12.2 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-
-//             // Africa
-//             {
-//                 id: "sierraleone",
-//                 name: "Sierra Leone",
-//                 position: { x: 28.5, y: 22.5 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "ghana",
-//                 name: "Ghana",
-//                 position: { x: 31, y: 22 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "nigeria",
-//                 name: "Nigeria",
-//                 position: { x: 34, y: 17.5 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "algeria",
-//                 name: "Algeria",
-//                 position: { x: 32, y: 12 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "gambia",
-//                 name: "Gambia",
-//                 position: { x: 28.5, y: 20 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "cotedivoire",
-//                 name: "Côte d’Ivoire",
-//                 position: { x: 30.5, y: 20 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "togo",
-//                 name: "Togo",
-//                 position: { x: 31.8, y: 21.5 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "kenya",
-//                 name: "Kenya",
-//                 position: { x: 41, y: 24 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//         ],
-//     },
-//     {
-//         id: "sp-group",
-//         label: "SP Group",
-//         cities: [
-//             {
-//                 id: "india",
-//                 name: "India",
-//                 position: { x: 51.2, y: 19 },
-//                 stats: {
-//                     iconicpjts: 250,
-//                     pjtcompleted: 250,
-//                     dedicatedemployees: 4000,
-//                 },
-//             },
-//             {
-//                 id: "unitedkingdom",
-//                 name: "UK",
-//                 position: { x: 32.5, y: -1 },
-//                 stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "srilanka",
-//                 name: "Sri Lanka",
-//                 position: { x: 52.5, y: 22 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "afghanistan",
-//                 name: "Afghanistan",
-//                 position: { x: 48.5, y: 11 },
-//                 stats: {
-//                     iconicpjts: 250,
-//                     pjtcompleted: 300,
-//                     dedicatedemployees: 4000,
-//                 },
-//             },
-//             {
-//                 id: "niger",
-//                 name: "Niger",
-//                 position: { x: 34, y: 15 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "iraq",
-//                 name: "Iraq",
-//                 position: { x: 43.2, y: 10 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "canada",
-//                 name: "Canada",
-//                 position: { x: 3, y: 0 },
-//                 stats: { iconicpjts: 200, pjtcompleted: 320, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "mauritius",
-//                 name: "Mauritius",
-//                 position: { x: 46, y: 36 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-
-//             {
-//                 id: "guyana",
-//                 name: "Guyana",
-//                 position: { x: 18.8, y: 25.8 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "libya",
-//                 name: "Libya",
-//                 position: { x: 35.5, y: 13 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 300, dedicatedemployees: 4000 },
-//             },
-//             {
-//                 id: "malta",
-//                 name: "Malta",
-//                 position: { x: 36.1, y: 11.1 },
-//                 stats: { iconicpjts: 250, pjtcompleted: 250, dedicatedemployees: 4000 },
-//             },
-//         ],
-//     },
-// ];
-
-// const cities = cityGroups.flatMap((group) =>
-//     group.cities.map((city) => ({
-//         id: city.id,
-//         name: city.name,
-//         left: `${city.position.x}%`,
-//         top: `${city.position.y}%`,
-//         ...city.stats,
-//         groupId: group.id,
-//     }))
-// );
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData }) => {
-    console.log(projectsData, "home prjs");
+    const tData = useApplyLang(data);
+    const tServiceData = useApplyLang(serviceData);
+    const tProjectsData = useApplyLang(projectsData);
+
+    const isArabic = useIsPreferredLanguageArabic();
     const [isDesktop, setIsDesktop] = useState(false);
+
     useEffect(() => {
         const checkWidth = () => {
             setIsDesktop(window.innerWidth > 992);
@@ -227,6 +46,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
         return () => window.removeEventListener("resize", checkWidth);
     }, []);
+
     const containerRef = useRef(null);
     const scrollBlock = useRef(false);
     const timeoutRef = useRef(null);
@@ -317,7 +137,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const talentDescMob = useRef(null);
     const talentCareerMob = useRef(null);
 
-
     // Mobile screen refs(scrolling)
     const touchStartY = useRef(0);
     const touchStartX = useRef(0);
@@ -340,28 +159,23 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const bubbleRef = useRef(null);
     const containersRef = useRef(null);
 
-    console.log(data);
-
     const [isLargeScreen, setIsLargeScreen] = useState(false);
     const swiperRef = useRef(null); // Add this ref for Swiper
 
-// Add this useEffect to detect screen size
-useEffect(() => {
-    const checkScreen = () => {
-        setIsLargeScreen(window.innerWidth >= 1024);
-    };
-    
-    checkScreen(); // Initial check
-    window.addEventListener('resize', checkScreen);
-    
-    return () => window.removeEventListener('resize', checkScreen);
-}, []);
+    // Add this useEffect to detect screen size
+    useEffect(() => {
+        const checkScreen = () => {
+            setIsLargeScreen(window.innerWidth >= 1024);
+        };
 
+        checkScreen(); // Initial check
+        window.addEventListener("resize", checkScreen);
 
-
+        return () => window.removeEventListener("resize", checkScreen);
+    }, []);
 
     const items = [
-        ...data.seventhSection.items.map((item) => {
+        ...tData.seventhSection.items.map((item) => {
             return {
                 id: item._id,
                 title: item.title,
@@ -371,26 +185,21 @@ useEffect(() => {
     ];
 
     const handleServiceClick = () => {
-        console.log("Clikedd")
-        sessionStorage.setItem(
-          "servicesClicked",
-          true
-        );
-      };
+        console.log("Clikedd");
+        sessionStorage.setItem("servicesClicked", true);
+    };
 
-
-      useLayoutEffect(() => {
+    useLayoutEffect(() => {
         const wasServiceClicked = sessionStorage.getItem("servicesClicked");
-      
+
         if (!wasServiceClicked) return;
-      
+
         // wait one frame AFTER layout
         requestAnimationFrame(() => {
-          updateSlides(3);
-          sessionStorage.removeItem("servicesClicked");
+            updateSlides(3);
+            sessionStorage.removeItem("servicesClicked");
         });
-      }, []);
-      
+    }, []);
 
     useEffect(() => {
         if (window.innerWidth >= 1024) {
@@ -478,12 +287,12 @@ useEffect(() => {
             .fromTo(
                 polygon5Ref.current,
                 { drawSVG: "0%" },
-                { drawSVG: "100%", duration: 1.5, delay: -1.5, ease: "power1.inOut" }
+                { drawSVG: "100%", duration: 1.5, delay: -1.5, ease: "power1.inOut" },
             )
             .fromTo(
                 polygon6Ref.current,
                 { drawSVG: "0%" },
-                { drawSVG: "100%", duration: 1.5, delay: -1.5, ease: "power1.inOut" }
+                { drawSVG: "100%", duration: 1.5, delay: -1.5, ease: "power1.inOut" },
             )
 
             .to(".ovrlywht", {
@@ -497,12 +306,12 @@ useEffect(() => {
             .fromTo(
                 polygon5Ref.current,
                 { drawSVG: "100%" },
-                { drawSVG: "0%", duration: 0.5, delay: -0.5, ease: "power1.inOut" }
+                { drawSVG: "0%", duration: 0.5, delay: -0.5, ease: "power1.inOut" },
             )
             .fromTo(
                 polygon6Ref.current,
                 { drawSVG: "100%" },
-                { drawSVG: "0%", duration: 0.5, delay: -0.5, ease: "power1.inOut" }
+                { drawSVG: "0%", duration: 0.5, delay: -0.5, ease: "power1.inOut" },
             )
             .to(".loader-im", {
                 rotate: 0,
@@ -529,12 +338,12 @@ useEffect(() => {
                     duration: 0,
                     ease: "power2.out",
                 },
-                "-=1.2"
+                "-=1.2",
             );
     }, []);
 
     const playEntryAnimation = (index) => {
-        console.log("Calleddddd",index)
+        console.log("Calleddddd", index);
         gsap.set([ttbxsRef.current, rightSecRef.current, leftSecRef.current], {
             x: 0,
             opacity: 1,
@@ -561,12 +370,12 @@ useEffect(() => {
                     .fromTo(
                         videoRef.current,
                         { scale: 0.8, opacity: 0 },
-                        { scale: 1, opacity: 1, duration: 1.5, ease: "power3.out" }
+                        { scale: 1, opacity: 1, duration: 1.5, ease: "power3.out" },
                     )
                     .fromTo(
                         titleOneRef.current,
                         { x: 60, opacity: 0 },
-                        { x: 0, opacity: 1, duration: 1.5, ease: "power3.out" }
+                        { x: 0, opacity: 1, duration: 1.5, ease: "power3.out" },
                     )
                     .fromTo(
                         brdrRef.current,
@@ -577,19 +386,19 @@ useEffect(() => {
                             duration: 1,
                             ease: "power3.easeInOut",
                         },
-                        "-=1.5"
+                        "-=1.5",
                     )
                     .fromTo(
                         subtitleRef.current,
                         { x: 60, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1, ease: "power3.out" },
-                        "-=1"
+                        "-=1",
                     )
                     .fromTo(
                         iconsRef.current,
                         { x: -50, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1, ease: "power3.out" },
-                        "-=0.5"
+                        "-=0.5",
                     )
                     .fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 1, ease: "power3.out" }, "-=4");
 
@@ -605,7 +414,7 @@ useEffect(() => {
                         delay: 0,
                         duration: 1.3,
                         ease: "power1.in",
-                    }
+                    },
                 )
                     .fromTo(
                         leftBgRef.current,
@@ -617,12 +426,12 @@ useEffect(() => {
                             duration: 1,
                             ease: "power3.out",
                         },
-                        "+=0.5"
+                        "+=0.5",
                     )
                     .fromTo(
                         title2Ref.current,
                         { x: 50, opacity: 0 },
-                        { x: 0, opacity: 1, duration: 1, delay: -0.8, ease: "power3.out" }
+                        { x: 0, opacity: 1, duration: 1, delay: -0.8, ease: "power3.out" },
                     )
                     .fromTo(
                         dsrnRef.current,
@@ -633,12 +442,12 @@ useEffect(() => {
                             duration: 1,
                             delay: -0.5,
                             ease: "power3.out",
-                        }
+                        },
                     )
                     .fromTo(
                         descriptionRef.current,
                         { x: 50, opacity: 0 },
-                        { x: 0, opacity: 1, duration: 1, delay: -0.5, ease: "power3.out" }
+                        { x: 0, opacity: 1, duration: 1, delay: -0.5, ease: "power3.out" },
                     )
                     .fromTo(
                         brdrsRef.current,
@@ -650,7 +459,7 @@ useEffect(() => {
                             duration: 1,
                             delay: -0.5,
                             ease: "power1.inOut",
-                        }
+                        },
                     )
                     .fromTo(
                         statItems,
@@ -662,7 +471,7 @@ useEffect(() => {
                             delay: -0.5,
                             ease: "power3.out",
                             stagger: 0.2,
-                        }
+                        },
                     )
                     .fromTo(
                         mobileStatsRef.current,
@@ -676,7 +485,7 @@ useEffect(() => {
                             duration: 0.6,
                             ease: "power3.out",
                         },
-                        0 // sync with other content
+                        0, // sync with other content
                     );
                 break;
             case 2:
@@ -699,50 +508,50 @@ useEffect(() => {
                     .fromTo(
                         splftimng.current,
                         { x: -50, opacity: 0, width: "0%" },
-                        { x: 0, opacity: 1, width: "100%", duration: 1, delay: 0, ease: "power1.out" }
+                        { x: 0, opacity: 1, width: "100%", duration: 1, delay: 0, ease: "power1.out" },
                     )
                     .fromTo(
                         sprghtBx.current,
                         { x: 50, opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.5"
+                        "-=0.5",
                     )
                     .fromTo(
                         splftbg.current,
                         { x: -50, opacity: 0, width: "0%" },
                         { x: 0, opacity: 1, width: "100%", duration: 0.8, delay: -0.5, ease: "power1.out" },
-                        "-=0"
+                        "-=0",
                     )
                     .fromTo(
                         sptitle.current,
                         { x: -50, opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3"
+                        "-=0.3",
                     )
                     .fromTo(
                         spdscrpt.current,
                         { x: -50, opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3"
+                        "-=0.3",
                     )
                     .fromTo(
                         spbtn.current,
                         { x: -50, opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3"
+                        "-=0.3",
                     )
 
                     .fromTo(
                         sprIcnim.current,
                         { x: 50, opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=1.5"
+                        "-=1.5",
                     )
                     .fromTo(
                         spBrdOne.current,
                         { x: -100, opacity: 0 },
                         { x: 0, opacity: 0.2, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3"
+                        "-=0.3",
                     )
                     .fromTo(
                         spStatsItems,
@@ -755,7 +564,7 @@ useEffect(() => {
                             ease: "power3.out",
                             stagger: 0.2,
                         },
-                        "-=0.6"
+                        "-=0.6",
                     );
 
                 /* 
@@ -836,14 +645,19 @@ useEffect(() => {
                     .fromTo(
                         srvBgimg.current,
                         { opacity: 0 },
-                        { opacity: 1, duration: 1.5, ease: "power3.out", transformOrigin: "50% 50%" }
+                        { opacity: 1, duration: 1.5, ease: "power3.out", transformOrigin: "50% 50%" },
                     )
-                    .fromTo(srvLftBx.current, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out",x:0 }, "-=0.5")
+                    .fromTo(
+                        srvLftBx.current,
+                        { opacity: 0 },
+                        { opacity: 1, duration: 0.5, ease: "power3.out", x: 0 },
+                        "-=0.5",
+                    )
                     .fromTo(
                         srvttlRef.current,
                         { x: -30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.5, delay: 0, ease: "power3.out" },
-                        "-=0.5"
+                        "-=0.5",
                     )
 
                     .fromTo(
@@ -856,7 +670,7 @@ useEffect(() => {
                             duration: 1.2,
                             ease: "power3.out",
                         },
-                        "-=0.5"
+                        "-=0.5",
                     )
                     .fromTo(
                         textItemsRef.current,
@@ -868,13 +682,13 @@ useEffect(() => {
                             duration: 0.8,
                             ease: "power3.out",
                         },
-                        "-=1"
+                        "-=1",
                     )
                     .fromTo(
                         srvsRghtBx.current,
                         { x: 30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, ease: "power3.out" },
-                        "-=1.5"
+                        "-=1.5",
                     )
                     .fromTo(
                         srvsImgRef.current,
@@ -886,7 +700,7 @@ useEffect(() => {
                             duration: 1,
                             ease: "power3.out",
                         },
-                        "-=1.5"
+                        "-=1.5",
                     )
                     .fromTo(
                         srvsVct.current,
@@ -897,7 +711,7 @@ useEffect(() => {
                             duration: 0.5,
                             ease: "power3.inOut",
                         },
-                        "-=0.5"
+                        "-=0.5",
                     )
                     .fromTo(
                         srvsCntb.current,
@@ -908,7 +722,7 @@ useEffect(() => {
                             duration: 1.5,
                             ease: "power3.inOut",
                         },
-                        "-=1"
+                        "-=1",
                     )
                     .fromTo(
                         srvsArrw.current,
@@ -919,11 +733,11 @@ useEffect(() => {
                             duration: 0.5,
                             ease: "power3.inOut",
                         },
-                        "-=0.5"
+                        "-=0.5",
                     );
                 break;
             case 4:
-                console.log("Section4 called")
+                console.log("Section4 called");
                 e1.set(talenttitle.current, { opacity: 0, x: 0 })
                     .set(talentlist.current, { opacity: 0, x: 0 })
                     .set(talentimage.current, { opacity: 0, x: 0, width: "0%" })
@@ -933,13 +747,13 @@ useEffect(() => {
                         talenttitle.current,
                         { x: -30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 1.5, ease: "power1.out" },
-                        "-=0.5"
+                        "-=0.5",
                     )
                     .fromTo(
                         talentlist.current,
                         { x: -30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, ease: "power1.out" },
-                        "-=0.5"
+                        "-=0.5",
                     )
 
                     .fromTo(
@@ -952,13 +766,13 @@ useEffect(() => {
                             delay: 0,
                             ease: "power3.out",
                         },
-                        "-=1.5"
+                        "-=1.5",
                     )
                     .fromTo(
                         talentdtls.current,
                         { x: -30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
-                        "-=1"
+                        "-=1",
                     )
                     .fromTo(
                         sectorLeft.current,
@@ -969,7 +783,7 @@ useEffect(() => {
                             duration: 0.5,
                             ease: "power1.out",
                         },
-                        "-=1"
+                        "-=1",
                     );
 
                 break;
@@ -982,7 +796,7 @@ useEffect(() => {
                         maptitle.current,
                         { x: -50, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.2, delay: 1.5, ease: "power1.out" },
-                        "-=0.5"
+                        "-=0.5",
                     )
                     .fromTo(
                         mapimage.current,
@@ -993,7 +807,7 @@ useEffect(() => {
                             duration: 0.9,
                             ease: "power1.out",
                         },
-                        "-=1.2"
+                        "-=1.2",
                     )
                     // .fromTo( dotsItms, { opacity: 0, scale: 0 }, { scale: 1, opacity: 1, duration: 1, stagger: 0.3, ease: "power3.out", }, "-=1.2" )
                     .fromTo(
@@ -1006,7 +820,7 @@ useEffect(() => {
                             stagger: 0.04,
                             ease: "power3.out",
                         },
-                        "-=0.8"
+                        "-=0.8",
                     );
 
                 /*  .fromTo(".actdts", {
@@ -1040,19 +854,19 @@ useEffect(() => {
                             ease: "power3.out",
                             transformOrigin: "50% 50%",
                         },
-                        "-=0"
+                        "-=0",
                     )
                     .fromTo(
                         cutltttl.current,
                         { x: -30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 0, ease: "power1.out" },
-                        "-=0.3"
+                        "-=0.3",
                     )
                     .fromTo(
                         cultlist.current,
                         { x: -30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1, delay: 0, ease: "power1.out" },
-                        "-=2"
+                        "-=2",
                     )
 
                     .fromTo(
@@ -1065,37 +879,37 @@ useEffect(() => {
                             ease: "power3.out",
                             stagger: 0.2,
                         },
-                        "-=1.5"
+                        "-=1.5",
                     )
                     .fromTo(
                         cutltdtls.current,
                         { x: -30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 0, ease: "power1.out" },
-                        "-=1"
+                        "-=1",
                     )
                     .fromTo(
                         cutltmain.current,
                         { x: -30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 0, ease: "power1.out" },
-                        "-=1"
+                        "-=1",
                     )
                     .fromTo(
                         talentDescMob.current,
                         { x: -100, opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.4, delay: 0, ease: "power1.Out" },
-                        "-=2"
+                        "-=2",
                     )
                     .fromTo(
                         talentCareerMob.current,
                         { x: -100, opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.6, delay: 0, ease: "power1.Out" },
-                        "-=1.6"
+                        "-=1.6",
                     )
                     .fromTo(
                         cutlttext.current,
                         { x: -30, opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 0, ease: "power1.out" },
-                        "-=1"
+                        "-=1",
                     );
                 break;
         }
@@ -1121,7 +935,7 @@ useEffect(() => {
                         transformOrigin: "50% 50%",
                         ease: "power1.inOut",
                     },
-                    "+=0.5"
+                    "+=0.5",
                 )
                     .to(videoRef.current, { x: "-100%", duration: 1, ease: "power1.inOut" }, "+=0.5")
                     .to(titleOneRef.current, { opacity: 0, x: -30, duration: 0.5, ease: "power3.out" }, "-=2.1")
@@ -1142,7 +956,7 @@ useEffect(() => {
                             duration: 0.4,
                             ease: "power3.in",
                         },
-                        0
+                        0,
                     );
                 /*   .to(ttbxsRef.current, { x: 800, opacity: 0, duration: 1.5, ease: 'power1.in' }, 0)
                  */
@@ -1151,7 +965,7 @@ useEffect(() => {
                 c2.to(sprghtBx.current, { x: 800, opacity: 0, duration: 1.2, ease: "power1.inOut" }, 0).to(
                     splftimng.current,
                     { x: -800, opacity: 0, duration: 1.2, ease: "power1.inOut" },
-                    0
+                    0,
                 );
 
                 /*   .to(leftContentRef.current, {
@@ -1294,7 +1108,7 @@ useEffect(() => {
                 f2.to(maptitle.current, { x: -30, opacity: 0, duration: 1, ease: "power1.in" }, 0).to(
                     mapimage.current,
                     { opacity: 0, scale: 0.9, duration: 1.3, ease: "power1.in" },
-                    "-=0.5"
+                    "-=0.5",
                 );
                 break;
             case 6:
@@ -1493,70 +1307,18 @@ useEffect(() => {
         };
     }, []);
 
-    // const content = [
-    //     {
-    //         image: "/assets/images/services/engineering-construction.jpg",
-    //         title: "Engineering & Construction",
-    //         link: "/engineering-construction",
-    //         description:
-    //             "Spanning 20 countries, we transform complex visions into major projects. From iconic stadiums and theme parks to advanced healthcare and commercial facilities, we deliver innovative, high-quality projects designed to meet every client’s needs.",
-    //     },
-    //     {
-    //         image: "/assets/images/services/mep.jpg",
-    //         title: "MEP",
-    //         link: "/mep",
-    //         description:
-    //             "Our MEP division forms the backbone of major structures. We design, install, and manage fully integrated mechanical, electrical, and plumbing systems that ensure reliable, long-term operation.",
-    //     },
-    //     {
-    //         image: "/assets/images/services/interior-fit-out.jpg",
-    //         title: "Interior Fit-out",
-    //         link: "/interior-design",
-    //         description:
-    //             "SPINT’s Interior Division (SPID) delivers turnkey interior solutions across sectors, blending thoughtful design, uncompromising quality, and punctual execution to create spaces that truly inspire.",
-    //     },
-    //     {
-    //         image: "/assets/images/services/Facade.jpg",
-    //         title: "Facade",
-    //         link: "/facade",
-    //         description:
-    //             "From concept to completion, we combine the art and science of facades for complex structures. We design, engineer, and deliver custom, high-performance building for landmark projects worldwide.",
-    //     },
-    //     {
-    //         image: "/assets/images/services/Facility-Management.jpg",
-    //         title: "Facility Management",
-    //         link: "/integrated-facility-management",
-    //         description:
-    //             "We provide fully integrated FM solutions, combining global expertise with local insight. This ensures smooth operations, optimised asset performance, and improved occupant experiences across every property.",
-    //     },
-    //     {
-    //         image: "/assets/images/services/Water.jpg",
-    //         title: "Water",
-    //         link: "/water",
-    //         description:
-    //             "We deliver essential water infrastructure, from urban pipelines to complex desalination plants. Our expertise ensures every project is executed safely, efficiently, and to the highest standards.",
-    //     },
-    //     {
-    //         image: "/assets/images/services/servicemain.jpg",
-    //         title: "Design Studio",
-    //         link: "/design-studio",
-    //         description:
-    //             "We drive complex civil projects with advanced digital design and BIM. From integrated Design & Build to expert standalone services, we develop visionary structures with precision and expertise.",
-    //     },
-    // ];
-
     const [activeService, setActiveService] = useState({
-        image: serviceData[0]?.homeImage,
-        title: serviceData[0].title,
-        description: serviceData[0].description,
-        link: serviceData[0].link,
+        image: tServiceData[0]?.homeImage,
+        title: tServiceData[0].title,
+        description: tServiceData[0].description,
+        link: tServiceData[0].link,
         index: 0,
     });
 
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
     const sectors = [
-        ...data.fifthSection.items.map((item) => {
+        ...tData.fifthSection.items.map((item) => {
             return {
                 name: item.title,
                 icon: item.logo,
@@ -1572,7 +1334,6 @@ useEffect(() => {
     const [displayedIndex, setDisplayedIndex] = useState(activeIndex);
     const animationRef = useRef(null);
     const [clickedIndex, setClickedIndex] = useState(null);
-
 
     const handleSlideClick = (targetIndex) => {
         const isMobile = window.matchMedia("(max-width:1023px)").matches;
@@ -1635,23 +1396,23 @@ useEffect(() => {
         }, 400);
     };
 
-const getVisibleSectors = () => {
-  const result = [];
-  const totalSectors = sectors.length;
+    const getVisibleSectors = () => {
+        const result = [];
+        const totalSectors = sectors.length;
 
-  // 3 above (-3, -2, -1), center (0), 4 below (1, 2, 3, 4)
-  for (let i = -3; i <= 4; i++) {
-    const index = (activeIndex + i + totalSectors) % totalSectors;
+        // 3 above (-3, -2, -1), center (0), 4 below (1, 2, 3, 4)
+        for (let i = -3; i <= 4; i++) {
+            const index = (activeIndex + i + totalSectors) % totalSectors;
 
-    result.push({
-      ...sectors[index],
-      originalIndex: index,
-      position: i,
-    });
-  }
+            result.push({
+                ...sectors[index],
+                originalIndex: index,
+                position: i,
+            });
+        }
 
-  return result;
-};
+        return result;
+    };
 
     const visibleSectors = getVisibleSectors();
     const activeSector = sectors[displayedIndex];
@@ -1663,7 +1424,7 @@ const getVisibleSectors = () => {
     const delayProjects = useFirstTimeDelay(
         currentVisibleSlide === "section5",
         1000, // FIRST TIME delay
-        10 // LATER delay when clicking items
+        10, // LATER delay when clicking items
     );
 
     // // sectors autoplay
@@ -1699,30 +1460,30 @@ const getVisibleSectors = () => {
     const router = useRouter();
 
     const projectCities = useMemo(() => {
-        if (!projectsData?.projects) return new Set();
+        if (!tProjectsData?.projects) return new Set();
 
-        return new Set(projectsData.projects.map((p) => p?.secondSection?.location?.name).filter(Boolean));
+        return new Set(tProjectsData.projects.map((p) => p?.secondSection?.location?.name).filter(Boolean));
     }, [projectsData]);
 
     useEffect(() => {
-        if (data?.sixthSection?.cities) {
-            setMapCities(mapBackendCitiesToMapCities(data.sixthSection.cities, projectCities));
+        if (tData?.sixthSection?.cities) {
+            setMapCities(mapBackendCitiesToMapCities(tData.sixthSection.cities, projectCities));
         }
     }, [data, projectCities]);
 
     useEffect(() => {
-    if (!isLargeScreen && swiperRef.current && swiperRef.current.swiper) {
-        const swiper = swiperRef.current.swiper;
-        
-        // Find the index of the active sector (position === 0)
-        const activeSectorIndex = visibleSectors.findIndex(s => s.position === 0);
-        
-        if (activeSectorIndex !== -1) {
-            // Scroll to the active slide with smooth animation
-            swiper.slideTo(activeSectorIndex, 500); // 500ms animation
+        if (!isLargeScreen && swiperRef.current && swiperRef.current.swiper) {
+            const swiper = swiperRef.current.swiper;
+
+            // Find the index of the active sector (position === 0)
+            const activeSectorIndex = visibleSectors.findIndex((s) => s.position === 0);
+
+            if (activeSectorIndex !== -1) {
+                // Scroll to the active slide with smooth animation
+                swiper.slideTo(activeSectorIndex, 500); // 500ms animation
+            }
         }
-    }
-}, [activeIndex, isLargeScreen]); // Re-run when activeIndex changes
+    }, [activeIndex, isLargeScreen]); // Re-run when activeIndex changes
 
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
@@ -1737,20 +1498,37 @@ const getVisibleSectors = () => {
                     <defs>
                         <style></style>
                     </defs>
-                      <g>
-                            <path className="st00" d="M0,0v1080h1920V0H0ZM952.9,406.3h0c0,8.4-4.4,16.1-11.5,20.5l-162.9,88.2c-4.3,2.6-7,7.3-7,12.4v15.3l149.7-76.7c14-8.1,31.7,2,31.7,18.2v117.1c0,14.2-7.9,27.1-20.6,33.6l-210.1,96.8c-4.9,2.5-10.7-1.1-10.7-6.5v-47.4c0-6.2,3.4-11.9,8.8-15l164.4-81c5-2.8,8.2-8.1,8.2-13.9v-13.7l-147.8,72.4c-15,8.4-33.6-2.5-33.6-19.7v-100.1c0-14.8,7.6-28.5,20.1-36.4l209.2-121.4c5.2-3.3,12,.5,12,6.6v50.8ZM1208.4,606.5c0,17.2-18.6,28.1-33.6,19.7l-147.7-72.3v141.7l-39.4-20.1c-12.6-6.4-20.6-19.4-20.6-33.6v-286.6c0-6.2,6.8-9.9,12-6.6l209.3,121.5h0c12.5,7.8,20.1,21.5,20.1,36.2v100Z"/>
-    <path className="st00" d="M1148.4,526.9c0-4.8-2.5-9.3-6.6-11.8l-114.8-62.2v27.4l121.4,62.2v-15.6Z"/>
-  
-  </g>
-  <g>
-       <path ref={polygon4Ref} className="st01" d="M952.9,406.3v-50.8c0-6.2-6.8-9.9-12-6.6l-209.2,121.4c-12.5,7.9-20.1,21.6-20.1,36.4v100.1c0,17.2,18.5,28.1,33.6,19.7l147.8-72.4v13.7c0,5.8-3.1,11.1-8.2,13.9l-164.4,81c-5.4,3-8.8,8.7-8.8,15v47.4c0,5.5,5.8,9,10.7,6.5l210.1-96.8c12.6-6.4,20.6-19.4,20.6-33.6v-117.1c0-16.2-17.6-26.4-31.7-18.2l-149.7,76.7v-15.3c0-5,2.6-9.7,7-12.4l162.9-88.2c7.2-4.3,11.5-12.1,11.5-20.5"/>
-    <path ref={polygon5Ref} className="st11" d="M1188.4,470.3l-209.3-121.5c-5.2-3.3-12,.5-12,6.6v50.8h0v77.7h0v158.1c0,14.2,7.9,27.1,20.6,33.6l39.4,20.1v-112.2h0v-29.5l147.7,72.3c15.1,8.4,33.6-2.5,33.6-19.7v-100c0-14.7-7.6-28.4-20.1-36.3h0Z"/>
-    <path ref={polygon6Ref} className="st12" d="M1148.5,542.6l-121.4-62.2v-27.4l114.8,62.2c4.1,2.5,6.6,7,6.6,11.8v15.7h0Z"/>
-   {/*  <path   ref={polygon4Ref} class="st01" d="M952.9,406.3v-50.8c0-6.2-6.8-9.9-12-6.6l-209.2,121.4c-12.5,7.9-20.1,21.6-20.1,36.4v100.1c0,17.2,18.5,28.1,33.6,19.7l147.8-72.4v13.7c0,5.8-3.1,11.1-8.2,13.9l-164.4,81c-5.4,3-8.8,8.7-8.8,15v47.4c0,5.5,5.8,9,10.7,6.5l210.1-96.8c12.6-6.4,20.6-19.4,20.6-33.6v-117.1c0-16.2-17.6-26.4-31.7-18.2l-149.7,76.7v-15.3c0-5,2.6-9.7,7-12.4l162.9-88.2c7.2-4.3,11.5-12.1,11.5-20.5"/>
+                    <g>
+                        <path
+                            className="st00"
+                            d="M0,0v1080h1920V0H0ZM952.9,406.3h0c0,8.4-4.4,16.1-11.5,20.5l-162.9,88.2c-4.3,2.6-7,7.3-7,12.4v15.3l149.7-76.7c14-8.1,31.7,2,31.7,18.2v117.1c0,14.2-7.9,27.1-20.6,33.6l-210.1,96.8c-4.9,2.5-10.7-1.1-10.7-6.5v-47.4c0-6.2,3.4-11.9,8.8-15l164.4-81c5-2.8,8.2-8.1,8.2-13.9v-13.7l-147.8,72.4c-15,8.4-33.6-2.5-33.6-19.7v-100.1c0-14.8,7.6-28.5,20.1-36.4l209.2-121.4c5.2-3.3,12,.5,12,6.6v50.8ZM1208.4,606.5c0,17.2-18.6,28.1-33.6,19.7l-147.7-72.3v141.7l-39.4-20.1c-12.6-6.4-20.6-19.4-20.6-33.6v-286.6c0-6.2,6.8-9.9,12-6.6l209.3,121.5h0c12.5,7.8,20.1,21.5,20.1,36.2v100Z"
+                        />
+                        <path
+                            className="st00"
+                            d="M1148.4,526.9c0-4.8-2.5-9.3-6.6-11.8l-114.8-62.2v27.4l121.4,62.2v-15.6Z"
+                        />
+                    </g>
+                    <g>
+                        <path
+                            ref={polygon4Ref}
+                            className="st01"
+                            d="M952.9,406.3v-50.8c0-6.2-6.8-9.9-12-6.6l-209.2,121.4c-12.5,7.9-20.1,21.6-20.1,36.4v100.1c0,17.2,18.5,28.1,33.6,19.7l147.8-72.4v13.7c0,5.8-3.1,11.1-8.2,13.9l-164.4,81c-5.4,3-8.8,8.7-8.8,15v47.4c0,5.5,5.8,9,10.7,6.5l210.1-96.8c12.6-6.4,20.6-19.4,20.6-33.6v-117.1c0-16.2-17.6-26.4-31.7-18.2l-149.7,76.7v-15.3c0-5,2.6-9.7,7-12.4l162.9-88.2c7.2-4.3,11.5-12.1,11.5-20.5"
+                        />
+                        <path
+                            ref={polygon5Ref}
+                            className="st11"
+                            d="M1188.4,470.3l-209.3-121.5c-5.2-3.3-12,.5-12,6.6v50.8h0v77.7h0v158.1c0,14.2,7.9,27.1,20.6,33.6l39.4,20.1v-112.2h0v-29.5l147.7,72.3c15.1,8.4,33.6-2.5,33.6-19.7v-100c0-14.7-7.6-28.4-20.1-36.3h0Z"
+                        />
+                        <path
+                            ref={polygon6Ref}
+                            className="st12"
+                            d="M1148.5,542.6l-121.4-62.2v-27.4l114.8,62.2c4.1,2.5,6.6,7,6.6,11.8v15.7h0Z"
+                        />
+                        {/*  <path   ref={polygon4Ref} class="st01" d="M952.9,406.3v-50.8c0-6.2-6.8-9.9-12-6.6l-209.2,121.4c-12.5,7.9-20.1,21.6-20.1,36.4v100.1c0,17.2,18.5,28.1,33.6,19.7l147.8-72.4v13.7c0,5.8-3.1,11.1-8.2,13.9l-164.4,81c-5.4,3-8.8,8.7-8.8,15v47.4c0,5.5,5.8,9,10.7,6.5l210.1-96.8c12.6-6.4,20.6-19.4,20.6-33.6v-117.1c0-16.2-17.6-26.4-31.7-18.2l-149.7,76.7v-15.3c0-5,2.6-9.7,7-12.4l162.9-88.2c7.2-4.3,11.5-12.1,11.5-20.5"/>
     <path  ref={polygon5Ref} class="st11" d="M1188.4,470.3l-209.3-121.5c-5.2-3.3-12,.5-12,6.6v50.8h0v77.7h0v158.1c0,14.2,7.9,27.1,20.6,33.6l39.4,20.1v-112.2h0v-29.5l147.7,72.3c15.1,8.4,33.6-2.5,33.6-19.7v-100c0-14.7-7.6-28.4-20.1-36.3h0ZM1148.5,542.6l-121.4-62.2v-27.4l114.8,62.2c4.1,2.5,6.6,7,6.6,11.8v15.7h0Z"/>
    */}
-   </g>
-                  {/*   <path
+                    </g>
+                    {/*   <path
                         className="st21"
                         d="M0,0v1080h1920V0H0ZM1220.2,572.1v9.1c-.1,0-.2,4.4-.2,4.4l-.2,4.3-.2,4.3-.2,4.1-.2,2.6-.3,2.5-.4,2.4-.5,2.2-.3,1.1-.3,1.1-.3,1-.3,1.1-.3,1-.4,1-.4.9-.4.9-.4.9-.4.9-.4.8-.5.7-.5.8-.5.7-.5.7-.6.7-.5.6-.6.6-.5.6-.6.5-.6.5-.7.4-.6.4-.7.4-1,.4-1,.4-1.1.3-1.1.3-1.2.3-1.3.2-1.5.2h-3.2c0,0-1.9-.3-1.9-.3l-2-.3-2.4-.5-2.5-.8-2.8-.8-3.1-1-3.4-1.2-139.2-53.9-.9-.3-.8-.3-.7-.2h-.7c0,0-.7-.1-.7-.1h-.5c0,0-.6.1-.6.1l-.5.2-.4.2-.4.3-.3.3-.3.3-.3.3-.3.4-.2.4-.2.5-.3.9-.2,1-.2,1.1v1.1c0,0-.2,2.1-.2,2.1v1.8s0,112.8,0,112.8l-49.3-30.6-1.1-.6-1-.7-1-.7-1.1-.8-.9-.9-.9-1-.4-.5-.4-.6-.4-.6-.4-.6-.4-.6-.4-.6-.3-.7-.3-.8-.3-.8-.3-.9-.2-.9-.3-1-.2-1-.2-1-.2-1v-1.2c-.1,0-.2-1.2-.2-1.2v-1.2c0,0-.1-1.3-.1-1.3v-125.8c0,0,0-2.6,0-2.6l.2-2.5.3-2.4.3-2.2.5-2,.5-1.9.6-1.7.7-1.6.8-1.5.9-1.3.9-1.2,1-1,1.1-.9,1.2-.8,1.2-.7,1.3-.6,1.5-.4,1.4-.3,1.6-.2h1.7c0-.1,1.7-.1,1.7-.1h1.8c0,.1,1.9.3,1.9.3l1.9.3,2,.4,2.2.5,2.2.6,2.3.7,2.4.7,2.5.9,2.5,1,2.6,1,139.3,61,.9.3.9.2h.7c0,0,.8,0,.8,0l.6-.2.6-.2.6-.3.5-.4.4-.4.3-.5.3-.5.3-.5.2-.5.2-.6.2-.5v-.5c0,0,.2-2,.2-2v-1.6s.1-1.2.1-1.2v-4c0,0,0-1.5,0-1.5v-.7s-.1-.7-.1-.7v-.6c-.1,0-.2-.6-.2-.6l-.2-.7-.2-.6v-.6c-.1,0-.4-.6-.4-.6l-.3-.5-.3-.5-.3-.5-.3-.5-.3-.5-.4-.5-.4-.4-.5-.4-.6-.5-.7-.5-.7-.5-.8-.5-1.7-1-1.9-1.1-1.9-1-1.9-1-1.8-.9-1.5-.7-181.1-99.4h0s-191.9,108.4-191.9,108.4l-1.7.9-1.6.9-.7.4-.7.4-.7.5-.7.4-.6.5-.5.5-.4.6-.4.6-.3.6-.2.6-.2.7v.9c-.1,0-.1,1.6-.1,1.6v4.3c0,0,0,1.3,0,1.3v5.4c.1,0,.2.4.2.4l.2.4.2.4.3.4.3.3.4.3.5.2.5.2h.6c0,.1.7.1.7.1h.8c0,0,.8-.2.8-.2l.9-.2,1-.3,140.8-63.9,1.2-.5,1.3-.5,1.5-.5,1.5-.5,1.6-.5,1.7-.4,1.7-.4,1.8-.3,1.8-.3h1.9c0-.1,1.9-.2,1.9-.2h1.9l1.9.2,1.8.3,1.9.4,1.8.5,1.8.7,1.8.8,1.6,1,1.7,1.1,1.5,1.3,1.4,1.5,1.3,1.8,1.2,1.9,1.1,2.1,1,2.4.8,2.6.7,2.9.5,3.1.3,3.4v3.7c.1,0,0,3.9,0,3.9v84.6s-.2,2.4-.2,2.4v2.6c-.1,0-.2,2.7-.2,2.7v2.9c0,0-.2,1.4-.2,1.4l-.2,1.4-.2,1.6-.3,1.5-.3,1.6-.4,1.5-.4,1.6-.5,1.6-.6,1.5-.7,1.6-.8,1.5-.9,1.6-1,1.5-1.1,1.4-1.2,1.5-1.4,1.3-1.5,1.4-1.6,1.3-1.8,1.3-2,1.3-2.1,1.2-2.3,1.1-2.5,1.1-2.6,1.1-225.5,69.4-.2-64.2,176.5-62.8,1.5-.5,1.4-.5,1.4-.5,1.4-.5,1.4-.6,1.4-.5,1.4-.6,1.4-.6,1.1-.5,1-.5.5-.3.5-.3.4-.4.4-.3.3-.3.3-.4.3-.4.2-.5.2-.5.2-.5v-.6c0,0,.1-.6.1-.6v-12.4s0-1.1,0-1.1v-1.1s-.2-.9-.2-.9l-.2-.8-.2-.4-.2-.3-.2-.3-.2-.3-.2-.3-.3-.2-.3-.2-.3-.2-.3-.2h-.4c0-.1-.4-.2-.4-.2h-.4c0,0-.4,0-.4,0h-.5c0,0-.5,0-.5,0h-.5c0,0-1.1.2-1.1.2l-1.3.3-1.3.4-1.4.6-145.3,57-2.4.8-2.4.7-2.2.7-2.1.4-2,.4-2,.3-1.9.2-1.8.2h-1.7s-1.6.1-1.6.1h-1.5c0,0-1.4-.2-1.4-.2l-1.3-.2-1.3-.2-1.1-.3-1-.3-.7-.3-.7-.3-.6-.4-.6-.4-.6-.4-.5-.5-.5-.5-.4-.5-.5-.6-.4-.6-.4-.7-.4-.8-.3-.7-.3-.8-.3-.9-.2-.9-.2-.9-.2-1-.2-1-.2-1.1-.3-2.2-.2-2.4v-2.6c-.1,0-.2-2.7-.2-2.7v-6c0,0,0-3.3,0-3.3v-10.5c0,0,0-3.6,0-3.6v-11.1c0,0,0-3.7,0-3.7v-26.5c0,0,0-2,0-2v-1.9c0,0,.2-2,.2-2l.2-1.9.2-2,.2-1.9.3-1.9.3-1.9.4-1.9.4-1.8.4-1.9.5-1.8.6-1.8.6-1.7.8-1.8.7-1.6.8-1.4.8-1.4,1-1.3,1-1.3,1-1.2,1.1-1.2,1.2-1.2,1.2-1.2,1.2-1.1,1.2-1.2,1.3-1.1,1.3-1.1,2.7-2.1,2.8-2,1.9-1.3,1.9-1.3,1.9-1.2,1.9-1.3,1.8-1.2,1.8-1.2,1.7-1.2,1.7-1.2,221-125v2.2s0-2.2,0-2.2l14.3,7.7,14.6,7.9,15,8.1,30.8,16.7,15.5,8.4,15.7,8.5,15.6,8.4,15.5,8.4,15.3,8.2,15,8.1,14.8,8,14.3,7.8,13.8,7.5,13.3,7.3,12.6,6.9,1.2.6,1.2.6,1.2.8,1.1.8,1.1.8,1.1.9,1.1.9,1,.9,1,1.1,1,1.1,1,1.1.9,1.2.9,1.2.8,1.2.8,1.3.9,1.3.7,1.4.7,1.4.7,1.4.6,1.6.6,1.6.6,1.6.5,1.7.5,1.7.4,1.8.4,1.7.3,1.9.3,1.8.2,1.9.2,1.9v2c.1,0,.2,2,.2,2l.2,4.2v4.3c.1,0,.2,4.3.2,4.3v4.5c.1,0,.2,4.5.2,4.5v4.6c.1,0,.2,4.6.2,4.6v9.2s0,4.6,0,4.6Z"
                     />
@@ -1798,7 +1576,15 @@ const getVisibleSectors = () => {
         /> */}
 
                 <div className="h-full absolute top-0 left-0 w-full bg-amber-50">
-                    <video src={data.firstSection.video} autoPlay loop muted playsInline webkit-playsinline="true" className="w-full h-full object-cover"></video>
+                    <video
+                        src={tData.firstSection.video}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        webkit-playsinline="true"
+                        className="w-full h-full object-cover"
+                    ></video>
                 </div>
             </div>
 
@@ -1824,13 +1610,16 @@ const getVisibleSectors = () => {
       )} */}
 
             {/* Slide 1 */}
-            <div ref={section1Ref} className="absolute top-0 left-0 w-full h-full bg-transparent">
+            <div
+                ref={section1Ref}
+                className={`absolute ${isArabic ? "right-0" : "left-0"} top-0 w-full h-full bg-transparent`}
+            >
                 <section className="h-[100dvh] overflow-x-hidden relative scroll-area overflow-hidden bg-transparent">
-                    <div className="h-full absolute top-0 left-0 w-full z-0" ref={videoRef}>
+                    <div className={`h-full absolute top-0 ${isArabic ? "right-0" : "left-0"} w-full z-0`} ref={videoRef}>
                         <div className="h-screen w-full relative overflow-hidden z-10">
                             {/* One single video playing in background */}
                             <video
-                                src={data.firstSection.video}
+                                src={tData.firstSection.video}
                                 autoPlay
                                 loop
                                 muted
@@ -1866,26 +1655,32 @@ const getVisibleSectors = () => {
 
                     <div className="relative z-[1] h-full">
                         <div className="flex flex-col justify-end h-full">
-                            <div className="w-full px-5 lg:p-0 lg:w-[79%] ml-auto text-white">
+                            <div className={`w-full px-5 lg:p-0 lg:w-[79%] ${isArabic ? "mr-auto" : "ml-auto"} text-white`}>
                                 <div
                                     className="border-b border-white/30 pb-[33px] mb-1 lg:border-b-0 lg:pb-0 lg:mb-0"
                                     ref={titleOneRef}
                                 >
-                                    <h1 className="text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] lg:leading-[80px] pe-2">
-                                        {data.firstSection.title}
+                                    <h1
+                                        className={`text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] lg:leading-[80px] ${isArabic ? "ps-2" : "pe-2"
+                                            }`}
+                                    >
+                                        {tData.firstSection.title}
                                     </h1>
                                 </div>
                             </div>
 
                             <div ref={brdrRef} className="hidden lg:block my-10 w-full border-t border-white/30"></div>
 
-                            <div className="w-full lg:w-[50%] xl:w-[45%] ml-auto px-5 lg:px-0 text-white mb-[22dvh] lg:mb-19 flex justify-between items-center mr-38 gap-7">
+                            <div
+                                className={`w-full lg:w-[50%] xl:w-[45%] px-5 lg:px-0 text-white mb-[22dvh] lg:mb-19 flex justify-between items-center ${isArabic ? "ml-38 mr-auto" : "mr-38 ml-auto"
+                                    } gap-7`}
+                            >
                                 <div
                                     className="flex flex-col lg:flex-row lg:items-center gap-[17px] lg:gap-2"
                                     ref={subtitleRef}
                                 >
                                     <h4 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.407] lg:max-w-[13ch]">
-                                        {data.firstSection.subTitle.text}
+                                        {tData.firstSection.subTitle.text}
                                     </h4>
                                     <Link href={"/about-us"}>
                                         <Image
@@ -1893,13 +1688,16 @@ const getVisibleSectors = () => {
                                             alt="Logo"
                                             width={71}
                                             height={71}
-                                            className="w-[30px] h-[30px] lg:w-[71px] lg:h-[71px] cursor-pointer"
+                                            className={`w-[30px] h-[30px] lg:w-[71px] lg:h-[71px] cursor-pointer ${isArabic ? "-scale-x-100" : ""
+                                                }`}
                                         />
                                     </Link>
                                 </div>
 
                                 <div className="hidden lg:flex flex-col items-center gap-3" ref={iconsRef}>
-                                    <p className="text-13 uppercase font-light">Stay Connected</p>
+                                    <p className="text-13 uppercase font-light">
+                                        {isArabic ? "Stay Connected" : "Stay Connected"}
+                                    </p>
                                     <div className="flex items-center gap-2">
                                         <div className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full">
                                             <Image src="../assets/images/ln.svg" alt="LinkedIn" width={15} height={14} />
@@ -1924,7 +1722,7 @@ const getVisibleSectors = () => {
             {/* Slide 2 */}
             <div
                 ref={section2Ref}
-                className="absolute top-0 left-0 w-full h-full bg-transparent"
+                className={`absolute top-0 ${isArabic ? "right-0" : "left-0"} w-full h-full bg-transparent`}
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
                 <section className="h-screen scroll-area relative bg-transparent" id="section1">
@@ -1939,14 +1737,23 @@ const getVisibleSectors = () => {
                             ref={leftSecRef}
                             className="relative py-4 xl:py-[50px] xl:pl-[150px] overflow-hidden hidden lg:block"
                         >
-                            <div className="absolute top-0 w-full z-10 h-full right-0 " ref={leftBgRef}>
-                                <div className="absolute top-0 left-0 z-20 w-full h-full bg-gradient-to-l from-black/30 from-0% to-black/80 to-100%"></div>
+                            <div
+                                className={`absolute top-0 w-full z-10 h-full ${isArabic ? "left-0" : "right-0"}`}
+                                ref={leftBgRef}
+                            >
+                                <div
+                                    className={`absolute top-0 z-20 w-full h-full ${isArabic
+                                            ? "right-0 bg-gradient-to-r from-black/30 from-0% to-black/80 to-100%"
+                                            : "left-0 bg-gradient-to-l from-black/30 from-0% to-black/80 to-100%"
+                                        }`}
+                                ></div>
+
                                 <Image
-                                    src={data.secondSection.image}
-                                    alt={data.secondSection.imageAlt}
+                                    src={tData.secondSection.image}
+                                    alt={tData.secondSection.imageAlt}
                                     width={2000}
                                     height={1500}
-                                    className="w-full h-full object-cover object-right"
+                                    className={`object-right w-full h-full object-cover ${isArabic ? "-scale-x-100" : ""}`}
                                 />
                             </div>
                         </div>
@@ -1955,43 +1762,54 @@ const getVisibleSectors = () => {
                             ref={rightSecRef}
                             className="relative flex flex-col  px-10 xl:px-[90px] pb-20 xl:pb-[93px] pt-20 xl:pt-[50px] overflow-hidden h-[52.15dvh] lg:h-full"
                         >
-                            <div className="absolute top-0 w-full z-10 h-full right-0 opacity-0" ref={videoBgRef}>
+                            <div
+                                className={`absolute top-0 w-full z-10 h-full ${isArabic ? "left-0" : "right-0"} opacity-0`}
+                                ref={videoBgRef}
+                            >
                                 {/* <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/85 from-0% via-black/65 via-75% to-black/60 to-100% "></div> */}
-                                <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"></div>
+                                <div
+                                    className={`absolute top-0 z-[22] w-full h-full ${isArabic
+                                            ? "right-0 bg-gradient-to-l from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
+                                            : "left-0 bg-gradient-to-r from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
+                                        }`}
+                                ></div>
 
                                 <video
-                                    src={data.secondSection.video}
+                                    src={tData.secondSection.video}
                                     autoPlay
                                     loop
                                     muted
                                     playsInline
                                     webkit-playsinline="true"
-
                                     className="w-full h-full object-cover absolute left-0 right-0"
                                 ></video>
                             </div>
 
                             <div
-                                className="mb-[33px] lg:mb-0 z-40 pt-6 xl:pt-[35px] text-white absolute bottom-0 lg:relative left-0 lg:left-auto px-5 lg:px-0"
+                                className={`mb-[33px] lg:mb-0 z-40 pt-6 xl:pt-[35px] text-white absolute bottom-0 lg:relative ${isArabic ? "right-0 lg:right-auto" : "left-0 lg:left-auto"
+                                    } px-5 lg:px-0`}
                                 ref={title2Ref}
                             >
                                 <h1 className="text-[36px] lg:text-48 3xl:text-60 font-light leading-[1.166666666666667] mb-[15px] lg:mb-3 3xl:mb-[25px]">
-                                    {data.secondSection.title}
+                                    {tData.secondSection.title}
                                 </h1>
-                                <div dangerouslySetInnerHTML={{ __html: data.secondSection.subTitle }}></div>
-                               <Link
+                                <div dangerouslySetInnerHTML={{ __html: tData.secondSection.subTitle }}></div>
+                                <Link
                                     ref={spbtn}
-                                    href={data.thirdSection.link}
-                                    className=" hidden lg:flex text-[14px] mb-4 lg:mb-0 mt-5  3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-white lg:text-white uppercase  items-center gap-2 cursor-pointer group "
+                                    href={tData.thirdSection.link}
+                                    className="hidden lg:flex text-[14px] mb-4 lg:mb-0 mt-5  3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-white lg:text-white uppercase  items-center gap-2 cursor-pointer group "
                                 >
-                                    <span>READ MORE</span>
+                                    <span>{isArabic ? "READ MORE" : "READ MORE"}</span>
                                     <svg
                                         width="27"
                                         height="18"
                                         viewBox="0 0 27 18"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="group-hover:translate-x-2 transition-all ease-in-out duration-300"
+                                        className={`transition-all ease-in-out duration-300 ${isArabic
+                                                ? "group-hover:-translate-x-2 -scale-x-100"
+                                                : "group-hover:translate-x-2"
+                                            }`}
                                     >
                                         <path
                                             d="M17.6328 2.43262L25.0111 9.0134L17.6579 15.5679"
@@ -2008,7 +1826,7 @@ const getVisibleSectors = () => {
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </Link>  
+                                </Link>
                                 {/* <h3 className="text-[20px] lg:text-18 xl:text-24 font-light max-w-xl mb-[33px] lg:mb-0">
                                     With a legacy of over{" "}
                                     <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
@@ -2018,7 +1836,7 @@ const getVisibleSectors = () => {
                                 </h3> */}
                             </div>
 
-                            <div className="relative z-40 mt-auto ml-auto">
+                            <div className={`relative z-40 mt-auto ${isArabic ? "mr-auto" : "ml-auto"}`}>
                                 <div
                                     ref={dsrnBxRef}
                                     className="p-10 w-fit xl:w-[550px] px-15 py-10 text-white relative  hidden lg:block"
@@ -2031,7 +1849,7 @@ const getVisibleSectors = () => {
                                         ref={descriptionRef}
                                         className="text-16 xl:text-18 3xl:text-19 font-light leading-[1.5]"
                                     >
-                                        {data.secondSection.description}
+                                        {tData.secondSection.description}
                                     </p>
                                 </div>
                             </div>
@@ -2041,7 +1859,7 @@ const getVisibleSectors = () => {
                                 ref={statsRef}
                             >
                                 <hr ref={brdrsRef} className="border-t border-white/30 absolute top-0 w-full my-0" />
-                                {data.secondSection.items.map((item, index) => (
+                                {tData.secondSection.items.map((item, index) => (
                                     <div key={index}>
                                         <h3 className="text-24 xl:text-40 font-light mb-[5px]">
                                             <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />
@@ -2076,7 +1894,7 @@ const getVisibleSectors = () => {
                             className=" grid grid-cols-2  relative  pt-[33px] xl:pt-[30px]  text-black lg:hidden px-5 bg-white"
                             ref={mobileStatsRef}
                         >
-                            {data.secondSection.items.map((item, index) => (
+                            {tData.secondSection.items.map((item, index) => (
                                 <div
                                     className="border-b border-[#0a000020] last:border-b-0 lg:border-b-0 pb-5 mb-5"
                                     key={index}
@@ -2110,12 +1928,13 @@ const getVisibleSectors = () => {
                         </div>
                         <div className="block lg:hidden   ">
                             <img
-                            alt="logo"
+                                alt="logo"
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
-                                className="   absolute  right-0 bottom-0 z-[1] w-[394px] h-[554px] opacity-50"
+                                className={`absolute ${isArabic ? "left-0" : "right-0"
+                                    } bottom-0 z-[1] w-[394px] h-[554px] opacity-50`}
                             />
                         </div>
                     </div>
@@ -2125,23 +1944,27 @@ const getVisibleSectors = () => {
             {/* Slide 3 */}
             <div
                 ref={section3Ref}
-                className="absolute top-0 left-0 w-full h-full bg-transparent"
+                className={`absolute top-0 ${isArabic ? "right-0" : "left-0"} w-full h-full bg-transparent`}
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
                 <section id="section3" className="h-screen overflow-hidden relative scroll-area">
                     <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[600px_auto] 2xl:grid-cols-[800px_auto] 3xl:grid-cols-[1021px_auto] h-full bg-transparent">
-                        <div className="lftblc relative right-0 h-[52.6dvh] lg:h-auto" ref={splftimng}>
+                        <div
+                            className={`lftblc relative ${isArabic ? "left-0" : "right-0"} h-[52.6dvh] lg:h-auto`}
+                            ref={splftimng}
+                        >
                             <div className="bg-primary absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
                             <Image
-                                src={data.thirdSection.image}
-                                alt={data.thirdSection.imageAlt}
+                                src={tData.thirdSection.image}
+                                alt={tData.thirdSection.imageAlt}
                                 width={2000}
                                 height={1500}
-                                className="w-full h-full object-cover absolute object-right hidden lg:block"
+                                className={`w-full h-full object-cover absolute object-right" ${isArabic ? "-scale-x-100" : ""
+                                    } hidden lg:block`}
                             />
                             <Image
-                                src={data.thirdSection.image}
-                                alt={data.thirdSection.imageAlt}
+                                src={tData.thirdSection.image}
+                                alt={tData.thirdSection.imageAlt}
                                 width={2000}
                                 height={1500}
                                 className="w-full h-full object-cover absolute object-center lg:hidden"
@@ -2149,55 +1972,64 @@ const getVisibleSectors = () => {
                         </div>
                         <div className="block lg:hidden   ">
                             <img
-                            alt="logo"
+                                alt="logo"
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
-                                className="   absolute  right-0 bottom-0 z-[0] w-[394px] h-[554px] opacity-50"
+                                className={`absolute ${isArabic ? "left-0" : "right-0"
+                                    } bottom-0 z-[0] w-[394px] h-[554px] opacity-50`}
                             />
                         </div>
                         <div
                             className=" flex flex-col h-full px-5 lg:px-[70px] 3xl:px-[100px] pb-[120px] 3xl:pb-[150px] pt-[7dvh] lg:pt-[120px] 3xl:pt-[150px] overflow-hidden relative"
                             ref={sprghtBx}
                         >
-                            <div className="  lg:bg-primary absolute w-full left-0 h-full top-0 z-[-1]" ref={sprgtbg}></div>
+                            <div
+                                className={`lg:bg-primary absolute w-full ${isArabic ? "right-0" : "left-0"
+                                    } h-full top-0 z-[-1]`}
+                                ref={sprgtbg}
+                            ></div>
                             <Image
                                 ref={sprIcnim}
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
                                 alt="logo"
-                                className="hidden lg:block absolute right-0 w-[250px] 3xl:w-[353px]"
+                                className={`hidden lg:block absolute ${isArabic ? "-scale-x-100 left-0" : "right-0"
+                                    } w-[250px] 3xl:w-[353px]`}
                             />
                             <div className="relative z-[99]">
                                 <h1
                                     ref={sptitle}
                                     className="text-[32px] sm:text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] lg:max-w-[8ch] font-light mb-[15px] lg:mb-8 xl:mb-[25px] text-black lg:text-white"
                                 >
-                                    {data.thirdSection.title}
+                                    {tData.thirdSection.title}
                                 </h1>
                                 <div className="  max-h-[6rem]   md:max-h-[6rem] lg:max-h-full overflow-y-auto  mb-[30px]">
                                     <p
                                         ref={spdscrpt}
                                         className="text-[14px] md:text-[18px] lg:text-19 text-[#464646] lg:text-white font-light leading-[1.5] max-w-[33ch] sm:max-w-[80%]  lg:max-w-[90%]  3xl:max-w-[75%]"
                                     >
-                                        {data.thirdSection.description}
+                                        {tData.thirdSection.description}
                                     </p>
                                 </div>
                                 <Link
                                     ref={spbtn}
-                                    href={data.thirdSection.link}
+                                    href={tData.thirdSection.link}
                                     className="text-[14px] mt-5 3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-[#464646] lg:text-white uppercase flex items-center gap-2 cursor-pointer group "
                                 >
-                                    <span>READ MORE</span>
+                                    <span>{isArabic ? "READ MORE" : "READ MORE"}</span>
                                     <svg
                                         width="27"
                                         height="18"
                                         viewBox="0 0 27 18"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="group-hover:translate-x-2 transition-all ease-in-out duration-300"
+                                        className={`transition-all ease-in-out duration-300 ${isArabic
+                                                ? "group-hover:-translate-x-2 -scale-x-[1]"
+                                                : "group-hover:translate-x-2"
+                                            }`}
                                     >
                                         <path
                                             d="M17.6328 2.43262L25.0111 9.0134L17.6579 15.5679"
@@ -2219,10 +2051,11 @@ const getVisibleSectors = () => {
                             <div className="mt-auto relative">
                                 <hr
                                     ref={spBrdOne}
-                                    className="border-white opacity-20 absolute top-[57px] left-[-30%] right-0"
+                                    className={`border-white opacity-20 absolute top-[57px] ${isArabic ? "right-[-30%] left-0" : "left-[-30%] right-0"
+                                        }`}
                                 />
                                 <div className="hidden lg:grid grid-cols-3 " ref={spStats}>
-                                    {data.thirdSection.items.map((item, index) => (
+                                    {tData.thirdSection.items.map((item, index) => (
                                         <div className="text-white" key={index}>
                                             <h3 className="text-[35px] xl:text-[40px] font-light leading-[1] mb-[35px]">
                                                 <CountUp value={item.value} trigger={currentVisibleSlide === "section3"} />
@@ -2395,7 +2228,7 @@ const getVisibleSectors = () => {
             {/* Slide 4 */}
             <div
                 ref={section4Ref}
-                className="absolute top-0 left-0 w-full h-full bg-transparent"
+                className={`absolute top-0 ${isArabic ? "right-0" : "left-0"} w-full h-full bg-transparent`}
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
                 <section id="section4" className="h-screen relative overflow-hidden whitebgref scroll-area">
@@ -2413,10 +2246,13 @@ const getVisibleSectors = () => {
                         <div className="flex lg:h-full">
                             {/*      <div className="w-1/3"></div> */}
                             <div
-                                className="w-full pt-[16.3dvh] lg:pt-33 pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px] bg-primary lg:bg-transparent"
+                                className={`w-full pt-[16.3dvh] lg:pt-33 ${isArabic
+                                        ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[283px]"
+                                        : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px]"
+                                    } bg-primary lg:bg-transparent`}
                                 ref={srvLftBx}
                             >
-                                <div className="absolute top-[-195px] right-0   " ref={srvsVct}>
+                                <div className={`absolute top-[-195px] ${isArabic ? "left-0" : "right-0"}`} ref={srvsVct}>
                                     <Image
                                         src="../assets/images/svg/srv-vct.svg"
                                         alt="Logo"
@@ -2426,12 +2262,13 @@ const getVisibleSectors = () => {
                                     />
                                 </div>
 
-                                <div className=" 3xl:ml-[110px] flex flex-col h-full">
+                                <div className={`${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"} flex flex-col h-full`}>
                                     <h1
                                         ref={srvttlRef}
                                         className="text-[36px] lg:text-34 xl:text-48 3xl:text-60 font-light gradient-text lg:leading-[70px]"
                                     >
-                                        Our Services
+                                        {/* Our Services */}
+                                        {tData.fourthSection.title}
                                     </h1>
                                     <div className="w-full flex lg:flex-col h-full lg:justify-end   lg:mt-15 relative">
                                         <div className="lg:pb-4 relative">
@@ -2442,112 +2279,118 @@ const getVisibleSectors = () => {
                         0{activeService.index + 1}/ 06
                       </p> */}
                                         </div>
-{/* Desktop (>= 1024px): Original div with flex-col */}
-{isLargeScreen ? (
-    <div className="flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden border-b border-[#ffffff20] mb-5 lg:mb-0 xs-pt-1 pt-[4dvh] lg:pt-18 lg:pb-21 3xl:pt-14 3xl:pb-21 pr-2">
-        {serviceData.map((service, index) => (
-            <div
-                key={index}
-                className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0 ${
-                    activeServiceIndex === index
-                        ? "border-white "
-                        : "border-transparent"
-                }`}
-                ref={(el) => (textItemsRef.current[index] = el)}
-            >
-                <Link href={isDesktop ? `services/${service.link}` : "#"} onClick={() => handleServiceClick()}>
-                    <p
-                        className={`${
-                            activeServiceIndex === index
-                                ? "text-white lg:text-black font-light lg:font-bold bo "
-                                : "text-white/70 lg:text-black font-light"
-                        } text-[14px] lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9] 2xl:leading-[1.70] 3xl:leading-[1.607142857142857] cursor-pointer group-hover:lg:text-black group-hover:lg:font-bold`}
-                        onMouseOver={() => [
-                            setActiveService({
-                                image: service.homeImage,
-                                title: service.title,
-                                description: service.description,
-                                link: service.link,
-                                index,
-                            }),
-                            setActiveServiceIndex(index),
-                        ]}
-                    >
-                        <span className="duration-400">{service.title}</span>
-                    </p>
-                </Link>
-                <Image
-                    src="../assets/images/services/arrowblw.svg"
-                    alt="Arrow"
-                    width={21}
-                    height={21}
-                    className={`
-                        lg:block hidden
-                        transition-all duration-500 ease-in-out
-                        ${activeServiceIndex === index ? "opacity-100 scale-100" : "opacity-0 scale-75"}
-                    `}
-                />
-            </div>
-        ))}
-    </div>
-) : (
-    /* Mobile (< 1024px): Swiper for iOS horizontal scroll */
-    <Swiper
-        modules={[FreeMode]}
-        freeMode={true}
-        slidesPerView="auto"
-        spaceBetween={24}
-        className="border-b border-[#ffffff20] mb-5 xs-pt-1 pt-[4dvh] pr-2"
-        touchStartPreventDefault={false}
-        preventClicks={false}
-        preventClicksPropagation={false}
-        allowTouchMove={true}
-        threshold={5}
-        touchRatio={1}
-        resistance={true}
-        resistanceRatio={0.85}
-        style={{
-            WebkitOverflowScrolling: 'touch',
-        }}
-    >
-        {serviceData.map((service, index) => (
-            <SwiperSlide
-                key={index}
-                style={{ width: 'auto' }}
-                className="!w-auto !mt-1"
-            >
-                <div
-                    className={`pb-[7px] flex items-center gap-3 cursor-pointer group w-fit border-b ${
-                        activeServiceIndex === index
-                            ? "border-white"
-                            : "border-transparent"
-                    }`}
-                    onClick={() => {
-                        setActiveService({
-                            image: service.homeImage,
-                            title: service.title,
-                            description: service.description,
-                            link: service.link,
-                            index,
-                        });
-                        setActiveServiceIndex(index);
-                    }}
-                >
-                    <p
-                        className={`${
-                            activeServiceIndex === index
-                                ? "text-white font-light"
-                                : "text-white/70 font-light"
-                        } text-[14px] leading-[1.607142857142857] cursor-pointer`}
-                    >
-                        <span className="duration-400">{service.title}</span>
-                    </p>
-                </div>
-            </SwiperSlide>
-        ))}
-    </Swiper>
-)}
+                                        {/* Desktop (>= 1024px): Original div with flex-col */}
+                                        {isLargeScreen ? (
+                                            <div
+                                                className={`flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden border-b border-[#ffffff20] mb-5 lg:mb-0 xs-pt-1 pt-[4dvh] lg:pt-18 lg:pb-21 3xl:pt-14 3xl:pb-21 ${isArabic ? "pl-2" : "pr-2"
+                                                    }`}
+                                            >
+                                                {tServiceData.map((service, index) => (
+                                                    <div
+                                                        key={index}
+                                                        className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0 ${activeServiceIndex === index
+                                                                ? "border-white "
+                                                                : "border-transparent"
+                                                            }`}
+                                                        ref={(el) => (textItemsRef.current[index] = el)}
+                                                    >
+                                                        <Link
+                                                            href={isDesktop ? `services/${service.link}` : "#"}
+                                                            onClick={() => handleServiceClick()}
+                                                        >
+                                                            <p
+                                                                className={`${activeServiceIndex === index
+                                                                        ? "text-white lg:text-black font-light lg:font-bold bo "
+                                                                        : "text-white/70 lg:text-black font-light"
+                                                                    } text-[14px] lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9] 2xl:leading-[1.70] 3xl:leading-[1.607142857142857] cursor-pointer group-hover:lg:text-black group-hover:lg:font-bold`}
+                                                                onMouseOver={() => [
+                                                                    setActiveService({
+                                                                        image: service.homeImage,
+                                                                        title: service.title,
+                                                                        description: service.description,
+                                                                        link: service.link,
+                                                                        index,
+                                                                    }),
+                                                                    setActiveServiceIndex(index),
+                                                                ]}
+                                                            >
+                                                                <span className="duration-400">{service.title}</span>
+                                                            </p>
+                                                        </Link>
+                                                        <Image
+                                                            src="../assets/images/services/arrowblw.svg"
+                                                            alt="Arrow"
+                                                            width={21}
+                                                            height={21}
+                                                            className={`
+    lg:block hidden
+    transition-all duration-500 ease-in-out
+    ${activeServiceIndex === index
+                                                                    ? `opacity-100 scale-100 ${isArabic ? "-scale-x-100" : ""}`
+                                                                    : "opacity-0 scale-75"
+                                                                }
+  `}
+                                                        />
 
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            /* Mobile (< 1024px): Swiper for iOS horizontal scroll */
+                                            <Swiper
+                                                modules={[FreeMode]}
+                                                freeMode={true}
+                                                slidesPerView="auto"
+                                                spaceBetween={24}
+                                                className={`border-b border-[#ffffff20] mb-5 xs-pt-1 pt-[4dvh] ${isArabic ? "pl-2" : "pr-2"
+                                                    }`}
+                                                touchStartPreventDefault={false}
+                                                preventClicks={false}
+                                                preventClicksPropagation={false}
+                                                allowTouchMove={true}
+                                                threshold={5}
+                                                touchRatio={1}
+                                                resistance={true}
+                                                resistanceRatio={0.85}
+                                                style={{
+                                                    WebkitOverflowScrolling: "touch",
+                                                }}
+                                            >
+                                                {tServiceData.map((service, index) => (
+                                                    <SwiperSlide
+                                                        key={index}
+                                                        style={{ width: "auto" }}
+                                                        className="!w-auto !mt-1"
+                                                    >
+                                                        <div
+                                                            className={`pb-[7px] flex items-center gap-3 cursor-pointer group w-fit border-b ${activeServiceIndex === index
+                                                                    ? "border-white"
+                                                                    : "border-transparent"
+                                                                }`}
+                                                            onClick={() => {
+                                                                setActiveService({
+                                                                    image: service.homeImage,
+                                                                    title: service.title,
+                                                                    description: service.description,
+                                                                    link: service.link,
+                                                                    index,
+                                                                });
+                                                                setActiveServiceIndex(index);
+                                                            }}
+                                                        >
+                                                            <p
+                                                                className={`${activeServiceIndex === index
+                                                                        ? "text-white font-light"
+                                                                        : "text-white/70 font-light"
+                                                                    } text-[14px] leading-[1.607142857142857] cursor-pointer`}
+                                                            >
+                                                                <span className="duration-400">{service.title}</span>
+                                                            </p>
+                                                        </div>
+                                                    </SwiperSlide>
+                                                ))}
+                                            </Swiper>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -2570,7 +2413,7 @@ const getVisibleSectors = () => {
                                 {/* BASE IMAGE = PREVIOUS SERVICE IMAGE */}
                                 {prevImage && (
                                     <Image
-                                    alt="prev-image"
+                                        alt="prev-image"
                                         width={1500}
                                         height={1000}
                                         src={prevImage}
@@ -2598,22 +2441,25 @@ const getVisibleSectors = () => {
                                 {/* <div className="absolute inset-0 z-30 bg-gradient-to-r from-black/60 via-black/60 to-black/60 pointer-events-none"></div> */}
                                 {/* <div className="absolute inset-0 z-30 bg-gradient-to-r from-black/50 via-black/30 to-black/20 pointer-events-none"></div> */}
                                 <div
-                                    className={`absolute inset-0 z-30 bg-gradient-to-r pointer-events-none
+                                    className={`absolute inset-0 z-30 ${isArabic ? "bg-gradient-to-l" : "bg-gradient-to-r"
+                                        } pointer-events-none
   transition-opacity duration-300 ease-in-out
-    ${
-        activeService?.title === "Interior Fit-Out" || activeService?.title === "Facade"
-            ? "from-black/75 from-0% via-black/70 via-60% to-black/45 to-100%"
-            : "from-black/50 from-0% via-black/30 via-60% to-black/20 to-100%"
-    }
+    ${activeService?.title === "Interior Fit-Out" || activeService?.title === "Facade"
+                                            ? "from-black/75 from-0% via-black/70 via-60% to-black/45 to-100%"
+                                            : "from-black/50 from-0% via-black/30 via-60% to-black/20 to-100%"
+                                        }
   `}
                                 ></div>
                             </div>
 
-                            <div className="hidden lg:block lg:absolute bottom-0 right-0   " ref={srvsVct}>
+                            <div
+                                className={`hidden lg:block lg:absolute bottom-0 ${isArabic ? "left-0" : "right-0"}`}
+                                ref={srvsVct}
+                            >
                                 <Image
                                     src="../assets/images/svg/srv-vct.svg"
                                     alt="Logo"
-                                    className="h-full max-w-[398px]"
+                                    className={`h-full max-w-[398px] ${isArabic ? "-scale-x-100" : ""}`}
                                     width={682}
                                     height={914}
                                 />
@@ -2631,17 +2477,26 @@ const getVisibleSectors = () => {
                                 />
                             </AnimatePresence>
                             <div
-                                className="lg:absolute xs-ptop-15 top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px]  left-[40px] 3xl:left-[58px] z-10 px-5 lg:px-0 pt-7 lg:pt-0"
+                                className={`lg:absolute xs-ptop-15 top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px] ${isArabic ? "right-[40px] 3xl:right-[58px]" : "left-[40px] 3xl:left-[58px]"
+                                    } z-10 px-5 lg:px-0 pt-7 lg:pt-0`}
                                 ref={srvsCntb}
                             >
                                 <hr
                                     ref={brdonRef}
-                                    className="hidden lg:block lg:absolute right-[25%] left-[-85%] lg:left-[-434px] xl:left-[-594px] 2xl:left-[-594px] 3xl:left-[-643px] h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none   bg-gradient-to-r from-black to-white "
+                                    className={`hidden lg:block lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none ${isArabic
+                                            ? "left-[25%] right-[-85%] lg:right-[-434px] xl:right-[-594px] 2xl:right-[-594px] 3xl:right-[-643px] bg-gradient-to-l from-black to-white"
+                                            : "right-[25%] left-[-85%] lg:left-[-434px] xl:left-[-594px] 2xl:left-[-594px] 3xl:left-[-643px] bg-gradient-to-r from-black to-white"
+                                        }`}
                                 />
+
                                 <hr
                                     ref={brdonRef}
-                                    className=" lg:absolute  left-[-40px] 3xl:left-[-58px] right-[25%] h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none   bg-white "
+                                    className={`lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none bg-white ${isArabic
+                                            ? "right-[-40px] 3xl:right-[-58px] left-[25%]"
+                                            : "left-[-40px] 3xl:left-[-58px] right-[25%]"
+                                        }`}
                                 />
+
                                 <motion.div
                                     className="flex gap-2 items-center overflow-hidden"
                                     key={activeService?.index}
@@ -2650,7 +2505,8 @@ const getVisibleSectors = () => {
                                     animate="show"
                                 >
                                     <div
-                                        className="flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10 w-7 h-7"
+                                        className={`flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] z-10 w-7 h-7 ${isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
+                                            }`}
                                         ref={srvsArrw}
                                     >
                                         <Image
@@ -2668,14 +2524,15 @@ const getVisibleSectors = () => {
                                         </h3>
                                     </Link>
                                     <div
-                                        className=" lg:hidden    bottom-10 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
+                                        className={`lg:hidden bottom-10 3xl:bottom-[50px] z-10 ${isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
+                                            }`}
                                         ref={srvsArrw}
                                     >
                                         <Link href={`/services/${activeService?.link}`}>
                                             <Image
                                                 src="../assets/images/services/thickarrow.svg"
                                                 alt="Arrow"
-                                                className=""
+                                                className={`${isArabic ? "-scale-x-100" : ""}`}
                                                 width={19}
                                                 height={19}
                                             />
@@ -2696,13 +2553,14 @@ const getVisibleSectors = () => {
                             </div>
                             <Link href={`/services/${activeService?.link}`}>
                                 <div
-                                    className="hidden lg:block absolute bottom-10 cursor-pointer 3xl:bottom-[50px] left-[45px] 3xl:left-[58px] z-10"
+                                    className={`hidden lg:block absolute bottom-10 cursor-pointer 3xl:bottom-[50px] z-10 ${isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
+                                        }`}
                                     ref={srvsArrw}
                                 >
                                     <Image
                                         src="../assets/images/services/arrow-up.svg"
                                         alt="Arrow"
-                                        className=""
+                                        className={`${isArabic ? "-scale-x-100" : ""}`}
                                         width={71}
                                         height={71}
                                     />
@@ -2719,15 +2577,20 @@ const getVisibleSectors = () => {
             {/* Slide 5 */}
             <div
                 ref={section5Ref}
-                className="absolute top-0 left-0 w-full h-full bg-transparent"
+                className={`absolute top-0 ${isArabic ? "right-0" : "left-0"} w-full h-full bg-transparent`}
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
                 <section id="section5" className="h-screen relative overflow-hidden whitebgref scroll-area">
                     <div className="lg:grid lg:grid-cols-[600px_auto] xl:grid-cols-[800px_auto]  3xl:grid-cols-[884px_auto] h-full">
                         {/* left start */}
                         <div ref={sectorLeft} className="flex lg:h-full bg-primary lg:bg-transparent">
-                            <div className="w-full pt-[16.5dvh] pl-5 lg:pt-25 xl:pt-25 3xl:pt-33 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]">
-                                <div className="absolute top-[-195px] right-0   " ref={srvsVct}>
+                            <div
+                                className={`w-full pt-[16.5dvh] lg:pt-25 xl:pt-25 3xl:pt-33 ${isArabic
+                                        ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
+                                        : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
+                                    }`}
+                            >
+                                <div className={`absolute top-[-195px] ${isArabic ? "left-0" : "right-0"}`} ref={srvsVct}>
                                     <Image
                                         src="../assets/images/svg/srv-vct.svg"
                                         alt="Logo"
@@ -2736,20 +2599,24 @@ const getVisibleSectors = () => {
                                         height={356}
                                     />
                                 </div>
-                                <div className=" 3xl:ml-[110px] flex flex-col h-full">
+                                <div className={`${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"} flex flex-col h-full`}>
                                     <h1
                                         ref={talenttitle}
                                         className="text-[36px] lg:text-34 xl:text-48 3xl:text-60 font-light gradient-text leading-[1.166666666666667] max-w-[13ch]"
                                     >
-                                        {data.fifthSection.title}
+                                        {tData.fifthSection.title}
                                     </h1>
                                     <div
                                         ref={talentlist}
-                                        className=" xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible lg:pl-4 3xl:pl-0"
+                                        className={`xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible ${isArabic ? "lg:pr-4 3xl:pr-0" : "lg:pl-4 3xl:pl-0"
+                                            }`}
                                     >
                                         <div className="lg:pb-4 relative h-full flex items-center">
                                             {/* curved line svg */}
-                                            <div className="  absolute top-0 left-0 h-full hidden lg:flex flex-col justify-center">
+                                            <div
+                                                className={`absolute top-0 ${isArabic ? "right-0 -scale-x-100" : "left-0"
+                                                    } h-full hidden lg:flex flex-col justify-center`}
+                                            >
                                                 <Image
                                                     width={81}
                                                     height={83}
@@ -2758,144 +2625,151 @@ const getVisibleSectors = () => {
                                                 />
                                             </div>
 
-{isLargeScreen ? (
-    /* Desktop (>= 1024px): Original vertical list */
-    <div className="flex flex-row lg:flex-col 3xl:gap-1 lg:pl-4 lg:pt-5 sectors-list gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0">
-        {visibleSectors.map((sector) => {
-            const isActive = sector.position === 0;
-            const opacity =
-                Math.abs(sector.position) > 4
-                    ? 0
-                    : 1 - Math.abs(sector.position) * 0.2;
-            const scale = isActive ? 1 : 0.95;
+                                            {isLargeScreen ? (
+                                                /* Desktop (>= 1024px): Original vertical list */
+                                                <div
+                                                    className={`flex flex-row lg:flex-col 3xl:gap-1 sectors-list lg:pt-5 gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0 ${isArabic ? "lg:pr-4" : "lg:pl-4"
+                                                        }`}
+                                                >
+                                                    {visibleSectors.map((sector) => {
+                                                        const isActive = sector.position === 0;
+                                                        const opacity =
+                                                            Math.abs(sector.position) > 4
+                                                                ? 0
+                                                                : 1 - Math.abs(sector.position) * 0.2;
+                                                        const scale = isActive ? 1 : 0.95;
 
-            // Only render 7 items (3 above, 1 center, 3 below)
-            if (Math.abs(sector.position) > 4) return null;
+                                                        // Only render 7 items (3 above, 1 center, 3 below)
+                                                        if (Math.abs(sector.position) > 4) return null;
 
-            // Determine animation based on direction
-            const getAnimation = () => {
-                if (!isActive || animationDirection === 0) return "none";
+                                                        // Determine animation based on direction
+                                                        const getAnimation = () => {
+                                                            if (!isActive || animationDirection === 0) return "none";
 
-                if (animationDirection === 1) {
-                    // Clicked item below center - slide up
-                    return "slideUpToCenter 0.5s ease-out";
-                } else {
-                    // Clicked item above center - slide down
-                    return "slideDownToCenter 0.5s ease-out";
-                }
-            };
+                                                            if (animationDirection === 1) {
+                                                                // Clicked item below center - slide up
+                                                                return "slideUpToCenter 0.5s ease-out";
+                                                            } else {
+                                                                // Clicked item above center - slide down
+                                                                return "slideDownToCenter 0.5s ease-out";
+                                                            }
+                                                        };
 
-            return (
-                <div
-                    key={`${sector.originalIndex}-${sector.position}`}
-                    className={`flex items-center gap-5 cursor-pointer ${
-                        isActive ? "lg:ml-[-27px] lg:py-5" : "lg:py-1"
-                    }`}
-                    style={{
-                        opacity: opacity,
-                        transform: `scale(${scale})`,
-                        transformOrigin: "left center",
-                        transition: "all 0.5s ease-out",
-                        willChange: "transform, opacity",
-                        animation: getAnimation(),
-                    }}
-                    onClick={() => handleSlideClick(sector.originalIndex)}
-                >
-                    {/* Show icon ONLY when at center */}
-                    {isActive && (
-                        <div className="hidden lg:flex bg-[#30B6F94D] rounded-full w-[83px] h-[83px] items-center justify-center relative opacity-0">
-                            <Image
-                                width={200}
-                                height={200}
-                                src={sector.icon}
-                                alt={`${sector.name} icon`}
-                                className="h-[40px]"
-                                style={{
-                                    animation:
-                                        animationDirection !== 0
-                                            ? "iconFadeInScale 0.4s ease-out 0.2s both"
-                                            : "none",
-                                }}
-                            />
-                        </div>
-                    )}
+                                                        return (
+                                                            <div
+                                                                key={`${sector.originalIndex}-${sector.position}`}
+                                                                className={`flex items-center gap-5 cursor-pointer ${isActive
+                                                                        ? isArabic
+                                                                            ? "lg:mr-[-27px] lg:py-5"
+                                                                            : "lg:ml-[-27px] lg:py-5"
+                                                                        : "lg:py-1"
+                                                                    }`}
+                                                                style={{
+                                                                    opacity: opacity,
+                                                                    transform: `scale(${scale})`,
+                                                                    transformOrigin: "left center",
+                                                                    transition: "all 0.5s ease-out",
+                                                                    willChange: "transform, opacity",
+                                                                    animation: getAnimation(),
+                                                                }}
+                                                                onClick={() => handleSlideClick(sector.originalIndex)}
+                                                            >
+                                                                {/* Show icon ONLY when at center */}
+                                                                {isActive && (
+                                                                    <div className="hidden lg:flex bg-[#30B6F94D] rounded-full w-[83px] h-[83px] items-center justify-center relative opacity-0">
+                                                                        <Image
+                                                                            width={200}
+                                                                            height={200}
+                                                                            src={sector.icon}
+                                                                            alt={`${sector.name} icon`}
+                                                                            className="h-[40px]"
+                                                                            style={{
+                                                                                animation:
+                                                                                    animationDirection !== 0
+                                                                                        ? "iconFadeInScale 0.4s ease-out 0.2s both"
+                                                                                        : "none",
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                )}
 
-                    <h3
-                        className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
-                            isActive
-                                ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
-                                : "text-[14px] lg:text-19 leading-[1.842105263157895]"
-                        }`}
-                        style={{
-                            transition: "all 0.5s ease-out",
-                            willChange: "font-size, font-weight",
-                        }}
-                    >
-                        {sector.name?.toLowerCase() === "industrial"
-                            ? "Entertainment and Leisure"
-                            : sector.name}
-                    </h3>
-                </div>
-            );
-        })}
-    </div>
-) : (
-    /* Mobile (< 1024px): Swiper for horizontal scroll */
-    <Swiper
-        ref={swiperRef}
-        modules={[FreeMode]}
-        freeMode={true}
-        slidesPerView="auto"
-        spaceBetween={20}
-        centeredSlides={false}
-        className="border-b border-white/20 mb-5"
-        touchStartPreventDefault={false}
-        preventClicks={false}
-        preventClicksPropagation={false}
-        allowTouchMove={true}
-        threshold={5}
-        touchRatio={1}
-        resistance={true}
-        resistanceRatio={0.85}
-        style={{
-            WebkitOverflowScrolling: 'touch',
-        }}
-    >
-        {visibleSectors.map((sector) => {
-            const isActive = sector.position === 0;
+                                                                <h3
+                                                                    className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${isActive
+                                                                            ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
+                                                                            : "text-[14px] lg:text-19 leading-[1.842105263157895]"
+                                                                        }`}
+                                                                    style={{
+                                                                        transition: "all 0.5s ease-out",
+                                                                        willChange: "font-size, font-weight",
+                                                                    }}
+                                                                >
+                                                                    {sector.name?.toLowerCase() === "industrial"
+                                                                        ? "Entertainment and Leisure"
+                                                                        : sector.name}
+                                                                </h3>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            ) : (
+                                                /* Mobile (< 1024px): Swiper for horizontal scroll */
+                                                <Swiper
+                                                    ref={swiperRef}
+                                                    modules={[FreeMode]}
+                                                    freeMode={true}
+                                                    slidesPerView="auto"
+                                                    spaceBetween={20}
+                                                    centeredSlides={false}
+                                                    className="border-b border-white/20 mb-5"
+                                                    touchStartPreventDefault={false}
+                                                    preventClicks={false}
+                                                    preventClicksPropagation={false}
+                                                    allowTouchMove={true}
+                                                    threshold={5}
+                                                    touchRatio={1}
+                                                    resistance={true}
+                                                    resistanceRatio={0.85}
+                                                    style={{
+                                                        WebkitOverflowScrolling: "touch",
+                                                    }}
+                                                >
+                                                    {visibleSectors.map((sector) => {
+                                                        const isActive = sector.position === 0;
 
-            // Only render visible items
-            if (Math.abs(sector.position) > 4) return null;
+                                                        // Only render visible items
+                                                        if (Math.abs(sector.position) > 4) return null;
 
-            return (
-                <SwiperSlide
-                    key={`${sector.originalIndex}-${sector.position}`}
-                    style={{ width: 'auto' }}
-                    className="!w-auto"
-                >
-                    <div
-                        className="flex items-center gap-5 cursor-pointer"
-                        onClick={() => handleSlideClick(sector.originalIndex)}
-                    >
-                        <h3
-                            className={`whitespace-nowrap hover:opacity-100 transition-opacity duration-500 text-white ${
-                                isActive
-                                    ? "text-[14px] leading-[1.842105263157895] border-b border-white"
-                                    : "text-[14px] leading-[1.842105263157895]"
-                            }`}
-                        >
-                            {sector.name?.toLowerCase() === "industrial"
-                                ? "Entertainment and Leisure"
-                                : sector.name}
-                        </h3>
-                    </div>
-                </SwiperSlide>
-            );
-        })}
-    </Swiper>
-)}
+                                                        return (
+                                                            <SwiperSlide
+                                                                key={`${sector.originalIndex}-${sector.position}`}
+                                                                style={{ width: "auto" }}
+                                                                className="!w-auto"
+                                                            >
+                                                                <div
+                                                                    className="flex items-center gap-5 cursor-pointer"
+                                                                    onClick={() => handleSlideClick(sector.originalIndex)}
+                                                                >
+                                                                    <h3
+                                                                        className={`whitespace-nowrap hover:opacity-100 transition-opacity duration-500 text-white ${isActive
+                                                                                ? "text-[14px] leading-[1.842105263157895] border-b border-white"
+                                                                                : "text-[14px] leading-[1.842105263157895]"
+                                                                            }`}
+                                                                    >
+                                                                        {sector.name?.toLowerCase() === "industrial"
+                                                                            ? "Entertainment and Leisure"
+                                                                            : sector.name}
+                                                                    </h3>
+                                                                </div>
+                                                            </SwiperSlide>
+                                                        );
+                                                    })}
+                                                </Swiper>
+                                            )}
 
-                                            <div className="hidden lg:block absolute left-[-10px] top-1/2 -translate-y-[75%] z-10">
+                                            <div
+                                                className={`hidden lg:block absolute ${isArabic ? "right-[-10px]" : "left-[-10px]"
+                                                    } top-1/2 -translate-y-[75%] z-10`}
+                                            >
                                                 <div className="bg-[#30B6F94D] rounded-full w-[83px] h-[83px] flex items-center justify-center relative">
                                                     <Image
                                                         width={200}
@@ -2953,7 +2827,10 @@ const getVisibleSectors = () => {
                                                 "linear-gradient(0deg, rgb(0 0 0 / 6%), rgb(0 0 0 / 0%)), linear-gradient(rgba(0, 0, 0, 0) 58.01%, rgba(0, 0, 0, 0.8) 100%)",
                                         }}
                                     ></div>
-                                    <div className=" lg:hidden tlnits p-5 group cursor-pointer absolute bottom-0 left-0">
+                                    <div
+                                        className={`lg:hidden tlnits p-5 group cursor-pointer absolute bottom-0 ${isArabic ? "right-0" : "left-0"
+                                            }`}
+                                    >
                                         <Link
                                             href="/projects"
                                             className="flex items-center gap-2 uppercase font-light text-[14px] text-white"
@@ -2964,7 +2841,10 @@ const getVisibleSectors = () => {
                                                 height={27}
                                                 src="../assets/images/icons/arrow-right.svg"
                                                 alt="arrow right"
-                                                className="group-hover:translate-x-2 transition-all duration-300"
+                                                className={`transition-all duration-300 ${isArabic
+                                                        ? "group-hover:-translate-x-2 -scale-x-100"
+                                                        : "group-hover:translate-x-2"
+                                                    }`}
                                             />
                                         </Link>
                                     </div>
@@ -2972,7 +2852,8 @@ const getVisibleSectors = () => {
                                 {/* hear the absolute positioned box with project details */}
                                 {/* Absolute positioned box with project details */}
                                 <div
-                                    className="lg:absolute bottom-20 left-0 lg:bg-primary text-black lg:text-white z-50 cursor-pointer"
+                                    className={`lg:absolute bottom-20 ${isArabic ? "right-0" : "left-0"
+                                        } lg:bg-primary text-black lg:text-white z-50 cursor-pointer`}
                                     style={{
                                         transition: "transform 0.5s ease-out, opacity 0.5s ease-out",
                                         transform: isAnimating ? "translateY(10px)" : "translateY(0)",
@@ -3039,7 +2920,10 @@ const getVisibleSectors = () => {
                                                     height={27}
                                                     src="../assets/images/icons/arrow-right.svg"
                                                     alt="arrow right"
-                                                    className="group-hover:translate-x-2 transition-all duration-300"
+                                                    className={`transition-all duration-300 ${isArabic
+                                                            ? "group-hover:-translate-x-2 -scale-x-100"
+                                                            : "group-hover:translate-x-2"
+                                                        }`}
                                                 />
                                             </Link>
                                         </div>
@@ -3056,18 +2940,28 @@ const getVisibleSectors = () => {
             {/* Slide 6 */}
             <div
                 ref={section6Ref}
+                dir="ltr"
                 className="absolute top-0 left-0 w-full h-full bg-transparent"
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
                 <section id="section6" className="h-screen relative md:overflow-hidden whitebgref scroll-area bg-white">
-                    <div className="w-full pt-[11.5dvh] 3xl:pt-33 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]">
-                        <div className="absolute-maptitle px-5 lg:px-0 pt-[4.7dvh] lg:pt-0 pb-6 lg:pb-0   3xl:ml-[110px] flex flex-col h-full">
+                    <div
+                        className={`w-full pt-[11.5dvh] 3xl:pt-33 ${isArabic
+                                ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
+                                : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
+                            }`}
+                    >
+                        <div
+                            dir={isArabic ? "rtl" : "ltr"}
+                            className={`absolute-maptitle px-5 lg:px-0 pt-[4.7dvh] lg:pt-0 pb-6 lg:pb-0 ${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
+                                } flex flex-col h-full`}
+                        >
                             <h1
                                 ref={maptitle}
                                 className="text-[36px] lg:text-34 xl:text-48 3xl:text-60  font-light gradient-text text-bl leading-[1.2] 3xl:leading-[1.18] max-w-[15ch]"
                             >
                                 {/* Our Presence is Steadily Expanding */}
-                                {data.sixthSection?.title}
+                                {tData.sixthSection?.title}
                             </h1>
                         </div>
                         <div className="  flex justify-center" ref={mapimage}>
@@ -3099,11 +2993,8 @@ const getVisibleSectors = () => {
                                                 // className={` absolute   transition-all duration-300 flex items-center justify-center    w-[480px] h-[480px] ${
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
-                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
-                                                    activeDot === city.id
-                                                        ? "z-[999]"
-                                                        : "z-[1]"
-                                                }`}
+                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${activeDot === city.id ? "z-[999]" : "z-[1]"
+                                                    }`}
                                                 style={{ left: city.left, top: city.top }}
                                             >
                                                 <div
@@ -3130,15 +3021,14 @@ const getVisibleSectors = () => {
                                                     //     ? "bg-[#30F955] shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
                                                     //     : "bg-[#30B6F9]   border border-[#97DCFF] scale-85"
                                                     // }`}
-                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${
-                                                        city.groupId === "sp-group"
+                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${city.groupId === "sp-group"
                                                             ? activeDot === city.id
                                                                 ? "bg-primary/40 shadow-[0_0_35px_rgba(239,68,68,0.9),0_0_50px_rgba(239,68,68,0.6)] border border-[#97DCFF] scale-full"
                                                                 : "bg-[#30B6F9] border border-[#97DCFF] scale-85"
                                                             : activeDot === city.id
-                                                            ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
-                                                            : "bg-primary border border-white scale-85"
-                                                    }`}
+                                                                ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
+                                                                : "bg-primary border border-white scale-85"
+                                                        }`}
                                                 ></div>
                                                 {/* <span
                       className={`relative   -left-1 border border-[#30F95533] min-w-[110px] text-center backdrop-blur-[10px] uppercase bg-[#0015FF99] text-white text-[14px] font-bold px-2 py-[2px] rounded-full opacity-0 
@@ -3155,7 +3045,7 @@ const getVisibleSectors = () => {
                                                     {/* SP GROUP LABEL */}
                                                     {city.groupId === "sp-group" && activeDot === city.id && (
                                                         <span className="text-13 font-semibold uppercase text-primary">
-                                                            SP Group
+                                                            {isArabic ? "SP Group" : "SP Group"}
                                                         </span>
                                                     )}
 
@@ -3260,11 +3150,10 @@ const getVisibleSectors = () => {
   p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
   absolute left-[0%] top-[21%]
     ${city.isClickable ? "cursor-pointer" : "cursor-default"}
-  ${
-      activeDot === city.id
-          ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
-          : "opacity-0 scale-80 pointer-events-none"
-  }`}
+  ${activeDot === city.id
+                                                                            ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
+                                                                            : "opacity-0 scale-80 pointer-events-none"
+                                                                        }`}
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
 
@@ -3272,8 +3161,8 @@ const getVisibleSectors = () => {
 
                                                                         router.push(
                                                                             `/projects?country=${encodeURIComponent(
-                                                                                city.name
-                                                                            )}`
+                                                                                city.name,
+                                                                            )}`,
                                                                         );
                                                                     }}
                                                                 >
@@ -3288,7 +3177,9 @@ const getVisibleSectors = () => {
                                                                         />
                                                                         {/* + */}
                                                                     </p>
-                                                                    <p className="text-[14px] font-[200]">Projects</p>
+                                                                    <p className="text-[14px] font-[200]">
+                                                                        {isArabic ? "Projects" : "Projects"}
+                                                                    </p>
                                                                 </div>
 
                                                                 {/* Bubble 2 */}
@@ -3336,11 +3227,10 @@ const getVisibleSectors = () => {
 
                                                             {/* Ring */}
                                                             <div
-                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${
-                                                                    activeDot === city.id
+                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${activeDot === city.id
                                                                         ? "opacity-100 scale-full"
                                                                         : "opacity-0"
-                                                                } transition-all duration-500 delay-300`}
+                                                                    } transition-all duration-500 delay-300`}
                                                                 style={{
                                                                     backgroundImage: `url(../assets/images/ring3.svg)`,
                                                                     backgroundSize: "cover",
@@ -3390,7 +3280,7 @@ const getVisibleSectors = () => {
                                             <p className="text-[22px] font-[200] leading-tight">
                                                 {selectedCity.pjtcompleted}
                                             </p>
-                                            <p className="text-[14px] font-[200]">Projects</p>
+                                            <p className="text-[14px] font-[200]">{isArabic ? "Projects" : "Projects"}</p>
                                         </div>
 
                                         {/* <div
@@ -3407,8 +3297,6 @@ const getVisibleSectors = () => {
                                             <p className="text-[14px] font-[200]">Project Completed</p>
                                         </div> */}
 
-
-                                        
                                         {/* <div
                                             className={`bubble  bg-[#0066EB80] border border-[#0066EB26] backdrop-blur-sm  text-white text-center p-3 rounded-full 
                                 lg:absolute left-[51%] top-[55%] ${
@@ -3425,9 +3313,8 @@ const getVisibleSectors = () => {
                                     </div>
 
                                     <div
-                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${
-                                            activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
-                                        }   transition-all duration-500 delay-300`}
+                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
+                                            }   transition-all duration-500 delay-300`}
                                         style={{
                                             backgroundImage: `url(../assets/images/ring3.svg)`,
                                             backgroundSize: "cover",
@@ -3448,7 +3335,7 @@ const getVisibleSectors = () => {
             {/* Slide 7 */}
             <div
                 ref={section7Ref}
-                className="absolute top-0 left-0 w-full h-full bg-transparent"
+                className={`absolute top-0 ${isArabic ? "right-0" : "left-0"} w-full h-full bg-transparent`}
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
                 <section id="section7" className="h-screen relative overflow-hidden whitebgref scroll-area ">
@@ -3457,12 +3344,15 @@ const getVisibleSectors = () => {
                             width={1500}
                             height={1000}
                             className="absolute object-cover w-full h-full z-0"
-                            src={data.seventhSection.image}
-                            alt={data.seventhSection.imageAlt}
+                            src={tData.seventhSection.image}
+                            alt={tData.seventhSection.imageAlt}
                         />
                         <div
-                            className="bg-[linear-gradient(180deg,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.75)_82.45%)] 
-           lg:bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)] absolute w-full h-full z-10"
+                            className={`absolute w-full h-full z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.75)_82.45%)]
+    ${isArabic
+                                    ? "lg:bg-[linear-gradient(90deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
+                                    : "lg:bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
+                                }`}
                         ></div>
                     </figure>
                     <div
@@ -3470,14 +3360,22 @@ const getVisibleSectors = () => {
       "
                     >
                         {/* LEFT SIDE */}
-                        <div className="w-full pt-33 px-5 lg:pe-0 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[280px] lg:pb-[120px] 3xl:pb-[212px] h-full lg:h-auto">
-                            <div className="  3xl:ml-[110px] flex flex-col justify-between h-full  lg:gap-0">
+                        <div
+                            className={`w-full pt-33 px-5 lg:pe-0 ${isArabic
+                                    ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[280px]"
+                                    : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[280px]"
+                                } lg:pb-[120px] 3xl:pb-[212px] h-full lg:h-auto`}
+                        >
+                            <div
+                                className={`${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
+                                    } flex flex-col justify-between h-full lg:gap-0`}
+                            >
                                 <h1
                                     ref={cutltttl}
                                     className="max-w-[14ch] text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] font-light mb-8 xl:mb-[25px] text-white"
                                 >
                                     {/* Driven by Talent. <br /> Defined by Culture. */}
-                                    {data.seventhSection.title.split("/n").map((item) => item)}
+                                    {tData.seventhSection.title.split("/n").map((item) => item)}
                                 </h1>
                                 <div className="mb-[35%] md:mb-[15%] lg:mb-0">
                                     {/* <div  className="max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0  before:content-[''] before:absolute before:right-[50px]   before:bg-primary before:w-full before:h-full ">
@@ -3507,7 +3405,8 @@ const getVisibleSectors = () => {
 
                                     <div
                                         ref={talentDescMob}
-                                        className="max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0 -left-5 md:left-0"
+                                        className={`max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0 ${isArabic ? "-right-5 md:right-0" : "-left-5 md:left-0"
+                                            }`}
                                     >
                                         <div className="p-5 md:p-10 lg:p-7 3xl:py-12 3xl:px-15 bg-primary w-fit 2xl:w-[400px] 3xl:w-[550px] text-white relative ">
                                             <motion.p
@@ -3523,7 +3422,10 @@ const getVisibleSectors = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <div ref={talentCareerMob} className="py-3 w-fit ml-auto lg:hidden ">
+                                        <div
+                                            ref={talentCareerMob}
+                                            className={`py-3 w-fit ${isArabic ? "mr-auto" : "ml-auto"} lg:hidden`}
+                                        >
                                             <Link href="/careers">
                                                 <div className="flex items-center gap-[6px]">
                                                     <p className="text-white text-16 font-light uppercase">Careers</p>
@@ -3533,6 +3435,7 @@ const getVisibleSectors = () => {
                                                         height="17"
                                                         viewBox="0 0 27 17"
                                                         fill="none"
+                                                        className={`${isArabic ? "-scale-x-100" : ""}`}
                                                     >
                                                         <path
                                                             d="M17.6328 1.93262L25.0111 8.5134L17.6579 15.0679"
@@ -3566,23 +3469,23 @@ const getVisibleSectors = () => {
                                                             startAutoSlide();
                                                         }}
                                                         className={`hover:lg:border-b-[2px] hover:lg:border-primary  
-    ${activeItem.id === item.id ? "underline-anim-item" : "border-transparent"} 
+    ${activeItem.id === item.id ? "underline-anim-item right-0" : "left-0 border-transparent"} 
     lg:pb-1 transition-all duration-300 `}
                                                     >
                                                         <div
-                                                            className={`py-1 lg:py-0  ${
-                                                                activeItem.id === item.id
+                                                            className={`py-1 lg:py-0  ${activeItem.id === item.id
                                                                     ? "   bg-[linear-gradient(90deg,rgba(30,69,162,0.35)_0%,rgba(48,182,249,0)_100%)] lg:bg-none"
                                                                     : ""
-                                                            }`}
+                                                                }`}
                                                         >
                                                             <div
-                                                                className={`text-[15px] md:text-[18px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px]  text-white/80 leading-[1.473684210526316] 
-                    transition-all duration-300 cursor-pointer  ${
-                        activeItem.id === item.id
-                            ? "font-bold text-white border-l-[2px] border-secondary lg:border-l-0  ps-2 lg:ps-0 "
-                            : "hover:font-bold hover:text-white font-light "
-                    }`}
+                                                                className={`text-[15px] md:text-[18px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px] text-white/80 leading-[1.473684210526316]
+transition-all duration-300 cursor-pointer ${activeItem.id === item.id
+                                                                        ? isArabic
+                                                                            ? "font-bold text-white border-r-[2px] border-secondary lg:border-r-0 pe-2 lg:pe-0"
+                                                                            : "font-bold text-white border-l-[2px] border-secondary lg:border-l-0 ps-2 lg:ps-0"
+                                                                        : "hover:font-bold hover:text-white font-light"
+                                                                    }`}
                                                             >
                                                                 {item.title.split(" ").map((word, i) => (
                                                                     <span key={i}>
@@ -3601,12 +3504,18 @@ const getVisibleSectors = () => {
                             </div>
 
                             <div className="relative">
-                                <div className="border-b border-white/20 absolute bottom-0 w-full left-0"></div>
+                                <div
+                                    className={`border-b border-white/20 absolute bottom-0 w-full ${isArabic ? "right-0" : "left-0"
+                                        }`}
+                                ></div>
                             </div>
                         </div>
 
                         {/* RIGHT SIDE */}
-                        <div className="hidden lg:flex flex-col justify-end h-full  pt-[120px] 3xl:pt-[150px] overflow-hidden relative border-l border-white/25">
+                        <div
+                            className={`hidden lg:flex flex-col justify-end h-full  pt-[120px] 3xl:pt-[150px] overflow-hidden relative ${isArabic ? "border-r" : "border-l"
+                                } border-white/25`}
+                        >
                             <motion.div
                                 ref={cutltmain}
                                 initial={{ opacity: 0, y: 10 }}
@@ -3667,6 +3576,7 @@ const getVisibleSectors = () => {
                                             height="17"
                                             viewBox="0 0 27 17"
                                             fill="none"
+                                            className={`${isArabic ? "-scale-x-100" : ""}`}
                                         >
                                             <path
                                                 d="M17.6328 1.93262L25.0111 8.5134L17.6579 15.0679"
