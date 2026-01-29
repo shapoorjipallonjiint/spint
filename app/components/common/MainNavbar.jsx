@@ -8,8 +8,12 @@ import { navData } from "../data";
 import { useSearchContext } from "@/contexts/searchContext";
 import HomeMobileNavbarSearch from "@/app/components/common/HomeMobileNavbarSearch";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useApplyLang } from "@/lib/applyLang";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const MainNavbar = () => {
+    const tNavData = useApplyLang(navData);
+    const isArabic = useIsPreferredLanguageArabic();
     const [isSticky, setIsSticky] = useState(false);
     const [navHeight, setNavHeight] = useState(0);
     const [result, setResult] = useState(null);
@@ -199,14 +203,14 @@ const MainNavbar = () => {
     //     { name: "Contact", submenu: null, href: "/contact-us" },
     // ];
 
-    const menuItems = navData.mainMenu.map((item) => ({
+    const menuItems = tNavData.mainMenu.map((item) => ({
         name: item.title,
         href: item.href,
         submenu: Array.isArray(item.submenu)
             ? item.submenu.map((sub) => ({
-                  name: sub.label,
-                  href: sub.href,
-              }))
+                name: sub.label,
+                href: sub.href,
+            }))
             : null,
     }));
 
@@ -218,7 +222,7 @@ const MainNavbar = () => {
 
     const menuVariants = {
         closed: {
-            x: "100%",
+            x: isArabic ? "-100%" : "100%",
             transition: {
                 type: "tween",
                 duration: 0.3,
@@ -326,9 +330,13 @@ const MainNavbar = () => {
                                     >
                                         <span className="relative inline-block group">
                                             <span
-                                                className={`font-bold  opacity-0 transition-all duration-300 ${
-                                                    item.submenu != null ? "mr-[16px]" : ""
-                                                }`}
+                                                className={`font-bold opacity-0 transition-all duration-300 ${item.submenu != null
+                                                        ? isArabic
+                                                            ? "ml-[16px]"
+                                                            : "mr-[16px]"
+                                                        : ""
+                                                    }`}
+
                                             >
                                                 {item.name}
                                             </span>
@@ -410,7 +418,7 @@ const MainNavbar = () => {
                                                             transition: { duration: 0.25 },
                                                         },
                                                     }}
-                                                    className="absolute left-0 top-7 overflow-hidden pt-2 w-52 xl:w-64 3xl:w-70 bg-white shadow-lg rounded-lg z-[999] origin-top"
+                                                    className={`absolute ${isArabic ? "right-0" : "left-0"} top-7 overflow-hidden pt-2 w-52 xl:w-64 3xl:w-70 bg-white shadow-lg rounded-lg z-[999] origin-top`}
                                                 >
                                                     <motion.ul className="py-2">
                                                         {item.submenu.map((subItem, subIndex) => (
@@ -438,8 +446,8 @@ const MainNavbar = () => {
                         <div className="flex items-center gap-3">
                             {/* Desktop Actions */}
                             <div className="hidden md:flex items-center">
-                                <button className="bg-gradient-to-r from-[#30B6F9] to-[#1E45A2] text-white text-13 leading-[1.230769230769231] font-300 uppercase rounded-full px-4 2xl:px-[22px] py-[7.5px] cursor-pointer mr-3 hover:scale-[1.03] transition-all duration-300">
-                                    العربية
+                                <button className={`bg-gradient-to-r from-[#30B6F9] to-[#1E45A2] text-white text-13 leading-[1.230769230769231] font-300 uppercase rounded-full px-4 2xl:px-[22px] py-[7.5px] cursor-pointer ${isArabic ? "ml-3" : "mr-3"} hover:scale-[1.03] transition-all duration-300`}>
+                                    {isArabic ? "English" : "العربية"}
                                 </button>
                                 <div className=" leading-[1] p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%] inline-block transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] hover:scale-[1.03] cursor-pointer">
                                     <Link
@@ -447,13 +455,13 @@ const MainNavbar = () => {
                                         href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji"
                                     >
                                         <button className="cursor-pointer uppercase text-[10px] xl:text-[12px] 2xl:text-16 leading-[1.75] font-300 px-[10px] 2xl:px-[18px] py-[5px] xl:py-1 2xl:py-[1.5px]  bg-white rounded-full transition-all duration-300 hover:bg-[#f7faff]">
-                                            Employee login
+                                            {isArabic ? "Employee login" : "Employee login"}
                                         </button>
                                     </Link>
                                 </div>
                                 <button
                                     ref={searchButtonRef}
-                                    className="cursor-pointer bg-[#000000CC] rounded-full p-[2px] w-[30px] h-[30px]  2xl:w-[45px] 2xl:h-[45px] flex items-center justify-center ml-3 xl:ml-5 transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] group"
+                                    className={`cursor-pointer bg-[#000000CC] rounded-full p-[2px] w-[30px] h-[30px]  2xl:w-[45px] 2xl:h-[45px] flex items-center justify-center ${isArabic ? "mr-3 xl:mr-5" : "ml-3 xl:ml-5"} transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] group`}
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setSearchActive((prev) => !prev);
@@ -508,17 +516,14 @@ const MainNavbar = () => {
 
             <>
                 <div
-                    className={`max-md:hidden fixed inset-0 bg-white/30 backdrop-blur-sm z-40 h-screen w-full duration-300 transition-opacity ${
-                        searchActive ? "translate-y-[5%] opacity-100" : "translate-y-[-110%] opacity-0"
-                    }`}
+                    className={`max-md:hidden fixed inset-0 bg-white/30 backdrop-blur-sm z-40 h-screen w-full duration-300 transition-opacity ${searchActive ? "translate-y-[5%] opacity-100" : "translate-y-[-110%] opacity-0"
+                        }`}
                 ></div>
                 <div
                     ref={searchRef}
-                    className={`max-md:hidden overflow-y-auto w-full bg-white z-40 ${
-                        result?.length > 0 ? "h-[500px]" : "h-[140px]"
-                    } shadow-xl fixed top-24 lg:top-20 xl:top-24 right-0 duration-300 flex flex-col ${
-                        searchActive ? "translate-y-[-5%]" : "translate-y-[-110%]"
-                    }`}
+                    className={`max-md:hidden overflow-y-auto w-full bg-white z-40 ${result?.length > 0 ? "h-[500px]" : "h-[140px]"
+                        } shadow-xl fixed top-24 lg:top-20 xl:top-24 right-0 duration-300 flex flex-col ${searchActive ? "translate-y-[-5%]" : "translate-y-[-110%]"
+                        }`}
                 >
                     <div className="container h-full">
                         {/* <div className="absolute top-[20px] xxxl:right-[60px] right-[30px]" onClick={() => setSearchActive(!searchActive)}>
@@ -668,9 +673,9 @@ const MainNavbar = () => {
                             animate="open"
                             exit="closed"
                             variants={menuVariants}
-                            className="fixed top-0 right-0 h-full w-full max-w-[320px] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto"
+                            className={`fixed top-0 ${isArabic ? "left-0" : "right-0"} h-full w-full max-w-[320px] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto`}
                         >
-                            <div className="absolute right-5 top-5">
+                            <div className={`absolute ${isArabic ? "left-5" : "right-5"} top-5`}>
                                 <button
                                     onClick={toggleMenu}
                                     className="lg:hidden z-[60] w-10 h-10 flex items-center justify-center transition-all duration-300 relative"
@@ -741,7 +746,7 @@ const MainNavbar = () => {
                                                         {hasSubmenu && (
                                                             <button
                                                                 onClick={() => toggleSubmenu(item.name)}
-                                                                className="p-2 ml-2"
+                                                                className={`p-2 ${isArabic ? "mr-2" : "ml-2"}`}
                                                                 type="button"
                                                             >
                                                                 <motion.svg
@@ -771,7 +776,7 @@ const MainNavbar = () => {
                                                                 animate={{ height: "auto", opacity: 1 }}
                                                                 exit={{ height: 0, opacity: 0 }}
                                                                 transition={{ duration: 0.3 }}
-                                                                className="overflow-hidden pl-4 mt-3 space-y-3"
+                                                                className={`overflow-hidden ${isArabic ? "pr-4" : "pl-4"} mt-3 space-y-3`}
                                                             >
                                                                 {item.submenu.map((subItem, subIndex) => (
                                                                     <li key={subIndex}>
@@ -802,7 +807,7 @@ const MainNavbar = () => {
                                     className="space-y-4 pt-6 border-t border-gray-200"
                                 >
                                     <button className="w-full bg-gradient-to-r from-[#30B6F9] to-[#1E45A2] text-white text-sm leading-tight font-light uppercase rounded-full px-5 py-3 cursor-pointer hover:scale-105 transition-all duration-300">
-                                        العربية
+                                        {isArabic ? "English" : "العربية"}
                                     </button>
                                     <div className="p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%] transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] hover:scale-105">
                                         <Link
@@ -810,7 +815,7 @@ const MainNavbar = () => {
                                             href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji"
                                         >
                                             <button className="cursor-pointer w-full uppercase text-base leading-7 font-light px-5 py-2 bg-white rounded-full transition-all duration-300 hover:bg-[#f7faff]">
-                                                Employee login
+                                                {isArabic ? "Employee login" : "Employee login"}
                                             </button>
                                         </Link>
                                     </div>

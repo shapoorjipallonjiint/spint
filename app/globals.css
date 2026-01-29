@@ -279,6 +279,10 @@ body::-webkit-scrollbar {
   @apply pl-[15px] lg:pl-[4%] xl:pl-[5%] 2xl:pl-[5%] 3xl:pl-[7.814%];
 }
 
+.right-spacing {
+  @apply pr-[15px] lg:pr-[4%] xl:pr-[5%] 2xl:pr-[5%] 3xl:pr-[7.814%];
+}
+
 .st0 {
   stroke: #0d88c4;
 }
@@ -976,7 +980,6 @@ body::-webkit-scrollbar {
 .underline-anim-item::after {
   content: "";
   position: absolute;
-  left: 0;
   bottom: -2px;
   /* sits exactly at the border line */
   height: 2px;
