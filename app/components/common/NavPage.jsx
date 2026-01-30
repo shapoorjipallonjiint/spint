@@ -5,6 +5,7 @@ import { navData } from "../data";
 import { moveRight, moveLeft, moveUp } from "../motionVarients";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import LangLink from "@/lib/LangLink"
 
 const NavPage = ({ isOpen }) => {
     const isArabic = useIsPreferredLanguageArabic();
@@ -72,7 +73,7 @@ const NavPage = ({ isOpen }) => {
                                     className="relative group inline-flex items-center justify-between gap-2 cursor-pointer"
                                 >
                                     {/* MAIN TEXT */}
-                                    <a href={item.href}>
+                                    <LangLink href={item.href}>
                                         <span
                                             className={`
             text-24 3xl:text-40 font-light transition-all duration-300
@@ -81,7 +82,7 @@ const NavPage = ({ isOpen }) => {
                                         >
                                             {item.title}
                                         </span>
-                                    </a>
+                                    </LangLink>
 
                                     {/* RIGHT ARROW */}
                                     <span
@@ -168,7 +169,7 @@ const NavPage = ({ isOpen }) => {
                                         variants={isArabic ? moveLeft(i * 0.14) : moveRight(i * 0.14)}
                                         className="mb-5 last:mb-0"
                                     >
-                                        <a href={sub.href}>
+                                        <LangLink href={sub.href}>
                                             <p
                                                 className={`text-29 font-light hover:font-semibold transition-all duration-300 ${
                                                     isArabic ? "hover:-translate-x-1" : "hover:translate-x-1"
@@ -176,7 +177,7 @@ const NavPage = ({ isOpen }) => {
                                             >
                                                 {sub.label}
                                             </p>
-                                        </a>
+                                        </LangLink>
                                     </motion.div>
                                 ))}
                         </motion.div>

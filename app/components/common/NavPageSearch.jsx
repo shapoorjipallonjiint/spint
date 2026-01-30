@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { navData } from "../data";
 import { moveRight, moveUp } from "../motionVarients";
 import Image from 'next/image'
-import Link from 'next/link'
+import LangLink from "@/lib/LangLink"
 import { useSearchContext } from "@/contexts/searchContext";
 import {  AnimatePresence } from "framer-motion";
 import { useDebounce } from '@/hooks/useDebounce'
@@ -189,11 +189,11 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
                                 <div className="overflow-hidden h-fit"><ul className="grid grid-cols-1 list-disc gap-5 text-sm px-4 h-full overflow-y-auto custom-scrollbar">
                                     {result && result.length > 0 ? result.map((item, index) => {
                                         if (item.project) {
-                                            return <Link href={`/projects/${item.project.slug}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.project.firstSection.title}</li></Link>
+                                            return <LangLink href={`/projects/${item.project.slug}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.project.firstSection.title}</li></LangLink>
                                         } else if (item.type == "news") {
-                                            return <Link href={`/press-releases/${item.item.slug}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.item.title}</li></Link>
+                                            return <LangLink href={`/press-releases/${item.item.slug}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.item.title}</li></LangLink>
                                         } else if (item.type == "service") {
-                                            return <Link href={`/services/${item.item.link}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.item.title}</li></Link>
+                                            return <LangLink href={`/services/${item.item.link}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.item.title}</li></LangLink>
                                         }
                                     }) : (result?.length == 0 ? <div>No Results</div> : null)}
                                 </ul></div>)}

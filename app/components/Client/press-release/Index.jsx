@@ -5,11 +5,11 @@ import { pressReleases } from "./data";
 import { useState, useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp } from "../../motionVarients";
-import Link from "next/link";
 import SplitTextAnimation from "../../../components/common/SplitTextAnimation";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import LangLink from "@/lib/LangLink";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -267,7 +267,7 @@ const Index = ({ newsData, topicData }) => {
               }}
             >
               {currentItems.map((item, index) => (
-                <Link key={index} href={`/press-releases/${item.slug}`}>
+                <LangLink key={index} href={`/press-releases/${item.slug}`}>
                   <motion.div variants={moveUp(1 + 0.1 * index)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}
                     key={item.id}
                     className="border-b border-black/20 pb-5 lg:border-b-0 lg:pb-0"
@@ -293,7 +293,7 @@ const Index = ({ newsData, topicData }) => {
 
                     </div>
                   </motion.div>
-                </Link>
+                </LangLink>
               ))}
 
               {/* Optional: show empty state if no results */}

@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import LangLink from "@/lib/LangLink"
 import Image from "next/image";
 import { navData } from "../data";
 import { useSearchContext } from "@/contexts/searchContext";
@@ -301,7 +301,7 @@ const MainNavbar = () => {
                     <div className="flex items-center justify-between">
                         {/* Logo */}
                         <div className="flex items-center gap-[10px] z-[60]">
-                            <Link href="/">
+                            <LangLink href="/">
                                 {" "}
                                 <Image
                                     width={0}
@@ -311,7 +311,7 @@ const MainNavbar = () => {
                                     alt="logo"
                                     className="w-[101px] lg:w-[80px] xl:w-[101px]"
                                 />
-                            </Link>
+                            </LangLink>
                         </div>
 
                         {/* Desktop Menu */}
@@ -324,7 +324,7 @@ const MainNavbar = () => {
                                     onMouseEnter={() => setOpenSubmenu(index)}
                                     onMouseLeave={() => setOpenSubmenu(null)}
                                 >
-                                    <Link
+                                    <LangLink
                                         href={item.href || "#"}
                                         className="flex items-center gap-1 text-[11px] md:text-11 2xl:text-[12px] 3xl:text-16 leading-[1.75] font-300 uppercase hover:font-bold active:font-bold focus-within:font-bold transition-all duration-300"
                                     >
@@ -375,7 +375,7 @@ const MainNavbar = () => {
                                                 )}
                                             </span>
                                         </span>
-                                    </Link>
+                                    </LangLink>
                                     {/* {item.submenu && (
                     <div className="absolute top-full left-0 mt-2 w-70 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                        <ul className="py-2">
@@ -423,7 +423,7 @@ const MainNavbar = () => {
                                                     <motion.ul className="py-2">
                                                         {item.submenu.map((subItem, subIndex) => (
                                                             <motion.li key={subIndex} variants={submenuItem}>
-                                                                <Link
+                                                                <LangLink
                                                                     href={subItem.href}
                                                                     onClick={() => setOpenSubmenu(null)}
                                                                     className="block px-4 py-2 text-[12px] xl:text-[14px] 3xl:text-[16px]
@@ -431,7 +431,7 @@ const MainNavbar = () => {
                 hover:translate-x-[2px] transition-all duration-200"
                                                                 >
                                                                     {subItem.name}
-                                                                </Link>
+                                                                </LangLink>
                                                             </motion.li>
                                                         ))}
                                                     </motion.ul>
@@ -450,14 +450,14 @@ const MainNavbar = () => {
                                     {isArabic ? "English" : "العربية"}
                                 </button>
                                 <div className=" leading-[1] p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%] inline-block transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] hover:scale-[1.03] cursor-pointer">
-                                    <Link
+                                    <LangLink
                                         target="_blank"
                                         href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji"
                                     >
                                         <button className="cursor-pointer uppercase text-[10px] xl:text-[12px] 2xl:text-16 leading-[1.75] font-300 px-[10px] 2xl:px-[18px] py-[5px] xl:py-1 2xl:py-[1.5px]  bg-white rounded-full transition-all duration-300 hover:bg-[#f7faff]">
                                             {isArabic ? "Employee login" : "Employee login"}
                                         </button>
-                                    </Link>
+                                    </LangLink>
                                 </div>
                                 <button
                                     ref={searchButtonRef}
@@ -602,7 +602,7 @@ const MainNavbar = () => {
                                             result.map((item, index) => {
                                                 if (item.project) {
                                                     return (
-                                                        <Link
+                                                        <LangLink
                                                             href={`/projects/${item.project.slug}`}
                                                             key={index}
                                                             className="cursor-pointer"
@@ -612,11 +612,11 @@ const MainNavbar = () => {
                                                             }}
                                                         >
                                                             <li>{item.project.firstSection.title}</li>
-                                                        </Link>
+                                                        </LangLink>
                                                     );
                                                 } else if (item.type == "news") {
                                                     return (
-                                                        <Link
+                                                        <LangLink
                                                             href={`/press-releases/${item.item.slug}`}
                                                             key={index}
                                                             className="cursor-pointer"
@@ -626,11 +626,11 @@ const MainNavbar = () => {
                                                             }}
                                                         >
                                                             <li>{item.item.title}</li>
-                                                        </Link>
+                                                        </LangLink>
                                                     );
                                                 } else if (item.type == "service") {
                                                     return (
-                                                        <Link
+                                                        <LangLink
                                                             href={`/services/${item.item.link}`}
                                                             key={index}
                                                             className="cursor-pointer"
@@ -640,7 +640,7 @@ const MainNavbar = () => {
                                                             }}
                                                         >
                                                             <li>{item.item.title}</li>
-                                                        </Link>
+                                                        </LangLink>
                                                     );
                                                 }
                                             })
@@ -726,7 +726,7 @@ const MainNavbar = () => {
                                             >
                                                 <div>
                                                     <div className="flex items-center justify-between">
-                                                        <Link
+                                                        <LangLink
                                                             href={item.href || "#"}
                                                             onClick={(e) => {
                                                                 if (!hasSubmenu) {
@@ -741,7 +741,7 @@ const MainNavbar = () => {
                                                             className="text-16 font-light uppercase hover:font-bold transition-all duration-300 flex-1"
                                                         >
                                                             {item.name}
-                                                        </Link>
+                                                        </LangLink>
 
                                                         {hasSubmenu && (
                                                             <button
@@ -780,13 +780,13 @@ const MainNavbar = () => {
                                                             >
                                                                 {item.submenu.map((subItem, subIndex) => (
                                                                     <li key={subIndex}>
-                                                                        <Link
+                                                                        <LangLink
                                                                             href={subItem.href} // ✅ use its href
                                                                             onClick={toggleMenu}
                                                                             className="text-base font-light hover:font-bold transition-all duration-300 block"
                                                                         >
                                                                             {subItem.name}
-                                                                        </Link>
+                                                                        </LangLink>
                                                                     </li>
                                                                 ))}
                                                             </motion.ul>
@@ -810,14 +810,14 @@ const MainNavbar = () => {
                                         {isArabic ? "English" : "العربية"}
                                     </button>
                                     <div className="p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%] transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] hover:scale-105">
-                                        <Link
+                                        <LangLink
                                             target="_blank"
                                             href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji"
                                         >
                                             <button className="cursor-pointer w-full uppercase text-base leading-7 font-light px-5 py-2 bg-white rounded-full transition-all duration-300 hover:bg-[#f7faff]">
                                                 {isArabic ? "Employee login" : "Employee login"}
                                             </button>
-                                        </Link>
+                                        </LangLink>
                                     </div>
                                     <button
                                         onClick={() => setMobileMenuOpenSearch(true)}

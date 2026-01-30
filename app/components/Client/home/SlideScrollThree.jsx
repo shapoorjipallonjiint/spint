@@ -8,16 +8,12 @@ import "swiper/css/autoplay";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
 import "swiper/css/free-mode";
-
-import Link from "next/link";
-
+import LangLink from "@/lib/LangLink";
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 
 gsap.registerPlugin(DrawSVGPlugin);
 import { motion, AnimatePresence } from "framer-motion";
-
-// import { aboutData } from "./data";
 import { moveUp } from "../../motionVarients.ts";
 import CountUp from "../../CountUp.jsx";
 import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
@@ -84,23 +80,12 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const sprghtBx = useRef(null);
     const sprIcnim = useRef(null);
     const spBrdOne = useRef(null);
-
-    /*   const leftContentRef = useRef(null);
-  const rightImageRef = useRef(null);
-  const swiperRef = useRef(null);
-  const bottomTextRef = useRef(null); */
-
     const bgdivRef = useRef(null);
-
-    /*   const polygon1Ref = useRef(null);
-  const polygon2Ref = useRef(null);
-  const polygon3Ref = useRef(null); */
     const polygon4Ref = useRef(null);
     const polygon5Ref = useRef(null);
     const polygon6Ref = useRef(null);
 
     const section4Ref = useRef(null);
-    /*  const section4Content = useRef(null); */
     const srvttlRef = useRef(null);
     const srvsImgRef = useRef(null);
     const textItemsRef = useRef([]);
@@ -136,15 +121,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const mobileStatsRef = useRef(null);
     const talentDescMob = useRef(null);
     const talentCareerMob = useRef(null);
-
-    // Mobile screen refs(scrolling)
     const touchStartY = useRef(0);
     const touchStartX = useRef(0);
 
     const touchEndY = useRef(0);
     const SWIPE_THRESHOLD = 60; // px
-
-    /*     const [activeIndex, setActiveIndex] = useState(0); */
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const currentIndexRef = useRef(0);
@@ -342,6 +323,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
             );
     }, []);
 
+    const X = (v) => {
+        if (typeof v === "string" && v.includes("%")) {
+            return `${parseFloat(v) * (isArabic ? -1 : 1)}%`;
+        }
+        return v * (isArabic ? -1 : 1);
+    };
+
     const playEntryAnimation = (index) => {
         console.log("Calleddddd", index);
         gsap.set([ttbxsRef.current, rightSecRef.current, leftSecRef.current], {
@@ -374,7 +362,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         titleOneRef.current,
-                        { x: 60, opacity: 0 },
+                        { x: X(60), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, ease: "power3.out" },
                     )
                     .fromTo(
@@ -390,19 +378,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         subtitleRef.current,
-                        { x: 60, opacity: 0 },
+                        { x: X(60), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1, ease: "power3.out" },
                         "-=1",
                     )
                     .fromTo(
                         iconsRef.current,
-                        { x: -50, opacity: 0 },
+                        { x: X(-50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1, ease: "power3.out" },
                         "-=0.5",
                     )
                     .fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 1, ease: "power3.out" }, "-=4");
 
                 break;
+
             case 1:
                 b1.fromTo(
                     videoBgRef.current,
@@ -430,7 +419,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         title2Ref.current,
-                        { x: 50, opacity: 0 },
+                        { x: X(50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1, delay: -0.8, ease: "power3.out" },
                     )
                     .fromTo(
@@ -446,12 +435,12 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         descriptionRef.current,
-                        { x: 50, opacity: 0 },
+                        { x: X(50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1, delay: -0.5, ease: "power3.out" },
                     )
                     .fromTo(
                         brdrsRef.current,
-                        { x: -50, width: "0%", opacity: 0 },
+                        { x: X(-50), width: "0%", opacity: 0 },
                         {
                             x: 0,
                             width: "100%",
@@ -463,7 +452,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         statItems,
-                        { x: -50, opacity: 0 },
+                        { x: X(-50), opacity: 0 },
                         {
                             x: 0,
                             opacity: 1,
@@ -476,7 +465,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     .fromTo(
                         mobileStatsRef.current,
                         {
-                            x: 50,
+                            x: X(50),
                             opacity: 0,
                         },
                         {
@@ -488,6 +477,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         0, // sync with other content
                     );
                 break;
+
             case 2:
                 c1.set(splftimng.current, { opacity: 0, width: "0%", x: 0 })
                     .set(sptitle.current, { opacity: 0 })
@@ -497,65 +487,57 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     .set(sprIcnim.current, { opacity: 0, x: 0 })
                     .set(spBrdOne.current, { opacity: 0, x: 0 })
 
-                    /*  .set(bgdivRef.current, { opacity: 0, x: 0 })
-          .set(leftContentRef.current, { opacity: 0 })
-          .set(bottomTextRef.current, { opacity: 0, x: 0 })
-          .set(polygon1Ref.current, { drawSVG: "0%" })
-          .set(polygon2Ref.current, { drawSVG: "0%" })
-          .set(polygon3Ref.current, { drawSVG: "0%", opacity: 1 })
-          .set(leftContentRef.current, { opacity: 0 }) */
-
                     .fromTo(
                         splftimng.current,
-                        { x: -50, opacity: 0, width: "0%" },
+                        { x: X(-50), opacity: 0, width: "0%" },
                         { x: 0, opacity: 1, width: "100%", duration: 1, delay: 0, ease: "power1.out" },
                     )
                     .fromTo(
                         sprghtBx.current,
-                        { x: 50, opacity: 0 },
+                        { x: X(50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
                         "-=0.5",
                     )
                     .fromTo(
                         splftbg.current,
-                        { x: -50, opacity: 0, width: "0%" },
+                        { x: X(-50), opacity: 0, width: "0%" },
                         { x: 0, opacity: 1, width: "100%", duration: 0.8, delay: -0.5, ease: "power1.out" },
                         "-=0",
                     )
                     .fromTo(
                         sptitle.current,
-                        { x: -50, opacity: 0 },
+                        { x: X(-50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
                         "-=0.3",
                     )
                     .fromTo(
                         spdscrpt.current,
-                        { x: -50, opacity: 0 },
+                        { x: X(-50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
                         "-=0.3",
                     )
                     .fromTo(
                         spbtn.current,
-                        { x: -50, opacity: 0 },
+                        { x: X(-50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
                         "-=0.3",
                     )
 
                     .fromTo(
                         sprIcnim.current,
-                        { x: 50, opacity: 0 },
+                        { x: X(50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
                         "-=1.5",
                     )
                     .fromTo(
                         spBrdOne.current,
-                        { x: -100, opacity: 0 },
+                        { x: X(-100), opacity: 0 },
                         { x: 0, opacity: 0.2, duration: 0.8, delay: 0, ease: "power1.out" },
                         "-=0.3",
                     )
                     .fromTo(
                         spStatsItems,
-                        { x: -50, opacity: 0 },
+                        { x: X(-50), opacity: 0 },
                         {
                             x: 0,
                             opacity: 1,
@@ -567,66 +549,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         "-=0.6",
                     );
 
-                /* 
-          .fromTo(
-            leftContentRef.current,
-            { x: -50, opacity: 0 },
-            { x: 0, opacity: 1.5, duration: 0.8, delay: 0, ease: "power1.in" }
-          )
-          .fromTo(
-            rightImageRef.current,
-            { x: 50, width: "0%", opacity: 0 },
-            {
-              x: 0,
-              width: "100%",
-              opacity: 1,
-              duration: 1,
-              delay: 0,
-              ease: "power1.in",
-            }
-          )
-          .fromTo(
-            swiperRef.current,
-            { x: 300, opacity: 0 },
-            { x: 0, opacity: 1, duration: 0.6, ease: "power1.inOut" },
-            "-=1"
-          )
-          .fromTo(
-            polygon1Ref.current,
-            { drawSVG: "0%" },
-            { drawSVG: "-100%", duration: 1, delay: -1, ease: "power1.inOut" }
-          )
-          .fromTo(
-            polygon2Ref.current,
-            { drawSVG: "0%" },
-            { drawSVG: "100%", duration: 1, delay: -1.5, ease: "power1.inOut" }
-          )
-          .fromTo(
-            polygon3Ref.current,
-            { drawSVG: "0%" },
-            {
-              drawSVG: "100%",
-              duration: 3,
-              delay: -2,
-              ease: "power1.inOut",
-              repeat: 0,
-              yoyo: true,
-            }
-          )
-          .fromTo(
-            bottomTextRef.current,
-            { x: 30, opacity: 0 },
-            { x: 0, opacity: 1, duration: 0.5, delay: 0, ease: "power1.in" },
-            "-=1.5"
-          )
-          .fromTo(
-            bgdivRef.current,
-            { x: 0, opacity: 0, scale: 1 },
-            { x: 0, opacity: 0.06, scale: 1.1, duration: 5, ease: "power1.in" },
-            "-=3.5"
-          ) */
-
                 break;
+
             case 3:
                 d1.set(bgdivRef.current, { opacity: 0, x: 0 })
                     .set(srvttlRef.current, { opacity: 0 })
@@ -640,7 +564,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     .set(srvsCntb.current, { opacity: 0 })
                     .set(srvsArrw.current, { opacity: 0 })
                     .set(srvsRghtBx.current, { opacity: 0, x: 0 })
-                    .set(srvLftBx.current, { opacity: 0, x: -50 })
+                    .set(srvLftBx.current, { opacity: 0, x: X(-50) })
 
                     .fromTo(
                         srvBgimg.current,
@@ -655,17 +579,16 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         srvttlRef.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.5, delay: 0, ease: "power3.out" },
                         "-=0.5",
                     )
 
                     .fromTo(
                         brdonRef.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         {
                             x: 0,
-
                             opacity: 0.1,
                             duration: 1.2,
                             ease: "power3.out",
@@ -686,7 +609,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         srvsRghtBx.current,
-                        { x: 30, opacity: 0 },
+                        { x: X(30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, ease: "power3.out" },
                         "-=1.5",
                     )
@@ -704,7 +627,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         srvsVct.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         {
                             x: 0,
                             opacity: 1,
@@ -715,7 +638,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         srvsCntb.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         {
                             x: 0,
                             opacity: 1,
@@ -736,6 +659,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         "-=0.5",
                     );
                 break;
+
             case 4:
                 console.log("Section4 called");
                 e1.set(talenttitle.current, { opacity: 0, x: 0 })
@@ -745,13 +669,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     .set(talentdtlsItems.current, { opacity: 0, x: 0 })
                     .fromTo(
                         talenttitle.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 1.5, ease: "power1.out" },
                         "-=0.5",
                     )
                     .fromTo(
                         talentlist.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, ease: "power1.out" },
                         "-=0.5",
                     )
@@ -770,13 +694,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         talentdtls.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
                         "-=1",
                     )
                     .fromTo(
                         sectorLeft.current,
-                        { x: -50, opacity: 0 },
+                        { x: X(-50), opacity: 0 },
                         {
                             x: 0,
                             opacity: 1,
@@ -787,6 +711,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     );
 
                 break;
+
             case 5:
                 f1.set(maptitle.current, { opacity: 0 })
                     .set(mapimage.current, { opacity: 0 })
@@ -794,7 +719,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     .set(mapactive.current, { opacity: 0 })
                     .fromTo(
                         maptitle.current,
-                        { x: -50, opacity: 0 },
+                        { x: X(-50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.2, delay: 1.5, ease: "power1.out" },
                         "-=0.5",
                     )
@@ -809,7 +734,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         },
                         "-=1.2",
                     )
-                    // .fromTo( dotsItms, { opacity: 0, scale: 0 }, { scale: 1, opacity: 1, duration: 1, stagger: 0.3, ease: "power3.out", }, "-=1.2" )
                     .fromTo(
                         dotsItms,
                         { opacity: 0, scale: 0.6 },
@@ -823,18 +747,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         "-=0.8",
                     );
 
-                /*  .fromTo(".actdts", {
-        opacity: 0, scale: 0.8 },
-            {
-              scale: 1,
-              opacity: 1,
-              duration: 1,
-              ease: "power3.out",
-            },
-            "-=0.8"
-          ) */
-
                 break;
+
             case 6:
                 g1.set(cutltttl.current, { opacity: 0, x: 0 })
                     .set(cultlist.current, { opacity: 0, x: 0 })
@@ -858,20 +772,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         cutltttl.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 0, ease: "power1.out" },
                         "-=0.3",
                     )
                     .fromTo(
                         cultlist.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1, delay: 0, ease: "power1.out" },
                         "-=2",
                     )
 
                     .fromTo(
                         cultlistItems,
-                        { opacity: 0, x: -30 },
+                        { opacity: 0, x: X(-30) },
                         {
                             x: 0,
                             opacity: 1,
@@ -883,31 +797,31 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     )
                     .fromTo(
                         cutltdtls.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 0, ease: "power1.out" },
                         "-=1",
                     )
                     .fromTo(
                         cutltmain.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 0, ease: "power1.out" },
                         "-=1",
                     )
                     .fromTo(
                         talentDescMob.current,
-                        { x: -100, opacity: 0 },
+                        { x: X(-100), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.4, delay: 0, ease: "power1.Out" },
                         "-=2",
                     )
                     .fromTo(
                         talentCareerMob.current,
-                        { x: -100, opacity: 0 },
+                        { x: X(-100), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.6, delay: 0, ease: "power1.Out" },
                         "-=1.6",
                     )
                     .fromTo(
                         cutlttext.current,
-                        { x: -30, opacity: 0 },
+                        { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1.5, delay: 0, ease: "power1.out" },
                         "-=1",
                     );
@@ -937,188 +851,68 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     },
                     "+=0.5",
                 )
-                    .to(videoRef.current, { x: "-100%", duration: 1, ease: "power1.inOut" }, "+=0.5")
-                    .to(titleOneRef.current, { opacity: 0, x: -30, duration: 0.5, ease: "power3.out" }, "-=2.1")
-                    .to(subtitleRef.current, { opacity: 0, x: -30, duration: 0.5, ease: "power3.out" }, "-=1.9")
+                    .to(videoRef.current, { x: X("-100%"), duration: 1, ease: "power1.inOut" }, "+=0.5")
+                    .to(titleOneRef.current, { opacity: 0, x: X(-30), duration: 0.5, ease: "power3.out" }, "-=2.1")
+                    .to(subtitleRef.current, { opacity: 0, x: X(-30), duration: 0.5, ease: "power3.out" }, "-=1.9")
                     .to(iconsRef.current, { opacity: 0, y: -30, duration: 1, ease: "power3.out" }, "-=1.7")
-                    .to(brdrRef.current, { opacity: 0, x: "100%", duration: 1, ease: "power3.out" }, "-=1.9")
+                    .to(brdrRef.current, { opacity: 0, x: X("100%"), duration: 1, ease: "power3.out" }, "-=1.9")
                     .to(overlayRef.current, { opacity: 0, width: "100%", duration: 1, ease: "power3.out" }, "-=0.1");
 
                 break;
+
             case 1:
-                b2.to(rightSecRef.current, { x: 800, opacity: 0, duration: 1.1, ease: "power1.inOut" }, 0)
-                    .to(leftSecRef.current, { x: -800, opacity: 0, duration: 1.1, ease: "power1.inOut" }, 0)
+                b2.to(rightSecRef.current, { x: X(800), opacity: 0, duration: 1.1, ease: "power1.inOut" }, 0)
+                    .to(leftSecRef.current, { x: X(-800), opacity: 0, duration: 1.1, ease: "power1.inOut" }, 0)
                     .to(
                         mobileStatsRef.current,
                         {
-                            x: 100,
+                            x: X(100),
                             opacity: 0,
                             duration: 0.4,
                             ease: "power3.in",
                         },
                         0,
                     );
-                /*   .to(ttbxsRef.current, { x: 800, opacity: 0, duration: 1.5, ease: 'power1.in' }, 0)
-                 */
                 break;
+
             case 2:
-                c2.to(sprghtBx.current, { x: 800, opacity: 0, duration: 1.2, ease: "power1.inOut" }, 0).to(
+                c2.to(sprghtBx.current, { x: X(800), opacity: 0, duration: 1.2, ease: "power1.inOut" }, 0).to(
                     splftimng.current,
-                    { x: -800, opacity: 0, duration: 1.2, ease: "power1.inOut" },
+                    { x: X(-800), opacity: 0, duration: 1.2, ease: "power1.inOut" },
                     0,
                 );
 
-                /*   .to(leftContentRef.current, {
-          x: -50,
-          opacity: 0,
-          duration: 1,
-          delay: -0.5,
-          ease: "power1.out",
-        })
-          .to(rightImageRef.current, {
-            x: 50,
-            opacity: 0,
-            duration: 1,
-            delay: -1,
-            ease: "power1.out",
-          })
-          .fromTo(
-            swiperRef.current,
-            { x: 0, opacity: 1 },
-            {
-              x: 300,
-              opacity: 0,
-              duration: 1.5,
-              delay: -1.5,
-              ease: "power1.in",
-            }
-          )
-          .to(
-            bgdivRef.current,
-            { scale: 1.5, opacity: 0, ease: "power1.inOut", duration: 2 },
-            "-=1.2"
-          )
-          .fromTo(
-            bottomTextRef.current,
-            { x: 0, opacity: 1 },
-            {
-              x: 30,
-              opacity: 0,
-              duration: 0.5,
-              delay: -0.8,
-              ease: "power1.in",
-            },
-            "-=1"
-          )
-          .fromTo(
-            polygon1Ref.current,
-            { drawSVG: "-100%" },
-            { drawSVG: "0%", duration: 1, ease: "power1.inOut" },
-            "-=1.8"
-          )
-          .fromTo(
-            polygon2Ref.current,
-            { drawSVG: "-100%" },
-            { drawSVG: "0%", duration: 1, ease: "power1.inOut" },
-            "-=1.8"
-          )
-          .fromTo(
-            polygon3Ref.current,
-            { drawSVG: "-100%" },
-            { drawSVG: "0%", duration: 0.5, ease: "power1.inOut", opacity: 0 },
-            "-=2.5"
-          ); */
-                /*   gsap.fromTo(
-            bgImageRef.current,
-            { x: 0, opacity: 1 },
-            { x: 0, opacity: 0, scale: 1.2, duration: 1, delay: 0, ease: "power1.in" }, '-=1.5'
-          ) */
+                break;
 
-                break;
             case 3:
-                d2.to(srvLftBx.current, { x: -100, opacity: 0, duration: 1, ease: "power1.in" }, 0)
-                    .to(srvsRghtBx.current, { x: 800, opacity: 0, duration: 1, ease: "power1.in" }, 0)
+                d2.to(srvLftBx.current, { x: X(-100), opacity: 0, duration: 1, ease: "power1.in" }, 0)
+                    .to(srvsRghtBx.current, { x: X(800), opacity: 0, duration: 1, ease: "power1.in" }, 0)
                     .fromTo(srvBgimg.current, { opacity: 1 }, { opacity: 0, duration: 1, ease: "power3.out" }, "-=0.8");
-                /* .fromTo(
-          srvttlRef.current,
-          { x: 0, opacity: 1 },
-          { x: 50, opacity: 0, duration: 1, ease: "power3.out" }
-        )
-       
-         
-          .fromTo(
-            brdtwsRef.current,
-            { y: -50, height: "100%", opacity: 0 },
-            {
-              y: 0,
-              height: "0%",
-              opacity: 1,
-              duration: 1,
-              delay: -1,
-              ease: "power1.in",
-            },
-            "-=0.5"
-          )
-          .fromTo(
-            srvsImgRef.current,
-            { x: 0, width: "100%", opacity: 1 },
-            {
-              x: 50,
-              width: "0%",
-              opacity: 0,
-              duration: 1,
-              delay: -1,
-              ease: "power1.in",
-            },
-            "-=0.5"
-          )
-          .fromTo(
-            countRef.current,
-            { x: 0, width: "100%", opacity: 1 },
-            {
-              x: 50,
-              width: "0%",
-              opacity: 0,
-              duration: 0.5,
-              delay: 0,
-              ease: "power1.in",
-            },
-            "-=1"
-          );
-        t1.fromTo(
-          textItemsRef.current,
-          { y: 0, opacity: 1 },
-          {
-            y: 40,
-            opacity: 0,
-            stagger: 0.1,
-            duration: 0.8,
-            ease: "power2.out",
-          },
-          "-=0.5"
-        ); */
                 break;
+
             case 4:
-                e2.to(talenttitle.current, { x: -30, opacity: 0, duration: 1, ease: "power1.in" }, 0)
-                    .to(talentlist.current, { x: -30, opacity: 0, duration: 1, ease: "power1.in" }, "-=0.5")
-                    .to(talentimage.current, { x: 100, opacity: 0, duration: 0.3, ease: "power1.inOut" }, "-=0.5")
-                    .to(sectorLeft.current, { x: -100, opacity: 0, duration: 0.5, ease: "power1.inOut" }, "-=0.5");
+                e2.to(talenttitle.current, { x: X(-30), opacity: 0, duration: 1, ease: "power1.in" }, 0)
+                    .to(talentlist.current, { x: X(-30), opacity: 0, duration: 1, ease: "power1.in" }, "-=0.5")
+                    .to(talentimage.current, { x: X(100), opacity: 0, duration: 0.3, ease: "power1.inOut" }, "-=0.5")
+                    .to(sectorLeft.current, { x: X(-100), opacity: 0, duration: 0.5, ease: "power1.inOut" }, "-=0.5");
                 break;
+
             case 5:
-                f2.to(maptitle.current, { x: -30, opacity: 0, duration: 1, ease: "power1.in" }, 0).to(
+                f2.to(maptitle.current, { x: X(-30), opacity: 0, duration: 1, ease: "power1.in" }, 0).to(
                     mapimage.current,
                     { opacity: 0, scale: 0.9, duration: 1.3, ease: "power1.in" },
                     "-=0.5",
                 );
                 break;
+
             case 6:
-                g2.to(cutltttl.current, { x: -30, opacity: 0, duration: 1, ease: "power1.in" }, 0)
-                    .to(cultlist.current, { x: -30, opacity: 0, duration: 1, ease: "power1.in" }, "-=0.5")
-                    .to(cutltdtls.current, { x: 100, opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
-                    .to(cutltmain.current, { x: 100, opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
-                    .to(cutlttext.current, { x: 100, opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
-                    .to(talentDescMob.current, { x: 100, opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
-                    .to(talentCareerMob.current, { x: 100, opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
+                g2.to(cutltttl.current, { x: X(-30), opacity: 0, duration: 1, ease: "power1.in" }, 0)
+                    .to(cultlist.current, { x: X(-30), opacity: 0, duration: 1, ease: "power1.in" }, "-=0.5")
+                    .to(cutltdtls.current, { x: X(100), opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
+                    .to(cutltmain.current, { x: X(100), opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
+                    .to(cutlttext.current, { x: X(100), opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
+                    .to(talentDescMob.current, { x: X(100), opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
+                    .to(talentCareerMob.current, { x: X(100), opacity: 0, duration: 1, ease: "power1.in" }, "-=1.2")
                     .to(cutltimg.current, { scale: 1.5, opacity: 0, duration: 1.2, ease: "power1.in" }, "-=1.2");
                 break;
         }
@@ -1485,6 +1279,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         }
     }, [activeIndex, isLargeScreen]); // Re-run when activeIndex changes
 
+    const goToProjects = (city) => {
+        if (!city?.isClickable) return;
+
+        const basePath = isArabic ? "/ar/projects" : "/projects";
+
+        router.push(`${basePath}?country=${encodeURIComponent(city.name)}`);
+    };
+
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
             <div className="fixed w-screen h-screen z-[500] mswd pointer-events-none grid content-center load-sec2">
@@ -1661,8 +1463,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     ref={titleOneRef}
                                 >
                                     <h1
-                                        className={`text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] lg:leading-[80px] ${isArabic ? "ps-2" : "pe-2"
-                                            }`}
+                                        className={`text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] lg:leading-[80px] ${
+                                            isArabic ? "ps-2" : "pe-2"
+                                        }`}
                                     >
                                         {tData.firstSection.title}
                                     </h1>
@@ -1672,8 +1475,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             <div ref={brdrRef} className="hidden lg:block my-10 w-full border-t border-white/30"></div>
 
                             <div
-                                className={`w-full lg:w-[50%] xl:w-[45%] px-5 lg:px-0 text-white mb-[22dvh] lg:mb-19 flex justify-between items-center ${isArabic ? "ml-38 mr-auto" : "mr-38 ml-auto"
-                                    } gap-7`}
+                                className={`w-full lg:w-[50%] xl:w-[45%] px-5 lg:px-0 text-white mb-[22dvh] lg:mb-19 flex justify-between items-center ${
+                                    isArabic ? "ml-38 mr-auto" : "mr-38 ml-auto"
+                                } gap-7`}
                             >
                                 <div
                                     className="flex flex-col lg:flex-row lg:items-center gap-[17px] lg:gap-2"
@@ -1682,16 +1486,17 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     <h4 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.407] lg:max-w-[13ch]">
                                         {tData.firstSection.subTitle.text}
                                     </h4>
-                                    <Link href={"/about-us"}>
+                                    <LangLink href={"/about-us"}>
                                         <Image
                                             src="../assets/images/arrowbl.svg"
                                             alt="Logo"
                                             width={71}
                                             height={71}
-                                            className={`w-[30px] h-[30px] lg:w-[71px] lg:h-[71px] cursor-pointer ${isArabic ? "-scale-x-100" : ""
-                                                }`}
+                                            className={`w-[30px] h-[30px] lg:w-[71px] lg:h-[71px] cursor-pointer ${
+                                                isArabic ? "-scale-x-100" : ""
+                                            }`}
                                         />
-                                    </Link>
+                                    </LangLink>
                                 </div>
 
                                 <div className="hidden lg:flex flex-col items-center gap-3" ref={iconsRef}>
@@ -1742,10 +1547,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 ref={leftBgRef}
                             >
                                 <div
-                                    className={`absolute top-0 z-20 w-full h-full ${isArabic
+                                    className={`absolute top-0 z-20 w-full h-full ${
+                                        isArabic
                                             ? "right-0 bg-gradient-to-r from-black/30 from-0% to-black/80 to-100%"
                                             : "left-0 bg-gradient-to-l from-black/30 from-0% to-black/80 to-100%"
-                                        }`}
+                                    }`}
                                 ></div>
 
                                 <Image
@@ -1768,10 +1574,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             >
                                 {/* <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/85 from-0% via-black/65 via-75% to-black/60 to-100% "></div> */}
                                 <div
-                                    className={`absolute top-0 z-[22] w-full h-full ${isArabic
+                                    className={`absolute top-0 z-[22] w-full h-full ${
+                                        isArabic
                                             ? "right-0 bg-gradient-to-l from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
                                             : "left-0 bg-gradient-to-r from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
-                                        }`}
+                                    }`}
                                 ></div>
 
                                 <video
@@ -1786,15 +1593,16 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             </div>
 
                             <div
-                                className={`mb-[33px] lg:mb-0 z-40 pt-6 xl:pt-[35px] text-white absolute bottom-0 lg:relative ${isArabic ? "right-0 lg:right-auto" : "left-0 lg:left-auto"
-                                    } px-5 lg:px-0`}
+                                className={`mb-[33px] lg:mb-0 z-40 pt-6 xl:pt-[35px] text-white absolute bottom-0 lg:relative ${
+                                    isArabic ? "right-0 lg:right-auto" : "left-0 lg:left-auto"
+                                } px-5 lg:px-0`}
                                 ref={title2Ref}
                             >
                                 <h1 className="text-[36px] lg:text-48 3xl:text-60 font-light leading-[1.166666666666667] mb-[15px] lg:mb-3 3xl:mb-[25px]">
                                     {tData.secondSection.title}
                                 </h1>
                                 <div dangerouslySetInnerHTML={{ __html: tData.secondSection.subTitle }}></div>
-                                <Link
+                                <LangLink
                                     ref={spbtn}
                                     href={tData.thirdSection.link}
                                     className="hidden lg:flex text-[14px] mb-4 lg:mb-0 mt-5  3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-white lg:text-white uppercase  items-center gap-2 cursor-pointer group "
@@ -1806,10 +1614,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         viewBox="0 0 27 18"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className={`transition-all ease-in-out duration-300 ${isArabic
+                                        className={`transition-all ease-in-out duration-300 ${
+                                            isArabic
                                                 ? "group-hover:-translate-x-2 -scale-x-100"
                                                 : "group-hover:translate-x-2"
-                                            }`}
+                                        }`}
                                     >
                                         <path
                                             d="M17.6328 2.43262L25.0111 9.0134L17.6579 15.5679"
@@ -1826,7 +1635,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </Link>
+                                </LangLink>
                                 {/* <h3 className="text-[20px] lg:text-18 xl:text-24 font-light max-w-xl mb-[33px] lg:mb-0">
                                     With a legacy of over{" "}
                                     <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
@@ -1933,8 +1742,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
-                                className={`absolute ${isArabic ? "left-0" : "right-0"
-                                    } bottom-0 z-[1] w-[394px] h-[554px] opacity-50`}
+                                className={`absolute ${
+                                    isArabic ? "left-0" : "right-0"
+                                } bottom-0 z-[1] w-[394px] h-[554px] opacity-50`}
                             />
                         </div>
                     </div>
@@ -1959,8 +1769,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 alt={tData.thirdSection.imageAlt}
                                 width={2000}
                                 height={1500}
-                                className={`w-full h-full object-cover absolute object-right" ${isArabic ? "-scale-x-100" : ""
-                                    } hidden lg:block`}
+                                className={`w-full h-full object-cover absolute object-right" ${
+                                    isArabic ? "-scale-x-100" : ""
+                                } hidden lg:block`}
                             />
                             <Image
                                 src={tData.thirdSection.image}
@@ -1977,8 +1788,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
-                                className={`absolute ${isArabic ? "left-0" : "right-0"
-                                    } bottom-0 z-[0] w-[394px] h-[554px] opacity-50`}
+                                className={`absolute ${
+                                    isArabic ? "left-0" : "right-0"
+                                } bottom-0 z-[0] w-[394px] h-[554px] opacity-50`}
                             />
                         </div>
                         <div
@@ -1986,8 +1798,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             ref={sprghtBx}
                         >
                             <div
-                                className={`lg:bg-primary absolute w-full ${isArabic ? "right-0" : "left-0"
-                                    } h-full top-0 z-[-1]`}
+                                className={`lg:bg-primary absolute w-full ${
+                                    isArabic ? "right-0" : "left-0"
+                                } h-full top-0 z-[-1]`}
                                 ref={sprgtbg}
                             ></div>
                             <Image
@@ -1996,8 +1809,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 width={600}
                                 height={600}
                                 alt="logo"
-                                className={`hidden lg:block absolute ${isArabic ? "-scale-x-100 left-0" : "right-0"
-                                    } w-[250px] 3xl:w-[353px]`}
+                                className={`hidden lg:block absolute ${
+                                    isArabic ? "-scale-x-100 left-0" : "right-0"
+                                } w-[250px] 3xl:w-[353px]`}
                             />
                             <div className="relative z-[99]">
                                 <h1
@@ -2014,7 +1828,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         {tData.thirdSection.description}
                                     </p>
                                 </div>
-                                <Link
+                                <LangLink
                                     ref={spbtn}
                                     href={tData.thirdSection.link}
                                     className="text-[14px] mt-5 3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-[#464646] lg:text-white uppercase flex items-center gap-2 cursor-pointer group "
@@ -2026,10 +1840,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         viewBox="0 0 27 18"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className={`transition-all ease-in-out duration-300 ${isArabic
+                                        className={`transition-all ease-in-out duration-300 ${
+                                            isArabic
                                                 ? "group-hover:-translate-x-2 -scale-x-[1]"
                                                 : "group-hover:translate-x-2"
-                                            }`}
+                                        }`}
                                     >
                                         <path
                                             d="M17.6328 2.43262L25.0111 9.0134L17.6579 15.5679"
@@ -2046,13 +1861,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </Link>
+                                </LangLink>
                             </div>
                             <div className="mt-auto relative">
                                 <hr
                                     ref={spBrdOne}
-                                    className={`border-white opacity-20 absolute top-[57px] ${isArabic ? "right-[-30%] left-0" : "left-[-30%] right-0"
-                                        }`}
+                                    className={`border-white opacity-20 absolute top-[57px] ${
+                                        isArabic ? "right-[-30%] left-0" : "left-[-30%] right-0"
+                                    }`}
                                 />
                                 <div className="hidden lg:grid grid-cols-3 " ref={spStats}>
                                     {tData.thirdSection.items.map((item, index) => (
@@ -2246,10 +2062,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         <div className="flex lg:h-full">
                             {/*      <div className="w-1/3"></div> */}
                             <div
-                                className={`w-full pt-[16.3dvh] lg:pt-33 ${isArabic
+                                className={`w-full pt-[16.3dvh] lg:pt-33 ${
+                                    isArabic
                                         ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[283px]"
                                         : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px]"
-                                    } bg-primary lg:bg-transparent`}
+                                } bg-primary lg:bg-transparent`}
                                 ref={srvLftBx}
                             >
                                 <div className={`absolute top-[-195px] ${isArabic ? "left-0" : "right-0"}`} ref={srvsVct}>
@@ -2282,27 +2099,30 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         {/* Desktop (>= 1024px): Original div with flex-col */}
                                         {isLargeScreen ? (
                                             <div
-                                                className={`flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden border-b border-[#ffffff20] mb-5 lg:mb-0 xs-pt-1 pt-[4dvh] lg:pt-18 lg:pb-21 3xl:pt-14 3xl:pb-21 ${isArabic ? "pl-2" : "pr-2"
-                                                    }`}
+                                                className={`flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden border-b border-[#ffffff20] mb-5 lg:mb-0 xs-pt-1 pt-[4dvh] lg:pt-18 lg:pb-21 3xl:pt-14 3xl:pb-21 ${
+                                                    isArabic ? "pl-2" : "pr-2"
+                                                }`}
                                             >
                                                 {tServiceData.map((service, index) => (
                                                     <div
                                                         key={index}
-                                                        className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0 ${activeServiceIndex === index
+                                                        className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0 ${
+                                                            activeServiceIndex === index
                                                                 ? "border-white "
                                                                 : "border-transparent"
-                                                            }`}
+                                                        }`}
                                                         ref={(el) => (textItemsRef.current[index] = el)}
                                                     >
-                                                        <Link
+                                                        <LangLink
                                                             href={isDesktop ? `services/${service.link}` : "#"}
                                                             onClick={() => handleServiceClick()}
                                                         >
                                                             <p
-                                                                className={`${activeServiceIndex === index
+                                                                className={`${
+                                                                    activeServiceIndex === index
                                                                         ? "text-white lg:text-black font-light lg:font-bold bo "
                                                                         : "text-white/70 lg:text-black font-light"
-                                                                    } text-[14px] lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9] 2xl:leading-[1.70] 3xl:leading-[1.607142857142857] cursor-pointer group-hover:lg:text-black group-hover:lg:font-bold`}
+                                                                } text-[14px] lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9] 2xl:leading-[1.70] 3xl:leading-[1.607142857142857] cursor-pointer group-hover:lg:text-black group-hover:lg:font-bold`}
                                                                 onMouseOver={() => [
                                                                     setActiveService({
                                                                         image: service.homeImage,
@@ -2316,7 +2136,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             >
                                                                 <span className="duration-400">{service.title}</span>
                                                             </p>
-                                                        </Link>
+                                                        </LangLink>
                                                         <Image
                                                             src="../assets/images/services/arrowblw.svg"
                                                             alt="Arrow"
@@ -2325,13 +2145,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             className={`
     lg:block hidden
     transition-all duration-500 ease-in-out
-    ${activeServiceIndex === index
-                                                                    ? `opacity-100 scale-100 ${isArabic ? "-scale-x-100" : ""}`
-                                                                    : "opacity-0 scale-75"
-                                                                }
+    ${activeServiceIndex === index ? `opacity-100 scale-100 ${isArabic ? "-scale-x-100" : ""}` : "opacity-0 scale-75"}
   `}
                                                         />
-
                                                     </div>
                                                 ))}
                                             </div>
@@ -2342,8 +2158,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 freeMode={true}
                                                 slidesPerView="auto"
                                                 spaceBetween={24}
-                                                className={`border-b border-[#ffffff20] mb-5 xs-pt-1 pt-[4dvh] ${isArabic ? "pl-2" : "pr-2"
-                                                    }`}
+                                                className={`border-b border-[#ffffff20] mb-5 xs-pt-1 pt-[4dvh] ${
+                                                    isArabic ? "pl-2" : "pr-2"
+                                                }`}
                                                 touchStartPreventDefault={false}
                                                 preventClicks={false}
                                                 preventClicksPropagation={false}
@@ -2363,10 +2180,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         className="!w-auto !mt-1"
                                                     >
                                                         <div
-                                                            className={`pb-[7px] flex items-center gap-3 cursor-pointer group w-fit border-b ${activeServiceIndex === index
+                                                            className={`pb-[7px] flex items-center gap-3 cursor-pointer group w-fit border-b ${
+                                                                activeServiceIndex === index
                                                                     ? "border-white"
                                                                     : "border-transparent"
-                                                                }`}
+                                                            }`}
                                                             onClick={() => {
                                                                 setActiveService({
                                                                     image: service.homeImage,
@@ -2379,10 +2197,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             }}
                                                         >
                                                             <p
-                                                                className={`${activeServiceIndex === index
+                                                                className={`${
+                                                                    activeServiceIndex === index
                                                                         ? "text-white font-light"
                                                                         : "text-white/70 font-light"
-                                                                    } text-[14px] leading-[1.607142857142857] cursor-pointer`}
+                                                                } text-[14px] leading-[1.607142857142857] cursor-pointer`}
                                                             >
                                                                 <span className="duration-400">{service.title}</span>
                                                             </p>
@@ -2441,13 +2260,15 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 {/* <div className="absolute inset-0 z-30 bg-gradient-to-r from-black/60 via-black/60 to-black/60 pointer-events-none"></div> */}
                                 {/* <div className="absolute inset-0 z-30 bg-gradient-to-r from-black/50 via-black/30 to-black/20 pointer-events-none"></div> */}
                                 <div
-                                    className={`absolute inset-0 z-30 ${isArabic ? "bg-gradient-to-l" : "bg-gradient-to-r"
-                                        } pointer-events-none
+                                    className={`absolute inset-0 z-30 ${
+                                        isArabic ? "bg-gradient-to-l" : "bg-gradient-to-r"
+                                    } pointer-events-none
   transition-opacity duration-300 ease-in-out
-    ${activeService?.title === "Interior Fit-Out" || activeService?.title === "Facade"
-                                            ? "from-black/75 from-0% via-black/70 via-60% to-black/45 to-100%"
-                                            : "from-black/50 from-0% via-black/30 via-60% to-black/20 to-100%"
-                                        }
+    ${
+        activeService?.title === "Interior Fit-Out" || activeService?.title === "Facade"
+            ? "from-black/75 from-0% via-black/70 via-60% to-black/45 to-100%"
+            : "from-black/50 from-0% via-black/30 via-60% to-black/20 to-100%"
+    }
   `}
                                 ></div>
                             </div>
@@ -2477,24 +2298,27 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 />
                             </AnimatePresence>
                             <div
-                                className={`lg:absolute xs-ptop-15 top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px] ${isArabic ? "right-[40px] 3xl:right-[58px]" : "left-[40px] 3xl:left-[58px]"
-                                    } z-10 px-5 lg:px-0 pt-7 lg:pt-0`}
+                                className={`lg:absolute xs-ptop-15 top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px] ${
+                                    isArabic ? "right-[40px] 3xl:right-[58px]" : "left-[40px] 3xl:left-[58px]"
+                                } z-10 px-5 lg:px-0 pt-7 lg:pt-0`}
                                 ref={srvsCntb}
                             >
                                 <hr
                                     ref={brdonRef}
-                                    className={`hidden lg:block lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none ${isArabic
+                                    className={`hidden lg:block lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none ${
+                                        isArabic
                                             ? "left-[25%] right-[-85%] lg:right-[-434px] xl:right-[-594px] 2xl:right-[-594px] 3xl:right-[-643px] bg-gradient-to-l from-black to-white"
                                             : "right-[25%] left-[-85%] lg:left-[-434px] xl:left-[-594px] 2xl:left-[-594px] 3xl:left-[-643px] bg-gradient-to-r from-black to-white"
-                                        }`}
+                                    }`}
                                 />
 
                                 <hr
                                     ref={brdonRef}
-                                    className={`lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none bg-white ${isArabic
+                                    className={`lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none bg-white ${
+                                        isArabic
                                             ? "right-[-40px] 3xl:right-[-58px] left-[25%]"
                                             : "left-[-40px] 3xl:left-[-58px] right-[25%]"
-                                        }`}
+                                    }`}
                                 />
 
                                 <motion.div
@@ -2505,8 +2329,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     animate="show"
                                 >
                                     <div
-                                        className={`flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] z-10 w-7 h-7 ${isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
-                                            }`}
+                                        className={`flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] z-10 w-7 h-7 ${
+                                            isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
+                                        }`}
                                         ref={srvsArrw}
                                     >
                                         <Image
@@ -2518,17 +2343,21 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         />
                                     </div>
 
-                                    <Link href={`/services/${activeService?.link}`} onClick={() => handleServiceClick()}>
+                                    <LangLink
+                                        href={`/services/${activeService?.link}`}
+                                        onClick={() => handleServiceClick()}
+                                    >
                                         <h3 className="text-[20px] lg:text-29 leading-[1.344827586206897] font-light text-black lg:text-white">
                                             {activeService?.title}
                                         </h3>
-                                    </Link>
+                                    </LangLink>
                                     <div
-                                        className={`lg:hidden bottom-10 3xl:bottom-[50px] z-10 ${isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
-                                            }`}
+                                        className={`lg:hidden bottom-10 3xl:bottom-[50px] z-10 ${
+                                            isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
+                                        }`}
                                         ref={srvsArrw}
                                     >
-                                        <Link href={`/services/${activeService?.link}`}>
+                                        <LangLink href={`/services/${activeService?.link}`}>
                                             <Image
                                                 src="../assets/images/services/thickarrow.svg"
                                                 alt="Arrow"
@@ -2536,7 +2365,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 width={19}
                                                 height={19}
                                             />
-                                        </Link>
+                                        </LangLink>
                                     </div>
                                 </motion.div>
                                 <div className="overflow-hidden">
@@ -2551,10 +2380,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </motion.p>
                                 </div>
                             </div>
-                            <Link href={`/services/${activeService?.link}`}>
+                            <LangLink href={`/services/${activeService?.link}`}>
                                 <div
-                                    className={`hidden lg:block absolute bottom-10 cursor-pointer 3xl:bottom-[50px] z-10 ${isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
-                                        }`}
+                                    className={`hidden lg:block absolute bottom-10 cursor-pointer 3xl:bottom-[50px] z-10 ${
+                                        isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
+                                    }`}
                                     ref={srvsArrw}
                                 >
                                     <Image
@@ -2565,7 +2395,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         height={71}
                                     />
                                 </div>
-                            </Link>
+                            </LangLink>
                         </div>
                         {/* right */}
                         {/* <div ref={brdonRef} className=""></div> */}
@@ -2585,10 +2415,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         {/* left start */}
                         <div ref={sectorLeft} className="flex lg:h-full bg-primary lg:bg-transparent">
                             <div
-                                className={`w-full pt-[16.5dvh] lg:pt-25 xl:pt-25 3xl:pt-33 ${isArabic
+                                className={`w-full pt-[16.5dvh] lg:pt-25 xl:pt-25 3xl:pt-33 ${
+                                    isArabic
                                         ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
                                         : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
-                                    }`}
+                                }`}
                             >
                                 <div className={`absolute top-[-195px] ${isArabic ? "left-0" : "right-0"}`} ref={srvsVct}>
                                     <Image
@@ -2608,14 +2439,16 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </h1>
                                     <div
                                         ref={talentlist}
-                                        className={`xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible ${isArabic ? "lg:pr-4 3xl:pr-0" : "lg:pl-4 3xl:pl-0"
-                                            }`}
+                                        className={`xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible ${
+                                            isArabic ? "lg:pr-4 3xl:pr-0" : "lg:pl-4 3xl:pl-0"
+                                        }`}
                                     >
                                         <div className="lg:pb-4 relative h-full flex items-center">
                                             {/* curved line svg */}
                                             <div
-                                                className={`absolute top-0 ${isArabic ? "right-0 -scale-x-100" : "left-0"
-                                                    } h-full hidden lg:flex flex-col justify-center`}
+                                                className={`absolute top-0 ${
+                                                    isArabic ? "right-0 -scale-x-100" : "left-0"
+                                                } h-full hidden lg:flex flex-col justify-center`}
                                             >
                                                 <Image
                                                     width={81}
@@ -2628,8 +2461,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             {isLargeScreen ? (
                                                 /* Desktop (>= 1024px): Original vertical list */
                                                 <div
-                                                    className={`flex flex-row lg:flex-col 3xl:gap-1 sectors-list lg:pt-5 gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0 ${isArabic ? "lg:pr-4" : "lg:pl-4"
-                                                        }`}
+                                                    className={`flex flex-row lg:flex-col 3xl:gap-1 sectors-list lg:pt-5 gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0 ${
+                                                        isArabic ? "lg:pr-4" : "lg:pl-4"
+                                                    }`}
                                                 >
                                                     {visibleSectors.map((sector) => {
                                                         const isActive = sector.position === 0;
@@ -2658,12 +2492,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         return (
                                                             <div
                                                                 key={`${sector.originalIndex}-${sector.position}`}
-                                                                className={`flex items-center gap-5 cursor-pointer ${isActive
+                                                                className={`flex items-center gap-5 cursor-pointer ${
+                                                                    isActive
                                                                         ? isArabic
                                                                             ? "lg:mr-[-27px] lg:py-5"
                                                                             : "lg:ml-[-27px] lg:py-5"
                                                                         : "lg:py-1"
-                                                                    }`}
+                                                                }`}
                                                                 style={{
                                                                     opacity: opacity,
                                                                     transform: `scale(${scale})`,
@@ -2694,10 +2529,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                 )}
 
                                                                 <h3
-                                                                    className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${isActive
+                                                                    className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
+                                                                        isActive
                                                                             ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
                                                                             : "text-[14px] lg:text-19 leading-[1.842105263157895]"
-                                                                        }`}
+                                                                    }`}
                                                                     style={{
                                                                         transition: "all 0.5s ease-out",
                                                                         willChange: "font-size, font-weight",
@@ -2750,10 +2586,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                     onClick={() => handleSlideClick(sector.originalIndex)}
                                                                 >
                                                                     <h3
-                                                                        className={`whitespace-nowrap hover:opacity-100 transition-opacity duration-500 text-white ${isActive
+                                                                        className={`whitespace-nowrap hover:opacity-100 transition-opacity duration-500 text-white ${
+                                                                            isActive
                                                                                 ? "text-[14px] leading-[1.842105263157895] border-b border-white"
                                                                                 : "text-[14px] leading-[1.842105263157895]"
-                                                                            }`}
+                                                                        }`}
                                                                     >
                                                                         {sector.name?.toLowerCase() === "industrial"
                                                                             ? "Entertainment and Leisure"
@@ -2767,8 +2604,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             )}
 
                                             <div
-                                                className={`hidden lg:block absolute ${isArabic ? "right-[-10px]" : "left-[-10px]"
-                                                    } top-1/2 -translate-y-[75%] z-10`}
+                                                className={`hidden lg:block absolute ${
+                                                    isArabic ? "right-[-10px]" : "left-[-10px]"
+                                                } top-1/2 -translate-y-[75%] z-10`}
                                             >
                                                 <div className="bg-[#30B6F94D] rounded-full w-[83px] h-[83px] flex items-center justify-center relative">
                                                     <Image
@@ -2828,10 +2666,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         }}
                                     ></div>
                                     <div
-                                        className={`lg:hidden tlnits p-5 group cursor-pointer absolute bottom-0 ${isArabic ? "right-0" : "left-0"
-                                            }`}
+                                        className={`lg:hidden tlnits p-5 group cursor-pointer absolute bottom-0 ${
+                                            isArabic ? "right-0" : "left-0"
+                                        }`}
                                     >
-                                        <Link
+                                        <LangLink
                                             href="/projects"
                                             className="flex items-center gap-2 uppercase font-light text-[14px] text-white"
                                         >
@@ -2841,19 +2680,21 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 height={27}
                                                 src="../assets/images/icons/arrow-right.svg"
                                                 alt="arrow right"
-                                                className={`transition-all duration-300 ${isArabic
+                                                className={`transition-all duration-300 ${
+                                                    isArabic
                                                         ? "group-hover:-translate-x-2 -scale-x-100"
                                                         : "group-hover:translate-x-2"
-                                                    }`}
+                                                }`}
                                             />
-                                        </Link>
+                                        </LangLink>
                                     </div>
                                 </div>
                                 {/* hear the absolute positioned box with project details */}
                                 {/* Absolute positioned box with project details */}
                                 <div
-                                    className={`lg:absolute bottom-20 ${isArabic ? "right-0" : "left-0"
-                                        } lg:bg-primary text-black lg:text-white z-50 cursor-pointer`}
+                                    className={`lg:absolute bottom-20 ${
+                                        isArabic ? "right-0" : "left-0"
+                                    } lg:bg-primary text-black lg:text-white z-50 cursor-pointer`}
                                     style={{
                                         transition: "transform 0.5s ease-out, opacity 0.5s ease-out",
                                         transform: isAnimating ? "translateY(10px)" : "translateY(0)",
@@ -2913,19 +2754,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             </div>
                                         </div>
                                         <div className="hidden lg:block tlnits px-15 py-6 xl:pt-[42px] xl:pb-[49px] group cursor-pointer">
-                                            <Link href="/projects" className="flex items-center gap-2">
+                                            <LangLink href="/projects" className="flex items-center gap-2">
                                                 View All Projects
                                                 <Image
                                                     width={27}
                                                     height={27}
                                                     src="../assets/images/icons/arrow-right.svg"
                                                     alt="arrow right"
-                                                    className={`transition-all duration-300 ${isArabic
+                                                    className={`transition-all duration-300 ${
+                                                        isArabic
                                                             ? "group-hover:-translate-x-2 -scale-x-100"
                                                             : "group-hover:translate-x-2"
-                                                        }`}
+                                                    }`}
                                                 />
-                                            </Link>
+                                            </LangLink>
                                         </div>
                                     </div>
                                 </div>
@@ -2946,21 +2788,22 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
             >
                 <section id="section6" className="h-screen relative md:overflow-hidden whitebgref scroll-area bg-white">
                     <div
-                        className={`w-full pt-[11.5dvh] 3xl:pt-33 ${isArabic
+                        className={`w-full pt-[11.5dvh] 3xl:pt-33 ${
+                            isArabic
                                 ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
                                 : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
-                            }`}
+                        }`}
                     >
                         <div
                             dir={isArabic ? "rtl" : "ltr"}
-                            className={`absolute-maptitle px-5 lg:px-0 pt-[4.7dvh] lg:pt-0 pb-6 lg:pb-0 ${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
-                                } flex flex-col h-full`}
+                            className={`absolute-maptitle px-5 lg:px-0 pt-[4.7dvh] lg:pt-0 pb-6 lg:pb-0 ${
+                                isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
+                            } flex flex-col h-full`}
                         >
                             <h1
                                 ref={maptitle}
                                 className="text-[36px] lg:text-34 xl:text-48 3xl:text-60  font-light gradient-text text-bl leading-[1.2] 3xl:leading-[1.18] max-w-[15ch]"
                             >
-                                {/* Our Presence is Steadily Expanding */}
                                 {tData.sixthSection?.title}
                             </h1>
                         </div>
@@ -2982,7 +2825,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         alt="Arrow"
                                         width={1158}
                                         height={679}
-                                        className="object-cover img-f select-none min-w-[733px] w-[733px] h-[355px] lg:h-full lg:min-w-[1156px] lg:w-[1156px]  "
+                                        className="object-cover img-f select-none min-w-[733px] w-[733px] h-[350px] lg:h-full lg:min-w-[1156px] lg:w-[1156px] ml-[20px] lg:ml-0"
                                     />
                                     <div className="absolute top-[-121px] lg:top-0 left-[-69px] lg:left-0 min-w-[733px] w-[733px] h-[436px] lg:h-full lg:w-[1156px]  overflow-hidden  lg:overflow-visible    ">
                                         {/* Dots */}
@@ -2993,9 +2836,10 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 // className={` absolute   transition-all duration-300 flex items-center justify-center    w-[480px] h-[480px] ${
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
-                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${activeDot === city.id ? "z-[999]" : "z-[1]"
-                                                    }`}
-                                                style={{ left: city.left, top: city.top }}
+                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
+                                                    activeDot === city.id ? "z-[999]" : "z-[1]"
+                                                }`}
+                                                style={{ left: `calc(${city.left} - 4.8%)`, top: city.top }}
                                             >
                                                 <div
                                                     //     onClick={() => {
@@ -3021,14 +2865,15 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                     //     ? "bg-[#30F955] shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
                                                     //     : "bg-[#30B6F9]   border border-[#97DCFF] scale-85"
                                                     // }`}
-                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${city.groupId === "sp-group"
+                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${
+                                                        city.groupId === "sp-group"
                                                             ? activeDot === city.id
                                                                 ? "bg-primary/40 shadow-[0_0_35px_rgba(239,68,68,0.9),0_0_50px_rgba(239,68,68,0.6)] border border-[#97DCFF] scale-full"
                                                                 : "bg-[#30B6F9] border border-[#97DCFF] scale-85"
                                                             : activeDot === city.id
-                                                                ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
-                                                                : "bg-primary border border-white scale-85"
-                                                        }`}
+                                                            ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
+                                                            : "bg-primary border border-white scale-85"
+                                                    }`}
                                                 ></div>
                                                 {/* <span
                       className={`relative   -left-1 border border-[#30F95533] min-w-[110px] text-center backdrop-blur-[10px] uppercase bg-[#0015FF99] text-white text-[14px] font-bold px-2 py-[2px] rounded-full opacity-0 
@@ -3041,24 +2886,26 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                       {city.name}
                     </span> */}
 
-                                                <div className="relative flex flex-col items-center gap-[7px] pointer-events-none">
-                                                    {/* SP GROUP LABEL */}
-                                                    {city.groupId === "sp-group" && activeDot === city.id && (
-                                                        <span className="text-13 font-semibold uppercase text-primary">
-                                                            {isArabic ? "SP Group" : "SP Group"}
-                                                        </span>
-                                                    )}
+                                                <div className="relative">
+                                                    <div className="absolute -left-8 top-1 flex flex-col items-center gap-[7px] pointer-events-none">
+                                                        {/* SP GROUP LABEL */}
+                                                        {city.groupId === "sp-group" && activeDot === city.id && (
+                                                            <span className="text-13 font-semibold uppercase text-primary">
+                                                                {isArabic ? "SP Group" : "SP Group"}
+                                                            </span>
+                                                        )}
 
-                                                    {/* CITY NAME PILL */}
-                                                    <span
-                                                        className={`border border-[#30F95533] min-w-[110px]
+                                                        {/* CITY NAME PILL */}
+                                                        <span
+                                                            className={`border border-[#30F95533] min-w-[125px] lg:min-w-[150px] 
       text-center backdrop-blur-[10px] uppercase bg-[#0015FF99]
       text-white text-[14px] font-bold px-2 py-[2px] rounded-full
       transition-all duration-500
       ${activeDot === city.id ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}
-                                                    >
-                                                        {city.name}
-                                                    </span>
+                                                        >
+                                                            {city.name}
+                                                        </span>
+                                                    </div>
                                                 </div>
 
                                                 {/* <div className={`hidden lg:block translate-x-[50%] -left-1/2 top-0 rounded-full transition-all duration-500 absolute  w-full h-full `}
@@ -3150,20 +2997,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
   p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
   absolute left-[0%] top-[21%]
     ${city.isClickable ? "cursor-pointer" : "cursor-default"}
-  ${activeDot === city.id
-                                                                            ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
-                                                                            : "opacity-0 scale-80 pointer-events-none"
-                                                                        }`}
+  ${
+      activeDot === city.id
+          ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
+          : "opacity-0 scale-80 pointer-events-none"
+  }`}
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
-
-                                                                        if (!city.isClickable) return;
-
-                                                                        router.push(
-                                                                            `/projects?country=${encodeURIComponent(
-                                                                                city.name,
-                                                                            )}`,
-                                                                        );
+                                                                        goToProjects(city);
                                                                     }}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
@@ -3227,10 +3068,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                                             {/* Ring */}
                                                             <div
-                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${activeDot === city.id
+                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${
+                                                                    activeDot === city.id
                                                                         ? "opacity-100 scale-full"
                                                                         : "opacity-0"
-                                                                    } transition-all duration-500 delay-300`}
+                                                                } transition-all duration-500 delay-300`}
                                                                 style={{
                                                                     backgroundImage: `url(../assets/images/ring3.svg)`,
                                                                     backgroundSize: "cover",
@@ -3258,17 +3100,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             onTouchEnd={(e) => {
                                                 e.preventDefault();
                                                 e.stopPropagation();
-
-                                                if (!selectedCity.isClickable) return;
-
-                                                router.push(`/projects?country=${encodeURIComponent(selectedCity.name)}`);
+                                                goToProjects(selectedCity);
                                             }}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-
-                                                if (!selectedCity.isClickable) return;
-
-                                                router.push(`/projects?country=${encodeURIComponent(selectedCity.name)}`);
+                                                goToProjects(selectedCity);
                                             }}
                                             className={`me-2 bubble cursor-pointer
     transition-all duration-500 delay-100 backdrop-blur-sm
@@ -3313,8 +3149,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </div>
 
                                     <div
-                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
-                                            }   transition-all duration-500 delay-300`}
+                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${
+                                            activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
+                                        }   transition-all duration-500 delay-300`}
                                         style={{
                                             backgroundImage: `url(../assets/images/ring3.svg)`,
                                             backgroundSize: "cover",
@@ -3349,10 +3186,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         />
                         <div
                             className={`absolute w-full h-full z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.75)_82.45%)]
-    ${isArabic
-                                    ? "lg:bg-[linear-gradient(90deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
-                                    : "lg:bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
-                                }`}
+    ${
+        isArabic
+            ? "lg:bg-[linear-gradient(90deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
+            : "lg:bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
+    }`}
                         ></div>
                     </figure>
                     <div
@@ -3361,14 +3199,16 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     >
                         {/* LEFT SIDE */}
                         <div
-                            className={`w-full pt-33 px-5 lg:pe-0 ${isArabic
+                            className={`w-full pt-33 px-5 lg:pe-0 ${
+                                isArabic
                                     ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[280px]"
                                     : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[280px]"
-                                } lg:pb-[120px] 3xl:pb-[212px] h-full lg:h-auto`}
+                            } lg:pb-[120px] 3xl:pb-[212px] h-full lg:h-auto`}
                         >
                             <div
-                                className={`${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
-                                    } flex flex-col justify-between h-full lg:gap-0`}
+                                className={`${
+                                    isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
+                                } flex flex-col justify-between h-full lg:gap-0`}
                             >
                                 <h1
                                     ref={cutltttl}
@@ -3405,8 +3245,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                     <div
                                         ref={talentDescMob}
-                                        className={`max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0 ${isArabic ? "-right-5 md:right-0" : "-left-5 md:left-0"
-                                            }`}
+                                        className={`max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0 ${
+                                            isArabic ? "-right-5 md:right-0" : "-left-5 md:left-0"
+                                        }`}
                                     >
                                         <div className="p-5 md:p-10 lg:p-7 3xl:py-12 3xl:px-15 bg-primary w-fit 2xl:w-[400px] 3xl:w-[550px] text-white relative ">
                                             <motion.p
@@ -3426,7 +3267,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             ref={talentCareerMob}
                                             className={`py-3 w-fit ${isArabic ? "mr-auto" : "ml-auto"} lg:hidden`}
                                         >
-                                            <Link href="/careers">
+                                            <LangLink href="/careers">
                                                 <div className="flex items-center gap-[6px]">
                                                     <p className="text-white text-16 font-light uppercase">Careers</p>
                                                     <svg
@@ -3453,7 +3294,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         />
                                                     </svg>
                                                 </div>
-                                            </Link>
+                                            </LangLink>
                                         </div>
                                         <div
                                             className="flex flex-col lg:flex-row lg:flex-wrap lg:items-center lg:gap-5"
@@ -3473,19 +3314,21 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     lg:pb-1 transition-all duration-300 `}
                                                     >
                                                         <div
-                                                            className={`py-1 lg:py-0  ${activeItem.id === item.id
+                                                            className={`py-1 lg:py-0  ${
+                                                                activeItem.id === item.id
                                                                     ? "   bg-[linear-gradient(90deg,rgba(30,69,162,0.35)_0%,rgba(48,182,249,0)_100%)] lg:bg-none"
                                                                     : ""
-                                                                }`}
+                                                            }`}
                                                         >
                                                             <div
                                                                 className={`text-[15px] md:text-[18px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px] text-white/80 leading-[1.473684210526316]
-transition-all duration-300 cursor-pointer ${activeItem.id === item.id
+transition-all duration-300 cursor-pointer ${
+                                                                    activeItem.id === item.id
                                                                         ? isArabic
                                                                             ? "font-bold text-white border-r-[2px] border-secondary lg:border-r-0 pe-2 lg:pe-0"
                                                                             : "font-bold text-white border-l-[2px] border-secondary lg:border-l-0 ps-2 lg:ps-0"
                                                                         : "hover:font-bold hover:text-white font-light"
-                                                                    }`}
+                                                                }`}
                                                             >
                                                                 {item.title.split(" ").map((word, i) => (
                                                                     <span key={i}>
@@ -3505,16 +3348,18 @@ transition-all duration-300 cursor-pointer ${activeItem.id === item.id
 
                             <div className="relative">
                                 <div
-                                    className={`border-b border-white/20 absolute bottom-0 w-full ${isArabic ? "right-0" : "left-0"
-                                        }`}
+                                    className={`border-b border-white/20 absolute bottom-0 w-full ${
+                                        isArabic ? "right-0" : "left-0"
+                                    }`}
                                 ></div>
                             </div>
                         </div>
 
                         {/* RIGHT SIDE */}
                         <div
-                            className={`hidden lg:flex flex-col justify-end h-full  pt-[120px] 3xl:pt-[150px] overflow-hidden relative ${isArabic ? "border-r" : "border-l"
-                                } border-white/25`}
+                            className={`hidden lg:flex flex-col justify-end h-full  pt-[120px] 3xl:pt-[150px] overflow-hidden relative ${
+                                isArabic ? "border-r" : "border-l"
+                            } border-white/25`}
                         >
                             <motion.div
                                 ref={cutltmain}
@@ -3567,7 +3412,7 @@ transition-all duration-300 cursor-pointer ${activeItem.id === item.id
                                 transition={{ duration: 0.4, ease: "easeInOut" }}
                                 className="pt-[37px] pb-[60px] 3xl:pb-[151px] px-5 lg:px-7   3xl:px-15 "
                             >
-                                <Link href="/careers">
+                                <LangLink href="/careers">
                                     <div className="flex items-center gap-[6px]">
                                         <p className="text-white text-16 font-light uppercase">Careers</p>
                                         <svg
@@ -3594,7 +3439,7 @@ transition-all duration-300 cursor-pointer ${activeItem.id === item.id
                                             />
                                         </svg>
                                     </div>
-                                </Link>
+                                </LangLink>
                             </motion.div>
                         </div>
                     </div>

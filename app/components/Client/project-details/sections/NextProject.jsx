@@ -3,7 +3,6 @@ import { useMediaQuery } from "react-responsive";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
 
 // Register ScrollTrigger plugin
 if (typeof window !== "undefined") {
@@ -18,6 +17,8 @@ import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import LangLink from "@/lib/LangLink";
+
 const NextProject = ({ slug, title, thumbnail }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const tTitle = useApplyLang(title);
@@ -85,7 +86,7 @@ const NextProject = ({ slug, title, thumbnail }) => {
                 />
               </p> */}
                                 <H2Title titleText={tTitle} marginClass={"md:mb-3 lg:mb-[21px]"} maxW={"lg:max-w-[12ch]"} />
-                                <Link href={`/projects/${slug}`} className="w-fit">
+                                <LangLink href={`/projects/${slug}`} className="w-fit">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         className={`cursor-pointer w-[35px] h-[35px] xl:w-[71px] xl:h-[71px] ${isArabic ? "-scale-x-100" : ""}`}
@@ -109,7 +110,7 @@ const NextProject = ({ slug, title, thumbnail }) => {
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </Link>
+                                </LangLink>
                             </div>
                         </div>
                     </div>

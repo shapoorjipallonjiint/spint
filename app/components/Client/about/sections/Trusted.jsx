@@ -4,11 +4,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp, moveLeft } from "../../../motionVarients";
-import  Link from "next/link";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import LangLink from "@/lib/LangLink";
 gsap.registerPlugin(ScrollTrigger);
 
 const Trusted = ({data}) => {
@@ -58,14 +58,14 @@ const Trusted = ({data}) => {
           <h2 ref={titleRef} className="trusted-title text-60 max-w-[18.14ch] font-light leading-[1.18] text-black mb-5 lg:mb-0" >
             <SplitTextAnimation children={t.title} staggerDelay={0.1} animationDuration={0.8} delay={0.8} />
           </h2> 
-       <Link href={t.buttonLink}>
+       <LangLink href={t.buttonLink}>
           <div className="flex flex-col justify-end items-end sdsd">
             <MotionImage variants={moveUp(1)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} src="../assets/images/about-us/toarrow.svg" width={71} height={71} alt="arrow" className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 xl:w-[71px] xl:h-[71px] ${isArabic && "rotate-270"}`} />
             <p className="text-16 font-light leading-[1.474] text-paragraph uppercase pt-3">
               {t.buttonText}
             </p>
           </div>
-          </Link>
+          </LangLink>
         </div>
       </div>
     </section>

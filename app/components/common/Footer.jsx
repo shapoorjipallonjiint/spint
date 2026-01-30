@@ -3,7 +3,7 @@ import { useApplyLang } from "@/lib/applyLang";
 import { fadeIn, moveUp, paragraphItem } from "../motionVarients";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import LangLink from "@/lib/LangLink"
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const Footer = () => {
@@ -164,7 +164,7 @@ const Footer = () => {
                   key={index}
                   className="relative p-[2px] rounded-full bg-[linear-gradient(90deg,#30B6F9,#1E45A2,#30B6F9)] bg-[length:200%_200%] animate-[gradient_3s_linear_infinite] inline-flex items-center justify-center transition-all duration-300 hover:scale-[1.08]"
                 >
-                  <Link
+                  <LangLink
                     href="#"
                     className="w-[34px] h-[34px] rounded-full bg-black flex items-center justify-center"
                   >
@@ -175,7 +175,7 @@ const Footer = () => {
                       alt={item.alt}
                       className={item.alt === "insta" ? "invert-100 w-[16px]" : ""}
                     />
-                  </Link>
+                  </LangLink>
                 </li>
               ))}
             </motion.ul>
@@ -201,7 +201,7 @@ const Footer = () => {
                     key={link.href}
                     className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-extralight"
                   >
-                    <Link href={link.href}>{link.label}</Link>
+                    <LangLink href={link.href}>{link.label}</LangLink>
                   </li>
                 ))}
               </ul>

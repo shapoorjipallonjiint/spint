@@ -6,11 +6,11 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import { motion, useInView } from "framer-motion";
-import { moveLeft, moveUp } from "@/app/components/motionVarients";
+import { moveUp } from "@/app/components/motionVarients";
 import "./featuredProjectSlider.css";
 import H2Title from "./H2Title";
 import Image from "next/image";
-import Link from "next/link";
+import LangLink from '@/lib/LangLink'
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
@@ -157,7 +157,7 @@ const FeaturedProjectSlider = ({ data }) => {
                             {t.map((item, i) => (
                                 <SwiperSlide key={i}>
                                     <div>
-                                        <Link href={`/projects/${item.slug}`}>
+                                        <LangLink href={`/projects/${item.slug}`}>
                                             <div className="overflow-hidden">
                                                 {hasValidImage(item.thumbnail) ? (
                                                     <Image
@@ -191,12 +191,12 @@ const FeaturedProjectSlider = ({ data }) => {
                                                     </div>
                                                 )}
                                             </div>
-                                        </Link>
+                                        </LangLink>
 
                                         <div>
                                             <div className="border-b border-cmnbdr pt-5 3xl:pt-7 pb-5 xl:pb-7">
                                                 <div className="overflow-hidden">
-                                                    <Link href={`/projects/${item.slug}`}>
+                                                    <LangLink href={`/projects/${item.slug}`}>
                                                         <h3
                                                             className={`text-24 xl:text-29 leading-[1.344827586206897] font-light ${
                                                                 !hasScrolledIntoView
@@ -208,7 +208,7 @@ const FeaturedProjectSlider = ({ data }) => {
                                                         >
                                                             {item.firstSection?.title}
                                                         </h3>
-                                                    </Link>
+                                                    </LangLink>
                                                 </div>
                                             </div>
                                             <div className="border-b border-cmnbdr grid lg:grid-cols-2 2xl:grid-cols-[413px_1fr] items-center py-[2px]">

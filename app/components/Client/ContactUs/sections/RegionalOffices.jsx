@@ -4,9 +4,9 @@
 import H2Title from "../../../common/H2Title";
 import { motion } from "framer-motion";
 import { zoomIn } from "../../../motionVarients";
-import Link from "next/link";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import LangLink from "@/lib/LangLink";
 
 const RegionalOffices = ({ data }) => {
     const isArabic = useIsPreferredLanguageArabic();
@@ -85,7 +85,7 @@ odd:md:border-r-0 odd:2xl:border-r
                                     </div>
 
                                     <div className="w-fit">
-                                        <Link href={office.location} target="blank">
+                                        <LangLink href={office.location} target="blank">
                                             <div className="flex gap-[6px] items-center cursor-pointer">
                                                 <p className="text-16 font-light leading-[1.75] uppercase text-paragraph">
                                                     Location
@@ -120,7 +120,7 @@ odd:md:border-r-0 odd:2xl:border-r
                                                     </defs>
                                                 </svg>
                                             </div>
-                                        </Link>
+                                        </LangLink>
                                     </div>
                                 </div>
                             ) : null}
