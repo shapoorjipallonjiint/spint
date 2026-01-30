@@ -5,7 +5,7 @@ import { Listbox } from "@headlessui/react";
 import { useState, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { dropdownItemVariants, dropdownListVariants, moveUp } from "../../../motionVarients";
-import Link from "next/link";
+import LangLink from "@/lib/LangLink"
 import { useRef } from "react";
 import { statusData, UI_LABELS } from "@/app/components/AdminProject/statusData";
 import Image from "next/image";
@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+
 
 const ITEMS_PER_PAGE = 12;
 
@@ -640,7 +641,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                             viewport={{ amount: 0.2, once: true }}
                             className="group"
                         >
-                            <Link href={`/projects/${item.slug}`}>
+                            <LangLink href={`/projects/${item.slug}`}>
                                 <div className="relative">
                                     {item?.thumbnail ? (
                                         <Image
@@ -723,7 +724,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                             ""}
                                     </p>
                                 </div>
-                            </Link>
+                            </LangLink>
                         </motion.div>
                     ))}
 
@@ -754,7 +755,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                             className="border-b border-black/20 pb-[30px] mb-[30px] group"
                             viewport={{ amount: 0.2, once: true }}
                         >
-                            <Link href={`/projects/${item.slug}`}>
+                            <LangLink href={`/projects/${item.slug}`}>
                                 <div className="flex flex-col lg:grid grid-cols-[240px_244px_448px_0px] xl:grid-cols-[240px_244px_448px_32px] 2xl:grid-cols-[274px_324px_458px_32px] 3xl:grid-cols-[274px_384px_658px_32px] justify-between gap-3 md:gap-8 lg:gap-4 3xl:gap-[69px] ">
                                     <div className="w-full xl:w-full">
                                         {item?.thumbnail ? (
@@ -828,7 +829,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         </svg>
                                     </div>
                                 </div>
-                            </Link>
+                            </LangLink>
                         </motion.div>
                     ))}
 

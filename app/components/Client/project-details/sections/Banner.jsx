@@ -8,7 +8,6 @@ import SplitTextAnimation from "../../../../components/common/SplitTextAnimation
 import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
 import ImageLightbox from "../../../../components/common/ImagePopup";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";

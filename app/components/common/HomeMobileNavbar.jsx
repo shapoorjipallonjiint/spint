@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import Link from "next/link";
+import LangLink from "@/lib/LangLink"
 import { navData } from "../data";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
@@ -99,7 +99,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                     >
                       <div>
                         <div className="flex items-center justify-between">
-                          <Link
+                          <LangLink
                             href={item.href || "#"}
                             onClick={(e) => {
                               if (!hasSubmenu) {
@@ -112,7 +112,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                             className="text-16 font-light uppercase flex-1 hover:font-bold transition-all duration-300"
                           >
                             {item.title}
-                          </Link>
+                          </LangLink>
 
                           {hasSubmenu && (
                             <button
@@ -151,13 +151,13 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                             >
                               {item.submenu.map((sub, i) => (
                                 <li key={i}>
-                                  <Link
+                                  <LangLink
                                     href={sub.href}
                                     onClick={onClose}
                                     className="block text-[14px] hover:font-bold transition-all duration-200"
                                   >
                                     {sub.label}
-                                  </Link>
+                                  </LangLink>
                                 </li>
                               ))}
                             </motion.ul>
@@ -182,9 +182,9 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                 </button>
 
                 <div className="p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9]">
-                  <Link href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji" target="_blank" ><button className="w-full uppercase px-5 py-2 bg-white rounded-full">
+                  <LangLink href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji" target="_blank" ><button className="w-full uppercase px-5 py-2 bg-white rounded-full">
                     {isArabic ? "Employee login" : "Employee login"}
-                  </button></Link>
+                  </button></LangLink>
                 </div>
 
                 <button className="w-full bg-black/80 rounded-full p-3 flex items-center justify-center gap-2 text-white" onClick={()=>setMobileMenuOpenSearch(true)}>

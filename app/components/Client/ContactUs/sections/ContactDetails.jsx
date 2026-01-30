@@ -7,11 +7,11 @@ import H2Title from "../../../common/H2Title";
 import { motion } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import LangLink from "@/lib/LangLink";
 
 const ContactDetails = ({ data }) => {
     const isArabic = useIsPreferredLanguageArabic();
@@ -214,7 +214,7 @@ const ContactDetails = ({ data }) => {
                         </div>
 
                         <div className="w-fit">
-                            <Link href={t.firstSection.location} target="blank">
+                            <LangLink href={t.firstSection.location} target="blank">
                                 <div className="flex gap-[6px] items-center cursor-pointer">
                                     <p className="text-16 font-light uppercase text-paragraph">{isArabic ? "الموقع" : "Location"}</p>
                                     <svg
@@ -247,7 +247,7 @@ const ContactDetails = ({ data }) => {
                                         </defs>
                                     </svg>
                                 </div>
-                            </Link>
+                            </LangLink>
                         </div>
                     </div>
                     <div className="bg-primary px-5 pt-8 pb-9 lg:p-8 xl:p-10 3xl:p-[70px] 3xl:pt-[59px]">

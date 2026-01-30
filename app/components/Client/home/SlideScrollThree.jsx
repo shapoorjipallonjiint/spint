@@ -8,9 +8,7 @@ import "swiper/css/autoplay";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
 import "swiper/css/free-mode";
-
-import Link from "next/link";
-
+import LangLink from "@/lib/LangLink";
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 
@@ -1480,7 +1478,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     <h4 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.407] lg:max-w-[13ch]">
                                         {tData.firstSection.subTitle.text}
                                     </h4>
-                                    <Link href={"/about-us"}>
+                                    <LangLink href={"/about-us"}>
                                         <Image
                                             src="../assets/images/arrowbl.svg"
                                             alt="Logo"
@@ -1490,7 +1488,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 isArabic ? "-scale-x-100" : ""
                                             }`}
                                         />
-                                    </Link>
+                                    </LangLink>
                                 </div>
 
                                 <div className="hidden lg:flex flex-col items-center gap-3" ref={iconsRef}>
@@ -1596,7 +1594,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     {tData.secondSection.title}
                                 </h1>
                                 <div dangerouslySetInnerHTML={{ __html: tData.secondSection.subTitle }}></div>
-                                <Link
+                                <LangLink
                                     ref={spbtn}
                                     href={tData.thirdSection.link}
                                     className="hidden lg:flex text-[14px] mb-4 lg:mb-0 mt-5  3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-white lg:text-white uppercase  items-center gap-2 cursor-pointer group "
@@ -1629,7 +1627,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </Link>
+                                </LangLink>
                                 {/* <h3 className="text-[20px] lg:text-18 xl:text-24 font-light max-w-xl mb-[33px] lg:mb-0">
                                     With a legacy of over{" "}
                                     <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
@@ -1822,7 +1820,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         {tData.thirdSection.description}
                                     </p>
                                 </div>
-                                <Link
+                                <LangLink
                                     ref={spbtn}
                                     href={tData.thirdSection.link}
                                     className="text-[14px] mt-5 3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-[#464646] lg:text-white uppercase flex items-center gap-2 cursor-pointer group "
@@ -1855,7 +1853,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </Link>
+                                </LangLink>
                             </div>
                             <div className="mt-auto relative">
                                 <hr
@@ -2107,7 +2105,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         }`}
                                                         ref={(el) => (textItemsRef.current[index] = el)}
                                                     >
-                                                        <Link
+                                                        <LangLink
                                                             href={isDesktop ? `services/${service.link}` : "#"}
                                                             onClick={() => handleServiceClick()}
                                                         >
@@ -2130,7 +2128,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             >
                                                                 <span className="duration-400">{service.title}</span>
                                                             </p>
-                                                        </Link>
+                                                        </LangLink>
                                                         <Image
                                                             src="../assets/images/services/arrowblw.svg"
                                                             alt="Arrow"
@@ -2337,18 +2335,18 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         />
                                     </div>
 
-                                    <Link href={`/services/${activeService?.link}`} onClick={() => handleServiceClick()}>
+                                    <LangLink href={`/services/${activeService?.link}`} onClick={() => handleServiceClick()}>
                                         <h3 className="text-[20px] lg:text-29 leading-[1.344827586206897] font-light text-black lg:text-white">
                                             {activeService?.title}
                                         </h3>
-                                    </Link>
+                                    </LangLink>
                                     <div
                                         className={`lg:hidden bottom-10 3xl:bottom-[50px] z-10 ${
                                             isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
                                         }`}
                                         ref={srvsArrw}
                                     >
-                                        <Link href={`/services/${activeService?.link}`}>
+                                        <LangLink href={`/services/${activeService?.link}`}>
                                             <Image
                                                 src="../assets/images/services/thickarrow.svg"
                                                 alt="Arrow"
@@ -2356,7 +2354,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 width={19}
                                                 height={19}
                                             />
-                                        </Link>
+                                        </LangLink>
                                     </div>
                                 </motion.div>
                                 <div className="overflow-hidden">
@@ -2371,7 +2369,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </motion.p>
                                 </div>
                             </div>
-                            <Link href={`/services/${activeService?.link}`}>
+                            <LangLink href={`/services/${activeService?.link}`}>
                                 <div
                                     className={`hidden lg:block absolute bottom-10 cursor-pointer 3xl:bottom-[50px] z-10 ${
                                         isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
@@ -2386,7 +2384,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         height={71}
                                     />
                                 </div>
-                            </Link>
+                            </LangLink>
                         </div>
                         {/* right */}
                         {/* <div ref={brdonRef} className=""></div> */}
@@ -2661,7 +2659,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             isArabic ? "right-0" : "left-0"
                                         }`}
                                     >
-                                        <Link
+                                        <LangLink
                                             href="/projects"
                                             className="flex items-center gap-2 uppercase font-light text-[14px] text-white"
                                         >
@@ -2677,7 +2675,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         : "group-hover:translate-x-2"
                                                 }`}
                                             />
-                                        </Link>
+                                        </LangLink>
                                     </div>
                                 </div>
                                 {/* hear the absolute positioned box with project details */}
@@ -2745,7 +2743,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             </div>
                                         </div>
                                         <div className="hidden lg:block tlnits px-15 py-6 xl:pt-[42px] xl:pb-[49px] group cursor-pointer">
-                                            <Link href="/projects" className="flex items-center gap-2">
+                                            <LangLink href="/projects" className="flex items-center gap-2">
                                                 View All Projects
                                                 <Image
                                                     width={27}
@@ -2758,7 +2756,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             : "group-hover:translate-x-2"
                                                     }`}
                                                 />
-                                            </Link>
+                                            </LangLink>
                                         </div>
                                     </div>
                                 </div>
@@ -2795,7 +2793,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 ref={maptitle}
                                 className="text-[36px] lg:text-34 xl:text-48 3xl:text-60  font-light gradient-text text-bl leading-[1.2] 3xl:leading-[1.18] max-w-[15ch]"
                             >
-                                {/* Our Presence is Steadily Expanding */}
                                 {tData.sixthSection?.title}
                             </h1>
                         </div>
@@ -2817,7 +2814,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         alt="Arrow"
                                         width={1158}
                                         height={679}
-                                        className="object-cover img-f select-none min-w-[733px] w-[733px] h-[355px] lg:h-full lg:min-w-[1156px] lg:w-[1156px]  "
+                                        className="object-cover img-f select-none min-w-[733px] w-[733px] h-[350px] lg:h-full lg:min-w-[1156px] lg:w-[1156px] ml-[20px] lg:ml-0"
                                     />
                                     <div className="absolute top-[-121px] lg:top-0 left-[-69px] lg:left-0 min-w-[733px] w-[733px] h-[436px] lg:h-full lg:w-[1156px]  overflow-hidden  lg:overflow-visible    ">
                                         {/* Dots */}
@@ -2831,7 +2828,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
                                                     activeDot === city.id ? "z-[999]" : "z-[1]"
                                                 }`}
-                                                style={{ left: city.left, top: city.top }}
+                                                style={{   left: `calc(${city.left} - 4.8%)`, top: city.top }}
                                             >
                                                 <div
                                                     //     onClick={() => {
@@ -2878,7 +2875,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                       {city.name}
                     </span> */}
 
-                                                <div className="relative flex flex-col items-center gap-[7px] pointer-events-none">
+<div className="relative">
+                                                <div className="absolute -left-8 top-1 flex flex-col items-center gap-[7px] pointer-events-none">
                                                     {/* SP GROUP LABEL */}
                                                     {city.groupId === "sp-group" && activeDot === city.id && (
                                                         <span className="text-13 font-semibold uppercase text-primary">
@@ -2888,7 +2886,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                                     {/* CITY NAME PILL */}
                                                     <span
-                                                        className={`border border-[#30F95533] min-w-[110px]
+                                                        className={`border border-[#30F95533] min-w-[125px] lg:min-w-[150px] 
       text-center backdrop-blur-[10px] uppercase bg-[#0015FF99]
       text-white text-[14px] font-bold px-2 py-[2px] rounded-full
       transition-all duration-500
@@ -2896,6 +2894,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                     >
                                                         {city.name}
                                                     </span>
+                                                </div>
                                                 </div>
 
                                                 {/* <div className={`hidden lg:block translate-x-[50%] -left-1/2 top-0 rounded-full transition-all duration-500 absolute  w-full h-full `}
@@ -3270,7 +3269,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             ref={talentCareerMob}
                                             className={`py-3 w-fit ${isArabic ? "mr-auto" : "ml-auto"} lg:hidden`}
                                         >
-                                            <Link href="/careers">
+                                            <LangLink href="/careers">
                                                 <div className="flex items-center gap-[6px]">
                                                     <p className="text-white text-16 font-light uppercase">Careers</p>
                                                     <svg
@@ -3297,7 +3296,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         />
                                                     </svg>
                                                 </div>
-                                            </Link>
+                                            </LangLink>
                                         </div>
                                         <div
                                             className="flex flex-col lg:flex-row lg:flex-wrap lg:items-center lg:gap-5"
@@ -3415,7 +3414,7 @@ transition-all duration-300 cursor-pointer ${
                                 transition={{ duration: 0.4, ease: "easeInOut" }}
                                 className="pt-[37px] pb-[60px] 3xl:pb-[151px] px-5 lg:px-7   3xl:px-15 "
                             >
-                                <Link href="/careers">
+                                <LangLink href="/careers">
                                     <div className="flex items-center gap-[6px]">
                                         <p className="text-white text-16 font-light uppercase">Careers</p>
                                         <svg
@@ -3442,7 +3441,7 @@ transition-all duration-300 cursor-pointer ${
                                             />
                                         </svg>
                                     </div>
-                                </Link>
+                                </LangLink>
                             </motion.div>
                         </div>
                     </div>

@@ -8,9 +8,9 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import H2Title from "../../../../components/common/H2Title";
 import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
-import Link from "next/link";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import LangLink from "@/lib/LangLink";
 
 // Register ScrollTrigger plugin
 if (typeof window !== "undefined") {
@@ -152,7 +152,7 @@ const CultureSection = ({ data }) => {
                         {description}
                     </p>
                     {/* Button with centered text over SVG */}
-                    <Link href={button.btnLink} target="blank">
+                    <LangLink href={button.btnLink} target="blank">
                         <button className="relative inline-flex items-center justify-center">
                             <Image
                                 width={240}
@@ -165,7 +165,7 @@ const CultureSection = ({ data }) => {
                                 {button.text}
                             </span>
                         </button>
-                    </Link>
+                    </LangLink>
                 </div>
             </div>
         </section>

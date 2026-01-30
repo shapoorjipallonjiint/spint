@@ -2,11 +2,12 @@
 // import { pressReleases } from "../../press-release/data";
 import { motion } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
-import Link from "next/link";
 import H2Title from "../../../../components/common/H2Title";
 import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import LangLink from "@/lib/LangLink";
+
 const RelatedNews = ({ allNewsData, topic, slug }) => {
   const tAllNewsData = useApplyLang(allNewsData);
   const tTopic = useApplyLang(topic);
@@ -23,7 +24,7 @@ const RelatedNews = ({ allNewsData, topic, slug }) => {
           <H2Title titleText="Related News" marginClass="mb-4 xl:mb-17" />
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-10 md:gap-y-15 xl:gap-y-30 ">
             {filteredNews.map((item, index) => (
-              <Link href={`/press-releases/${item.slug}`} key={index}>
+              <LangLink href={`/press-releases/${item.slug}`} key={index}>
                 <motion.div variants={moveUp(0.2 * index)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} key={item.id}
                   className=" border-b border-black/20 pb-5 lg:border-b-0 lg:pb-0">
                   <Image src={item.thumbnail} alt={item.thumbnailAlt} width={520} height={339} className="w-full h-[200px] md:h-[250px] lg:h-[300px] 2xl:h-[339px] object-cover" />
@@ -49,7 +50,7 @@ const RelatedNews = ({ allNewsData, topic, slug }) => {
 
                   </div>
                 </motion.div>
-              </Link>
+              </LangLink>
             ))}
           </div>
         </div>
