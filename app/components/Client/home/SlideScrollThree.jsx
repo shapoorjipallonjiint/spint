@@ -1279,6 +1279,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         }
     }, [activeIndex, isLargeScreen]); // Re-run when activeIndex changes
 
+    const goToProjects = (city) => {
+        if (!city?.isClickable) return;
+
+        const basePath = isArabic ? "/ar/projects" : "/projects";
+
+        router.push(`${basePath}?country=${encodeURIComponent(city.name)}`);
+    };
+
     return (
         <div ref={containerRef} className="relative h-screen w-screen overflow-hidden">
             <div className="fixed w-screen h-screen z-[500] mswd pointer-events-none grid content-center load-sec2">
@@ -2335,7 +2343,10 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         />
                                     </div>
 
-                                    <LangLink href={`/services/${activeService?.link}`} onClick={() => handleServiceClick()}>
+                                    <LangLink
+                                        href={`/services/${activeService?.link}`}
+                                        onClick={() => handleServiceClick()}
+                                    >
                                         <h3 className="text-[20px] lg:text-29 leading-[1.344827586206897] font-light text-black lg:text-white">
                                             {activeService?.title}
                                         </h3>
@@ -2828,7 +2839,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
                                                     activeDot === city.id ? "z-[999]" : "z-[1]"
                                                 }`}
-                                                style={{   left: `calc(${city.left} - 4.8%)`, top: city.top }}
+                                                style={{ left: `calc(${city.left} - 4.8%)`, top: city.top }}
                                             >
                                                 <div
                                                     //     onClick={() => {
@@ -2875,26 +2886,26 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                       {city.name}
                     </span> */}
 
-<div className="relative">
-                                                <div className="absolute -left-8 top-1 flex flex-col items-center gap-[7px] pointer-events-none">
-                                                    {/* SP GROUP LABEL */}
-                                                    {city.groupId === "sp-group" && activeDot === city.id && (
-                                                        <span className="text-13 font-semibold uppercase text-primary">
-                                                            {isArabic ? "SP Group" : "SP Group"}
-                                                        </span>
-                                                    )}
+                                                <div className="relative">
+                                                    <div className="absolute -left-8 top-1 flex flex-col items-center gap-[7px] pointer-events-none">
+                                                        {/* SP GROUP LABEL */}
+                                                        {city.groupId === "sp-group" && activeDot === city.id && (
+                                                            <span className="text-13 font-semibold uppercase text-primary">
+                                                                {isArabic ? "SP Group" : "SP Group"}
+                                                            </span>
+                                                        )}
 
-                                                    {/* CITY NAME PILL */}
-                                                    <span
-                                                        className={`border border-[#30F95533] min-w-[125px] lg:min-w-[150px] 
+                                                        {/* CITY NAME PILL */}
+                                                        <span
+                                                            className={`border border-[#30F95533] min-w-[125px] lg:min-w-[150px] 
       text-center backdrop-blur-[10px] uppercase bg-[#0015FF99]
       text-white text-[14px] font-bold px-2 py-[2px] rounded-full
       transition-all duration-500
       ${activeDot === city.id ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}
-                                                    >
-                                                        {city.name}
-                                                    </span>
-                                                </div>
+                                                        >
+                                                            {city.name}
+                                                        </span>
+                                                    </div>
                                                 </div>
 
                                                 {/* <div className={`hidden lg:block translate-x-[50%] -left-1/2 top-0 rounded-full transition-all duration-500 absolute  w-full h-full `}
@@ -2993,14 +3004,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
   }`}
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
-
-                                                                        if (!city.isClickable) return;
-
-                                                                        router.push(
-                                                                            `/projects?country=${encodeURIComponent(
-                                                                                city.name,
-                                                                            )}`,
-                                                                        );
+                                                                        goToProjects(city);
                                                                     }}
                                                                 >
                                                                     <p className="text-[24px] font-[200] leading-tight">
@@ -3096,17 +3100,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             onTouchEnd={(e) => {
                                                 e.preventDefault();
                                                 e.stopPropagation();
-
-                                                if (!selectedCity.isClickable) return;
-
-                                                router.push(`/projects?country=${encodeURIComponent(selectedCity.name)}`);
+                                                goToProjects(selectedCity);
                                             }}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-
-                                                if (!selectedCity.isClickable) return;
-
-                                                router.push(`/projects?country=${encodeURIComponent(selectedCity.name)}`);
+                                                goToProjects(selectedCity);
                                             }}
                                             className={`me-2 bubble cursor-pointer
     transition-all duration-500 delay-100 backdrop-blur-sm
