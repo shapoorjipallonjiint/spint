@@ -149,9 +149,9 @@ const CoreLeardershipTeam = ({ data }) => {
                                         height={600}
                                         src={member.image}
                                         alt={member.imageAlt}
-                                        className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0"
+                                        className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0 px-2"
                                     />
-                                    <div className="bg-f5f5 xl:w-full h-[60%] 2xl:h-[234px] z-[-1]"></div>
+                                    <div className="bg-f5f5  w-full h-[50%] md:h-[50%] lg:h-[48%] 2xl:h-[175px] z-[-1]"></div>
                                     {/* <div className={`opacity-0 group-hover:opacity-100 transition-all duration-300 absolute ${isArabic ? "right-0" : "left-0"} bottom-0 w-[50px] h-[50px] xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"

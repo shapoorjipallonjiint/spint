@@ -154,7 +154,7 @@ const FeaturedProjectSlider = ({ data }) => {
                             }}
                             className="!overflow-visible"
                         >
-                            {t.map((item, i) => (
+                            {[...t,...t].map((item, i) => (
                                 <SwiperSlide key={i}>
                                     <div>
                                         <LangLink href={`/projects/${item.slug}`}>

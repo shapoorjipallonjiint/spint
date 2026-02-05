@@ -114,7 +114,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                     {/* ================= IMAGE (DESKTOP ONLY) ================= */}
 
                     {/* ================= TEXT ================= */}
-                    <div className="border-black/20 3xl:max-w-[50ch] flex flex-col items-start justify-center">
+                    <div className="border-black/20  flex flex-col items-start justify-center">
                         {points.map((item, index) => (
                             <motion.div
                                 key={index}
@@ -150,12 +150,12 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         updateImage(index);
                                     }
                                 }}
-                                className="border-b border-white/20 first:border-t py-[15px] 3xl:py-[16px] cursor-pointer w-full"
+                                className="border-b border-white/20 first:border-t py-[15px] 3xl:py-[18px] cursor-pointer w-full"
                             >
                                 {/* TITLE */}
                                 <div
                                     className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${
-                                        isActive(index) ? "text-white font-semibold" : " font-light"
+                                        isActive(index) ? "text-white font-bold" : " font-light"
                                     }`}
                                 >
                                     {/* LEFT BAR */}
@@ -188,12 +188,12 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
     marginTop: isActive(index) ? 10 : 0,
   }}
   transition={{ duration: 0.25, ease: "easeOut" }}
-  className={`overflow-hidden text-19 font-light leading-relaxed ${
+  className={`overflow-hidden text-19 font-light leading-relaxed   ${
     isActive(index)
       ? isArabic
-        ? "-translate-x-[20px] xl:-translate-x-[43px]"
-        : "translate-x-[20px] xl:translate-x-[43px]"
-      : "translate-x-0"
+        ? "-translate-x-[20px] xl:-translate-x-[43px]  w-[calc(100%-20px)] xl:w-[calc(100%-43px)]"
+        : "translate-x-[20px] xl:translate-x-[43px] w-[calc(100%-20px)] xl:w-[calc(100%-43px)]"
+      : "translate-x-[20px] xl:translate-x-[43px] w-[calc(100%-20px)] xl:w-[calc(100%-43px)]"
   }`}
 >
 

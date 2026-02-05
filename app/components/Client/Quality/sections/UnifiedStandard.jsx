@@ -1,7 +1,7 @@
 "use client";
 import { motion, useTransform, useScroll, AnimatePresence } from "framer-motion";
 import { assets } from "@/app/assets";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { moveUp } from "@/app/components/motionVarients";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
@@ -19,11 +19,34 @@ const UnifiedStandard = ({ data }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const t = useApplyLang(data);
 
+
+ 
+  const [rightSpace, setRightSpace] = useState(0);
+
+  useEffect(() => {
+    function updateSpace() {
+      const container = document.querySelector(".container");
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const space = window.innerWidth - rect.right;
+
+      setRightSpace(space);
+    }
+
+    updateSpace();
+    window.addEventListener("resize", updateSpace);
+
+    return () => window.removeEventListener("resize", updateSpace);
+  }, []);
+
     return (
-        <section className="pt25 pb25 relative overflow-hidden bg-primary text-white">
-            <div
+        <section className="pt25  relative overflow-hidden bg-primary text-white">
+            <div className="container"></div>
+           <div className="flex gap-12 md:gap-[60px] 2xl:gap-[100px] 3xl:gap-[149px] items-end">
+             <div
                 ref={imageParRef}
-                className={`absolute 
+                className={`  absolute lg:static
     -bottom-30 lg:bottom-0 
     w-fit h-fit
     ${
@@ -39,13 +62,18 @@ const UnifiedStandard = ({ data }) => {
                     style={{ y: imageY }}
                     src={assets.mainShape2}
                     alt=""
-                    className="object-contain w-[152px] h-[350px] lg:w-[325px] lg:h-[494px] xl:w-[425px] xl:h-[594px]"
+                    className="object-contain w-[152px] h-[350px] lg:w-[325px] lg:h-[494px] xl:w-[965px] xl:h-[758px]"
                 />
             </div>
 
-            <div className="container relative">
+            <div className="  pe-4 relative container lg:w-full " 
+          style={
+    isArabic
+      ? { marginLeft: `${rightSpace}px` }
+      : { marginRight: `${rightSpace}px` }
+  }>
                 <div
-                    className={`max-w-[800px] 2xl:max-w-[900px] 3xl:max-w-[1207px] ${
+                    className={` ${
                         isArabic ? "mr-auto" : "ml-auto"
                     } h-auto`}
                 >
@@ -59,7 +87,8 @@ const UnifiedStandard = ({ data }) => {
                                 viewport={{ amount: 0.2, once: true }}
                                 className={`${
                                     item.hasBorder ? "border-b border-cmnbdr  pb-[54px]" : ""
-                                } relative mb-0 flex flex-col gap-4 xl:gap-[30px] pb-7 xl:pb-9  2xl:pb-[54px] border-b border-white/20 last:border-b-0`}
+                                } relative mb-0 flex flex-col gap-4 xl:gap-[30px] pb-7 xl:pb-9 2xl:pb-[54px] last:!pb-8 last:md:!pb-11 last:xl:!pb-15 2xl:pb-22 last:3xl:!pb-25
+border-b border-white/20 last:border-b-0`}
                             >
                                 <button
                                     className={`w-full flex ${isArabic ? "text-right" : "text-left"} group transition-all duration-500 cursor-pointer`}
@@ -84,7 +113,7 @@ const UnifiedStandard = ({ data }) => {
                                         <div className="">
                                             <motion.p
                                                 variants={moveUp(0.001)}
-                                                className="text-19 font-light leading-7 max-w-5xl"
+                                                className="text-19 font-light leading-7  "
                                             >
                                                 {item.description}
                                             </motion.p>
@@ -96,6 +125,7 @@ const UnifiedStandard = ({ data }) => {
                     </div>
                 </div>
             </div>
+           </div>
         </section>
     );
 };

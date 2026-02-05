@@ -19,6 +19,14 @@ export default function TabStyle1({ data }) {
         if (!html) return "";
         return html.replace(/&nbsp;/g, " ");
     }
+    const [ismobile, setIsmobile] = useState(false);
+
+useEffect(() => {
+  const checkWidth = () => setIsmobile(window.innerWidth < 768);
+  checkWidth();
+  window.addEventListener("resize", checkWidth);
+  return () => window.removeEventListener("resize", checkWidth);
+}, []);
 
     useEffect(() => {
         if (!tabsContainerRef.current) return;
@@ -87,6 +95,7 @@ export default function TabStyle1({ data }) {
                                 </motion.button>
 
                                 {/* ================= MOBILE CONTENT ONLY ================= */}
+                                {ismobile &&
                                 <div className="md:hidden">
                                     <AnimatePresence>
                                         {isActive && (
@@ -117,6 +126,7 @@ export default function TabStyle1({ data }) {
                                         )}
                                     </AnimatePresence>
                                 </div>
+                                }
                             </div>
                         );
                     })}

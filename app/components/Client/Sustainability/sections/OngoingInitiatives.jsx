@@ -120,7 +120,7 @@ const OngoingInitiatives = ({ data }) => {
                                 }}
                                 className="md:!overflow-visible h-full "
                             >
-                                {t.items.map((item, i) => (
+                                {[...t.items, ...t.items].map((item, i) => (
                                     <SwiperSlide key={i}>
                                         <div className="overflow-hidden  h-full">
                                             <div className="relative overflow-hidden" ref={imageContainerRefTwo}>

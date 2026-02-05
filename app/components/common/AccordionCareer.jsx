@@ -99,8 +99,8 @@ import { moveUp } from "../motionVarients"
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const AccordionCareer = ({ accData, openIndex, setOpenIndex }) => {
-  const contentRefs = useRef([]);
-  const [heights, setHeights] = useState({});
+  // const contentRefs = useRef([]);
+  // const [heights, setHeights] = useState({});
   const isArabic = useIsPreferredLanguageArabic();
 
   const toggleAccordion = (index) => {
@@ -108,17 +108,17 @@ const AccordionCareer = ({ accData, openIndex, setOpenIndex }) => {
   };
 
   // ✅ Measure height AFTER render (React-safe)
-  useLayoutEffect(() => {
-    if (openIndex === null) return;
+  // useLayoutEffect(() => {
+  //   if (openIndex === null) return;
 
-    const el = contentRefs.current[openIndex];
-    if (!el) return;
+  //   const el = contentRefs.current[openIndex];
+  //   if (!el) return;
 
-    setHeights((prev) => ({
-      ...prev,
-      [openIndex]: el.scrollHeight,
-    }));
-  }, [openIndex]);
+  //   setHeights((prev) => ({
+  //     ...prev,
+  //     [openIndex]: el.scrollHeight,
+  //   }));
+  // }, [openIndex]);
 
   return (
     <div className="space-y-1">
@@ -180,7 +180,36 @@ className={`border-b border-black/20 relative transition-all duration-500
           </button>
 
           {/* CONTENT */}
+
           <AnimatePresence initial={false}>
+            {openIndex === index && (
+              <motion.div
+                key="content"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{
+                  height: { duration: 0.45 },
+                  opacity: { duration: 0.25 },
+                }}
+                className="overflow-hidden"
+              >
+                <div className="pb-5 xl:pb-[34px]">
+                  <motion.p
+                    variants={moveUp(0.001)}
+                    initial="hidden"
+                    animate="show"
+                    className="text-19 text-paragraph font-extralight leading-[1.52] max-w-[38ch]"
+                  >
+                    {item.description}
+                  </motion.p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+
+          {/* <AnimatePresence initial={false}>
             {openIndex === index && (
               <motion.div
                 key="content"
@@ -211,7 +240,7 @@ className={`border-b border-black/20 relative transition-all duration-500
                 </div>
               </motion.div>
             )}
-          </AnimatePresence>
+          </AnimatePresence> */}
         </motion.div>
       ))}
     </div>
