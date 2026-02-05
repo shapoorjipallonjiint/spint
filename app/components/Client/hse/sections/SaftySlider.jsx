@@ -67,13 +67,13 @@ const SaftySlider = ({ data }) => {
   height={655}
 />
 
-                <div className="container pt-text30">
-                    <div className={`max-w-[1206px] 2xl:max-w-[1056px] 3xl:max-w-[1206px] ${isArabic ? "mr-auto" : "ml-auto"}`}>
+                <div className="container pt-text25 3xl:!pt-[116px]">
+                    <div className={`max-w-[1206px]  lg:max-w-[656px] xl:max-w-[806px] 2xl:max-w-[1056px] 3xl:max-w-[1306px] ${isArabic ? "mr-auto" : "ml-auto"}`}>
                         <div>
                             <H2Title
                                 titleText={t.title}
                                 titleColor="black"
-                                marginClass="mb-4 2xl:mb-50px max-w-[15ch]"
+                                marginClass="mb-4 lg:mb-12 2xl:mb-[70px] max-w-[15ch]"
                             />
                             <motion.p
                                 variants={moveUp(0.2)}

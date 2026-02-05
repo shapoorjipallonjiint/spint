@@ -195,7 +195,7 @@ const Gallery = ({ data }) => {
 
     return (
         <>
-            <section className="relative" ref={sectionRef}>
+            <section className="relative pt-12 xl:pt-15 3xl:pt-30" ref={sectionRef}>
                 <div
                     className={`absolute top-[61px] lg:top-0 z-0
     ${isArabic
@@ -215,7 +215,7 @@ const Gallery = ({ data }) => {
                 </div>
 
                 <div className="container">
-                    <div className="mb-7 md:mb-10 xl:mb-12 3xl:mb-20 mt-12 xl:mt-15 3xl:mt-30">
+                    <div className="mb-7 md:mb-10 xl:mb-12 3xl:mb-20 ">
                         <h1 className="text-70 font-light leading-[1.071428571428571]">
                             <SplitTextAnimation
                                 children={t.pageTitle}

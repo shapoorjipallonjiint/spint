@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Autoplay, Navigation } from "swiper/modules";
+import { EffectFade, Autoplay, Navigation,Controller } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
+import { assets } from "../../../../assets/index";
 import { motion } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import H2Title from "../../../common/H2Title";
@@ -14,12 +15,16 @@ import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const EmployeeInvolvementSlider = ({ data }) => {
+
+    const [currentSlide, setCurrentSlide] = useState(0);
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
     const swiperRef = useRef(null);
     const containerRef = useRef(null);
     const targetRef = useRef(null);
+    const [imageSwiper, setImageSwiper] = useState(null);
+    const [contentSwiper, setContentSwiper] = useState(null);
 
     useEffect(() => {
         const containerEl = containerRef.current;
@@ -57,25 +62,68 @@ const EmployeeInvolvementSlider = ({ data }) => {
                     <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-50px" />
                     {/* </div>
           </div> */}
+          {/* Content Section - Static with Navigation */}
+                        <div className="order-1 lg:order-2   ">
+                            {/* Navigation - Fixed */}
+                            <motion.div
+                                variants={moveUp(0.6)}
+                                initial="hidden"
+                                whileInView={"show"}
+                                viewport={{ amount: 0.2, once: false }}
+                                className="flex justify-end items-center gap-4   border-b border-white/20 pb-4 2xl:pb-[30px] lg:pb-6 "
+                            >
+                                <button
+                                    onClick={() => imageSwiper?.slidePrev()}
+                                    className={`group ${isArabic ? "hover:translate-x-1 rotate-180" : "hover:-translate-x-1"} transition-all duration-300  cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px]  rounded-full border border-black/20 flex items-center justify-center`}
+                                    aria-label="Previous slide"
+                                >
+                                    <Image
+                                        src={assets.arrowLeft2}
+                                        alt=""
+                                        width={14}
+                                        height={14}
+                                        className="w-[16px] h-[16px] group-hover:opacity-90  duration-300  transition-all delay-200"
+                                    />
+                                </button>
+                                <button
+                                    onClick={() => imageSwiper?.slideNext()}
+                                    className={`group ${isArabic ? "hover:-translate-x-1 -rotate-180" : "hover:translate-x-1"} transition-all duration-300 cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 flex items-center justify-center`}
+                                    aria-label="Next slide"
+                                >
+                                    <Image
+                                        src={assets.arrowRight2}
+                                        alt=""
+                                        width={14}
+                                        height={14}
+                                        className="w-[16px] h-[16px] group-hover:opacity-90  duration-300  transition-all delay-200"
+                                    />
+                                </button> 
+                            </motion.div>
+
+                          
+                        </div>
                 </div>
                 {/* Swiper */}
                 <div className={`flex flex-col md:flex-row gap-3  ${isArabic ? "md:ps-0" : "md:pe-0"}`}>
                     <div className="container">
                         <Swiper
                             ref={swiperRef}
-                            modules={[EffectFade, Autoplay, Navigation]}
+                            modules={[EffectFade, Autoplay, Navigation,Controller]}
                             spaceBetween={5}
                             slidesPerView={1}
-                            loop={true}
+                            // loop={true}
                             loopedSlides={6}
                             centeredSlides={false}
-                            navigation={{
-                                prevEl: ".custom-prev",
-                                nextEl: ".custom-next",
-                            }}
-                            // onSlideChange={(swiper) =>
-                            //   setCurrentSlide((swiper.realIndex % engineeringData.featuredProjectsData.items.length) + 1)
-                            // }
+                            // navigation={{
+                            //     prevEl: ".custom-prev",
+                            //     nextEl: ".custom-next",
+                            // }}
+                             onSlideChange={(swiper) => {
+                                    setCurrentSlide(swiper.realIndex);
+                                }}
+
+                                controller={{ control: contentSwiper }}
+                            onSwiper={setImageSwiper}
                             speed={800}
                             autoplay={{
                                 delay: 4000,
@@ -93,17 +141,24 @@ const EmployeeInvolvementSlider = ({ data }) => {
                             }}
                             className="!overflow-visible"
                         >
-                            {[...t.items, ...t.items].map((item, i) => (
+                            {[...t.items, ...t.items, ...t.items].map((item, i) => (
                                 <SwiperSlide key={i}>
                                     <div className="overflow-hidden ">
                                         <div className="after:h-full after:w-full  after:bg-[linear-gradient(180deg,rgba(0,0,0,0)_42.43%,rgba(0,0,0,0.75)_91.64%)] after:absolute after:top-0 after:left-0 after:right-0 after:bottom-0">
-                                            <MotionImage
+                                            {/* <MotionImage
                                                 height={900}
                                                 width={1000}
                                                 variants={moveUp(0.1 * i)}
                                                 initial="hidden"
                                                 whileInView="show"
                                                 viewport={{ amount: 0.2, once: true }}
+                                                src={item.image}
+                                                alt={item.imageAlt}
+                                                className="w-full h-[300px] md:h-[350px] lg:h-[400px] 2xl:h-auto object-cover"
+                                            /> */}
+                                             <Image
+                                                height={900}
+                                                width={1000} 
                                                 src={item.image}
                                                 alt={item.imageAlt}
                                                 className="w-full h-[300px] md:h-[350px] lg:h-[400px] 2xl:h-auto object-cover"
@@ -124,6 +179,8 @@ const EmployeeInvolvementSlider = ({ data }) => {
                             ))}
                         </Swiper>
                     </div>
+                    
+                        
                 </div>
             </div>
         </section>

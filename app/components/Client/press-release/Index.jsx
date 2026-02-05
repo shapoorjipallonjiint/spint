@@ -249,7 +249,7 @@ const Index = ({ newsData, topicData }) => {
               {/* Clear Filter */}
               <button type="button" onClick={handleClearFilters} className="flex items-center gap-1 md:gap-[10px] group cursor-pointer justify-end" >
                 <Image width={150} height={150} src="/assets/images/icons/arrow-tail-left.svg" alt="" className={`w-4 h-4 sm:w-auto sm:h-auto ${isArabic ? "rotate-180 group-hover:translate-x-[3px]" : "group-hover:translate-x-[-3px]"} transition-all duration-300`} />
-                <p className="text-paragraph text-16 font-light leading-[1.75] uppercase transition-all duration-300">
+                <p className="text-paragraph text-16 font-light leading-[1.75] uppercase transition-all duration-300 group-hover:font-semibold">
                   {isArabic ? "مسح الفلاتر" : "Clear Filter"}
                 </p>
               </button>

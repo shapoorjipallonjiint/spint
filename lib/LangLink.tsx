@@ -22,7 +22,7 @@ export default function LangLink({ href, children, className }: LangLinkProps) {
   }
 
   // 2️⃣ Normalize root path
-  let finalHref = href.startsWith("/") ? href : `/${href}`;
+  let finalHref = href.startsWith("/") ? href : `${href}`;
 
   // 3️⃣ If ENGLISH mode → ensure link stays EN
   if (!isArabic) {
@@ -38,7 +38,11 @@ export default function LangLink({ href, children, className }: LangLinkProps) {
   // 4️⃣ If ARABIC mode → ensure link keeps "/ar"
   if (isArabic) {
     if (!finalHref.startsWith("/ar")) {
-      finalHref = "/ar" + finalHref;
+      if(href ==   "#" || ''){
+        finalHref =    finalHref  ;
+      }else{
+        finalHref = "/ar" + finalHref;
+      }
     }
   }
 

@@ -253,7 +253,7 @@ const ContactDetails = ({ data }) => {
                     <div className="bg-primary px-5 pt-8 pb-9 lg:p-8 xl:p-10 3xl:p-[70px] 3xl:pt-[59px]">
                         <H2Title titleText={isArabic ? "الإستفسارات العامة" : "General Inquiry"} titleColor="white" marginClass="mb-4 3xl:mb-50px" />
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-50px w-full mb-6 xl:mb-8 3xl:mb-[30px]">
+                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-50px w-full mb-6 xl:mb-8 3xl:mb-[38px]">
                                 <motion.div
                                     variants={moveUp(0.4)}
                                     initial="hidden"
@@ -269,11 +269,11 @@ const ContactDetails = ({ data }) => {
                                         placeholder=" "
                                     />
 
-                                    <p className="text-red-400 text-14 min-h-[14px] mt-2">{errors.name?.message}</p>
+                                    <p className="text-red-400 text-14 min-h-[14px] mt-2 absolute absolute">{errors.name?.message}</p>
 
                                     <label
                                         htmlFor="name"
-                                        className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2  text-white text-19 font-extralight transition-all duration-200 ease-out peer-focus:top-0 peer-focus:text-xs peer-focus:text-white peer-focus:-translate-y-full peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base 2xl:peer-placeholder-shown:text-19 peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
+                                        className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2  text-white text-19 font-extralight transition-all duration-200 ease-out peer-focus:top-5 peer-focus:text-xs peer-focus:text-white peer-focus:-translate-y-full peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base 2xl:peer-placeholder-shown:text-19 peer-not-placeholder-shown:top-5 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
                                     >
                                         {tFormLabels.name}
                                     </label>
@@ -300,17 +300,17 @@ const ContactDetails = ({ data }) => {
                                         placeholder=" "
                                     />
 
-                                    <p className="text-red-400 text-14 min-h-[14px] mt-2">{errors.email?.message}</p>
+                                    <p className="text-red-400 text-14 min-h-[14px] mt-2 absolute">{errors.email?.message}</p>
 
                                     <label
                                         htmlFor="email"
-                                        className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2  text-white text-19 font-extralight transition-all duration-200 ease-out peer-focus:top-0 peer-focus:text-xs peer-focus:text-white peer-focus:-translate-y-full peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base 2xl:peer-placeholder-shown:text-19 peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
+                                        className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2  text-white text-19 font-extralight transition-all duration-200 ease-out peer-focus:top-5 peer-focus:text-xs peer-focus:text-white peer-focus:-translate-y-full peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base 2xl:peer-placeholder-shown:text-19 peer-not-placeholder-shown:top-5 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
                                     >
                                         {tFormLabels.email}
                                     </label>
                                 </motion.div>
                             </div>
-                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-12 w-full mb-6 xl:mb-8 3xl:mb-[30px]">
+                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-12 w-full mb-6 xl:mb-8 3xl:mb-[38px]">
                                 <motion.div
                                     variants={moveUp(0.7)}
                                     initial="hidden"
@@ -326,11 +326,11 @@ const ContactDetails = ({ data }) => {
                                         placeholder=" "
                                     />
 
-                                    <p className="text-red-400 text-14 min-h-3.5 mt-2">{errors.organization?.message}</p>
+                                    <p className="text-red-400 text-14 min-h-3.5 mt-2 absolute">{errors.organization?.message}</p>
 
                                     <label
                                         htmlFor="organization"
-                                        className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2  text-white text-19 font-extralight transition-all duration-200 ease-out peer-focus:top-0 peer-focus:text-xs peer-focus:text-white peer-focus:-translate-y-full peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base 2xl:peer-placeholder-shown:text-19 peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
+                                        className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2  text-white text-19 font-extralight transition-all duration-200 ease-out peer-focus:top-5 peer-focus:text-xs peer-focus:text-white peer-focus:-translate-y-full peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base 2xl:peer-placeholder-shown:text-19 peer-not-placeholder-shown:top-5 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
                                     >
                                         {tFormLabels.organization}
                                     </label>
@@ -351,11 +351,11 @@ const ContactDetails = ({ data }) => {
                                         placeholder=" "
                                     />
 
-                                    <p className="text-red-400 text-14 min-h-3.5 mt-2">{errors.country?.message}</p>
+                                    <p className="text-red-400 text-14 min-h-3.5 mt-2 absolute">{errors.country?.message}</p>
 
                                     <label
                                         htmlFor="country"
-                                        className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2  text-white text-19 font-extralight transition-all duration-200 ease-out peer-focus:top-0 peer-focus:text-xs peer-focus:text-white peer-focus:-translate-y-full peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base 2xl:peer-placeholder-shown:text-19 peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
+                                        className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2  text-white text-19 font-extralight transition-all duration-200 ease-out peer-focus:top-5 peer-focus:text-xs peer-focus:text-white peer-focus:-translate-y-full peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base 2xl:peer-placeholder-shown:text-19 peer-not-placeholder-shown:top-5 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
                                     >
                                         {tFormLabels.country}
                                     </label>
@@ -366,7 +366,7 @@ const ContactDetails = ({ data }) => {
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
-                                className="relative mb-6 xl:mb-8 3xl:mb-[30px]"
+                                className="relative mb-6 xl:mb-8 3xl:mb-[38px]"
                             >
                                 {/* Floating Label */}
                                 <label
@@ -410,15 +410,15 @@ const ContactDetails = ({ data }) => {
                                     placeholder=" "
                                 />
 
-                                <p className="text-red-400 text-14 min-h-3.5 mt-2">{errors.message?.message}</p>
+                                <p className="text-red-400 text-14 min-h-3.5 mt-2 absolute">{errors.message?.message}</p>
 
                                 <label
                                     htmlFor="message"
-                                    className={`absolute ${isArabic ? "right-0" : "left-0"} top-1/2 -translate-y-1/2  text-white text-base 2xl:text-19 font-extralight
+                                    className={`absolute ${isArabic ? "right-0" : "left-0"} !top-0 -translate-y-1/2  text-white text-base 2xl:text-19 font-extralight
                             transition-all duration-200 ease-out
                             peer-focus:top-0 peer-focus:text-xs peer-focus:text-white peer-focus:-translate-y-full
                             peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base 2xl:peer-placeholder-shown:text-19
-                            peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
+                            peer-not-placeholder-shown:top-5 peer-not-placeholder-shown:-translate-y-full peer-not-placeholder-shown:text-19 peer-not-placeholder-shown:text-white`}
                                 >
                                     {tFormLabels.message}
                                 </label>

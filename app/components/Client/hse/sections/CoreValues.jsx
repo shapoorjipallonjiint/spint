@@ -37,7 +37,7 @@ const CoreValues = ({ data }) => {
     return (
         <section className="pt25 pb30 relative overflow-hidden" ref={sectionRef}>
             <div className="container ">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[658px_auto] gap-5 2xl:gap-15 3xl:gap-23 items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[458px_auto] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[658px_auto] gap-5 lg:gap-12 2xl:gap-15 3xl:gap-23 items-center">
                     <div className="relative overflow-hidden" ref={imageContainerRefTwo}>
                         <MotionImage
                             style={{ y: imageY }}
@@ -49,7 +49,7 @@ const CoreValues = ({ data }) => {
                             width={658}
                             height={545}
                             alt=""
-                            className="w-full md:w-full h-[200px] xs:h-[250px] md:h-[300px] lg:h-[400px] 2xl-h-[545px] object-cover"
+                            className="w-full md:w-full h-[200px] xs:h-[250px] md:h-[450px] lg:h-[520px] 2xl:h-[580px] 3xl:h-[648px] object-cover"
                         />
                     </div>
                     <div className="border-b border-[#cccccc] pb-5 md:pb-7 xl:pb-[42px]">
@@ -73,7 +73,7 @@ const CoreValues = ({ data }) => {
                         src="/assets/images/svg/sv-02.svg"
                         style={{ y: shapeY }}
                         alt=""
-                        className={`absolute bottom-[-60px] md:bottom-0
+                        className={`absolute bottom-[-60px] md:bottom-[60px]
     ${
         isArabic
             ? "left-[-30px] lg:left-[-80px] xl:left-[-40px] -scale-x-100"

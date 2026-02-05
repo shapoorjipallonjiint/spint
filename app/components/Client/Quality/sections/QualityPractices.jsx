@@ -108,7 +108,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                     </motion.p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
+                <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px] items-center">
                     {/* ================= IMAGE (DESKTOP ONLY) ================= */}
                     <div ref={imageRef} className="hidden md:block relative h-[250px] md:h-full overflow-hidden">
                         <MotionImage
@@ -162,12 +162,12 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         updateImage(index);
                                     }
                                 }}
-                                className="border-b border-black/20 last:border-b-0 py-5 3xl:py-8 cursor-pointer"
+                                className="border-b border-black/20 last:border-b-0 py-5 3xl:py-[15px] cursor-pointer"
                             >
                                 {/* TITLE */}
                                 <div
-                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${
-                                        isActive(index) ? "text-black font-semibold" : "text-paragraph font-light"
+                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] text-black ${
+                                        isActive(index) ? " font-semibold" : "  font-light"
                                     }`}
                                 >
                                     {/* LEFT BAR */}
