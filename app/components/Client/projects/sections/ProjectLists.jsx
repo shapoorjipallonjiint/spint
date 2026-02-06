@@ -695,7 +695,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h2 className="text-19 lg:text-24 2xl:text-29 truncate leading-[1.344827586206897] font-light py-4 md:py-6 xl:max-w-[90%]">
+                                    <h2 className="text-[20px] lg:text-24 2xl:text-29 truncate leading-[1.344827586206897] font-light py-4 md:py-6 xl:max-w-[90%]">
                                         {item.firstSection.title}
                                     </h2>
                                 </div>

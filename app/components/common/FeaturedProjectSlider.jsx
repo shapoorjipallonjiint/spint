@@ -133,11 +133,12 @@ const FeaturedProjectSlider = ({ data }) => {
                             }}
                             onSlideChange={handleSlideChange}
                             speed={1200}
-                            // autoplay={{
-                            //   delay: 4000,
-                            //   disableOnInteraction: false,
-                            //   waitForTransition: true,
-                            // }}
+                            allowTouchMove={false}
+                            autoplay={{
+                              delay: 4000,
+                              disableOnInteraction: false,
+                              waitForTransition: true,
+                            }}
                             breakpoints={{
                                 600: {
                                     slidesPerView: 1,
@@ -165,7 +166,7 @@ const FeaturedProjectSlider = ({ data }) => {
                                                         height={500}
                                                         src={item.thumbnail}
                                                         alt={item.thumbnailAlt || "Project image"}
-                                                        className={`w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] object-cover ${
+                                                        className={`    w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] object-cover ${
                                                             !hasScrolledIntoView
                                                                 ? "initial-hidden-img"
                                                                 : animatingSlide === i || initialAnimating

@@ -53,7 +53,7 @@ const ExpandingHorizons = ({ data }) => {
                                 titleText={t.title}
                                 titleColor="black"
                                 marginClass="mb-4 md:mb-6 2xl:mb-50px"
-                                maxW="max-w-[22ch]"
+                                maxW="xl:max-w-[32ch] 3xl:max-w-[22ch]"
                                 delay={1.6}
                             />
                             {
@@ -62,7 +62,7 @@ const ExpandingHorizons = ({ data }) => {
                                     initial="hidden"
                                     whileInView={"show"}
                                     viewport={{ amount: 0.2, once: false }}
-                                    className="mb-4 xl:mb-8 last:mb-0 text-19 lg:text-20 3xl:text-29 font-light leading-[1.35] text-paragraph max-w-[48ch]"
+                                    className="mb-4 xl:mb-8 last:mb-0 text-19 lg:text-20 3xl:text-29 font-light leading-[1.35] text-paragraph xl:max-w-[60ch] 3xl:max-w-[48ch]"
                                 >
                                     {t.description}
                                 </motion.p>

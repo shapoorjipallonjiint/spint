@@ -42,14 +42,14 @@ const SaftySlider = ({ data }) => {
 
     /* ---------------- height logic (unchanged) ---------------- */
     const computeHeight = (i, scale = 1) => {
-        const diff = Math.abs(activeIndex - i);
+            const diff = Math.abs(activeIndex - i);
         let baseHeight = 455;
 
-        if (diff === 0) baseHeight = 597;
-        else if (diff === 1 && i > activeIndex) baseHeight = 471;
-        else if (diff === 1 && i < activeIndex) baseHeight = 521;
-        else if (diff === 2 && i < activeIndex) baseHeight = 455;
-        else if (diff === 2 && i > activeIndex) baseHeight = 400;
+        if (diff === 0) baseHeight = 679;
+        else if (diff === 1 && i > activeIndex) baseHeight = 536;
+        else if (diff === 1 && i < activeIndex) baseHeight = 593;
+        else if (diff === 2 && i < activeIndex) baseHeight = 517;
+        else if (diff === 2 && i > activeIndex) baseHeight = 455;
 
         return `${baseHeight * scale}px`;
     };
@@ -134,7 +134,7 @@ const SaftySlider = ({ data }) => {
                 </div>
             </div>
 
-            <div className="w-full bg-white xl:pb-5 3xl:pb-30">
+            <div className="w-full bg-white pb30">
                 <motion.div
                     variants={moveLeft(0.3)}
                     initial="hidden"
@@ -160,7 +160,7 @@ const SaftySlider = ({ data }) => {
                             0: { slidesPerView: 1.2 },
                         }}
                         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-                        className="h-[400px] md:h-[470px] lg:h-[570px] xl:h-[586px] 2xl:h-[611px] 3xl:h-[597px]"
+                        className="h-[400px] md:h-[470px] lg:h-[570px] xl:h-[586px] 2xl:h-[611px] 3xl:h-[679px]"
                     >
                         {[...t.itemsTwo, ...t.itemsTwo].map((img, i) => (
                             <SwiperSlide

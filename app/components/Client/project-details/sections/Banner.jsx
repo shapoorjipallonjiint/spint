@@ -38,7 +38,7 @@ const Banner = ({ firstSection, secondSection }) => {
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
             <div className="pt-12 xl:pt-15  3xl:pt-30 pb-26 md:pb-38  lg:pb-[170px] xl:pb-[230px] bg-f5f5 2xl:pb-[232px]  ">
-                <div className="container relative   z-[2] px-0">
+                <div className="container relative   z-[2] sm:px-0">
                     <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-3 lg:gap-0">
                         <motion.div
                             variants={paragraphItem}

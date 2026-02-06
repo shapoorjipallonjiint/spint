@@ -137,10 +137,10 @@ const ExpertiseSec = ({ data }) => {
                         }}
                         loopAdditionalSlides={1}
                         watchSlidesProgress={true}
-                        // autoplay={{
-                        //   delay: 7000,
-                        //   disableOnInteraction: false,
-                        // }}
+                        autoplay={{
+                          delay: 7000,
+                          disableOnInteraction: false,
+                        }}
                         loop={true}
                         breakpoints={{
                             0: {

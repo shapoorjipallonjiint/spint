@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import H2Title from "../../../common/H2Title";
 import { motion } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
@@ -11,6 +12,8 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 const Horizons = ({ data }) => {
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
+    const [activeCard, setActiveCard] = useState(null);
+
     return (
         <section className="relative overflow-hidden pt-text90 pb30 bg-f5f5">
             <div className="container">
@@ -26,17 +29,20 @@ const Horizons = ({ data }) => {
                             className={`group border-black/20 border-t-cmnbdr lg:border-t-transparent border-y lg:border-y-2 lg:border-y-transparent bdrrst hover:border-y-2 hover:border-y-[#30B6F9] ${
                                 isArabic ? "border-r border-l-0" : "border-l"
                             }`}
+                            onClick={() => setActiveCard(activeCard === index ? null : index)}
                         >
                             <h3 className="text-20 xl:text-24 2xl:text-29 font-light leading-[1.311] mb-4 lg:mb-[22px]  px-3 lg:px-10 pt-4 lg:pt-7">
                                 {item.name}
                             </h3>
                             <div className="relative">
-                                <div className="absolute bottom-0 w-full h-0 group-hover:h-full group-hover:bg-[linear-gradient(180deg,rgba(48,182,249,0)_0%,rgba(48,182,249,0.75)_100%)] transition-all duration-300 ">
-                                    <div className="h-0 w-8 group-hover:h-8 lg:w-10 group-hover:lg:h-10 2xl:w-20 group-hover:2xl:h-20 bg-primary flex items-center justify-center absolute bottom-0 transition-all duration-300 delay-100 ">
+                                <div className={`absolute bottom-0 w-full   group-hover:h-full group-hover:bg-[linear-gradient(180deg,rgba(48,182,249,0)_0%,rgba(48,182,249,0.75)_100%)] transition-all duration-300 
+                                    ${activeCard === index ? "h-full bg-[linear-gradient(180deg,rgba(48,182,249,0)_0%,rgba(48,182,249,0.75)_100%)]" : "h-0"}`}>
+                                    <div className={`w-8 group-hover:h-8 lg:w-10 group-hover:lg:h-10 2xl:w-20 group-hover:2xl:h-20 bg-primary flex items-center justify-center absolute bottom-0 transition-all duration-300 delay-100 
+                                        ${activeCard === index ? "h-8 lg:h-10 2xl:h-20" : "h-0"}`}>
                                         <div
-                                            className={`opacity-0 group-hover:opacity-100 transition-all duration-300 delay-150 ${
+                                            className={`group-hover:opacity-100 transition-all duration-300 delay-150 ${
                                                 isArabic ? "-scale-x-100" : ""
-                                            }`}
+                                            }       ${activeCard === index ? "opacity-100" : "opacity-0 "}`}
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"

@@ -3250,6 +3250,18 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         }`}
                                     >
                                         <div className="p-5 md:p-10 lg:p-7 3xl:py-12 3xl:px-15 bg-primary w-fit 2xl:w-[400px] 3xl:w-[550px] text-white relative ">
+                                            <div className="h-fit mb-3 md:mb-5 overflow-hidden">
+                                                <motion.h3
+                                                    key={activeItem.id}
+                                                    initial={{ opacity: 0, y: 30 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: -30 }}
+                                                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                                                    className="text-29 font-light leading-[1] "
+                                                >
+                                                    {activeItem.title}
+                                                </motion.h3>
+                                            </div>
                                             <motion.p
                                                 key={activeItem.id}
                                                 initial={{ opacity: 0, y: 15 }}

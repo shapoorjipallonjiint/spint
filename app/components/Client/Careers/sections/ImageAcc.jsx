@@ -32,7 +32,7 @@ const ImageAcc = ({ data }) => {
                         <H2Title titleText={t.title} titleColor="black" marginClass="mb-0" />
                     </div>
 
-                    <div className="grid lg:grid-cols-[430px_1fr] 2xl:grid-cols-[700px_auto] 3xl:grid-cols-[916px_auto] gap-8 2xl:gap-18 3xl:gap-[107px] items-center">
+                    <div className="grid lg:grid-cols-[600px_1fr] 2xl:grid-cols-[700px_auto] 3xl:grid-cols-[916px_auto] gap-8 2xl:gap-18 3xl:gap-[107px] items-center">
                         {/* LEFT IMAGE – CHANGES WITH ACCORDION */}
                         <Image
                             width={1200}

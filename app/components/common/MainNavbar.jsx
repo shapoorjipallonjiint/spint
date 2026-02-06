@@ -481,7 +481,7 @@ const MainNavbar = () => {
                             {/* Mobile Menu Button */}
                             <button
                                 onClick={toggleMenu}
-                                className="lg:hidden z-[60] w-10 h-10 flex items-center justify-center transition-all duration-300 relative"
+                                className="lg:hidden z-[60] w-fit h-10 flex items-center justify-center transition-all duration-300 relative"
                                 aria-label="Toggle menu"
                             >
                                 {isMenuOpen ? (
@@ -666,19 +666,19 @@ const MainNavbar = () => {
                             exit="closed"
                             variants={overlayVariants}
                             onClick={toggleMenu}
-                            className="fixed inset-0 bg-black bg-opacity-30 z-50 lg:hidden"
+                            className="fixed inset-0 bg-black/70 z-50 lg:hidden"
                         />
                         <motion.div
                             initial="closed"
                             animate="open"
                             exit="closed"
                             variants={menuVariants}
-                            className={`fixed top-0 ${isArabic ? "left-0" : "right-0"} h-full w-full max-w-[320px] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto`}
+                            className={`fixed top-0 ${isArabic ? "left-0" : "right-0"} h-full w-full max-w-[320px] md:max-w-[450px] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto`}
                         >
                             <div className={`absolute ${isArabic ? "left-5" : "right-5"} top-5`}>
                                 <button
                                     onClick={toggleMenu}
-                                    className="lg:hidden z-[60] w-10 h-10 flex items-center justify-center transition-all duration-300 relative"
+                                    className="lg:hidden z-[60] w-fit h-10 flex items-center justify-center transition-all duration-300 relative"
                                     aria-label="Toggle menu"
                                 >
                                     {isMenuOpen ? (
@@ -725,7 +725,9 @@ const MainNavbar = () => {
                                                 variants={itemVariants}
                                             >
                                                 <div>
-                                                    <div className="flex items-center justify-between">
+                                                    <div className="flex items-center justify-between"  
+                                                    onClick={() => toggleSubmenu(item.name)}
+                                                    >
                                                         <LangLink
                                                             href={item.href || "#"}
                                                             onClick={(e) => {
@@ -745,7 +747,7 @@ const MainNavbar = () => {
 
                                                         {hasSubmenu && (
                                                             <button
-                                                                onClick={() => toggleSubmenu(item.name)}
+                                                               
                                                                 className={`p-2 ${isArabic ? "mr-2" : "ml-2"}`}
                                                                 type="button"
                                                             >

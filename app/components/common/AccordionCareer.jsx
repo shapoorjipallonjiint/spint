@@ -153,7 +153,7 @@ className={`border-b border-black/20 relative transition-all duration-500
             onClick={() => toggleAccordion(index)}
             className={`w-full ${openIndex === index
                 ? "pt-[20px] "
-                : "py-3 2xl:py-[32px]"
+                : "py-3 2xl:py-4 3xl:py-[32px]"
               } flex items-center justify-between ${isArabic ? "text-right" : "text-left"} group transition-all duration-500`}
           >
             <div className="flex-1">
@@ -199,7 +199,7 @@ className={`border-b border-black/20 relative transition-all duration-500
                     variants={moveUp(0.001)}
                     initial="hidden"
                     animate="show"
-                    className="text-19 text-paragraph font-extralight leading-[1.52] max-w-[38ch]"
+                    className="text-19 text-paragraph font-extralight leading-[1.52] lg:max-w-[38ch]"
                   >
                     {item.description}
                   </motion.p>
