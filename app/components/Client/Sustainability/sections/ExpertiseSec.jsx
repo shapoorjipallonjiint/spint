@@ -114,7 +114,7 @@ const ExpertiseSec = (data) => {
                 />
 
                 <div className="relative overflow-hidden">
-                    <div className="grid grid-cols-1 md:grid-cols-[50%_1fr] 2xl:grid-cols-[55%_1fr] 3xl:grid-cols-[961px_1fr] gap-4 lg:gap-8 xl:gap-[70px]">
+                    <div className="grid grid-cols-1 md:grid-cols-[55%_1fr] 2xl:grid-cols-[55%_1fr] 3xl:grid-cols-[961px_1fr] gap-4 md:gap-8 lg:gap-8 xl:gap-[70px]">
                         <motion.div
                             className="h-full relative overflow-hidden"
                             ref={imageContainerRef}
@@ -185,13 +185,13 @@ const ExpertiseSec = (data) => {
                                 </div>
 
                                 <div>
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex flex-col lg:flex-row lg:items-center gap-1 lg:gap-3">
                                         <motion.div
                                             variants={moveUp(0.2)}
                                             initial="hidden"
                                             whileInView="show"
                                             viewport={{ amount: 0.2, once: true }}
-                                            className="w-[66px] h-[66px] bg-secondary/30 rounded-full flex items-center justify-center"
+                                            className="w-[50px] h-[50px] lg:w-[66px] lg:h-[66px] bg-secondary/30 rounded-full flex items-center justify-center"
                                         >
                                             {activeIcon && (
                                                 <Image
@@ -199,7 +199,7 @@ const ExpertiseSec = (data) => {
                                                     alt={activeIconAlt}
                                                     width={29}
                                                     height={42}
-                                                    className="w-7.25 h-10.5"
+                                                    className="w-8 h-8 lg:w-7.25 lg:h-10.5"
                                                 />
                                             )}
                                         </motion.div>
@@ -216,7 +216,7 @@ const ExpertiseSec = (data) => {
                                     </div>
 
                                     {activeDescription && (
-                                        <div className="mt-4 xl:mt-5 border-t border-black/20 pt-4 xl:pt-[28px]">
+                                        <div className="mt-2 lg:mt-4 xl:mt-5 border-t border-black/20 pt-4 xl:pt-[28px]">
                                             <motion.p
                                                 variants={moveUp(0.6)}
                                                 initial="hidden"

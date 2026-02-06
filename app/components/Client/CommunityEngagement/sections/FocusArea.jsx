@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import { assets } from "../../../../assets/index";
@@ -99,7 +99,22 @@ const FocusArea = ({ data }) => {
 
     // Calculate wrapper height based on content scroll height
     const itemCount = t.items.length;
-    const wrapperHeight = `${itemCount * 100 + 100}vh`;
+  const [wrapperHeight, setWrapperHeight] = useState("auto");
+
+useEffect(() => {
+  function updateHeight() {
+    if (window.innerWidth < 1024) {
+      setWrapperHeight("auto");
+    } else {
+      setWrapperHeight(`${itemCount * 100 + 100}vh`);
+    }
+  }
+
+  updateHeight(); // run on load
+  window.addEventListener("resize", updateHeight);
+
+  return () => window.removeEventListener("resize", updateHeight);
+}, [itemCount]);
 
     useEffect(() => {
         if (isArabic) {
@@ -111,7 +126,7 @@ const FocusArea = ({ data }) => {
 
     return (
         <div ref={wrapperRef} style={{ height: wrapperHeight }} className="relative">
-            <section className="sticky top-0 h-screen pt-text90 pb25 bg-f5f5 overflow-hidden" ref={sectionRef}>
+            <section className="lg:sticky top-0 lg:h-screen pt-text90 pb25 bg-f5f5 overflow-hidden" ref={sectionRef}>
                 <div className="container relative h-full">
                     <div
                         className={`w-[800px] 2xl:w-[1016px] 3xl:w-[1316px] flex ${
@@ -141,7 +156,7 @@ const FocusArea = ({ data }) => {
                         {/* Left column */}
                         <div
                             ref={leftRef}
-                            className="max-h-screen overflow-y-auto scrollbar-hidden hidden lg:block lg:pt-[100px] 2xl:pt-25 3xl:pt-[180px] pb-12 xl:pb-20"
+                            className="lg:max-h-screen overflow-y-auto scrollbar-hidden hidden lg:block lg:pt-[100px] 2xl:pt-25 3xl:pt-[180px] pb-12 xl:pb-20"
                         >
                             {t.items.map((area, i) => (
                                 <div
@@ -157,14 +172,14 @@ const FocusArea = ({ data }) => {
                         </div>
 
                         {/* Right column */}
-                        <div ref={rightRef} className="w-[1316px] pb-2 max-h-screen overflow-y-auto custom-scroll-left">
+                        <div ref={rightRef} className="w-[1316px] lg:pb-2 lg:max-h-screen overflow-y-auto custom-scroll-left">
                             <div
-                                className={`pl-2 lg:pl-10 2xl:pl-[107px] lg:pt-[100px] 2xl:pt-25 3xl:pt-[180px] pb-20 xl:pb-20
+                                className={`pl-2 lg:pl-10 2xl:pl-[107px] lg:pt-[100px] 2xl:pt-25 3xl:pt-[180px] lg:pb-20 xl:pb-20
     ${isArabic ? "pr-2 lg:pr-10 2xl:pr-[107px] pl-0 text-right" : ""}
   `}
                             >
                                 {t.items.map((area, i) => (
-                                    <div key={i} className="flex gap-3 pb-6 xl:pb-[63px] last:pb-6 last:xl:pb-[63px]">
+                                    <div key={i} className="flex gap-3 pb-6 xl:pb-[63px] last:pb-0 last:lg:pb-6 last:xl:pb-[63px]">
                                         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 2xl:gap-[181px] justify-between w-full sdsdsd">
                                             <motion.div
                                                 variants={moveUp(0.2 * i)}

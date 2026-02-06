@@ -118,7 +118,7 @@ const Banner = ({ banner, bannerAlt, pageTitle, data }) => {
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
-                            className="py-3 lg:py-[48px] ps-6 lg:ps-[83px] pe-6 bg-primary min-w-[70.68%]"
+                            className="py-3 md:py-[24px] lg:py-[24px] xl:py-[20px] 2xl:py-[14px] 3xl:py-[48px] ps-6 lg:ps-[83px] pe-6 bg-primary min-w-[70.68%]"
                         >
                             <div className="flex items-center gap-12 xl:gap-[148px]">
                                 {tData.items.map((item, i) => (
@@ -159,7 +159,7 @@ const Banner = ({ banner, bannerAlt, pageTitle, data }) => {
                     height={1000}
                     src="../assets/images/svg/sv-02.svg"
                     alt=""
-                    className={`w-[200px] h-[230px] sm:w-[240px] sm:h-[330px] lg:w-[340px] lg:h-[430px] 2xl:w-[449px] 2xl:h-[630px] object-cover object-center ${
+                    className={`w-[200px] h-[230px] sm:w-[240px] sm:h-[352px] md:w-[272px] md:h-[417px] lg:w-[340px] lg:h-[430px] 3xl:w-[449px] 3xl:h-[630px] object-cover object-center ${
                         isArabic ? "-scale-x-100" : ""
                     }`}
                 />

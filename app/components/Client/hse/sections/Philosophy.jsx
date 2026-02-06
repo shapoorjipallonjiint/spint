@@ -154,7 +154,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                             >
                                 {/* TITLE */}
                                 <div
-                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${
+                                    className={`relative text-[20px] 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${
                                         isActive(index) ? "text-white font-bold" : " font-light"
                                     }`}
                                 >

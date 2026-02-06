@@ -1234,9 +1234,9 @@ body::-webkit-scrollbar {
 .our-expertise-item-desc li {
   position: relative;
   /* padding-left: 20px; */
-  padding-inline-start: 20px;
-  font-size: 19px;
+  padding-inline-start: 20px; 
   margin-bottom: 8px;
+  @apply text-19;
 }
 
 .our-expertise-item-desc li::before {
@@ -1549,9 +1549,15 @@ body::-webkit-scrollbar {
 
 h2,
 h1 {
-  letter-spacing: -2.5px;
+  letter-spacing: -1.5px;
 }
+@media (max-width:1600px) {
 
+  h2,
+  h1 {
+    letter-spacing: -1px;
+  }
+}
 @media (max-width:1200px) {
 
   h2,

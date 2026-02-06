@@ -251,7 +251,7 @@ const ContactDetails = ({ data }) => {
                         </div>
                     </div>
                     <div className="bg-primary px-5 pt-8 pb-9 lg:p-8 xl:p-10 3xl:p-[70px] 3xl:pt-[59px]">
-                        <H2Title titleText={isArabic ? "الإستفسارات العامة" : "General Inquiry"} titleColor="white" marginClass="mb-4 3xl:mb-50px" />
+                        <H2Title titleText={isArabic ? "الإستفسارات العامة" : "General Inquiry"} titleColor="white" marginClass="mb-4 3xl:mb-[30px]" />
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="grid sm:grid-cols-2 gap-5 2xl:gap-50px w-full mb-6 xl:mb-8 3xl:mb-[38px]">
                                 <motion.div
@@ -265,7 +265,7 @@ const ContactDetails = ({ data }) => {
                                         id="name"
                                         {...register("name", { required: "Name is required" })}
                                         type="text"
-                                        className="peer w-full bg-transparent text-19 font-extralight border-0 border-b border-white/30 py-5 focus:border-white text-white focus:outline-none placeholder-transparent"
+                                        className="peer w-full bg-transparent text-19 font-extralight border-0 border-b border-white/30 pt-[18px] pb-[8px] 3xl:py-[18px] focus:border-white text-white focus:outline-none placeholder-transparent"
                                         placeholder=" "
                                     />
 
@@ -296,7 +296,7 @@ const ContactDetails = ({ data }) => {
                                             },
                                         })}
                                         type="email"
-                                        className="peer w-full bg-transparent text-19 font-extralight border-0 border-b border-white/30 py-5 focus:border-white text-white focus:outline-none placeholder-transparent"
+                                        className="peer w-full bg-transparent text-19 font-extralight border-0 border-b border-white/30 pt-[18px] pb-[8px] 3xl:py-[18px] focus:border-white text-white focus:outline-none placeholder-transparent"
                                         placeholder=" "
                                     />
 
@@ -310,7 +310,7 @@ const ContactDetails = ({ data }) => {
                                     </label>
                                 </motion.div>
                             </div>
-                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-12 w-full mb-6 xl:mb-8 3xl:mb-[38px]">
+                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-12 w-full mb-6 xl:mb-12 3xl:mb-[43px]">
                                 <motion.div
                                     variants={moveUp(0.7)}
                                     initial="hidden"
@@ -322,7 +322,7 @@ const ContactDetails = ({ data }) => {
                                         id="organization"
                                         {...register("organization", { required: "Organization is required" })}
                                         type="text"
-                                        className="peer w-full bg-transparent text-19 font-extralight border-0 border-b border-white/30 py-5 focus:border-white text-white focus:outline-none placeholder-transparent"
+                                        className="peer w-full bg-transparent text-19 font-extralight border-0 border-b border-white/30 pt-[18px] pb-[8px] 3xl:py-[18px] focus:border-white text-white focus:outline-none placeholder-transparent"
                                         placeholder=" "
                                     />
 
@@ -347,7 +347,7 @@ const ContactDetails = ({ data }) => {
                                         id="country"
                                         {...register("country", { required: "Country is required" })}
                                         type="text"
-                                        className="peer w-full bg-transparent text-19 font-extralight border-0 border-b border-white/30 py-5 focus:border-white text-white focus:outline-none placeholder-transparent"
+                                        className="peer w-full bg-transparent text-19 font-extralight border-0 border-b border-white/30 pt-[18px] pb-[8px] 3xl:py-[18px] focus:border-white text-white focus:outline-none placeholder-transparent"
                                         placeholder=" "
                                     />
 
@@ -366,7 +366,7 @@ const ContactDetails = ({ data }) => {
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
-                                className="relative mb-6 xl:mb-8 3xl:mb-[38px]"
+                                className="relative mb-6 lg:mb-8 xl:mb-[50px] 3xl:mb-[60px]"
                             >
                                 {/* Floating Label */}
                                 <label
@@ -384,7 +384,7 @@ const ContactDetails = ({ data }) => {
                                         onChange={setSubject}
                                         styles={customStyles}
                                         placeholder=""
-                                        classNamePrefix="react-select font-light text-19 !px-0"
+                                        classNamePrefix="react-select font-extralight text-19 !px-0"
                                     />
                                 </div>
                             </motion.div>
@@ -424,39 +424,45 @@ const ContactDetails = ({ data }) => {
                                 </label>
                             </motion.div>
 
-                            <div className="mb-6">
-                                <ReCAPTCHA
-                                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                                    onChange={handleCaptchaChange}
-                                    theme="dark"
-                                />
-                            </div>
 
-                            <motion.button
-                                variants={moveUp(1)}
-                                initial="hidden"
-                                whileInView="show"
-                                viewport={{ amount: 0.2, once: true }}
-                                type="submit"
-                                disabled={!captchaVerified}
-                                className={`bg-white/25 text-white rounded-full uppercase transition-opacity
-        ${!captchaVerified ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"}
-    `}
-                            >
-                                <div className="relative p-[1px] rounded-full">
-                                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#30B6F9] to-[#1E45A2]"></div>
+                            <div className="flex flex-col lg:flex-row gap-3 items-baseline lg:items-center justify-between  mt-8 lg:mt-6">
+                                   <div>
+                                    <motion.button
+                                        variants={moveUp(1)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.2, once: true }}
+                                        type="submit"
+                                        disabled={!captchaVerified}
+                                        className={`bg-white/25 text-white rounded-full uppercase transition-opacity
+                                            ${!captchaVerified ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"}
+                                        `}
+                                    >
+                                        <div className="relative p-[1px] rounded-full">
+                                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#30B6F9] to-[#1E45A2]"></div>
 
-                                    <div
-                                        className={`relative rounded-full bg-[#5974b7] py-2 px-4 text-white
+                                            <div
+                                                className={`relative rounded-full bg-[#5974b7] py-2 px-4 text-white
                 text-[12px] md:text-[14px] lg:text-[16px]
                 ${!captchaVerified ? "pointer-events-none" : "cursor-pointer"}
             `}
-                                    >
-                                        {/* Send Message */}
-                                        {!captchaVerified ? tFormLabels.verifyCaptcha : tFormLabels.sendMessage}
-                                    </div>
+                                            >
+                                                {/* Send Message */}
+                                                {!captchaVerified ? tFormLabels.verifyCaptcha : tFormLabels.sendMessage}
+                                            </div>
+                                        </div>
+                                    </motion.button>
+                                   </div>
+                                <div className=" ">
+                                    <ReCAPTCHA
+                                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                                        onChange={handleCaptchaChange}
+                                        theme="dark"
+                                    />
                                 </div>
-                            </motion.button>
+                            </div>
+
+                            
                         </form>
                     </div>
                 </div>

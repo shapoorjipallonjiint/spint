@@ -40,7 +40,7 @@ const Continual = ({ data }) => {
     const shapeY = useTransform(shapeProgress, [0, 1], shapeOffset);
 
     return (
-        <section ref={sectionRef} className="py-25 relative overflow-hidden bg-[#F5F5F5]">
+        <section ref={sectionRef} className="py25 relative overflow-hidden bg-[#F5F5F5]">
             <MotionImage
                 width={1500}
                 height={1000}
@@ -53,22 +53,22 @@ const Continual = ({ data }) => {
             />
 
             <div className="container">
-                <div className="  grid grid-cols-1 lg:grid-cols-[1fr_0.7fr] items-center lg:gap-10 xl:gap-x-[70px] gap-y-6">
+                <div className="  grid grid-cols-1 lg:grid-cols-[400px_auto] xl:grid-cols-[500px_auto]  2xl:grid-cols-[650px_auto] 3xl:grid-cols-[932px_auto] items-center lg:gap-10 xl:gap-x-[40px] 3xl:gap-x-[70px] gap-y-6">
                     <div className=" relative overflow-hidden" ref={imageContainerRefTwo}>
                         <MotionImage
                             style={{ y: imageY }}
                             src={t.image}
                             width={932}
                             height={532}
-                            className="w-full h-[250px] md:h-[320px] lg:h-[350px] md:w-full lg:w-full xl:h-[400px] 2xl:h-[555px] 2xl:w-[932px] object-cover scale-105 "
+                            className="w-full h-[250px] md:h-[320px] lg:h-[450px] md:w-full lg:w-full xl:h-[450px] 2xl:h-[555px] 2xl:w-[932px] object-cover scale-105 "
                             alt={t.imageAlt}
                         />
                         {/* <div ref={overlayRefTwo} className="absolute top-0 left-0 w-full h-full bg-white z-10"></div> */}
                     </div>
 
                     <div>
-                        <div className="border-b border-[#CCCCCC] pb-[50px]">
-                            <H2Title titleText={t?.title} titleColor="black" marginClass="mb-5 2xl:mb-10" />
+                        <div className="border-b border-[#CCCCCC] pb-5 md:pb-[30px] 2xl:pb-[50px]">
+                            <H2Title titleText={t?.title} titleColor="black" marginClass="mb-5 2xl:mb-[30px]" />
                             <motion.p
                                 variants={paragraphItem}
                                 initial="hidden"
@@ -80,7 +80,7 @@ const Continual = ({ data }) => {
                             </motion.p>
                         </div>
 
-                        <h4 className="text-29 pt-[30px]">{t?.subTitle}</h4>
+                        <h4 className="text-29 pt-3 md:pt-[30px]">{t?.subTitle}</h4>
                     </div>
                 </div>
             </div>

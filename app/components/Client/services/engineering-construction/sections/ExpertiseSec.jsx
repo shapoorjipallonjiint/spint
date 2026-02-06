@@ -75,7 +75,7 @@ const ExpertiseSec = ({ data }) => {
             </div>
             <div className="container">
                 {/* Header */}
-                <div className="mb-50px">
+                <div className="mb-6 lg:mb-50px">
                     <H2Title titleText={t.title} titleColor="white" marginClass="mb-4 xl:mb-5" />
                     <motion.p
                         variants={moveUp(0.4)}
@@ -124,7 +124,7 @@ const ExpertiseSec = ({ data }) => {
                                                 style={{ y: imageY }}
                                                 src={item.image}
                                                 alt={item.imageAlt}
-                                                className="w-full h-[300px] lg:h-[400px] xl:h-[500px] 3xl:h-[625px]  object-cover"
+                                                className="w-full h-[350px] lg:h-[500px] xl:h-[600px] 3xl:h-[625px]  object-cover"
                                             />
                                         </div>
                                     </SwiperSlide>
@@ -191,7 +191,7 @@ const ExpertiseSec = ({ data }) => {
                                 {t.items.map((item, index) => (
                                     <SwiperSlide key={index}>
                                         <div>
-                                            <h3 className="text-29 leading-[1.344827586206897] font-light mb-4  xl:mb-5">
+                                            <h3 className="text-[22px] md:text-[25px] lg:text-29 leading-[1.344827586206897] font-light mb-4  xl:mb-5">
                                                 {item.title}
                                             </h3>
                                             <p className="text-white text-19 leading-[1.473684210526316] font-light mb-8 2xl:mb-[45px]">
@@ -199,12 +199,12 @@ const ExpertiseSec = ({ data }) => {
                                             </p>
 
                                             {/* Services */}
-                                            <p className="text-white text-29 leading-[1.473684210526316] font-light mb-5">
+                                            <p className="text-white text-[22px] md:text-[25px] lg:text-29 leading-[1.473684210526316] font-light mb-5">
                                                 Key Services
                                             </p>
                                             <div
                                                 dangerouslySetInnerHTML={{ __html: item.description }}
-                                                className="our-expertise-item-desc text-white"
+                                                className="our-expertise-item-desc text-white "
                                                 dir={isArabic ? "rtl" : "ltr"}
                                             >
                                                 {/* <h4 className="text-29 leading-[1.344827586206897] font-light mb-3 xl:mb-5">
