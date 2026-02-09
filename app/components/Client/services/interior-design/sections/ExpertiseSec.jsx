@@ -46,7 +46,7 @@ const ExpertiseSec = ({ data }) => {
                                     className="w-full h-[200px] lg:h-[250px] 2xl:h-[300px] 3xl:h-[333px] object-cover "
                                 />
 <div
-  className={`border-b border-cmnbdr p-4 xl:p-10 h-full ${
+  className={`border-b border-cmnbdr ps-0 lg:ps-4 xl:ps-10 p-4 xl:p-10 h-full ${
     isArabic ? "lg:border-r lg:border-b-0" : "lg:border-l lg:border-b-0"
   }`}
 >

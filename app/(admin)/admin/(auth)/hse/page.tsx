@@ -88,6 +88,8 @@ interface HseFormProps {
             fileImage?: string;
             fileImageAlt: string;
             fileImageAlt_ar: string;
+            description?: string;
+            description_ar?: string;
         }[];
     };
 
@@ -605,6 +607,16 @@ const HsePage = () => {
                                                     <FormError
                                                         error={errors.secondSection?.items?.[index]?.fileImageAlt?.message}
                                                     />
+                                                    <Label className="font-bold">Description</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Description"
+                                                        {...register(`secondSection.items.${index}.description`)}
+                                                    />
+                                                    <FormError
+                                                        error={errors.secondSection?.items?.[index]?.description?.message}
+                                                    />
+
                                                 </div>
                                             </div>
                                         ))}
@@ -621,6 +633,8 @@ const HsePage = () => {
                                                         fileImage: "",
                                                         fileImageAlt: "",
                                                         fileImageAlt_ar: "",
+                                                        description: "",
+                                                        description_ar: "",
                                                     })
                                                 }
                                             >
@@ -1111,7 +1125,17 @@ const HsePage = () => {
                                                         placeholder="Alt Tag"
                                                         {...register(`secondSection.items.${index}.fileImageAlt_ar`)}
                                                     />
+                                                    <Label className="font-bold">Description</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Description"
+                                                        {...register(`secondSection.items.${index}.description_ar`)}
+                                                    />
+                                                    <FormError
+                                                        error={errors.secondSection?.items?.[index]?.description_ar?.message}
+                                                    />
                                                 </div>
+                                                
                                             </div>
                                         ))}
 

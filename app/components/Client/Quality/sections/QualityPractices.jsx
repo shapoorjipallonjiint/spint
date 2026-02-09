@@ -35,7 +35,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
     //     [];
 
     const [activeIndex, setActiveIndex] = useState(0);
-    const [hoverIndex, setHoverIndex] = useState(null);
+    const [hoverIndex, setHoverIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
     const [activeImage, setActiveImage] = useState(FALLBACK_IMAGE);
     const [mounted, setMounted] = useState(false);
@@ -60,7 +60,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
         if (t.items.length) {
             setActiveImage(t.items[0].image ?? FALLBACK_IMAGE);
         }
-    }, [t.items]);
+    }, []);
 
     /* ================= SCROLL PARALLAX ================= */
     const imageOffset = isMob ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
@@ -72,7 +72,8 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
     /* ================= IMAGE UPDATE ================= */
     const updateImage = (index) => {
         if (t.items[index]?.image) {
-            setActiveImage(t.items[index].image);
+            setActiveImage(t.items[index].image); 
+             
         }
     };
 
@@ -94,7 +95,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true }}
-                    className="mb-[50px]"
+                    className="mb-7 2xl:mb-[50px]"
                 >
                     <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-[30px]" />
                     <motion.p
@@ -143,15 +144,15 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                 onMouseEnter={() => {
                                     if (!isMobile) {
                                         setHoverIndex(index);
-                                        updateImage(index);
+                                        updateImage(index); 
                                     }
                                 }}
                                 // onMouseLeave={() => !isMobile && setHoverIndex(null)}
-                                onMouseLeave={() => {
-                                    if (!isMobile) {
-                                        setHoverIndex(null);
-                                    }
-                                }}
+                                // onMouseLeave={() => {
+                                //     if (!isMobile) {
+                                //         setHoverIndex(null);
+                                //     }
+                                // }}
                                 // onClick={() => {
                                 //   setActiveIndex(index);
                                 //   updateImage(index);
@@ -162,7 +163,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         updateImage(index);
                                     }
                                 }}
-                                className="border-b border-black/20 last:border-b-0 py-5 3xl:py-[15px] cursor-pointer"
+                                className="border-b border-black/20 last:border-b-0 py-4 lg:py-5 3xl:py-[15px] cursor-pointer"
                             >
                                 {/* TITLE */}
                                 <div
@@ -181,39 +182,17 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
                                     {/* TITLE */}
                                     <span
-                                        className={`inline-block transition-transform ${
+                                        className={`inline-block transition-transform pe-[20px] md:pe-0 ${
                                             isActive(index)
                                                 ? isArabic
-                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]"
-                                                    : "translate-x-[20px] xl:translate-x-[43px]"
+                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]  "
+                                                    : "translate-x-[20px] xl:translate-x-[43px] "
                                                 : "translate-x-0"
                                         }`}
                                     >
                                         {item.title}
                                     </span>
-
-                                    {/* DESCRIPTION (only when hovered / active) */}
-                                    <motion.p
-                                        initial={false}
-                                        animate={{
-                                            opacity: isActive(index) ? 1 : 0,
-                                            height: isActive(index) ? "auto" : 0,
-                                            marginTop: isActive(index) ? 10 : 0,
-                                        }}
-                                        transition={{ duration: 0.25, ease: "easeOut" }}
-                                        className={`overflow-hidden text-sm lg:text-base text-paragraph font-light leading-relaxed ${
-                                            isActive(index)
-                                                ? isArabic
-                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]"
-                                                    : "translate-x-[20px] xl:translate-x-[43px]"
-                                                : "translate-x-0"
-                                        }`}
-                                    >
-                                        {item.description}
-                                    </motion.p>
-                                </div>
-
-                                {/* ================= MOBILE IMAGE ================= */}
+ {/* ================= MOBILE IMAGE ================= */}
                                 {isMobile && isActive(index) && (
                                     <MotionImage
                                         src={item.image}
@@ -223,9 +202,35 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.35 }}
-                                        className="mt-4 w-full h-[200px] object-cover"
+                                        className={`mt-4 w-full h-[200px] object-cover ps-[20px] md:ps-0 ${
+                                            isActive(index)
+                                                ?    " ps-[20px] md:ps-0" 
+                                                : " "
+                                        }`}
                                     />
                                 )}
+                                    {/* DESCRIPTION (only when hovered / active) */}
+                                    <motion.p
+                                        initial={false}
+                                        animate={{
+                                            opacity: isActive(index) ? 1 : 0,
+                                            height: isActive(index) ? "auto" : 0,
+                                            marginTop: isActive(index) ? 10 : 0,
+                                        }}
+                                        transition={{ duration: 0.25, ease: "easeOut" }}
+                                        className={`overflow-hidden text-sm lg:text-base text-paragraph font-light leading-relaxed pe-[20px] md:pe-0 ${
+                                            isActive(index)
+                                                ? isArabic
+                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]  "
+                                                    : "translate-x-[20px] xl:translate-x-[43px]  "
+                                                : "translate-x-0 "
+                                        }`}
+                                    >
+                                        {item.description}
+                                    </motion.p>
+                                </div>
+
+                               
                             </motion.div>
                         ))}
                     </div>

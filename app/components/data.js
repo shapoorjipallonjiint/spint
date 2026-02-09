@@ -37,7 +37,7 @@ export const navData = {
                     href: "/services/interior-design"
                 },
                 {
-                    label: "Façade",
+                    label: "Facade",
                     label_ar: "",
                     href: "/services/facade"
                 },

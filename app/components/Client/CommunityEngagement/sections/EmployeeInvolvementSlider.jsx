@@ -57,50 +57,45 @@ const EmployeeInvolvementSlider = ({ data }) => {
             <div className={`px-[15px] ${isArabic ? "md:ps-0" : "md:pe-0"} relative`}>
                 {/* Counter + Arrows */}
                 <div className="container" ref={containerRef}>
-                    {/* <div className="flex justify-between items-center mb-50px">
-            <div className="text-lg font-semibold text-black flex items-center gap-1"> */}
-                    <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-50px" />
-                    {/* </div>
-          </div> */}
-          {/* Content Section - Static with Navigation */}
-                        <div className="order-1 lg:order-2   ">
-                            {/* Navigation - Fixed */}
-                            <motion.div
-                                variants={moveUp(0.6)}
-                                initial="hidden"
-                                whileInView={"show"}
-                                viewport={{ amount: 0.2, once: false }}
-                                className="flex justify-end items-center gap-4   border-b border-white/20 pb-4 2xl:pb-[30px] lg:pb-6 "
-                            >
-                                <button
-                                    onClick={() => imageSwiper?.slidePrev()}
-                                    className={`group ${isArabic ? "hover:translate-x-1 rotate-180" : "hover:-translate-x-1"} transition-all duration-300  cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px]  rounded-full border border-black/20 flex items-center justify-center`}
-                                    aria-label="Previous slide"
-                                >
-                                    <Image
-                                        src={assets.arrowLeft2}
-                                        alt=""
-                                        width={14}
-                                        height={14}
-                                        className="w-[16px] h-[16px] group-hover:opacity-90  duration-300  transition-all delay-200"
-                                    />
-                                </button>
-                                <button
-                                    onClick={() => imageSwiper?.slideNext()}
-                                    className={`group ${isArabic ? "hover:-translate-x-1 -rotate-180" : "hover:translate-x-1"} transition-all duration-300 cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 flex items-center justify-center`}
-                                    aria-label="Next slide"
-                                >
-                                    <Image
-                                        src={assets.arrowRight2}
-                                        alt=""
-                                        width={14}
-                                        height={14}
-                                        className="w-[16px] h-[16px] group-hover:opacity-90  duration-300  transition-all delay-200"
-                                    />
-                                </button> 
-                            </motion.div>
-
-                          
+                         <div className="flex justify-between items-center mb-4 md:mb-6 2xl:mb-50px"> 
+                                <H2Title titleText={t.title} titleColor="black" marginClass="" /> 
+                                <div className="order-1 lg:order-2   ">
+                                    {/* Navigation - Fixed */}
+                                    <motion.div
+                                        variants={moveUp(0.6)}
+                                        initial="hidden"
+                                        whileInView={"show"}
+                                        viewport={{ amount: 0.2, once: false }}
+                                        className="flex justify-end items-center gap-4   border-b border-white/20  "
+                                    >
+                                        <button
+                                            onClick={() => imageSwiper?.slidePrev()}
+                                            className={`group ${isArabic ? "hover:translate-x-1 rotate-180" : "hover:-translate-x-1"} transition-all duration-300  cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px]  rounded-full border border-black/20 flex items-center justify-center`}
+                                            aria-label="Previous slide"
+                                        >
+                                            <Image
+                                                src={assets.arrowLeft2}
+                                                alt=""
+                                                width={14}
+                                                height={14}
+                                                className="w-[16px] h-[16px] group-hover:opacity-90  duration-300  transition-all delay-200"
+                                            />
+                                        </button>
+                                        <button
+                                            onClick={() => imageSwiper?.slideNext()}
+                                            className={`group ${isArabic ? "hover:-translate-x-1 -rotate-180" : "hover:translate-x-1"} transition-all duration-300 cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 flex items-center justify-center`}
+                                            aria-label="Next slide"
+                                        >
+                                            <Image
+                                                src={assets.arrowRight2}
+                                                alt=""
+                                                width={14}
+                                                height={14}
+                                                className="w-[16px] h-[16px] group-hover:opacity-90  duration-300  transition-all delay-200"
+                                            />
+                                        </button> 
+                                    </motion.div> 
+                                </div>
                         </div>
                 </div>
                 {/* Swiper */}

@@ -27,7 +27,7 @@ const Footer = () => {
         { label: "Engineering & Construction", label_ar: "", href: "/services/engineering-construction" },
         { label: "MEP", label_ar: "", href: "/services/mep" },
         { label: "Interior Fit-out", label_ar: "", href: "/services/interior-design" },
-        { label: "Façade", label_ar: "", href: "/services/facade" },
+        { label: "Facade", label_ar: "", href: "/services/facade" },
         { label: "Facilities Management", label_ar: "", href: "/services/integrated-facility-management" },
         { label: "Water", label_ar: "", href: "/services/water" },
         { label: "Design Studio", label_ar: "", href: "/services/design-studio" },
