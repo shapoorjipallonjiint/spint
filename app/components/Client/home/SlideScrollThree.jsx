@@ -142,6 +142,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
     const [isLargeScreen, setIsLargeScreen] = useState(false);
     const swiperRef = useRef(null); // Add this ref for Swiper
+const [showBlueBox, setShowBlueBox] = useState(false);
+
 
     // Add this useEffect to detect screen size
     useEffect(() => {
@@ -1207,6 +1209,16 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
         return result;
     };
+useEffect(() => {
+    setShowBlueBox(false);
+
+    const timer = setTimeout(() => {
+        setShowBlueBox(true);
+    }, 1500); // delay after image change
+    
+
+    return () => clearTimeout(timer);
+}, [displayedIndex]);
 
     const visibleSectors = getVisibleSectors();
     const activeSector = sectors[displayedIndex];
@@ -1218,7 +1230,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const delayProjects = useFirstTimeDelay(
         currentVisibleSlide === "section5",
         1000, // FIRST TIME delay
-        10, // LATER delay when clicking items
+        2100, // LATER delay when clicking items
     );
 
     // // sectors autoplay
@@ -2694,11 +2706,12 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 <div
                                     className={`lg:absolute bottom-20 ${
                                         isArabic ? "right-0" : "left-0"
-                                    } lg:bg-primary text-black lg:text-white z-50 cursor-pointer`}
+                                    } lg:bg-primary text-black lg:text-white z-50 cursor-pointer` }
                                     style={{
-                                        transition: "transform 0.5s ease-out, opacity 0.5s ease-out",
-                                        transform: isAnimating ? "translateY(10px)" : "translateY(0)",
-                                        opacity: isAnimating ? 0.8 : 1,
+                                     transition: "transform 0.5s ease-out, opacity 0.5s ease-out",
+                                    //    transform: isAnimating ? "translateY(10px)" : "translateY(0)",
+                                        // opacity: isAnimating ? 0.8 : 1,
+                                        opacity: showBlueBox ? 1 : 0,
                                     }}
                                 >
                                     <div ref={talentdtls}>
@@ -2713,7 +2726,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         className="text-[26px] lg:text-40 font-light lg:mb-2"
                                                         style={{
                                                             animation: "slideUpFadeIn 0.6s ease-out",
-                                                            animationFillMode: "both",
+                                                            animationFillMode: "both", 
+                                                            animationDelay: "2s",
                                                         }}
                                                     >
                                                         {/* <CountUp value={activeSector.projectsCompleted} trigger={currentVisibleSlide === "section5"} delay={10} />+ */}
@@ -2721,11 +2735,17 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             value={activeSector.projectsCompleted}
                                                             trigger={currentVisibleSlide === "section5"}
                                                             delay={delayProjects}
-                                                        />
+                                                            
+                                                        /> 
                                                         {/* + */}
                                                     </h3>
                                                 </div>
-                                                <p className="text-[14px]  md:text-[16px]  lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]">
+                                                <p className="text-[14px]  md:text-[16px]  lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]"
+                                                  style={{
+                                                            animation: "slideUpFadeIn 0.6s ease-out",
+                                                            animationFillMode: "both", 
+                                                            animationDelay: "2s",
+                                                        }}>
                                                     Completed Projects
                                                 </p>
                                             </div>
@@ -2737,6 +2757,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         style={{
                                                             animation: "slideUpFadeIn 0.6s ease-out 0.1s",
                                                             animationFillMode: "both",
+                                                            animationDelay: "2s",
                                                         }}
                                                     >
                                                         {/* <CountUp value={activeSector.ongoingProjects} trigger={currentVisibleSlide === "section5"} delay={100} />+ */}
@@ -2744,13 +2765,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                             value={activeSector.ongoingProjects}
                                                             trigger={currentVisibleSlide === "section5"}
                                                             delay={delayProjects}
-                                                        />
+                                                        /> 
                                                         {/* + */}
                                                     </h3>
                                                 </div>
-                                                <p className="text-[14px] md:text-[16px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]">
+                                                 <div style={{ position: "relative", overflow: "hidden" }}>
+                                                <p className="text-[14px] md:text-[16px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]"
+                                                  style={{
+                                                            animation: "slideUpFadeIn 0.6s ease-out",
+                                                            animationFillMode: "both", 
+                                                            animationDelay: "2s",
+                                                        }}>
                                                     Ongoing Projects
                                                 </p>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="hidden lg:block tlnits px-15 py-6 xl:pt-[42px] xl:pb-[49px] group cursor-pointer">
@@ -2807,6 +2835,19 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 {tData.sixthSection?.title}
                             </h1>
                         </div>
+
+                                   <div className="lg:absolute container right-0 lg:right-10 3xl:right-36">
+                                     <div className="flex justify-end items-center  ">
+                                            <div className="flex items-center gap-2 me-3">
+                                                <div className="w-[8px] h-[8px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-[#30B6F9] border border-[#97DCFF] scale-85"></div>
+                                                <p className="text-paragraph font-light">SP Group</p>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-[8px] h-[8px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-primary border border-white scale-85"></div>
+                                                <p className="text-paragraph font-light">SP International</p>
+                                           </div> 
+                                    </div>
+                                   </div>
                         <div className="  flex justify-center" ref={mapimage}>
                             <div className="[position:initial] lg:relative  overflow-x-scroll lg:overflow-x-visible  scrollbar-hide responsive-map-position ">
                                 <div className="relative lg:[position:initial]   overflow-hide   " ref={containersRef}>
@@ -2817,6 +2858,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                   height={355}
                   className="object-cover img-f select-none min-w-[86.2dvh] max-h-[355px] lg:hidden  "
                 /> */}
+                
                                     <MotionImage
                                         // initial={{ opacity: 0 }}
                                         // animate={{ opacity: 1 }}

@@ -167,7 +167,7 @@ export const regionalData = {
       location: "",
     },
     {
-      name: "Shapoorji Pallonji Mideast LLC Façade Division",
+      name: "Shapoorji Pallonji Mideast LLC Facade Division",
       address: "Office 307, Al Hudaiba Mall,<br> Al Mina Road, Satwa, PO Box 118219<br> Dubai, UAE",
       phone: ["+971 4 2156222"],
       fax: "",

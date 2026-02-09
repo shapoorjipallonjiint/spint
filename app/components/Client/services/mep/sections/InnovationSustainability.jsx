@@ -138,23 +138,24 @@ const InnovationSustainability = ({ data }) => {
                                                     height: activeIndex === index ? activeSize : inactiveSize,
                                                 }}
                                                 transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                                                className="rounded-full flex items-center justify-center backdrop-blur-[10px]"
+                                                className="rounded-full flex items-center justify-center backdrop-blur-[10px] overflow-hidden"
                                             >
-                                                {/* <AnimatePresence mode="wait"> */}
-                                                {activeIndex === index && (
+                                                {/* <AnimatePresence mode="wait"> */} 
                                                     <MotionImage
                                                         width={20}
-                                                        height={20}
-                                                        key="icon"
+                                                        height={20} 
+                                                        src={item.logo}
+                                                        alt={item.logoAlt}
+                                                        className={`w-5 md:w-6 xl:w-[32px] h-auto object-contain transition-all duration-300 ease-in-out delay-100 ${activeIndex === index ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}
+                                                    />
+                                           
+
+                                                        {/* key="icon"
                                                         initial={{ opacity: 0, scale: 0.5 }}
                                                         animate={{ opacity: 1, scale: 1 }}
                                                         exit={{ opacity: 0, scale: 0.5 }}
-                                                        transition={{ duration: 0.3 }}
-                                                        src={item.logo}
-                                                        alt={item.logoAlt}
-                                                        className="w-5 md:w-6 xl:w-[32px] h-auto object-contain"
-                                                    />
-                                                )}
+                                                        transition={{ duration: 0.3 }} */}
+
                                                 {/* </AnimatePresence> */}
                                             </motion.div>
                                         </motion.button>

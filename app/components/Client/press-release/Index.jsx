@@ -192,18 +192,21 @@ const Index = ({ newsData, topicData }) => {
                       </svg>
                     </Listbox.Button>
                     <Listbox.Options className="border-0 outline-0 absolute md:w-[200px] w-[200px] bg-white rounded-sm shadow-sm z-10">
-                      {topics.map((topic) => (
-                        <Listbox.Option
-                          key={topic.id}
-                          value={topic}
-                          className="py-1 px-4 hover:bg-[#f0f0f0] cursor-pointer group hover:font-bold transition-all duration-300 w-full"
-                        >
-                          <span className="group-hover:scale-[1.03] ">
-                            {topic.name}
-                          </span>
-                        </Listbox.Option>
-                      ))}
+                      {topics
+                        .filter(topic => topic.id !== 1) // hide default
+                        .map((topic) => (
+                          <Listbox.Option
+                            key={topic.id}
+                            value={topic}
+                            className="py-1 px-4 hover:bg-[#f0f0f0] cursor-pointer group hover:font-bold transition-all duration-300 w-full"
+                          >
+                            <span className="group-hover:scale-[1.03]">
+                              {topic.name}
+                            </span>
+                          </Listbox.Option>
+                        ))}
                     </Listbox.Options>
+
                   </Listbox>
                 </div>
 

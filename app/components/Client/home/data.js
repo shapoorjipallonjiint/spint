@@ -52,7 +52,7 @@ export const servcsData = [
     },
     {
       image: "/assets/images/services/servicemain.jpg",
-      title: "Façade",
+      title: "Facade",
       description: ""
     },
     {

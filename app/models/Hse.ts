@@ -89,7 +89,15 @@ const hseSchema = new mongoose.Schema({
             fileImageAlt_ar: {
                 type: String,
                 required: true
-            }
+            },
+            description: {
+                type: String,
+                required: true
+            },
+            description_ar: {
+                type: String,
+                required: true
+            },
         }]
     },
     thirdSection: {

@@ -124,7 +124,7 @@ const ExpertiseSec = ({ data }) => {
                         {t.items.map((item, i) => (
                             <SwiperSlide>
                                 <motion.div
-                                    className="relative overflow-hidden border-b xl:border-b-0 border-white/30 pb-5 xl:pb-0"
+                                    className="relative overflow-hidden "
                                     initial={{ rotateY: -90, opacity: 0 }}
                                     whileInView={{ rotateY: 0, opacity: 1 }}
                                     transition={{

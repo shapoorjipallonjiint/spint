@@ -48,7 +48,7 @@ const AdminNavbar = () => {
                 { name: "MEP", href: "/admin/services/mep" },
                 { name: "Design Studio", href: "/admin/services/design-studio" },
                 { name: "Interior Design", href: "/admin/services/interior-design" },
-                { name: "Façade", href: "/admin/services/facade" },
+                { name: "Facade", href: "/admin/services/facade" },
                 { name: "Integrated Facility Management", href: "/admin/services/integrated-facility-management" },
                 { name: "Water", href: "/admin/services/water" },
             ],

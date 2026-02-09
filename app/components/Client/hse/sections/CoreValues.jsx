@@ -49,7 +49,7 @@ const CoreValues = ({ data }) => {
                             width={658}
                             height={545}
                             alt=""
-                            className="w-full md:w-full h-[200px] xs:h-[250px] md:h-[450px] lg:h-[520px] 2xl:h-[580px] 3xl:h-[648px] object-cover"
+                            className="hidden md:block w-full md:w-full h-[200px] xs:h-[250px] md:h-[450px] lg:h-[520px] 2xl:h-[580px] 3xl:h-[648px] object-cover"
                         />
                     </div>
                     <div className="border-b border-[#cccccc] pb-5 md:pb-7 xl:pb-[42px]">
@@ -59,6 +59,19 @@ const CoreValues = ({ data }) => {
                             marginClass="mb-4 2xl:mb-[30px] max-w-[15ch]"
                             delay={1.3}
                         />
+                         <div className="relative overflow-hidden" >
+                        <MotionImage 
+                            variants={moveUp(1.6)}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ amount: 0.2, once: true }}
+                            src={t.image}
+                            width={658}
+                            height={545}
+                            alt=""
+                            className="md:hidden w-full md:w-full h-[200px] xs:h-[250px] md:h-[450px] lg:h-[520px] 2xl:h-[580px] 3xl:h-[648px] object-cover mb-4  "
+                        />
+                    </div>
                         <motion.p
                             variants={moveUp(1.4)}
                             initial="hidden"

@@ -1,7 +1,7 @@
 
 export const facadeData = {
   mainSection: {
-    title: "Advanced Façade Systems Backed by Expertise",
+    title: "Advanced Facade Systems Backed by Expertise",
     desc: ["Established in 2019, SP Facade manages one of the most critical and high-risk elements of construction, the building facade. As an in-house division of SP International, we deliver high-performance, safe, and efficient facade solutions while ensuring seamless coordination across all project disciplines and minimizing risk for the main contracting team."],
     vdo: "./assets/videos/decorative-grilles.mp4",
     vdoPoster: "./assets/images/facade/vdo-poster.jpg"

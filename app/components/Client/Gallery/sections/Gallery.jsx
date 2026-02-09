@@ -106,12 +106,21 @@ const Gallery = ({ data }) => {
     };
 
     const handlePrev = () => {
-        handlePageChange(currentPage - 1);
+        handlePageChange(currentPage - 1);   
+        setTimeout(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, 200);
     };
 
     const handleNext = () => {
-        handlePageChange(currentPage + 1);
+        handlePageChange(currentPage + 1); 
+         setTimeout(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, 200);
+         
     };
+    
+   
     const [isOpen, setIsOpen] = useState(false);
     const [images, setImages] = useState([]); // array of image urls for modal
     const [index, setIndex] = useState(0); // current slide index
