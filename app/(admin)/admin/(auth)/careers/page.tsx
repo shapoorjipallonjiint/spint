@@ -91,20 +91,14 @@ interface CareerFormProps {
     fifthSection: {
         title: string;
         title_ar?: string;
-
+        description: string;
+        description_ar?: string;
         items: {
-            name: string;
-            name_ar?: string;
-            designation: string;
-            designation_ar?: string;
-
-            video?: string;
-            videoAlt?: string;
-            videoAlt_ar?: string;
-
-            videoPosterImage: string;
-            videoPosterImageAlt?: string;
-            videoPosterImageAlt_ar?: string;
+            country: string;
+            country_ar: string;
+            image: string;
+            imageAlt: string;
+            imageAlt_ar: string;
         }[];
     };
 
@@ -605,6 +599,16 @@ const SustainabilityPage = () => {
                                 />
                                 <FormError error={errors.fifthSection?.title?.message} />
                             </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Description</Label>
+                                <Textarea
+                                    placeholder="Description"
+                                    {...register("fifthSection.description", {
+                                        required: "Description is required",
+                                    })}
+                                />
+                                <FormError error={errors.fifthSection?.description?.message} />
+                            </div>
                         </div>
                         <div>
                             <Label className="font-bold">Items</Label>
@@ -623,71 +627,39 @@ const SustainabilityPage = () => {
 
                                         <div className="flex flex-col gap-2">
                                             <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Name</Label>
+                                                <Label className="font-bold">Country</Label>
                                                 <Input
                                                     type="text"
-                                                    placeholder="Name"
-                                                    {...register(`fifthSection.items.${index}.name`, {
+                                                    placeholder="Country"
+                                                    {...register(`fifthSection.items.${index}.country`, {
                                                         required: "Name is required",
                                                     })}
                                                 />
-                                                <FormError error={errors.fifthSection?.items?.[index]?.name?.message} />
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Designation</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Designation"
-                                                    {...register(`fifthSection.items.${index}.designation`, {
-                                                        required: "Designation is required",
-                                                    })}
-                                                />
-                                                <FormError
-                                                    error={errors.fifthSection?.items?.[index]?.designation?.message}
-                                                />
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Video</Label>
-                                                <Controller
-                                                    name={`fifthSection.items.${index}.video`}
-                                                    control={control}
-                                                    rules={{ required: "Video is required" }}
-                                                    render={({ field }) => (
-                                                        <VideoUploader value={field.value} onChange={field.onChange} />
-                                                    )}
-                                                />
-                                                <FormError error={errors.fifthSection?.items?.[index]?.video?.message} />
-                                                <Label className="font-bold">Video Alt Tag</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Alt Tag"
-                                                    {...register(`fifthSection.items.${index}.videoAlt`)}
-                                                />
-                                                <FormError error={errors.fifthSection?.items?.[index]?.videoAlt?.message} />
+                                                <FormError error={errors.fifthSection?.items?.[index]?.country?.message} />
                                             </div>
 
                                             <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Video Poster Image</Label>
+                                                <Label className="font-bold">Image</Label>
                                                 <Controller
-                                                    name={`fifthSection.items.${index}.videoPosterImage`}
+                                                    name={`fifthSection.items.${index}.image`}
                                                     control={control}
-                                                    rules={{ required: "Video poster image is required" }}
+                                                    rules={{ required: "Image is required" }}
                                                     render={({ field }) => (
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                                 <FormError
-                                                    error={errors.fifthSection?.items?.[index]?.videoPosterImage?.message}
+                                                    error={errors.fifthSection?.items?.[index]?.image?.message}
                                                 />
-                                                <Label className="font-bold">Video Poster Image Alt Tag</Label>
+                                                <Label className="font-bold">Alt Tag</Label>
                                                 <Input
                                                     type="text"
                                                     placeholder="Alt Tag"
-                                                    {...register(`fifthSection.items.${index}.videoPosterImageAlt`)}
+                                                    {...register(`fifthSection.items.${index}.imageAlt`)}
                                                 />
                                                 <FormError
                                                     error={
-                                                        errors.fifthSection?.items?.[index]?.videoPosterImageAlt?.message
+                                                        errors.fifthSection?.items?.[index]?.imageAlt?.message
                                                     }
                                                 />
                                             </div>
@@ -701,16 +673,11 @@ const SustainabilityPage = () => {
                                     addItem
                                     onClick={() =>
                                         fifthSectionItemsAppend({
-                                            name: "",
-                                            name_ar: "",
-                                            designation: "",
-                                            designation_ar: "",
-                                            video: "",
-                                            videoAlt: "",
-                                            videoAlt_ar: "",
-                                            videoPosterImage: "",
-                                            videoPosterImageAlt: "",
-                                            videoPosterImageAlt_ar: "",
+                                            country: "",
+                                            country_ar: "",
+                                            image: "",
+                                            imageAlt: "",
+                                            imageAlt_ar: "",
                                         })
                                     }
                                 >
@@ -1092,6 +1059,14 @@ const SustainabilityPage = () => {
                                 <Input type="text" placeholder="Title" {...register("fifthSection.title_ar")} />
                             </div>
                         </div>
+                        <div className="flex flex-col gap-1">
+                            <Label className="font-bold">Description</Label>
+                            <Textarea
+                                placeholder="Description"
+                                {...register("fifthSection.description_ar")}
+                            />
+                        </div>
+
                         <div>
                             <Label className="font-bold">Items</Label>
                             <div className="border p-2 rounded-md flex flex-col gap-5">
@@ -1109,58 +1084,32 @@ const SustainabilityPage = () => {
 
                                         <div className="flex flex-col gap-2">
                                             <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Name</Label>
+                                                <Label className="font-bold">Country</Label>
                                                 <Input
                                                     type="text"
-                                                    placeholder="Name"
-                                                    {...register(`fifthSection.items.${index}.name_ar`)}
-                                                />
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Designation</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Designation"
-                                                    {...register(`fifthSection.items.${index}.designation_ar`)}
-                                                />
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Video</Label>
-                                                <Controller
-                                                    name={`fifthSection.items.${index}.video`}
-                                                    control={control}
-                                                    rules={{ required: "Video is required" }}
-                                                    render={({ field }) => (
-                                                        <VideoUploader value={field.value} onChange={field.onChange} />
-                                                    )}
-                                                />
-                                                <FormError error={errors.fifthSection?.items?.[index]?.video?.message} />
-                                                <Label className="font-bold">Video Alt Tag</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Alt Tag"
-                                                    {...register(`fifthSection.items.${index}.videoAlt_ar`)}
+                                                    placeholder="Country"
+                                                    {...register(`fifthSection.items.${index}.country_ar`)}
                                                 />
                                             </div>
 
                                             <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Video Poster Image</Label>
+                                                <Label className="font-bold">Image</Label>
                                                 <Controller
-                                                    name={`fifthSection.items.${index}.videoPosterImage`}
+                                                    name={`fifthSection.items.${index}.image`}
                                                     control={control}
-                                                    rules={{ required: "Video poster image is required" }}
+                                                    rules={{ required: "Image is required" }}
                                                     render={({ field }) => (
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                                 <FormError
-                                                    error={errors.fifthSection?.items?.[index]?.videoPosterImage?.message}
+                                                    error={errors.fifthSection?.items?.[index]?.image?.message}
                                                 />
-                                                <Label className="font-bold">Video Poster Image Alt Tag</Label>
+                                                <Label className="font-bold">Alt Tag</Label>
                                                 <Input
                                                     type="text"
                                                     placeholder="Alt Tag"
-                                                    {...register(`fifthSection.items.${index}.videoPosterImageAlt_ar`)}
+                                                    {...register(`fifthSection.items.${index}.imageAlt_ar`)}
                                                 />
                                             </div>
                                         </div>
@@ -1174,16 +1123,11 @@ const SustainabilityPage = () => {
                                     addItem
                                     onClick={() =>
                                         fifthSectionItemsAppend({
-                                            name: "",
-                                            name_ar: "",
-                                            designation: "",
-                                            designation_ar: "",
-                                            video: "",
-                                            videoAlt: "",
-                                            videoAlt_ar: "",
-                                            videoPosterImage: "",
-                                            videoPosterImageAlt: "",
-                                            videoPosterImageAlt_ar: "",
+                                            country: "",
+                                            country_ar: "",
+                                            image: "",
+                                            imageAlt: "",
+                                            imageAlt_ar: "",
                                         })
                                     }
                                 >

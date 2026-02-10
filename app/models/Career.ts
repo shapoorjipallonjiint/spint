@@ -131,17 +131,19 @@ const careerSchema = new mongoose.Schema({
         title_ar: {
             type: String,
         },
+        description: {
+            type: String,
+            required: true
+        },
+        description_ar: {
+            type: String,
+        },
         items: [{
-            name: { type: String, required: true },
-            name_ar: { type: String },
-            designation: { type: String, required: true },
-            designation_ar: { type: String },
-            video: { type: String },
-            videoAlt: { type: String },
-            videoAlt_ar: { type: String },
-            videoPosterImage: { type: String, required: true },
-            videoPosterImageAlt: { type: String },
-            videoPosterImageAlt_ar: { type: String },
+            country: { type: String, required: true },
+            country_ar: { type: String },
+            image: { type: String, required: true },
+            imageAlt: { type: String },
+            imageAlt_ar: { type: String },
         }]
     },
     sixthSection: {
