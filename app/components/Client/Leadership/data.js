@@ -16,13 +16,14 @@ export const leaderData = {
       {
         image:"../assets/images/leadership/leader-13.png",
         name:"Mr. Batchu V. Sagar",
-        designation:"Group Chairman",
+        designation:"CEO",
         description:[
           "At Shapoorji Pallonji International, we aim to excel in every way - supporting our clients to achieve their objectives by applying our rich experience and expertise to each project. We deliver innovative solutions for complex challenges, always striving to meet client expectations with professionalism and integrity.",
           "Built on a legacy of trust and long-term relationships, our portfolio showcases numerous landmark projects across industries, reflecting both our team’s capabilities and the faith our clients place in us.",
           "As part of the Shapoorji Pallonji Group, with over 160 years of heritage, we are confident in executing projects of any size and complexity worldwide. Our people are our greatest asset, and leveraging their talent enables us to succeed even in challenging environments.",
           "We also recognize our responsibilities extend beyond clients to the communities we serve, and we remain committed to sustainable growth, integrity, and excellence in all that we do.",
-        ]
+    
+                  ]
       }
     ],
 
@@ -40,13 +41,13 @@ export const leaderData = {
         },
         {
           image:"../assets/images/leadership/core-team/firoz.png",
-          name:"Firoz. C . Mistry",
+          name:"Mr. Firoz. C . Mistry",
           designation:"Designation", 
 
         },
         {
           image:"../assets/images/leadership/core-team/zahan.png",
-          name:"Zahan. C. Mistry",
+          name:"Mr. Zahan. C. Mistry",
           designation:"Designation", 
         }
       
@@ -57,17 +58,17 @@ export const leaderData = {
       items:[
         {
           image:"../assets/images/leadership/core-team/marzin.png",
-          name:"Marzin R Shroff",
+          name:"Mr. Marzin R Shroff",
           designation:"Group Head -Transformation, People & Culture", 
         },
         {
           image:"../assets/images/leadership/core-team/marzin.png",
-          name:"Nadeem Panchetan",
+          name:"Mr. Nadeem Panchetan",
           designation:"Executive Vice President - Business Development", 
         },
         {
           image:"../assets/images/leadership/core-team/marzin.png",
-          name:"Vinod Bhandawat",
+          name:"Mr. Vinod Bhandawat",
           designation:"Group Finance Controller", 
         } 
       

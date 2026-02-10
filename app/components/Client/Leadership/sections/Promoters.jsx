@@ -56,12 +56,12 @@ const Promoters = ({ data }) => {
         <section className="pb25 relative overflow-hidden" ref={sectionRef}>
             
 
-            <div className="container border-b border-black/20 pb30 mb30">
-                <div className="flex flex-wrap gap-y-5 justify-between items-center mb-6 lg:mb-10 xl:mb-12 2xl:mb-12 3xl:mb-15">
+            <div className="container border-b border-black/20 pb25 mb25">
+                <div className="flex flex-wrap gap-y-5 justify-between items-center mb-6 lg:mb-10 xl:mb-12 2xl:mb-12 3xl:mb-12">
                     <H2Title titleText={t.dataPromoters?.title} /> 
                 </div>
 
-                <div className="grid grid-cols-2 xs:grid-cols-3   gap-6 3xl:gap-y-[70px] 3xl:gap-[30px]">
+                <div className="grid grid-cols-2 md:grid-cols-3   gap-6 3xl:gap-y-[70px] 3xl:gap-[30px]">
                     {filteredTeam.map((member, index) => (
                         // <Link href={member.socialLink} target="blank" key={index}>
                             <motion.div
@@ -72,7 +72,7 @@ const Promoters = ({ data }) => {
                                 viewport={{ amount: 0.1, once: true }}
                                 className="relative"
                             >
-                                <div className="relative group h-[200px] md:h-[350px] 2xl:h-[520px] flex flex-col items-center justify-end">
+                                <div className="relative group h-[100px]  md:h-[200px] lg:h-[240px]  xl:h-[320px] 2xl:h-[391px] flex flex-col items-center justify-end">
                                     <Image
                                         width={600}
                                         height={600}
@@ -80,7 +80,7 @@ const Promoters = ({ data }) => {
                                         alt={member.imageAlt}
                                         className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0 px-2"
                                     />
-                                    <div className="bg-f5f5  w-full h-[50%] md:h-[50%] lg:h-[48%] 2xl:h-[79%] z-[-1]"></div>
+                                    <div className="bg-f5f5  w-full h-[70%] md:h-[70%] lg:h-[78%] 2xl:h-[79%] z-[-1]"></div>
                                     {/* <div className={`opacity-0 group-hover:opacity-100 transition-all duration-300 absolute ${isArabic ? "right-0" : "left-0"} bottom-0 w-[50px] h-[50px] xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -122,12 +122,12 @@ const Promoters = ({ data }) => {
             </div>
 
             <div className="container  ">
-                <div className="flex flex-wrap gap-y-5 justify-between items-center mb-6 lg:mb-10 xl:mb-12 2xl:mb-12 3xl:mb-15">
+                <div className="flex flex-wrap gap-y-5 justify-between items-center mb-6 lg:mb-10 xl:mb-12 2xl:mb-12 3xl:mb-12">
                     <H2Title titleText={t.dataManagement?.title} /> 
                     
                 </div>
 
-                <div className="grid grid-cols-2 xs:grid-cols-3   gap-6 3xl:gap-y-[70px] 3xl:gap-[30px]">
+                <div className="grid grid-cols-2 md:grid-cols-3   gap-6 3xl:gap-y-[70px] 3xl:gap-[30px]">
                     {filteredManagement.map((member, index) => (
                         // <Link href={member.socialLink} target="blank" key={index}>
                             <motion.div
@@ -138,7 +138,7 @@ const Promoters = ({ data }) => {
                                 viewport={{ amount: 0.1, once: true }}
                                 className="relative"
                             >
-                                <div className="relative group h-[200px] md:h-[300px] 2xl:h-[484px] flex flex-col items-center justify-end">
+                                <div className="relative group h-[100px]  md:h-[200px] lg:h-[240px]  xl:h-[320px] 2xl:h-[391px] flex flex-col items-center justify-end">
                                     <Image
                                         width={600}
                                         height={600}
@@ -146,7 +146,7 @@ const Promoters = ({ data }) => {
                                         alt={member.imageAlt}
                                         className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0 px-2"
                                     />
-                                    <div className="bg-f5f5  w-full h-[50%] md:h-[50%] lg:h-[48%] 2xl:h-[79%] z-[-1]"></div>
+                                    <div className="bg-f5f5  w-full h-[70%] md:h-[70%] lg:h-[78%] 2xl:h-[79%] z-[-1]"></div>
                                     {/* <div className={`opacity-0 group-hover:opacity-100 transition-all duration-300 absolute ${isArabic ? "right-0" : "left-0"} bottom-0 w-[50px] h-[50px] xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
