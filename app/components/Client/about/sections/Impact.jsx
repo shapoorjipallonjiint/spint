@@ -199,7 +199,7 @@ const lineEnd =
                                     style={{ left: `${position}px` }}
                                 >
                                     <div
-                                        className={`w-[10px] h-[10px] rounded-full transition-all duration-300 ${
+                                        className={`w-[15px] h-[15px] lg:w-[17px] lg:h-[17px] rounded-full transition-all duration-300 ${
                                             activeIndex === index ? "bg-[#30B6F9] scale-125" : "bg-[#464646]"
                                         } group-hover:scale-125`}
                                     />

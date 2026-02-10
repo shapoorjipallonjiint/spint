@@ -9,7 +9,10 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { assets } from "@/app/assets/index";
 import { useApplyLang } from "@/lib/applyLang";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 
+import "swiper/css"
 gsap.registerPlugin(ScrollTrigger);
 
 const DiversitySection = ({ data }) => {
@@ -97,46 +100,58 @@ const DiversitySection = ({ data }) => {
       </div>
 
       {/* Image Strip */}
-      <div
-        className="
-                  flex justify-center gap-4 xl:gap-[24px] 2xl:gap-[28px]
-                  h-[420px] md:h-[520px] lg:h-[550px] 3xl:h-[624px] overflow-visible
-                "
-      >
-        {images.map((item, index) => {
-          const isTop = index % 2 === 1;
+      <Swiper
+  modules={[Autoplay]}
+  slidesPerView={"auto"}
+  spaceBetween={24}
+  loop
+  allowTouchMove={false}
+  autoplay={{
+    delay: 0,
+    disableOnInteraction: false,
+  }}
+  speed={2000}
+  className="h-[400px] md:h-[400px] xl:h-[450px] 2xl:h-[500px] 3xl:h-[624px]"
+>
+  {[...images, ...images].map((item, index) => {
+    const isTop = index % 2 === 1;
 
-          return (
-            <div
-              key={index}
-              className={`flex shrink-0 ${isTop ? "items-start" : "items-end"
-                }`}
-              style={{
-                width: "clamp(160px, 14vw, 246px)",
-              }}
-            >
-              <div
-                ref={el => (imageRefs.current[index] = el)}
-                className="relative will-change-transform"
-                style={{
-                  width: "100%",
-                  height: "clamp(340px, 28vw, 510px)",
-                }}
-              >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 160px,
-                                           (max-width: 1024px) 200px,
-                                           246px"
-                />
-              </div>
+    return (
+      <SwiperSlide
+        key={index}
+        style={{ width: "clamp(160px, 14vw, 246px)" }}
+        className="!flex"
+      >
+        <div
+          className={`flex w-full ${
+            isTop ? "items-start" : "items-end"
+          }`}
+        >
+          <div
+            className="relative will-change-transform w-full"
+            style={{
+              height: "clamp(340px, 28vw, 510px)",
+            }}
+          >
+            <Image
+              src={item.src}
+              alt={item.alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 160px,
+                     (max-width: 1024px) 200px,
+                     246px"
+            />
+
+            <div className="absolute bottom-3 left-3 bg-black px-3 py-1 rounded-sm">
+              <p className="text-white font-19">{item.country}</p>
             </div>
-          );
-        })}
-      </div>
+          </div>
+        </div>
+      </SwiperSlide>
+    );
+  })}
+</Swiper>
     </section>
   );
 };

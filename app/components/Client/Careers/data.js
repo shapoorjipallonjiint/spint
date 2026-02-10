@@ -1,3 +1,5 @@
+import Country from "@/app/models/Country";
+
 export const careersData = {
   buttonText: "EXPLORE OPPORTUNITIES",
   title: "Our People, Our Power",
@@ -110,13 +112,13 @@ export const diversityData = {
   subtitle:
     "Build your legacy with SP International. We're actively seeking top-tier talent—from innovative engineers to visionary project managers—ready to shape the future of the built environment and achieve unparalleled career growth.",
   images: [
-    { src: "/assets/images/careers/diversity/01.jpg", alt: "Waterfront city" },
-    { src: "/assets/images/careers/diversity/02.jpg", alt: "Sphinx Egypt" },
-    { src: "/assets/images/careers/diversity/03.jpg", alt: "India Gate" },
-    { src: "/assets/images/careers/diversity/04.jpg", alt: "Dubai Burj Al Arab" },
-    { src: "/assets/images/careers/diversity/05.jpg", alt: "Statue of Liberty" },
-    { src: "/assets/images/careers/diversity/06.jpg", alt: "Marina skyline" },
-    { src: "/assets/images/careers/diversity/07.jpg", alt: "Night city tower" },
+    { src: "/assets/images/careers/diversity/01.jpg", alt: "Waterfront city", country:"UAE"},
+    { src: "/assets/images/careers/diversity/02.jpg", alt: "Sphinx Egypt", country:"Egypt" },
+    { src: "/assets/images/careers/diversity/03.jpg", alt: "India Gate", country:"India" },
+    { src: "/assets/images/careers/diversity/04.jpg", alt: "Dubai Burj Al Arab", country:"UAE" },
+    { src: "/assets/images/careers/diversity/05.jpg", alt: "Statue of Liberty", country:"USA" },
+    { src: "/assets/images/careers/diversity/06.jpg", alt: "Marina skyline", country:"UAE" },
+    { src: "/assets/images/careers/diversity/07.jpg", alt: "Night city tower", country:"USA" },
   ],
 };
 

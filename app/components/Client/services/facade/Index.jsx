@@ -6,7 +6,7 @@ import Banner from "@/app/components/common/Banner";
 import ExpertiseSec from "./sections/ExpertiseSec";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
 import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
-import LastSection from "./sections/LastSection";
+// import LastSection from "./sections/LastSection";
 const Facade = ({ data, projectData }) => {
     const filteredProjects = projectData.projects.filter((item) =>
         item.secondSection.service?.some((service) =>
@@ -30,7 +30,7 @@ const Facade = ({ data, projectData }) => {
                 ) : (
                     <section className="-mt-6 md:-mt-11 lg:-mt-12 xl:-mt-16 3xl:-mt-30"></section>
                 )}
-                <LastSection data={data.fourthSection} />
+                {/* <LastSection data={data.fourthSection} /> */}
             </main>
             {/* <footer>
       <Footer />

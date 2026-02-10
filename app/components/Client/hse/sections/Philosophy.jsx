@@ -121,33 +121,22 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                 variants={moveUp(0.15 * index)}
                                 initial="hidden"
                                 whileInView="show"
-                                viewport={{ once: true }}
-                                // onMouseEnter={() => {
-                                //   if (!isMobile) {
-                                //     setHoverIndex(index);
-                                //     updateImage(index);
-                                //   }
-                                // }}
+                                viewport={{ once: true }} 
                                 onMouseEnter={() => {
                                     if (!isMobile) {
                                         setHoverIndex(index);
-                                        updateImage(index);
+                                        // updateImage(index);
                                     }
-                                }}
-                                // onMouseLeave={() => !isMobile && setHoverIndex(null)}
+                                }} 
                                 onMouseLeave={() => {
                                     if (!isMobile) {
                                         setHoverIndex(1);
                                     }
-                                }}
-                                // onClick={() => {
-                                //   setActiveIndex(index);
-                                //   updateImage(index);
-                                // }}
+                                }} 
                                 onClick={() => {
                                     if (isMobile) {
                                         setActiveIndex(index);
-                                        updateImage(index);
+                                        // updateImage(index);
                                     }
                                 }}
                                 className="border-b border-white/20 first:border-t py-[15px] 3xl:py-[18px] cursor-pointer w-full"
@@ -166,36 +155,36 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                     />
 
                                     {/* TITLE */}
-<span
-  className={`inline-block transition-transform duration-300 ${
-    isActive(index)
-      ? isArabic
-        ? "-translate-x-[20px] xl:-translate-x-[43px]"
-        : "translate-x-[20px] xl:translate-x-[43px]"
-      : "translate-x-0"
-  }`}
->
+                                        <span
+                                        className={`inline-block transition-transform duration-300 ${
+                                            isActive(index)
+                                            ? isArabic
+                                                ? "-translate-x-[20px] xl:-translate-x-[43px]"
+                                                : "translate-x-[20px] xl:translate-x-[43px]"
+                                            : "translate-x-0"
+                                        }`}
+                                        >
 
                                         {item.text}
                                     </span>
 
                                     {/* DESCRIPTION (only when hovered / active) */}
-<motion.p
-  initial={false}
-  animate={{
-    opacity: isActive(index) ? 1 : 0,
-    height: isActive(index) ? "auto" : 0,
-    marginTop: isActive(index) ? 10 : 0,
-  }}
-  transition={{ duration: 0.25, ease: "easeOut" }}
-  className={`overflow-hidden text-19 font-light leading-relaxed   ${
-    isActive(index)
-      ? isArabic
-        ? "-translate-x-[20px] xl:-translate-x-[43px]  w-[calc(100%-20px)] xl:w-[calc(100%-43px)]"
-        : "translate-x-[20px] xl:translate-x-[43px] w-[calc(100%-20px)] xl:w-[calc(100%-43px)]"
-      : "translate-x-[20px] xl:translate-x-[43px] w-[calc(100%-20px)] xl:w-[calc(100%-43px)]"
-  }`}
->
+                                        <motion.p
+                                        initial={false}
+                                        animate={{
+                                            opacity: isActive(index) ? 1 : 0,
+                                            height: isActive(index) ? "auto" : 0,
+                                            marginTop: isActive(index) ? 10 : 0,
+                                        }}
+                                        transition={{ duration: 0.25, ease: "easeOut" }}
+                                        className={`overflow-hidden text-19 font-light leading-relaxed   ${
+                                            isActive(index)
+                                            ? isArabic
+                                                ? "-translate-x-[20px] xl:-translate-x-[43px]  w-[calc(100%-20px)] xl:w-[calc(100%-43px)]"
+                                                : "translate-x-[20px] xl:translate-x-[43px] w-[calc(100%-20px)] xl:w-[calc(100%-43px)]"
+                                            : "translate-x-[20px] xl:translate-x-[43px] w-[calc(100%-20px)] xl:w-[calc(100%-43px)]"
+                                        }`}
+                                        >
 
                                         {/* A project is only as durable as the materials used. We enforce strict approval
                                         processes for all materials and maintain effective management of subcontractors. By
@@ -206,7 +195,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                 </div>
 
                                 {/* ================= MOBILE IMAGE ================= */}
-                                {isMobile && isActive(index) && (
+                                {/* {isMobile && isActive(index) && (
                                     <MotionImage
                                         src={item.image}
                                         alt=""
@@ -217,22 +206,23 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         transition={{ duration: 0.35 }}
                                         className="mt-4 w-full h-[200px] object-cover"
                                     />
-                                )}
+                                )} */}
                             </motion.div>
                         ))}
                     </div>
 
-                    <div ref={imageRef} className="hidden md:block relative 3xl:h-[700px] overflow-hidden">
+                    <div ref={imageRef} className="  relative 3xl:h-[700px] overflow-hidden">
                         <MotionImage
-                            key={activeImage}
-                            src={activeImage}
+                            // key={activeImage}
+                            // src={activeImage}
+                            src={points[0]?.image}
                             alt=""
                             width={1920}
                             height={1000}
-                            style={{ y: imageY }}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.4 }}
+                            // style={{ y: imageY }}
+                            // initial={{ opacity: 0 }}
+                            // animate={{ opacity: 1 }}
+                            // transition={{ duration: 0.4 }}
                             className="w-full h-full object-cover"
                         />
                     </div>

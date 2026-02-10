@@ -16,6 +16,24 @@ gsap.registerPlugin(ScrollTrigger);
 const FALLBACK_IMAGE = "/assets/images/placeholder.jpg";
 
 const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
+ 
+  const sourceRef = useRef(null);
+  const [height, setHeight] = useState(0);
+
+useEffect(() => {
+  const updateHeight = () => {
+    if (sourceRef.current && window.innerWidth > 767) {
+      setHeight(sourceRef.current.offsetHeight);
+    } else {
+      setHeight("auto"); // or 0 if needed
+    }
+  };
+
+  updateHeight();
+  window.addEventListener("resize", updateHeight);
+
+  return () => window.removeEventListener("resize", updateHeight);
+}, []);
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
@@ -92,25 +110,27 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
                     <H2Title titleText={heading} titleColor="black" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-17" />
                 </motion.div>
 
-                <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
+                <div className="grid items-center md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
                     {/* ================= IMAGE (DESKTOP ONLY) ================= */}
-                    <div ref={imageRef} className="hidden md:block relative h-[250px] md:h-full overflow-hidden">
+                    <div ref={imageRef} className=" relative h-[250px] md:h-full overflow-hidden">
                         <MotionImage
-                            key={activeImage}
-                            src={activeImage}
+                            // key={activeImage}
+                            // src={activeImage} 
+                            src={points[0].image}
                             alt=""
                             width={1920}
                             height={1000}
-                            style={{ y: imageY }}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.4 }}
+                            // style={{ y: imageY }}
+                            // initial={{ opacity: 0 }}
+                            // animate={{ opacity: 1 }}
+                            // transition={{ duration: 0.4 }}
                             className="w-full h-full object-cover scale-110 md:scale-150 lg:scale-110"
+                             style={{ height: height }}
                         />
                     </div>
 
                     {/* ================= TEXT ================= */}
-                    <div className="border-t border-b border-black/20 3xl:max-w-[50ch]">
+                    <div className="border-t border-b border-black/20 3xl:max-w-[50ch]" ref={sourceRef}>
                         {points.map((item, index) => (
                             <motion.div
                                 key={index}
@@ -118,32 +138,22 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ once: true }}
-                                // onMouseEnter={() => {
-                                //   if (!isMobile) {
-                                //     setHoverIndex(index);
-                                //     updateImage(index);
-                                //   }
-                                // }}
+                               
                                 onMouseEnter={() => {
                                     if (!isMobile) {
                                         setHoverIndex(index);
-                                        updateImage(index);
+                                        // updateImage(index);
                                     }
-                                }}
-                                // onMouseLeave={() => !isMobile && setHoverIndex(null)}
+                                }} 
                                 onMouseLeave={() => {
                                     if (!isMobile) {
                                         setHoverIndex(null);
                                     }
-                                }}
-                                // onClick={() => {
-                                //   setActiveIndex(index);
-                                //   updateImage(index);
-                                // }}
+                                }} 
                                 onClick={() => {
                                     if (isMobile) {
                                         setActiveIndex(index);
-                                        updateImage(index);
+                                        // updateImage(index);
                                     }
                                 }}
                                 className="border-b border-black/20 last:border-b-0 py-5 3xl:py-8 cursor-pointer"
@@ -165,8 +175,8 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         className={`inline-block transition-transform ${
                                             isActive(index)
                                                 ? isArabic
-                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]"
-                                                    : "translate-x-[20px] xl:translate-x-[43px]"
+                                                    ? "-translate-x-[20px] xl:-translate-x-[43px] pe-5 md:pe-0 "
+                                                    : "translate-x-[20px] xl:translate-x-[43px] pe-5 md:pe-0"
                                                 : "translate-x-0"
                                         }`}
                                     >
@@ -175,7 +185,7 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                 </div>
 
                                 {/* ================= MOBILE IMAGE ================= */}
-                                {isMobile && isActive(index) && (
+                                {/* {isMobile && isActive(index) && (
                                     <MotionImage
                                         src={item.image}
                                         alt=""
@@ -186,7 +196,7 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         transition={{ duration: 0.35 }}
                                         className="mt-4 w-full h-[200px] object-cover"
                                     />
-                                )}
+                                )} */}
                             </motion.div>
                         ))}
                     </div>

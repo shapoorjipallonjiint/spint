@@ -1585,3 +1585,13 @@ h1.text-19 {
 @media (max-width:992px) {
   .letterspacing-2-5{letter-spacing: -.5px;}
 }
+
+@keyframes carouselLoop {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-carousel {
+  animation: carouselLoop 40s linear infinite;
+  width: max-content;
+}

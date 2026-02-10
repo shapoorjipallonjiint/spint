@@ -2836,18 +2836,20 @@ useEffect(() => {
                             </h1>
                         </div>
 
-                                   <div className="lg:absolute container right-0 lg:right-10 3xl:right-36">
+                                 <div className="relative">
+                                      <div className=" absolute container right-0 lg:right-10 3xl:right-36 bottom-[-5px] sm:bottom-auto">
                                      <div className="flex justify-end items-center  ">
-                                            <div className="flex items-center gap-2 me-3">
-                                                <div className="w-[8px] h-[8px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-[#30B6F9] border border-[#97DCFF] scale-85"></div>
-                                                <p className="text-paragraph font-light">SP Group</p>
+                                            <div className="flex items-center gap-[5px] md:gap-2 me-3">
+                                                <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-[#30B6F9] border border-[#97DCFF] scale-85"></div>
+                                                <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP Group</p>
                                             </div>
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-[8px] h-[8px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-primary border border-white scale-85"></div>
-                                                <p className="text-paragraph font-light">SP International</p>
+                                            <div className="flex items-center gap-[5px] md:gap-2">
+                                                <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-primary border border-white scale-85"></div>
+                                                <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP International</p>
                                            </div> 
                                     </div>
                                    </div>
+                                 </div>
                         <div className="  flex justify-center" ref={mapimage}>
                             <div className="[position:initial] lg:relative  overflow-x-scroll lg:overflow-x-visible  scrollbar-hide responsive-map-position ">
                                 <div className="relative lg:[position:initial]   overflow-hide   " ref={containersRef}>
@@ -2973,7 +2975,7 @@ useEffect(() => {
                           </div>
 
                           <div
-                            className={`bubble  bg-[#02aedd80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)] 
+                            className={`bubble  bg-[#02aeddc2] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)] 
                                 absolute left-[48.3%] top-[5%] ${
                                   activeDot === city.id
                                     ? "opacity-100 scale-full float-bubble2"
@@ -3021,7 +3023,7 @@ useEffect(() => {
                     </div> */}
                                                 {city.groupId === "sp-international" && (
                                                     <div
-                                                        className={`hidden lg:block translate-x-[50%] -left-1/2 top-0 rounded-full transition-all duration-500 absolute w-full h-full pointer-events-none`}
+                                                        className={`hidden lg:block translate-x-[60%] -left-1/2 top-0 rounded-full transition-all duration-500 absolute w-full h-full pointer-events-none`}
                                                         ref={activeDot === city.id ? bubbleRef : undefined}
                                                         style={{ transform: `translateY(${adjustY}px)` }}
                                                     >
@@ -3032,12 +3034,12 @@ useEffect(() => {
                                                             <div>
                                                                 {/* Bubble 1 */}
                                                                 <div
-                                                                    className={`bubble bg-[#02aedd80]
+                                                                    className={`bubble bg-[#02aeddc2]
   transition-all duration-500 delay-100
   border border-[#00C8FF26]
   backdrop-blur-sm text-white text-center
   p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
-  absolute left-[0%] top-[21%]
+  absolute left-[0%] top-[28%]
     ${city.isClickable ? "cursor-pointer" : "cursor-default"}
   ${
       activeDot === city.id
@@ -3049,7 +3051,7 @@ useEffect(() => {
                                                                         goToProjects(city);
                                                                     }}
                                                                 >
-                                                                    <p className="text-[24px] font-[200] leading-tight">
+                                                                    <p className="text-[24px] font-normal leading-tight">
                                                                         <CountUp
                                                                             value={city.pjtcompleted}
                                                                             trigger={
@@ -3060,14 +3062,15 @@ useEffect(() => {
                                                                         />
                                                                         {/* + */}
                                                                     </p>
-                                                                    <p className="text-[14px] font-[200]">
-                                                                        {isArabic ? "Projects" : "Projects"}
+                                                                    <p className="text-[14px] font-semibold">
+                                                                        {isArabic ? "Project" : "Project"}
+                                                                        {city.pjtcompleted == 1 ? "" : "s"}
                                                                     </p>
                                                                 </div>
 
                                                                 {/* Bubble 2 */}
                                                                 {/* <div
-          className={`bubble bg-[#02aedd80] border border-[#00C8FF26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
+          className={`bubble bg-[#02aeddc2] border border-[#00C8FF26] backdrop-blur-sm text-white text-center p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
             absolute left-[48.3%] top-[5%] ${
               activeDot === city.id
                 ? "opacity-100 scale-full float-bubble2"
@@ -3150,7 +3153,7 @@ useEffect(() => {
                                             }}
                                             className={`me-2 bubble cursor-pointer
     transition-all duration-500 delay-100 backdrop-blur-sm
-    bg-[#02aedd80] border border-[#00C8FF26]
+    bg-[#02aeddc2] border border-[#00C8FF26]
     text-white text-center p-3 rounded-full
     ${activeDot === selectedCity.id ? "opacity-100 scale-100 float-bubble1" : "opacity-0 scale-80"}
   `}
@@ -3162,7 +3165,7 @@ useEffect(() => {
                                         </div>
 
                                         {/* <div
-                                            className={`me-2  bubble  bg-[#02aedd80] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full  
+                                            className={`me-2  bubble  bg-[#02aeddc2] border border-[#00C8FF26] backdrop-blur-sm   text-white text-center p-3 rounded-full  
                                 lg:absolute left-[48.3%] top-[5%] ${
                                     activeDot === selectedCity.id
                                         ? "opacity-100 scale-full float-bubble2"
