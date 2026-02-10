@@ -21,9 +21,7 @@ const legacyData = [
     title: "The Beginning",
     description: "As the first Indian construction company to operate in the GCC, we marked our global debut with the construction of the iconic Al Alam Palace in Muscat, Oman. This landmark project laid the foundation for our enduring legacy in the region.",
     images: [
-      "/assets/images/about-us/slide1.jpg",
-      "/assets/images/about-us/about-banner.jpg",
-      "/assets/images/about-us/vision.jpg"
+      "/assets/images/about-us/slide1.jpg" 
     ]
   },
   {
@@ -37,8 +35,7 @@ const legacyData = [
     title: "Regional Expansion",
     description: "Expanding across Qatar, Saudi Arabia, and Kuwait, we delivered landmark projects including Barwa Commercial Avenue, Barwa City, King Abdullah Financial District (KAFD), AKH Tower, Kuwait University, and Al Sabah Hospital. This period demonstrated our capacity to manage multi-location, large-scale developments with efficiency and excellence.",
      images: [
-      "/assets/images/about-us/slide1.jpg",
-      "/assets/images/about-us/vision.jpg" 
+      "/assets/images/about-us/slide1.jpg" 
     ]
   },
   {
@@ -108,9 +105,9 @@ const Legacy = ({data}) => {
       }}
       className="legacy-main-swiper"
     >
-      {/* {t.items.map((item, i) => ( */}
-      {legacyData.map((item, i) => (
+      {/* {legacyData.map((item, i) => ( */}
         
+      {t.items.map((item, i) => (
         <SwiperSlide key={i}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-7 lg:gap-15 2xl:gap-[137px] pt-6 md:pt-4 lg:pt-0 ">
 
