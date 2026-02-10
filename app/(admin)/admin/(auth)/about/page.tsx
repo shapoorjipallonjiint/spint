@@ -73,9 +73,7 @@ interface AboutFormProps {
             year_ar: string;
             description: string;
             description_ar: string;
-            image: string;
-            imageAlt: string;
-            imageAlt_ar: string;
+            images: string[]
         }[];
     };
     fifthSection: {
@@ -94,6 +92,7 @@ const AboutPage = () => {
         handleSubmit,
         setValue,
         control,
+        watch,
         formState: { errors },
     } = useForm<AboutFormProps>();
 
@@ -175,6 +174,22 @@ const AboutPage = () => {
         } catch (error) {
             console.log("Error in fetching about data", error);
         }
+    };
+
+    const handleAddImage = (index: number) => {
+        const currentImages = watch(`fourthSection.items.${index}.images`) || [];
+        setValue(`fourthSection.items.${index}.images`, [
+            ...currentImages,
+            "",
+        ]);
+    };
+
+    const handleRemoveImage = (index: number, fileIndex: number) => {
+        const currentImages = watch(`fourthSection.items.${index}.images`) || [];
+        setValue(
+            `fourthSection.items.${index}.images`,
+            currentImages.filter((_, i) => i !== fileIndex)
+        );
     };
 
     useEffect(() => {
@@ -510,7 +525,7 @@ const AboutPage = () => {
                                         </div>
 
                                         <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
+                                            {/* <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Image</Label>
                                                 <Controller
                                                     name={`fourthSection.items.${index}.image`}
@@ -525,10 +540,47 @@ const AboutPage = () => {
                                                         {errors.fourthSection?.items?.[index]?.image.message}
                                                     </p>
                                                 )}
-                                            </div>
+                                            </div> */}
 
                                             <div className="flex flex-col gap-2">
                                                 <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Year</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Year"
+                                                            {...register(`fourthSection.items.${index}.year`, {
+                                                                required: "Value is required",
+                                                            })}
+                                                        />
+                                                        {errors.fourthSection?.items?.[index]?.year && (
+                                                            <p className="text-red-500">
+                                                                {errors.fourthSection?.items?.[index]?.year.message}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Description</Label>
+                                                        <Controller
+                                                            name={`fourthSection.items.${index}.description`}
+                                                            control={control}
+                                                            render={({ field }) => {
+                                                                return (
+                                                                    <Textarea value={field.value} onChange={field.onChange} />
+                                                                );
+                                                            }}
+                                                        />
+                                                        {errors.fourthSection?.items?.[index]?.description && (
+                                                            <p className="text-red-500">
+                                                                {errors.fourthSection?.items?.[index]?.description.message}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                {/* <div className="flex flex-col gap-2">
                                                     <Label className="font-bold">Alt Tag</Label>
                                                     <Input
                                                         type="text"
@@ -542,49 +594,46 @@ const AboutPage = () => {
                                                             {errors.fourthSection?.items?.[index]?.imageAlt.message}
                                                         </p>
                                                     )}
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
 
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Year</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Year"
-                                                        {...register(`fourthSection.items.${index}.year`, {
-                                                            required: "Value is required",
-                                                        })}
-                                                    />
-                                                    {errors.fourthSection?.items?.[index]?.year && (
-                                                        <p className="text-red-500">
-                                                            {errors.fourthSection?.items?.[index]?.year.message}
-                                                        </p>
-                                                    )}
-                                                </div>
+                                        <div className="flex gap-2 justify-end items-end">
+                                            <div>
+                                                <Button
+                                                    type="button"
+                                                    className="w-full cursor-pointer text-white bg-green-400 text-[16px]"
+                                                    onClick={() => {
+                                                        handleAddImage(index);
+                                                    }}
+                                                >
+                                                    Add Image
+                                                </Button>
                                             </div>
+                                        </div>
 
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Description</Label>
+                                        {(watch(`fourthSection.items.${index}.images`) || []).map(
+                                            (img, fileIndex) => (
+                                                <div key={fileIndex} className="relative p-2 rounded-md">
                                                     <Controller
-                                                        name={`fourthSection.items.${index}.description`}
+                                                        name={`fourthSection.items.${index}.images.${fileIndex}`}
                                                         control={control}
-                                                        render={({ field }) => {
-                                                            return (
-                                                                <Textarea value={field.value} onChange={field.onChange} />
-                                                            );
-                                                        }}
+                                                        rules={{ required: "Image is required" }}
+                                                        render={({ field }) => (
+                                                            <ImageUploader
+                                                                value={field.value}
+                                                                onChange={field.onChange}
+                                                            />
+                                                        )}
                                                     />
-                                                    {errors.fourthSection?.items?.[index]?.description && (
-                                                        <p className="text-red-500">
-                                                            {errors.fourthSection?.items?.[index]?.description.message}
-                                                        </p>
-                                                    )}
+
+                                                    {!img && <RiDeleteBinLine
+                                                        onClick={() => handleRemoveImage(index, fileIndex)}
+                                                        className="absolute top-3 right-3 cursor-pointer text-red-600"
+                                                    />}
                                                 </div>
-                                            </div>
-                                        </div>
+                                            )
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -596,11 +645,9 @@ const AboutPage = () => {
                                         fourthSectionAppend({
                                             year: "",
                                             description: "",
-                                            image: "",
-                                            imageAlt: "",
+                                            images: [],
                                             year_ar: "",
                                             description_ar: "",
-                                            imageAlt_ar: "",
                                         })
                                     }
                                 >
@@ -952,7 +999,7 @@ const AboutPage = () => {
                                         </div>
 
                                         <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
+                                            {/* <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Image</Label>
                                                 <Controller
                                                     name={`fourthSection.items.${index}.image`}
@@ -967,9 +1014,9 @@ const AboutPage = () => {
                                                         {errors.fourthSection?.items?.[index]?.image.message}
                                                     </p>
                                                 )}
-                                            </div>
+                                            </div> */}
 
-                                            <div className="flex flex-col gap-2">
+                                            {/* <div className="flex flex-col gap-2">
                                                 <div className="flex flex-col gap-2">
                                                     <Label className="font-bold">Alt Tag</Label>
                                                     <Input
@@ -978,10 +1025,7 @@ const AboutPage = () => {
                                                         {...register(`fourthSection.items.${index}.imageAlt_ar`)}
                                                     />
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex flex-col gap-2">
+                                            </div> */}
                                             <div className="flex flex-col gap-2">
                                                 <div className="flex flex-col gap-2">
                                                     <Label className="font-bold">Year</Label>
@@ -1008,6 +1052,45 @@ const AboutPage = () => {
                                                 </div>
                                             </div>
                                         </div>
+
+
+                                        <div className="flex gap-2 justify-end items-end invisible">
+                                            <div>
+                                                <Button
+                                                    type="button"
+                                                    className="w-full cursor-pointer text-white bg-green-400 text-[16px]"
+                                                    onClick={() => {
+                                                        handleAddImage(index);
+                                                    }}
+                                                >
+                                                    Add Image
+                                                </Button>
+                                            </div>
+                                        </div>
+
+                                        {(watch(`fourthSection.items.${index}.images`) || []).map(
+                                            (img, fileIndex) => (
+                                                <div key={fileIndex} className="relative p-2 rounded-md">
+                                                    <Controller
+                                                        name={`fourthSection.items.${index}.images.${fileIndex}`}
+                                                        control={control}
+                                                        rules={{ required: "Image is required" }}
+                                                        render={({ field }) => (
+                                                            <ImageUploader
+                                                                value={field.value}
+                                                                onChange={field.onChange}
+                                                            />
+                                                        )}
+                                                    />
+
+                                                    {!img && <RiDeleteBinLine
+                                                        onClick={() => handleRemoveImage(index, fileIndex)}
+                                                        className="absolute top-3 right-3 cursor-pointer text-red-600"
+                                                    />}
+                                                </div>
+                                            )
+                                        )}
+
                                     </div>
                                 ))}
                             </div>
@@ -1019,11 +1102,9 @@ const AboutPage = () => {
                                         fourthSectionAppend({
                                             year: "",
                                             description: "",
-                                            image: "",
-                                            imageAlt: "",
+                                            images: [],
                                             year_ar: "",
                                             description_ar: "",
-                                            imageAlt_ar: "",
                                         })
                                     }
                                 >
