@@ -90,7 +90,7 @@ const LeaderBox = ({ data }) => {
             /> */}
 
             <div className="container">
-                <div className=" border-cmnbdr relative overflow-hidden mb-8 md:mb-11 xl:mb-15 2xl:mb-22 3xl:mb-30" ref={imageContainerRef}>
+                <div className=" border-cmnbdr relative overflow-hidden mb25" ref={imageContainerRef}>
                     {/* ================= LEADER ONE ================= */}
                    
 
@@ -185,7 +185,7 @@ const LeaderBox = ({ data }) => {
                                         {item.description?.map((text, i) => (
   <p
     key={i}
-    className="text-19 leading-[1.47] text-paragraph font-light lg:max-w-[58.7ch] mb-4 2xl:mb-7"
+    className="text-19 leading-[1.47] text-paragraph font-light lg:max-w-[58.7ch] mb-4 2xl:mb-7 last:mb-0"
   >
     {text}
   </p>
