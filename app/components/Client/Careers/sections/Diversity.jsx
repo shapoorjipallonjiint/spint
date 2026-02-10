@@ -143,8 +143,8 @@ const DiversitySection = ({ data }) => {
                      246px"
             />
 
-            <div className="absolute bottom-3 left-3 bg-black px-3 py-1 rounded-sm">
-              <p className="text-white font-19">{item.country}</p>
+            <div className="absolute bottom-3 left-3 bg-black/50  px-2 rounded-sm">
+              <p className="text-white text-[14px]">{item.country}</p>
             </div>
           </div>
         </div>
