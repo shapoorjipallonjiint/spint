@@ -154,15 +154,7 @@ const aboutSchema = new mongoose.Schema({
             description_ar: {
                 type: String,
             },
-            image: {
-                type: String
-            },
-            imageAlt: {
-                type: String
-            },
-            imageAlt_ar: {
-                type: String
-            }
+            images: []
         }],
     },
     fifthSection: {
