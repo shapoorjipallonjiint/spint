@@ -253,6 +253,14 @@ const LeadershipAdminPage = () => {
         setValue("secondSection.title", json.data?.secondSection?.title);
         setValue("secondSection.title_ar", json.data?.secondSection?.title_ar);
 
+        setValue("thirdSection.title", json.data?.thirdSection?.title);
+        setValue("thirdSection.title_ar", json.data?.thirdSection?.title_ar);
+        setValue("thirdSection.items", json.data?.thirdSection?.items);
+
+        setValue("fourthSection.title", json.data?.fourthSection?.title);
+        setValue("fourthSection.title_ar", json.data?.fourthSection?.title_ar);
+        setValue("fourthSection.items", json.data?.fourthSection?.items);
+
         replacePeople(json.data?.secondSection?.items || []);
     };
 
