@@ -40,13 +40,13 @@ export const leaderData = {
           designation:"Director", 
         },
         {
-          image:"../assets/images/leadership/core-team/firoz.png",
+          image:"../assets/images/leadership/core-team/zahan.png",
           name:"Mr. Firoz. C . Mistry",
           designation:"Designation", 
 
         },
         {
-          image:"../assets/images/leadership/core-team/zahan.png",
+          image:"../assets/images/leadership/core-team/firoz.png",
           name:"Mr. Zahan. C. Mistry",
           designation:"Designation", 
         }
