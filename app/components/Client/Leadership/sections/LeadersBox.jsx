@@ -90,7 +90,7 @@ const LeaderBox = ({ data }) => {
             /> */}
 
             <div className="container">
-                <div className=" border-cmnbdr relative overflow-hidden mb25" ref={imageContainerRef}>
+                <div className=" border-cmnbdr relative overflow-hidden mb30" ref={imageContainerRef}>
                     {/* ================= LEADER ONE ================= */}
                    
 
