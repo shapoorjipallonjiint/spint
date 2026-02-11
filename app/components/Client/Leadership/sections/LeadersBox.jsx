@@ -38,12 +38,12 @@ const LeaderBox = ({ data }) => {
     const imageOffset = isMobile
         ? [-10, 10]
         : isTablet
-        ? [-20, 20]
-        : isLaptop
-        ? [-50, 50]
-        : isDesktop
-        ? [-100, 100]
-        : [-200, 200];
+            ? [-20, 20]
+            : isLaptop
+                ? [-50, 50]
+                : isDesktop
+                    ? [-100, 100]
+                    : [-200, 200];
 
     const shapeOffset = isMobile ? [-50, 50] : isTablet ? [-100, 100] : [-200, 200];
 
@@ -78,6 +78,9 @@ const LeaderBox = ({ data }) => {
     const isArabic = useIsPreferredLanguageArabic()
     const t = useApplyLang(data)
 
+    console.log(t);
+
+
     return (
         <section className="relative" ref={sectionRef}>
             {/* <MotionImage
@@ -92,7 +95,7 @@ const LeaderBox = ({ data }) => {
             <div className="container">
                 <div className=" border-cmnbdr relative overflow-hidden mb30" ref={imageContainerRef}>
                     {/* ================= LEADER ONE ================= */}
-                   
+
 
                     {t.map((item, index) => {
                         const isReverse = index % 2 !== 0;
@@ -137,9 +140,9 @@ const LeaderBox = ({ data }) => {
                                         // whileInView="show"
                                         // viewport={{ amount: 0.1, once: true }}
                                         className="absolute bottom-0 left-0 h-[60%] lg:h-[60%] xl:h-[60%] 3xl:h-[66%] w-full   z-30" style={{
-  background:
-    "linear-gradient(360deg, rgba(30, 69, 162, 1) 0%, rgba(30, 69, 162, 1) 5%, rgba(30, 69, 162, 0.88) 20%, rgba(30, 69, 162, 0) 100%)",
-}}
+                                            background:
+                                                "linear-gradient(360deg, rgba(30, 69, 162, 1) 0%, rgba(30, 69, 162, 1) 5%, rgba(30, 69, 162, 0.88) 20%, rgba(30, 69, 162, 0) 100%)",
+                                        }}
 
                                     />
                                 </div>
@@ -182,21 +185,21 @@ const LeaderBox = ({ data }) => {
                                             el.scrollTop += e.deltaY * SCROLL_SPEED;
                                         }}
                                     >
-                                        {item.description?.map((text, i) => (
-  <p
-    key={i}
-    className="text-19 leading-[1.47] text-paragraph font-light lg:max-w-[58.7ch] mb-4 2xl:mb-7 last:mb-0"
-  >
-    {text}
-  </p>
-))}
+                                        {item.description?.split("\n").map((text, i) => (
+                                            <p
+                                                key={i}
+                                                className="text-19 leading-[1.47] text-paragraph font-light lg:max-w-[58.7ch] mb-4 2xl:mb-7 last:mb-0"
+                                            >
+                                                {text}
+                                            </p>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
                         );
                     })}
 
-                    
+
                 </div>
             </div>
         </section>
