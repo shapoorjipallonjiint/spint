@@ -218,8 +218,8 @@ const MainNavbar = () => {
         setOpenSubmenu(openSubmenu === itemName ? null : itemName);
     };
 
-    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen); 
+ const toggleewMenu = () => setIsMenuOpen(!isMenuOpen); 
     const menuVariants = {
         closed: {
             x: isArabic ? "-100%" : "100%",
@@ -422,13 +422,13 @@ const MainNavbar = () => {
                                                 >
                                                     <motion.ul className="py-2">
                                                         {item.submenu.map((subItem, subIndex) => (
-                                                            <motion.li key={subIndex} variants={submenuItem}>
+                                                            <motion.li key={subIndex} variants={submenuItem} onClick={() => setOpenSubmenu(null)}>
                                                                 <LangLink
                                                                     href={subItem.href}
                                                                     onClick={() => setOpenSubmenu(null)}
                                                                     className="block px-4 py-2 text-[12px] xl:text-[14px] 3xl:text-[16px]
-                font-300 hover:bg-gray-100 hover:font-bold hover:text-[#1E45A2]
-                hover:translate-x-[2px] transition-all duration-200"
+                                                                    font-300 hover:bg-gray-100 hover:font-bold hover:text-[#1E45A2]
+                                                                    hover:translate-x-[2px] transition-all duration-200"
                                                                 >
                                                                     {subItem.name}
                                                                 </LangLink>
@@ -726,11 +726,8 @@ const MainNavbar = () => {
                                             >
                                                 <div>
                                                     <div className="flex items-center justify-between"  
-                                                    onClick={() => toggleSubmenu(item.name)}
-                                                    >
-                                                        <LangLink
-                                                            href={item.href || "#"}
-                                                            onClick={(e) => {
+                                                    // onClick={() => toggleSubmenu(item.name)}
+                                                      onClick={(e) => { 
                                                                 if (!hasSubmenu) {
                                                                     // no submenu → navigate + close
                                                                     toggleMenu();
@@ -738,8 +735,12 @@ const MainNavbar = () => {
                                                                     // has submenu → don't navigate, toggle submenu
                                                                     e.preventDefault();
                                                                     toggleSubmenu(item.name);
+                                                                    
                                                                 }
                                                             }}
+                                                    >
+                                                        <LangLink
+                                                            href={item.href || "#"} 
                                                             className="text-16 font-light uppercase hover:font-bold transition-all duration-300 flex-1"
                                                         >
                                                             {item.name}
@@ -773,7 +774,7 @@ const MainNavbar = () => {
                                                     {/* Submenu */}
                                                     <AnimatePresence>
                                                         {hasSubmenu && openSubmenu === item.name && (
-                                                            <motion.ul
+                                                            <motion.ul onClick={toggleMenu}
                                                                 initial={{ height: 0, opacity: 0 }}
                                                                 animate={{ height: "auto", opacity: 1 }}
                                                                 exit={{ height: 0, opacity: 0 }}
@@ -784,7 +785,7 @@ const MainNavbar = () => {
                                                                     <li key={subIndex}>
                                                                         <LangLink
                                                                             href={subItem.href} // ✅ use its href
-                                                                            onClick={toggleMenu}
+                                                                            
                                                                             className="text-base font-light hover:font-bold transition-all duration-300 block"
                                                                         >
                                                                             {subItem.name}
