@@ -72,7 +72,7 @@ const Promoters = ({ data }) => {
                                 viewport={{ amount: 0.1, once: true }}
                                 className="relative"
                             >
-                                <div className="relative group h-[140px]  md:h-[200px] lg:h-[240px]  xl:h-[320px] 2xl:h-[391px] 3xl:h-[519px] flex flex-col items-center justify-end">
+                                <div className="relative group h-[140px]  md:h-[200px] lg:h-[240px]  xl:h-[320px] 2xl:h-[391px]   flex flex-col items-center justify-end">
                                     <Image
                                         width={600}
                                         height={600}
