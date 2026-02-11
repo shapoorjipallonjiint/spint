@@ -21,7 +21,7 @@ const Index = ({ data }) => {
             <ImageAcc data={data.thirdSection}  />
             <OurValues data={data.fourthSection} />
             {/* <JourneySlider data={data.fifthSection} /> */}
-            <DiversitySection data={diversityData} />
+            <DiversitySection data={data.fifthSection} />
             <PartOfUs data={data.sixthSection} />
         </>
     );
