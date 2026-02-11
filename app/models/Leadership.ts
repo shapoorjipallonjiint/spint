@@ -37,7 +37,7 @@ const leadershipSchema = new mongoose.Schema({
         type: String,
     },
     firstSection: {
-        items:[{
+        items: [{
             name: {
                 type: String,
                 required: true,
@@ -118,6 +118,90 @@ const leadershipSchema = new mongoose.Schema({
                 },
 
                 socialLink: {
+                    type: String,
+                },
+            },
+        ],
+    },
+    thirdSection: {
+        title: {
+            type: String,
+            required: true,
+        },
+        title_ar: {
+            type: String,
+        },
+
+        /* ---- People ---- */
+        items: [
+            {
+                image: {
+                    type: String,
+                    required: true,
+                },
+                imageAlt: {
+                    type: String,
+                    required: true,
+                },
+                imageAlt_ar: {
+                    type: String,
+                },
+
+                name: {
+                    type: String,
+                    required: true,
+                },
+                name_ar: {
+                    type: String,
+                },
+
+                designation: {
+                    type: String,
+                    required: true,
+                },
+                designation_ar: {
+                    type: String,
+                },
+            },
+        ],
+    },
+    fourthSection: {
+        title: {
+            type: String,
+            required: true,
+        },
+        title_ar: {
+            type: String,
+        },
+
+        /* ---- People ---- */
+        items: [
+            {
+                image: {
+                    type: String,
+                    required: true,
+                },
+                imageAlt: {
+                    type: String,
+                    required: true,
+                },
+                imageAlt_ar: {
+                    type: String,
+                },
+
+                name: {
+                    type: String,
+                    required: true,
+                },
+                name_ar: {
+                    type: String,
+                },
+
+                designation: {
+                    type: String,
+                    required: true,
+                },
+                designation_ar: {
                     type: String,
                 },
             },

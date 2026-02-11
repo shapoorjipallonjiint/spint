@@ -29,7 +29,7 @@ interface LeadershipFormProps {
     pageDescription_ar?: string;
 
     firstSection: {
-        items:{
+        items: {
             image: string;
             imageAlt?: string;
             imageAlt_ar?: string;
@@ -37,8 +37,8 @@ interface LeadershipFormProps {
             name_ar?: string;
             designation: string;
             designation_ar?: string;
-            description:string;
-            description_ar:string;
+            description: string;
+            description_ar: string;
         }[]
     };
 
@@ -55,6 +55,34 @@ interface LeadershipFormProps {
             designation: string;
             designation_ar?: string;
             socialLink?: string;
+        }[];
+    };
+
+    thirdSection: {
+        title: string;
+        title_ar?: string;
+        items: {
+            image: string;
+            imageAlt?: string;
+            imageAlt_ar?: string;
+            name: string;
+            name_ar?: string;
+            designation: string;
+            designation_ar?: string;
+        }[];
+    };
+
+    fourthSection: {
+        title: string;
+        title_ar?: string;
+        items: {
+            image: string;
+            imageAlt?: string;
+            imageAlt_ar?: string;
+            name: string;
+            name_ar?: string;
+            designation: string;
+            designation_ar?: string;
         }[];
     };
 }
@@ -128,6 +156,24 @@ const LeadershipAdminPage = () => {
     } = useFieldArray({
         control,
         name: "firstSection.items",
+    });
+
+    const {
+        fields: thirdSectionItems,
+        append: thirdSectionAppend,
+        remove: thirdSectionRemove,
+    } = useFieldArray({
+        control,
+        name: "thirdSection.items",
+    });
+
+    const {
+        fields: fourthSectionItems,
+        append: fourthSectionAppend,
+        remove: fourthSectionRemove,
+    } = useFieldArray({
+        control,
+        name: "fourthSection.items",
     });
 
     /* ================= SUBMIT ================= */
@@ -272,65 +318,65 @@ const LeadershipAdminPage = () => {
                                     <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                         {firstSectionItems.map((field, index) => (
                                             <div key={field.id} className="px-5 grid grid-cols-2 gap-5 relative border-b pb-2">
-                                            <div className="absolute top-0 right-2">
+                                                <div className="absolute top-0 right-2">
                                                     <RiDeleteBinLine
                                                         onClick={() => firstSectionRemove(index)}
                                                         className="cursor-pointer text-red-600"
                                                     />
                                                 </div>
-                                            <div>
-                                                <Controller
-                                                    name={`firstSection.items.${index}.image`}
-                                                    control={control}
-                                                    rules={{ required: "Leader image is required" }}
-                                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
-                                                />
-                                                <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
-                                            </div>
-                    
-                                            <div className="flex flex-col gap-3">
                                                 <div>
-                                                    <Label className="font-bold">Name</Label>
-                                                    <Input
-                                                        {...register(`firstSection.items.${index}.name`, {
-                                                            required: "Leader name is required",
-                                                        })}
+                                                    <Controller
+                                                        name={`firstSection.items.${index}.image`}
+                                                        control={control}
+                                                        rules={{ required: "Leader image is required" }}
+                                                        render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                                                     />
-                                                    <FormError error={errors.firstSection?.items?.[index]?.name?.message} />
+                                                    <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
                                                 </div>
-                    
-                                                <div>
-                                                    <Label className="font-bold">Designation</Label>
-                                                    <Input
-                                                        {...register(`firstSection.items.${index}.designation`, {
-                                                            required: "Designation is required",
-                                                        })}
-                                                    />
-                                                    <FormError error={errors.firstSection?.items?.[index]?.designation?.message} />
+
+                                                <div className="flex flex-col gap-3">
+                                                    <div>
+                                                        <Label className="font-bold">Name</Label>
+                                                        <Input
+                                                            {...register(`firstSection.items.${index}.name`, {
+                                                                required: "Leader name is required",
+                                                            })}
+                                                        />
+                                                        <FormError error={errors.firstSection?.items?.[index]?.name?.message} />
+                                                    </div>
+
+                                                    <div>
+                                                        <Label className="font-bold">Designation</Label>
+                                                        <Input
+                                                            {...register(`firstSection.items.${index}.designation`, {
+                                                                required: "Designation is required",
+                                                            })}
+                                                        />
+                                                        <FormError error={errors.firstSection?.items?.[index]?.designation?.message} />
+                                                    </div>
+
+                                                    <div>
+                                                        <Label className="font-bold">Image Alt</Label>
+                                                        <Input
+                                                            {...register(`firstSection.items.${index}.imageAlt`, {
+                                                                required: "Image alt text is required",
+                                                            })}
+                                                        />
+                                                        <FormError error={errors.firstSection?.items?.[index]?.imageAlt?.message} />
+                                                    </div>
                                                 </div>
-                    
-                                                <div>
-                                                    <Label className="font-bold">Image Alt</Label>
-                                                    <Input
-                                                        {...register(`firstSection.items.${index}.imageAlt`, {
-                                                            required: "Image alt text is required",
+
+                                                <div className="col-span-2">
+                                                    <Label className="font-bold">Description</Label>
+                                                    <Textarea
+                                                        {...register(`firstSection.items.${index}.description`, {
+                                                            required: "Description is required",
                                                         })}
+                                                        placeholder="Leader description"
                                                     />
-                                                    <FormError error={errors.firstSection?.items?.[index]?.imageAlt?.message} />
+                                                    <FormError error={errors.firstSection?.items?.[index]?.description?.message} />
                                                 </div>
                                             </div>
-                    
-                                            <div className="col-span-2">
-                                                <Label className="font-bold">Description</Label>
-                                                <Textarea
-                                                    {...register(`firstSection.items.${index}.description`, {
-                                                        required: "Description is required",
-                                                    })}
-                                                    placeholder="Leader description"
-                                                />
-                                                <FormError error={errors.firstSection?.items?.[index]?.description?.message} />
-                                            </div>
-                                        </div>
                                         ))}
 
                                         <div className="flex justify-end">
@@ -347,8 +393,8 @@ const LeadershipAdminPage = () => {
                                                         designation_ar: "",
                                                         description: "",
                                                         description_ar: "",
-                                                        imageAlt:"",
-                                                        imageAlt_ar:""
+                                                        imageAlt: "",
+                                                        imageAlt_ar: ""
                                                     })
                                                 }
                                             >
@@ -361,7 +407,7 @@ const LeadershipAdminPage = () => {
                         </div>
                     </div>
                 </AdminItemContainer>
-                
+
 
                 {/* ================= Second SECTION ================= */}
                 <AdminItemContainer>
@@ -370,11 +416,181 @@ const LeadershipAdminPage = () => {
                     <div className="p-5 flex flex-col gap-2">
                         <Label className="font-bold">Title</Label>
                         <Input
-                            {...register("secondSection.title", {
+                            {...register("thirdSection.title", {
                                 required: "Title is required",
                             })}
                         />
-                        <FormError error={errors.secondSection?.title?.message} />
+                        <FormError error={errors.thirdSection?.title?.message} />
+                    </div>
+                    <div className="p-5">
+                        <Label className="font-bold">Items</Label>
+                        <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            {thirdSectionItems.map((field, index) => (
+                                <div key={field.id} className="px-5 grid grid-cols-2 gap-5 relative border-b pb-2">
+                                    <div className="absolute top-0 right-2">
+                                        <RiDeleteBinLine
+                                            onClick={() => thirdSectionRemove(index)}
+                                            className="cursor-pointer text-red-600"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Controller
+                                            name={`thirdSection.items.${index}.image`}
+                                            control={control}
+                                            rules={{ required: "Leader image is required" }}
+                                            render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                        />
+                                        <FormError error={errors.thirdSection?.items?.[index]?.image?.message} />
+                                    </div>
+
+                                    <div className="flex flex-col gap-3">
+                                        <div>
+                                            <Label className="font-bold">Name</Label>
+                                            <Input
+                                                {...register(`thirdSection.items.${index}.name`, {
+                                                    required: "Leader name is required",
+                                                })}
+                                            />
+                                            <FormError error={errors.thirdSection?.items?.[index]?.name?.message} />
+                                        </div>
+
+                                        <div>
+                                            <Label className="font-bold">Designation</Label>
+                                            <Input
+                                                {...register(`thirdSection.items.${index}.designation`, {
+                                                    required: "Designation is required",
+                                                })}
+                                            />
+                                            <FormError error={errors.thirdSection?.items?.[index]?.designation?.message} />
+                                        </div>
+
+                                        <div>
+                                            <Label className="font-bold">Image Alt</Label>
+                                            <Input
+                                                {...register(`thirdSection.items.${index}.imageAlt`, {
+                                                    required: "Image alt text is required",
+                                                })}
+                                            />
+                                            <FormError error={errors.thirdSection?.items?.[index]?.imageAlt?.message} />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div className="flex justify-end">
+                                <Button
+                                    type="button"
+                                    className=""
+                                    addItem
+                                    onClick={() =>
+                                        thirdSectionAppend({
+                                            image: "",
+                                            name: "",
+                                            name_ar: "",
+                                            designation: "",
+                                            designation_ar: "",
+                                            imageAlt: "",
+                                            imageAlt_ar: ""
+                                        })
+                                    }
+                                >
+                                    Add Item
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+
+                {/* ================= Third SECTION ================= */}
+                <AdminItemContainer>
+                    <Label main>Third Section (Team)</Label>
+
+                    <div className="p-5 flex flex-col gap-2">
+                        <Label className="font-bold">Title</Label>
+                        <Input
+                            {...register("fourthSection.title", {
+                                required: "Title is required",
+                            })}
+                        />
+                        <FormError error={errors.fourthSection?.title?.message} />
+                    </div>
+                    <div className="p-5">
+                        <Label className="font-bold">Items</Label>
+                        <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            {fourthSectionItems.map((field, index) => (
+                                <div key={field.id} className="px-5 grid grid-cols-2 gap-5 relative border-b pb-2">
+                                    <div className="absolute top-0 right-2">
+                                        <RiDeleteBinLine
+                                            onClick={() => fourthSectionRemove(index)}
+                                            className="cursor-pointer text-red-600"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Controller
+                                            name={`fourthSection.items.${index}.image`}
+                                            control={control}
+                                            rules={{ required: "Leader image is required" }}
+                                            render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                        />
+                                        <FormError error={errors.fourthSection?.items?.[index]?.image?.message} />
+                                    </div>
+
+                                    <div className="flex flex-col gap-3">
+                                        <div>
+                                            <Label className="font-bold">Name</Label>
+                                            <Input
+                                                {...register(`fourthSection.items.${index}.name`, {
+                                                    required: "Leader name is required",
+                                                })}
+                                            />
+                                            <FormError error={errors.fourthSection?.items?.[index]?.name?.message} />
+                                        </div>
+
+                                        <div>
+                                            <Label className="font-bold">Designation</Label>
+                                            <Input
+                                                {...register(`fourthSection.items.${index}.designation`, {
+                                                    required: "Designation is required",
+                                                })}
+                                            />
+                                            <FormError error={errors.fourthSection?.items?.[index]?.designation?.message} />
+                                        </div>
+
+                                        <div>
+                                            <Label className="font-bold">Image Alt</Label>
+                                            <Input
+                                                {...register(`fourthSection.items.${index}.imageAlt`, {
+                                                    required: "Image alt text is required",
+                                                })}
+                                            />
+                                            <FormError error={errors.fourthSection?.items?.[index]?.imageAlt?.message} />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div className="flex justify-end">
+                                <Button
+                                    type="button"
+                                    className=""
+                                    addItem
+                                    onClick={() =>
+                                        fourthSectionAppend({
+                                            image: "",
+                                            name: "",
+                                            name_ar: "",
+                                            designation: "",
+                                            designation_ar: "",
+                                            imageAlt: "",
+                                            imageAlt_ar: ""
+                                        })
+                                    }
+                                >
+                                    Add Item
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                 </AdminItemContainer>
 
@@ -433,51 +649,51 @@ const LeadershipAdminPage = () => {
                                     <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                         {firstSectionItems.map((field, index) => (
                                             <div className="px-5 rounded-md grid grid-cols-2 gap-5">
-                                            <div>
-                                                <Controller
-                                                    name={`firstSection.items.${index}.image`}
-                                                    control={control}
-                                                    rules={{ required: "Leader image is required" }}
-                                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
-                                                />
-                                                <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
-                                            </div>
-                    
-                                            <div className="flex flex-col gap-3">
                                                 <div>
-                                                    <Label className="font-bold">Name</Label>
-                                                    <Input
-                                                        {...register(`firstSection.items.${index}.name_ar`)}
+                                                    <Controller
+                                                        name={`firstSection.items.${index}.image`}
+                                                        control={control}
+                                                        rules={{ required: "Leader image is required" }}
+                                                        render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                                                     />
-                                                    
+                                                    <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
                                                 </div>
-                    
-                                                <div>
-                                                    <Label className="font-bold">Designation</Label>
-                                                    <Input
-                                                        {...register(`firstSection.items.${index}.designation_ar`)}
-                                                    />
-                                                    
+
+                                                <div className="flex flex-col gap-3">
+                                                    <div>
+                                                        <Label className="font-bold">Name</Label>
+                                                        <Input
+                                                            {...register(`firstSection.items.${index}.name_ar`)}
+                                                        />
+
+                                                    </div>
+
+                                                    <div>
+                                                        <Label className="font-bold">Designation</Label>
+                                                        <Input
+                                                            {...register(`firstSection.items.${index}.designation_ar`)}
+                                                        />
+
+                                                    </div>
+
+                                                    <div>
+                                                        <Label className="font-bold">Image Alt</Label>
+                                                        <Input
+                                                            {...register(`firstSection.items.${index}.imageAlt_ar`)}
+                                                        />
+
+                                                    </div>
                                                 </div>
-                    
-                                                <div>
-                                                    <Label className="font-bold">Image Alt</Label>
-                                                    <Input
-                                                        {...register(`firstSection.items.${index}.imageAlt_ar`)}
+
+                                                <div className="col-span-2">
+                                                    <Label className="font-bold">Description</Label>
+                                                    <Textarea
+                                                        {...register(`firstSection.items.${index}.description_ar`)}
+                                                        placeholder="Leader description"
                                                     />
-                                                    
+
                                                 </div>
                                             </div>
-                    
-                                            <div className="col-span-2">
-                                                <Label className="font-bold">Description</Label>
-                                                <Textarea
-                                                    {...register(`firstSection.items.${index}.description_ar`)}
-                                                    placeholder="Leader description"
-                                                />
-                                                
-                                            </div>
-                                        </div>
                                         ))}
 
                                         <div className="flex justify-end">
@@ -494,8 +710,8 @@ const LeadershipAdminPage = () => {
                                                         designation_ar: "",
                                                         description: "",
                                                         description_ar: "",
-                                                        imageAlt:"",
-                                                        imageAlt_ar:""
+                                                        imageAlt: "",
+                                                        imageAlt_ar: ""
                                                     })
                                                 }
                                             >
@@ -521,6 +737,154 @@ const LeadershipAdminPage = () => {
                             })}
                         />
                         <FormError error={errors.secondSection?.title_ar?.message} />
+                    </div>
+                    <div className="p-5">
+                        <Label className="font-bold">Items</Label>
+                        <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            {thirdSectionItems.map((field, index) => (
+                                <div key={field.id} className="px-5 grid grid-cols-2 gap-5 relative border-b pb-2">
+                                    <div className="absolute top-0 right-2">
+                                        <RiDeleteBinLine
+                                            onClick={() => thirdSectionRemove(index)}
+                                            className="cursor-pointer text-red-600"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Controller
+                                            name={`thirdSection.items.${index}.image`}
+                                            control={control}
+                                            rules={{ required: "Leader image is required" }}
+                                            render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                        />
+                                        <FormError error={errors.thirdSection?.items?.[index]?.image?.message} />
+                                    </div>
+
+                                    <div className="flex flex-col gap-3">
+                                        <div>
+                                            <Label className="font-bold">Name</Label>
+                                            <Input
+                                                {...register(`thirdSection.items.${index}.name_ar`)}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <Label className="font-bold">Designation</Label>
+                                            <Input
+                                                {...register(`thirdSection.items.${index}.designation_ar`)}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <Label className="font-bold">Image Alt</Label>
+                                            <Input
+                                                {...register(`thirdSection.items.${index}.imageAlt_ar`)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div className="flex justify-end">
+                                <Button
+                                    type="button"
+                                    className=""
+                                    addItem
+                                    onClick={() =>
+                                        thirdSectionAppend({
+                                            image: "",
+                                            name: "",
+                                            name_ar: "",
+                                            designation: "",
+                                            designation_ar: "",
+                                            imageAlt: "",
+                                            imageAlt_ar: ""
+                                        })
+                                    }
+                                >
+                                    Add Item
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+                {/* ================= Third SECTION ================= */}
+                <AdminItemContainer>
+                    <Label main>Third Section (Team)</Label>
+
+                    <div className="p-5 flex flex-col gap-2">
+                        <Label className="font-bold">Title</Label>
+                        <Input
+                            {...register("fourthSection.title_ar")}
+                        />
+                    </div>
+                    <div className="p-5">
+                        <Label className="font-bold">Items</Label>
+                        <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            {fourthSectionItems.map((field, index) => (
+                                <div key={field.id} className="px-5 grid grid-cols-2 gap-5 relative border-b pb-2">
+                                    <div className="absolute top-0 right-2">
+                                        <RiDeleteBinLine
+                                            onClick={() => fourthSectionRemove(index)}
+                                            className="cursor-pointer text-red-600"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Controller
+                                            name={`fourthSection.items.${index}.image`}
+                                            control={control}
+                                            rules={{ required: "Leader image is required" }}
+                                            render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                        />
+                                        <FormError error={errors.fourthSection?.items?.[index]?.image?.message} />
+                                    </div>
+
+                                    <div className="flex flex-col gap-3">
+                                        <div>
+                                            <Label className="font-bold">Name</Label>
+                                            <Input
+                                                {...register(`fourthSection.items.${index}.name_ar`)}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <Label className="font-bold">Designation</Label>
+                                            <Input
+                                                {...register(`fourthSection.items.${index}.designation_ar`)}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <Label className="font-bold">Image Alt</Label>
+                                            <Input
+                                                {...register(`fourthSection.items.${index}.imageAlt_ar`)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div className="flex justify-end">
+                                <Button
+                                    type="button"
+                                    className=""
+                                    addItem
+                                    onClick={() =>
+                                        fourthSectionAppend({
+                                            image: "",
+                                            name: "",
+                                            name_ar: "",
+                                            designation: "",
+                                            designation_ar: "",
+                                            imageAlt: "",
+                                            imageAlt_ar: ""
+                                        })
+                                    }
+                                >
+                                    Add Item
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                 </AdminItemContainer>
 
@@ -637,7 +1001,7 @@ const LeadershipAdminPage = () => {
                                     {...register(`secondSection.items.${editingPerson}.imageAlt_ar`)}
                                 />
 
-                                
+
                             </div>
                         </div>
 

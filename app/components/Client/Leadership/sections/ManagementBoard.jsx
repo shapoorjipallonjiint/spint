@@ -13,7 +13,7 @@ import Link from "next/link";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 
-const Promoters = ({ data }) => {
+const ManagementBoard = ({ data }) => {
     const MotionImage = motion.create(Image);
 
     const items = data?.items ?? [];
@@ -56,7 +56,7 @@ const Promoters = ({ data }) => {
         <section className="pb25 relative overflow-hidden" ref={sectionRef}>
 
 
-            <div className="container border-b border-black/20 pb25">
+            <div className="container">
                 <div className="flex flex-wrap gap-y-5 justify-between items-center mb-6 lg:mb-10 xl:mb-12 2xl:mb-12 3xl:mb-12">
                     <H2Title titleText={t?.title} />
                 </div>
@@ -72,7 +72,7 @@ const Promoters = ({ data }) => {
                             viewport={{ amount: 0.1, once: true }}
                             className="relative"
                         >
-                            <div className="relative group h-[140px]  md:h-[200px] lg:h-[240px]  xl:h-[320px] 2xl:h-[391px]   flex flex-col items-center justify-end">
+                            <div className="relative group h-[140px]  md:h-[200px] lg:h-[240px]  xl:h-[320px] 2xl:h-[391px] 3xl:h-[519px] flex flex-col items-center justify-end">
                                 <Image
                                     width={600}
                                     height={600}
@@ -129,7 +129,7 @@ const Promoters = ({ data }) => {
 
                 <div className="grid grid-cols-2 md:grid-cols-3   gap-6 3xl:gap-y-[70px] 3xl:gap-[30px]">
                     {filteredManagement.map((member, index) => (
-                       
+                        
                         <motion.div
                             key={index}
                             variants={moveUp(0.5 + 0.2 * index)}
@@ -147,7 +147,6 @@ const Promoters = ({ data }) => {
                                     className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0 px-2"
                                 />
                                 <div className="bg-f5f5  w-full h-[70%] md:h-[70%] lg:h-[78%] 2xl:h-[79%] z-[-1]"></div>
-                                
                             </div>
                             <div className="mt-3 xl:mt-[27px]">
                                 <h3 className="text-20 xl:text-24 2xl:text-29 font-light leading-[1.344827586206897] mb-0 xl:mb-[7px]">
@@ -168,4 +167,4 @@ const Promoters = ({ data }) => {
     );
 };
 
-export default Promoters;
+export default ManagementBoard;
