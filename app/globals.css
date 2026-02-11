@@ -857,39 +857,39 @@ body::-webkit-scrollbar {
 
 
 .pt25 {
-  @apply pt-8 md:pt-11 xl:pt-15 2xl:pt-22 3xl:pt-25;
+  @apply pt-9 md:pt-11 xl:pt-15 2xl:pt-22 3xl:pt-25;
 }
 
 .pb25 {
-  @apply pb-8 md:pb-11 xl:pb-15 2xl:pb-22 3xl:pb-25;
+  @apply pb-9 md:pb-11 xl:pb-15 2xl:pb-22 3xl:pb-25;
 }
 
 .py25 {
-  @apply py-6 md:py-11 xl:py-15 2xl:py-22 3xl:py-25;
+  @apply py-9 md:py-11 xl:py-15 2xl:py-22 3xl:py-25;
 }
 
 .pt30 {
-  @apply py-8 md:pt-11 xl:pt-15 2xl:pt-22 3xl:pt-30;
+  @apply py-9 md:pt-11 xl:pt-15 2xl:pt-22 3xl:pt-30;
 }
 
 .pb30 {
-  @apply pb-8 md:pb-11 xl:pb-15 2xl:pb-22 3xl:pb-30;
+  @apply pb-9 md:pb-11 xl:pb-15 2xl:pb-22 3xl:pb-30;
 }
 
 .py30 {
-  @apply py-8 md:py-11 xl:py-15 2xl:py-22 3xl:py-30;
+  @apply py-9 md:py-11 xl:py-15 2xl:py-22 3xl:py-30;
 }
 
 .pt90 {
-  @apply pt-6 md:pt-11 xl:pt-15 2xl:pt-22 3xl:pt-[90px];
+  @apply pt-7 md:pt-11 xl:pt-15 2xl:pt-22 3xl:pt-[90px];
 }
 
 .pt-text30 {
-  @apply pt-6 md:pt-11 lg:pt-12 xl:pt-16 3xl:pt-30;
+  @apply pt-7 md:pt-11 lg:pt-12 xl:pt-16 3xl:pt-30;
 }
 
 .pb-text30 {
-  @apply pb-6 md:pb-12 xl:pb-16 3xl:pb-30;
+  @apply pb-7 md:pb-12 xl:pb-16 3xl:pb-30;
 }
 
 .pt-text25 {
@@ -897,11 +897,11 @@ body::-webkit-scrollbar {
 }
 
 .pt-text90 {
-  @apply pt-6 md:pt-8 xl:pt-12 3xl:pt-[90px];
+  @apply pt-7 md:pt-8 xl:pt-12 3xl:pt-[90px];
 }
 
 .pb95 {
-  @apply pb-6 md:pb-8 xl:pb-12 3xl:pb-[95px];
+  @apply pb-7 md:pb-8 xl:pb-12 3xl:pb-[95px];
 }
 
 .pb-120 {
@@ -909,31 +909,31 @@ body::-webkit-scrollbar {
 }
 
 .mt25 {
-  @apply mt-11 xl:mt-15 2xl:mt-22 3xl:mt-25;
+  @apply mt-9 md:mt-11 xl:mt-15 2xl:mt-22 3xl:mt-25;
 }
 
 .mb25 {
-  @apply mb-11 xl:mb-15 2xl:mb-22 3xl:mb-25;
+  @apply mb-9 md:mb-11 xl:mb-15 2xl:mb-22 3xl:mb-25;
 }
 
 .my25 {
-  @apply my-11 xl:my-15 2xl:my-22 3xl:my-25;
+  @apply my-9 md:my-11 xl:my-15 2xl:my-22 3xl:my-25;
 }
 
 .mt30 {
-  @apply mt-11 xl:mt-15 2xl:mt-22 3xl:mt-30;
+  @apply mt-9 md:mt-11 xl:mt-15 2xl:mt-22 3xl:mt-30;
 }
 
 .mb30 {
-  @apply mb-11 xl:mb-15 2xl:mb-22 3xl:mb-30;
+  @apply mb-9 md:mt-11 xl:mb-15 2xl:mb-22 3xl:mb-30;
 }
 
 .my30 {
-  @apply my-11 xl:my-15 2xl:my-22 3xl:my-30;
+  @apply my-9 md:my-11 xl:my-15 2xl:my-22 3xl:my-30;
 }
 
 .mt-text30 {
-  @apply mt-8 lg:mt-12 xl:mt-20 3xl:mt-30;
+  @apply mt-9 lg:mt-12 xl:mt-20 3xl:mt-30;
 }
 
 .mt-text25 {

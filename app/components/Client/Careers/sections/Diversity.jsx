@@ -17,6 +17,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const DiversitySection = ({ data }) => {
   const t = useApplyLang(data);
+  console.log(t)
+  console.log('dd')
+  console.log(data)
   const MotionImage = motion.create(Image)
   const isArabic = useIsPreferredLanguageArabic();
   const { title, subtitle, images } = t;
@@ -113,7 +116,7 @@ const DiversitySection = ({ data }) => {
   speed={2000}
   className="h-[400px] md:h-[400px] xl:h-[450px] 2xl:h-[500px] 3xl:h-[624px]"
 >
-  {[...images, ...images].map((item, index) => {
+  {[...t.items, ...t.items].map((item, index) => {
     const isTop = index % 2 === 1;
 
     return (
@@ -134,8 +137,8 @@ const DiversitySection = ({ data }) => {
             }}
           >
             <Image
-              src={item.src}
-              alt={item.alt}
+              src={item.image}
+              alt={item.imageAlt}
               fill
               className="object-cover"
               sizes="(max-width: 640px) 160px,
