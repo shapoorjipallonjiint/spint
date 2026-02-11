@@ -60,7 +60,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
             animate="open"
             exit="closed"
             variants={menuVariants}
-            className={`fixed top-0 ${isArabic ? "left-0" : "right-0"} h-full w-full max-w-[320px] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto`}
+            className={`fixed top-0 ${isArabic ? "left-0" : "right-0"} h-full w-full max-w-[320px] md:max-w-[450px] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto`}
           >
             {/* CLOSE */}
             <div className={`absolute ${isArabic ? "left-5" : "right-5"} top-5`}>
@@ -98,25 +98,25 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                       variants={itemVariants}
                     >
                       <div>
-                        <div className="flex items-center justify-between">
-                          <LangLink
-                            href={item.href || "#"}
-                            onClick={(e) => {
+                        <div className="flex items-center justify-between"
+                        onClick={(e) => {
                               if (!hasSubmenu) {
                                 onClose();
                               } else {
                                 e.preventDefault();
                                 toggleSubmenu(item.title);
                               }
-                            }}
+                            }}>
+                          <LangLink
+                            href={item.href || "#"}
+                            
                             className="text-16 font-light uppercase flex-1 hover:font-bold transition-all duration-300"
                           >
                             {item.title}
                           </LangLink>
 
                           {hasSubmenu && (
-                            <button
-                              onClick={() => toggleSubmenu(item.title)}
+                            <button 
                               className="p-2"
                             >
                               <motion.svg
@@ -153,8 +153,8 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                                 <li key={i}>
                                   <LangLink
                                     href={sub.href}
-                                    onClick={onClose}
-                                    className="block text-[14px] hover:font-bold transition-all duration-200"
+                                    onClick={onClose} 
+                                    className="text-base font-light hover:font-bold transition-all duration-300 block"
                                   >
                                     {sub.label}
                                   </LangLink>

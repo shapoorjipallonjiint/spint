@@ -223,6 +223,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         router.push(`${pathname}?${params.toString()}`);
         setView("grid");
     };
+    const [showFilters, setShowFilters] = useState(false);
+
 
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
@@ -232,9 +234,19 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className="border-y border-cmnbdr mt-10 xl:mt-25 mb-8 xl:mb-15 py-4 md:py-6 xl:py-[35px]"
+                    className="border-y border-cmnbdr my-5 md:mt-10 xl:mt-25 md:mb-8 xl:mb-15 py-4 md:py-6 xl:py-[35px]"
                 >
-                    <div className="flex flex-col lg:flex-row justify-between gap-3 lg:gap-4 lg:gap-0">
+                    <div className="flex flex-col lg:flex-row justify-between  lg:gap-4 lg:gap-0">
+                        <div className="md:hidden mb-3">
+                            <button
+                                onClick={() => setShowFilters(!showFilters)}
+                                className="flex items-center justify-between w-full border border-white/20 text-paragraph text-[14px] uppercase"
+                            >
+                                <span>Filter</span>
+                                <span>{showFilters ? "−" : "+"}</span>
+                            </button>
+                        </div>
+                        <div className={` ${showFilters ? "block" : "hidden"} md:block mb-3`}>
                         <div className="flex flex-col md:flex-row gap-5 md:items-center lg:gap-12  2xl:gap-25  3xl:gap-[174px] justify-between">
                             <div className="flex flex-col md:flex-row gap-3 lg:gap-10 2xl:gap-[90px] w-full ">
                                 {/* Sector */}
@@ -576,7 +588,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                 </button>
                             </div>
                         </div>
-
+                        </div>
                         {/* View toggles */}
                         <div className="flex items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-end">
                             <div className="flex group items-center gap-[6px] cursor-pointer" onClick={handleGrid}>
