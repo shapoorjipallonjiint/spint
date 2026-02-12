@@ -10,6 +10,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { Textarea } from "@/components/ui/textarea";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
+import { FileUploader } from "@/components/ui/file-uploader";
 
 interface QualityFormProps {
     metaTitle: string;
@@ -39,16 +40,21 @@ interface QualityFormProps {
     secondSection: {
         title: string;
         title_ar?: string;
-
         description?: string;
         description_ar?: string;
-
         items: {
-            fileName: string;
-            fileName_ar?: string;
-            fileImage?: string;
-            fileImageAlt: string;
-            fileImageAlt_ar: string;
+            title: string;
+            title_ar?: string;
+            subTitle?: string;
+            subTitle_ar?: string;
+            thumbnail?: string;
+            thumbnailAlt: string;
+            thumbnailAlt_ar: string;
+            files: {
+                file?: string;
+                name: string;
+                name_ar?: string;
+            }[]
         }[];
     };
 
@@ -75,7 +81,6 @@ interface QualityFormProps {
         title_ar?: string;
         subTitle: string;
         subTitle_ar?: string;
-
         items: {
             title?: string;
             title_ar?: string;
@@ -116,6 +121,7 @@ const QualityPage = () => {
         handleSubmit,
         setValue,
         control,
+        watch,
         formState: { errors },
     } = useForm<QualityFormProps>();
 
@@ -219,6 +225,27 @@ const QualityPage = () => {
     useEffect(() => {
         fetchQualityData();
     }, []);
+
+
+    const handleAddFile = (index: number) => {
+        const currentFiles = watch(`secondSection.items.${index}.files`) || [];
+        setValue(`secondSection.items.${index}.files`, [
+            ...currentFiles,
+            {
+                file: "",
+                name: "",
+                name_ar: "",
+            },
+        ]);
+    };
+
+    const handleRemoveFile = (index: number, fileIndex: number) => {
+        const currentFiles = watch(`secondSection.items.${index}.files`) || [];
+        setValue(
+            `secondSection.items.${index}.files`,
+            currentFiles.filter((_, i) => i !== fileIndex)
+        );
+    };
 
     return (
         <form className="grid grid-cols-2 gap-10" onSubmit={handleSubmit(handleAddQuality)}>
@@ -564,41 +591,99 @@ const QualityPage = () => {
                                                 </div>
                                                 <div className="flex flex-col gap-2">
                                                     <div className="flex flex-col gap-2">
-                                                        <Label className="font-bold">FileName</Label>
+                                                        <Label className="font-bold">Title</Label>
                                                         <Input
                                                             type="text"
-                                                            placeholder="FileName"
-                                                            {...register(`secondSection.items.${index}.fileName`)}
+                                                            placeholder="Title"
+                                                            {...register(`secondSection.items.${index}.title`)}
                                                         />
                                                         <FormError
-                                                            error={errors.secondSection?.items?.[index]?.fileName?.message}
+                                                            error={errors.secondSection?.items?.[index]?.title?.message}
+                                                        />
+                                                    </div>
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Sub Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Sub Title"
+                                                            {...register(`secondSection.items.${index}.subTitle`)}
+                                                        />
+                                                        <FormError
+                                                            error={errors.secondSection?.items?.[index]?.subTitle?.message}
                                                         />
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">File Image</Label>
+                                                    <Label className="font-bold">Thumbnail</Label>
                                                     <Controller
-                                                        name={`secondSection.items.${index}.fileImage`}
+                                                        name={`secondSection.items.${index}.thumbnail`}
                                                         control={control}
-                                                        rules={{ required: "File Image is required" }}
+                                                        rules={{ required: "Thumbnail is required" }}
                                                         render={({ field }) => (
                                                             <ImageUploader value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
-                                                    {errors.secondSection?.items?.[index]?.fileImage && (
+                                                    {errors.secondSection?.items?.[index]?.thumbnail && (
                                                         <FormError
-                                                            error={errors.secondSection?.items?.[index]?.fileImage?.message}
+                                                            error={errors.secondSection?.items?.[index]?.thumbnail?.message}
                                                         />
                                                     )}
-                                                    <Label className="font-bold">File Image Alt Tag</Label>
+                                                    <Label className="font-bold">Thumbnail Alt Tag</Label>
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
-                                                        {...register(`secondSection.items.${index}.fileImageAlt`)}
+                                                        {...register(`secondSection.items.${index}.thumbnailAlt`)}
                                                     />
-                                                    <FormError
-                                                        error={errors.secondSection?.items?.[index]?.fileImageAlt?.message}
-                                                    />
+                                                    <div className="flex gap-2 justify-end items-end">
+                                                        <div>
+                                                            <Button
+                                                                type="button"
+                                                                className="w-full cursor-pointer text-white bg-green-400 text-[16px]"
+                                                                onClick={() => {
+                                                                    handleAddFile(index);
+                                                                }}
+                                                            >
+                                                                Add Files
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="col-span-2 grid grid-cols-2 gap-2">
+                                                    {(watch(`secondSection.items.${index}.files`) || []).map(
+                                                        (file, fileIndex) => (
+                                                            <div key={fileIndex} className="relative p-2 rounded-md col-span-1">
+                                                                <Controller
+                                                                    name={`secondSection.items.${index}.files.${fileIndex}.file`}
+                                                                    control={control}
+                                                                    rules={{ required: "Image is required" }}
+                                                                    render={({ field }) => (
+                                                                        <FileUploader
+                                                                            value={field.value}
+                                                                            onChange={field.onChange}
+                                                                        />
+                                                                    )}
+                                                                />
+
+                                                                <div className="flex flex-col gap-2">
+                                                                    <Label className="font-bold">File Name</Label>
+                                                                    <Input
+                                                                        type="text"
+                                                                        placeholder="File Name"
+                                                                        {...register(`secondSection.items.${index}.files.${fileIndex}.name`)}
+                                                                    />
+                                                                    <FormError
+                                                                        error={errors.secondSection?.items?.[index]?.files?.[fileIndex]?.name?.message}
+                                                                    />
+                                                                </div>
+
+                                                                {!file.file && <RiDeleteBinLine
+                                                                    onClick={() => handleRemoveFile(index, fileIndex)}
+                                                                    className="absolute top-3 right-3 cursor-pointer text-red-600"
+                                                                />}
+                                                            </div>
+                                                        )
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
@@ -610,11 +695,12 @@ const QualityPage = () => {
                                                 addItem
                                                 onClick={() =>
                                                     secondSectionAppend({
-                                                        fileName: "",
-                                                        fileName_ar: "",
-                                                        fileImage: "",
-                                                        fileImageAlt: "",
-                                                        fileImageAlt_ar: "",
+                                                        title: "",
+                                                        title_ar: "",
+                                                        thumbnail: "",
+                                                        thumbnailAlt: "",
+                                                        thumbnailAlt_ar: "",
+                                                        files: [],
                                                     })
                                                 }
                                             >
@@ -1102,21 +1188,16 @@ const QualityPage = () => {
                                     <Input
                                         type="text"
                                         placeholder="Title"
-                                        {...register("secondSection.title_ar", {
-                                            required: "Title is required",
-                                        })}
+                                        {...register("secondSection.title_ar")}
                                     />
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <Label className="font-bold">Description</Label>
                                     <Input
                                         type="text"
-                                        placeholder="Title"
-                                        {...register("secondSection.description_ar", {
-                                            required: "Description is required",
-                                        })}
+                                        placeholder="Description"
+                                        {...register("secondSection.description_ar")}
                                     />
-                                    <FormError error={errors.secondSection?.description_ar?.message} />
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
@@ -1131,33 +1212,90 @@ const QualityPage = () => {
                                                 </div>
                                                 <div className="flex flex-col gap-2">
                                                     <div className="flex flex-col gap-2">
-                                                        <Label className="font-bold">FileName</Label>
+                                                        <Label className="font-bold">Title</Label>
                                                         <Input
                                                             type="text"
-                                                            placeholder="FileName"
-                                                            {...register(`secondSection.items.${index}.fileName_ar`)}
+                                                            placeholder="Title"
+                                                            {...register(`secondSection.items.${index}.title_ar`)}
+                                                        />
+                                                    </div>
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Sub Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Sub Title"
+                                                            {...register(`secondSection.items.${index}.subTitle_ar`)}
                                                         />
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">File Image</Label>
+                                                    <Label className="font-bold">Thumbnail</Label>
                                                     <Controller
-                                                        name={`secondSection.items.${index}.fileImage`}
+                                                        name={`secondSection.items.${index}.thumbnail`}
                                                         control={control}
-                                                        rules={{ required: "File Image is required" }}
+                                                        rules={{ required: "Thumbnail is required" }}
                                                         render={({ field }) => (
                                                             <ImageUploader value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
-                                                    <FormError
-                                                        error={errors.secondSection?.items?.[index]?.fileImage?.message}
-                                                    />
-                                                    <Label className="font-bold">File Image Alt Tag</Label>
+                                                    {errors.secondSection?.items?.[index]?.thumbnail && (
+                                                        <FormError
+                                                            error={errors.secondSection?.items?.[index]?.thumbnail?.message}
+                                                        />
+                                                    )}
+                                                    <Label className="font-bold">Thumbnail Alt Tag</Label>
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
-                                                        {...register(`secondSection.items.${index}.fileImageAlt_ar`)}
+                                                        {...register(`secondSection.items.${index}.thumbnailAlt_ar`)}
                                                     />
+                                                    <div className="flex gap-2 justify-end items-end">
+                                                        <div>
+                                                            <Button
+                                                                type="button"
+                                                                className="w-full cursor-pointer text-white bg-green-400 text-[16px]"
+                                                                onClick={() => {
+                                                                    handleAddFile(index);
+                                                                }}
+                                                            >
+                                                                Add Files
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="col-span-2 grid grid-cols-2 gap-2">
+                                                    {(watch(`secondSection.items.${index}.files`) || []).map(
+                                                        (file, fileIndex) => (
+                                                            <div key={fileIndex} className="relative p-2 rounded-md col-span-1">
+                                                                <Controller
+                                                                    name={`secondSection.items.${index}.files.${fileIndex}.file`}
+                                                                    control={control}
+                                                                    rules={{ required: "File is required" }}
+                                                                    render={({ field }) => (
+                                                                        <FileUploader
+                                                                            value={field.value}
+                                                                            onChange={field.onChange}
+                                                                        />
+                                                                    )}
+                                                                />
+
+                                                                <div className="flex flex-col gap-2">
+                                                                    <Label className="font-bold">File Name</Label>
+                                                                    <Input
+                                                                        type="text"
+                                                                        placeholder="File Name"
+                                                                        {...register(`secondSection.items.${index}.files.${fileIndex}.name_ar`)}
+                                                                    />
+                                                                </div>
+
+                                                                {!file.file && <RiDeleteBinLine
+                                                                    onClick={() => handleRemoveFile(index, fileIndex)}
+                                                                    className="absolute top-3 right-3 cursor-pointer text-red-600"
+                                                                />}
+                                                            </div>
+                                                        )
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
@@ -1169,11 +1307,12 @@ const QualityPage = () => {
                                                 addItem
                                                 onClick={() =>
                                                     secondSectionAppend({
-                                                        fileName: "",
-                                                        fileName_ar: "",
-                                                        fileImage: "",
-                                                        fileImageAlt: "",
-                                                        fileImageAlt_ar: "",
+                                                        title: "",
+                                                        title_ar: "",
+                                                        thumbnail: "",
+                                                        thumbnailAlt: "",
+                                                        thumbnailAlt_ar: "",
+                                                        files: [],
                                                     })
                                                 }
                                             >

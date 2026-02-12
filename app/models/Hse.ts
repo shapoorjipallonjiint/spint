@@ -72,32 +72,42 @@ const hseSchema = new mongoose.Schema({
             type: String
         },
         items: [{
-            fileName: {
+            title: {
                 type: String,
                 required: true
             },
-            fileName_ar: {
+            title_ar: {
                 type: String,
             },
-            fileImage: {
+            subTitle: {
+                type: String,
+            },
+            subTitle_ar: {
+                type: String,
+            },
+            thumbnail: {
                 type: String
             },
-            fileImageAlt: {
+            thumbnailAlt: {
                 type: String,
                 required: true
             },
-            fileImageAlt_ar: {
+            thumbnailAlt_ar: {
                 type: String,
                 required: true
             },
-            description: {
-                type: String,
-                required: true
-            },
-            description_ar: {
-                type: String,
-                required: true
-            },
+            files: [{
+                file: {
+                    type: String
+                },
+                name: {
+                    type: String,
+                    required: true
+                },
+                name_ar: {
+                    type: String,
+                }
+            }]
         }]
     },
     thirdSection: {
