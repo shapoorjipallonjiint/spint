@@ -9,7 +9,7 @@ import { useApplyLang } from '@/lib/applyLang'
 const Certifications = ({ data }) => {
   const t = useApplyLang(data);
   return (
-    <section className="pt-text30 pb30">
+    <section className="pt-text25  ">
       <div className="container">
         <H2Title titleText={t.title} marginClass="mb-5 lg:mb-10 2xl:mb-15" />
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-10">
