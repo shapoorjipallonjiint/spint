@@ -88,7 +88,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
     return (
         <section className={`w-full ${bgColor} text-black ${sectionSpacing}`}>
-            <div className="container">
+            <div className="container overflow-hidden">
                 {/* ================= TITLE ================= */}
                 <motion.div
                     variants={moveUp(0.2)}
