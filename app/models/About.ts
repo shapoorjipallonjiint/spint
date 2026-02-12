@@ -154,7 +154,23 @@ const aboutSchema = new mongoose.Schema({
             description_ar: {
                 type: String,
             },
-            images: []
+            images: [{
+                image: {
+                    type: String,
+                },
+                imageAlt: {
+                    type: String,
+                },
+                imageAlt_ar: {
+                    type: String,
+                },
+                title: {
+                    type: String,
+                },
+                title_ar: {
+                    type: String,
+                },
+            }]
         }],
     },
     fifthSection: {
