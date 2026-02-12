@@ -21,13 +21,16 @@ const Certificates = ({ data }) => {
                 <div className="relative">
                     <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-4 gap-y-[80px]">
                         {t.items.map((item, index) => (
-                            <div className="" key={index}>
-                                <div className={`pb-[50px] flex max-md:justify-center ${isArabic ? "3xl:pl-[137px]" : "3xl:pr-[137px]"}`}>
-                                    <MotionImage
-                                        variants={moveUp(0.5 + 0.2 * 2)}
+                            <motion.div className="" key={index}  variants={moveUp(0.5 + 0.2 * 2)}
                                         initial="hidden"
                                         whileInView="show"
-                                        viewport={{ amount: 0.2, once: true }}
+                                        viewport={{ amount: 0.2, once: true }}>
+                                <div className={`pb-6 lg:pb-[50px] flex max-md:justify-center ${isArabic ? "3xl:pl-[137px]" : "3xl:pr-[137px]"}`}>
+                                    <MotionImage
+                                        // variants={moveUp(0.5 + 0.2 * 2)}
+                                        // initial="hidden"
+                                        // whileInView="show"
+                                        // viewport={{ amount: 0.2, once: true }}
                                         src={item.fileImage}
                                         alt={item.fileImageAlt}
                                         width={276}
@@ -46,18 +49,18 @@ const Certificates = ({ data }) => {
         "
                                 />
 
-                                <div className="flex max-md:justify-center pt-[30px]">
+                                <div className="flex  pt-2 lg:pt-[30px]">
                                     <motion.h3
-                                        variants={moveUp(0.5 + 0.2 * 2)}
-                                        initial="hidden"
-                                        whileInView="show"
-                                        viewport={{ amount: 0.2, once: true }}
-                                        className="text-19 lg:text-29 text-black font-light leading-[38px]  max-w-[15ch]"
+                                        // variants={moveUp(0.5 + 0.2 * 2)}
+                                        // initial="hidden"
+                                        // whileInView="show"
+                                        // viewport={{ amount: 0.2, once: true }}
+                                        className="text-19 lg:text-29 text-black font-light leading-[38px]  lg:max-w-[15ch]"
                                     >
                                         {item.fileName}
                                     </motion.h3>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
