@@ -13,6 +13,7 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
+import { FormError } from "@/app/components/common/FormError";
 
 interface AboutFormProps {
     metaTitle: string;
@@ -73,7 +74,13 @@ interface AboutFormProps {
             year_ar: string;
             description: string;
             description_ar: string;
-            images: string[]
+            images: {
+                image: string;
+                imageAlt: string;
+                imageAlt_ar: string;
+                title: string;
+                title_ar: string;
+            }[]
         }[];
     };
     fifthSection: {
@@ -180,7 +187,13 @@ const AboutPage = () => {
         const currentImages = watch(`fourthSection.items.${index}.images`) || [];
         setValue(`fourthSection.items.${index}.images`, [
             ...currentImages,
-            "",
+            {
+                image: "",
+                imageAlt: "",
+                imageAlt_ar: "",
+                title: "",
+                title_ar: "",
+            },
         ]);
     };
 
@@ -616,7 +629,7 @@ const AboutPage = () => {
                                             (img, fileIndex) => (
                                                 <div key={fileIndex} className="relative p-2 rounded-md">
                                                     <Controller
-                                                        name={`fourthSection.items.${index}.images.${fileIndex}`}
+                                                        name={`fourthSection.items.${index}.images.${fileIndex}.image`}
                                                         control={control}
                                                         rules={{ required: "Image is required" }}
                                                         render={({ field }) => (
@@ -627,7 +640,30 @@ const AboutPage = () => {
                                                         )}
                                                     />
 
-                                                    {!img && <RiDeleteBinLine
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Image Alt</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Image Alt"
+                                                            {...register(`fourthSection.items.${index}.images.${fileIndex}.imageAlt`)}
+                                                        />
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Title"
+                                                            {...register(`fourthSection.items.${index}.images.${fileIndex}.title`, {
+                                                                required: "Title is required",
+                                                            })}
+                                                        />
+                                                        <FormError
+                                                            error={errors.fourthSection?.items?.[index]?.images?.[fileIndex]?.title?.message}
+                                                        />
+                                                    </div>
+
+                                                    {!img.image && <RiDeleteBinLine
                                                         onClick={() => handleRemoveImage(index, fileIndex)}
                                                         className="absolute top-3 right-3 cursor-pointer text-red-600"
                                                     />}
@@ -1072,7 +1108,7 @@ const AboutPage = () => {
                                             (img, fileIndex) => (
                                                 <div key={fileIndex} className="relative p-2 rounded-md">
                                                     <Controller
-                                                        name={`fourthSection.items.${index}.images.${fileIndex}`}
+                                                        name={`fourthSection.items.${index}.images.${fileIndex}.image`}
                                                         control={control}
                                                         rules={{ required: "Image is required" }}
                                                         render={({ field }) => (
@@ -1082,6 +1118,23 @@ const AboutPage = () => {
                                                             />
                                                         )}
                                                     />
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Image Alt</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Image Alt"
+                                                            {...register(`fourthSection.items.${index}.images.${fileIndex}.imageAlt_ar`)}
+                                                        />
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Title"
+                                                            {...register(`fourthSection.items.${index}.images.${fileIndex}.title_ar`)}
+                                                        />
+                                                    </div>
 
                                                     {!img && <RiDeleteBinLine
                                                         onClick={() => handleRemoveImage(index, fileIndex)}
