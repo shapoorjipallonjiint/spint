@@ -18,7 +18,7 @@ export const navData = {
         },
         {
             id: 2,
-            title: "Our Services",
+            title: "Services",
             title_ar: "",
             href: "#",
             submenu: [{
@@ -121,7 +121,7 @@ export const navData = {
         },
         {
             id: 7,
-            title: "Careers",
+            title: "People & Careers",
             title_ar: "",
             href: "/careers",
         },

@@ -59,7 +59,7 @@ const Footer = () => {
       title_ar: "",
       delay: 0.6,
       links: [
-        { label: "Careers", label_ar: "", href: "/careers" },
+        { label: "People & Careers", label_ar: "", href: "/careers" },
         { label: "Projects", label_ar: "", href: "/projects" },
       ],
     },
