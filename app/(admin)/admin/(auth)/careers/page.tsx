@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
 import { toast } from "sonner";
+import TinyEditor from "@/app/components/TinyMce/TinyEditor";
 
 interface CareerFormProps {
     metaTitle: string;
@@ -305,7 +306,6 @@ const SustainabilityPage = () => {
                                     />
                                     <FormError error={errors.firstSection?.button?.link?.message} />
                                 </div>
-
                             </div>
                             <div>
                                 <Label className="text-sm font-bold">Images</Label>
@@ -561,12 +561,21 @@ const SustainabilityPage = () => {
                         </div>
                         <div className="flex flex-col gap-1">
                             <Label className="font-bold">Description</Label>
-                            <Textarea
+                            {/* <Textarea
                                 placeholder="Description"
                                 {...register("fourthSection.description", {
                                     required: "Description is required",
                                 })}
+                            /> */}
+                            <Controller
+                                name="fourthSection.description"
+                                control={control}
+                                rules={{ required: "Description is required" }}
+                                render={({ field }) => {
+                                    return <TinyEditor setNewsContent={field.onChange} newsContent={field.value} />;
+                                }}
                             />
+
                             <FormError error={errors.fourthSection?.description?.message} />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -649,20 +658,14 @@ const SustainabilityPage = () => {
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
-                                                <FormError
-                                                    error={errors.fifthSection?.items?.[index]?.image?.message}
-                                                />
+                                                <FormError error={errors.fifthSection?.items?.[index]?.image?.message} />
                                                 <Label className="font-bold">Alt Tag</Label>
                                                 <Input
                                                     type="text"
                                                     placeholder="Alt Tag"
                                                     {...register(`fifthSection.items.${index}.imageAlt`)}
                                                 />
-                                                <FormError
-                                                    error={
-                                                        errors.fifthSection?.items?.[index]?.imageAlt?.message
-                                                    }
-                                                />
+                                                <FormError error={errors.fifthSection?.items?.[index]?.imageAlt?.message} />
                                             </div>
                                         </div>
                                     </div>
@@ -1034,7 +1037,14 @@ const SustainabilityPage = () => {
                         </div>
                         <div className="flex flex-col gap-1">
                             <Label className="font-bold">Description</Label>
-                            <Textarea placeholder="Description" {...register("fourthSection.description_ar")} />
+                            <Controller
+                                name="fourthSection.description_ar"
+                                control={control}
+                                rules={{ required: "Description is required" }}
+                                render={({ field }) => {
+                                    return <TinyEditor setNewsContent={field.onChange} newsContent={field.value} />;
+                                }}
+                            />
                         </div>
                         <div className="flex flex-col gap-2">
                             <Label className="font-bold">Image</Label>
@@ -1062,10 +1072,7 @@ const SustainabilityPage = () => {
                         </div>
                         <div className="flex flex-col gap-1">
                             <Label className="font-bold">Description</Label>
-                            <Textarea
-                                placeholder="Description"
-                                {...register("fifthSection.description_ar")}
-                            />
+                            <Textarea placeholder="Description" {...register("fifthSection.description_ar")} />
                         </div>
 
                         <div>
@@ -1103,9 +1110,7 @@ const SustainabilityPage = () => {
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
-                                                <FormError
-                                                    error={errors.fifthSection?.items?.[index]?.image?.message}
-                                                />
+                                                <FormError error={errors.fifthSection?.items?.[index]?.image?.message} />
                                                 <Label className="font-bold">Alt Tag</Label>
                                                 <Input
                                                     type="text"
