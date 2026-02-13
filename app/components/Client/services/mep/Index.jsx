@@ -1,7 +1,7 @@
 import Banner from "@/app/components/common/Banner";
 // import MainNavbar from "../../MainLayout/MainNavbar";
 // import Footer from "../../MainLayout/Footer";
-import MepVIdeoSection from "./sections/MepVideoSection";
+import VideoSection from "@/app/components/common/VdoSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
 // import OurApproach from "./sections/OurApproach";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
@@ -25,7 +25,7 @@ const MEP = ({ data, projectData }) => {
         <MainNavbar /> 
       </header> */}
             <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
-            <MepVIdeoSection data={data.firstSection} maxW="max-w-[18ch]" />
+            <VideoSection data={data.firstSection} maxW="max-w-[18ch]" />
             <ExpertiseSec data={data.secondSection} />
             <WhyChooseSec data={data.thirdSection} bgColor="white" sectionSpacing="pt-text30 pb30" />
             {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
