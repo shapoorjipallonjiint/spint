@@ -12,7 +12,7 @@ const OurApproach = ({ data }) => {
         <section className="pt-text30 pb30">
             <div className="container">
                 <H2Title titleText={t.title} titleColor="black" marginClass="mb-50px" />
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-30px">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-7  md:gap-30px">
                     {t.items.map((item, index) => (
                         <motion.div
                             variants={moveUp(0.4 + 0.2 * index)}
@@ -21,7 +21,7 @@ const OurApproach = ({ data }) => {
                             viewport={{ amount: 0.6, once: true }}
                             key={index}
                         >
-                            <div className="border-b border-cmnbdr pb-8">
+                            <div className="border-b border-cmnbdr pb-5 md:pb-8">
                                 <Image
                                     src={item.image}
                                     width={65}

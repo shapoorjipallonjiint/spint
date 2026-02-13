@@ -211,7 +211,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
                         ))}
                     </div>
 
-                    <div ref={imageRef} className="  relative 3xl:h-[700px] overflow-hidden">
+                    <div ref={imageRef} className="hidden md:block  relative 3xl:h-[700px] overflow-hidden">
                         <MotionImage
                             // key={activeImage}
                             // src={activeImage}

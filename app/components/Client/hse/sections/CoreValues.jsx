@@ -37,7 +37,7 @@ const CoreValues = ({ data }) => {
     return (
         <section className="pt25 pb30 relative overflow-hidden" ref={sectionRef}>
             <div className="container ">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[458px_auto] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[658px_auto] gap-5 lg:gap-12 2xl:gap-15 3xl:gap-23 items-center">
+                <div className="md:grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[458px_auto] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[658px_auto] gap-5 lg:gap-12 2xl:gap-15 3xl:gap-23 items-center">
                     <div className="relative overflow-hidden" ref={imageContainerRefTwo}>
                         <MotionImage
                             style={{ y: imageY }}
@@ -61,7 +61,7 @@ const CoreValues = ({ data }) => {
                         />
                          <div className="relative overflow-hidden" >
                         <MotionImage 
-                            variants={moveUp(1.6)}
+                            variants={moveUp(1.2)}
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
@@ -73,7 +73,7 @@ const CoreValues = ({ data }) => {
                         />
                     </div>
                         <motion.p
-                            variants={moveUp(1.4)}
+                            variants={moveUp(1.6)}
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}

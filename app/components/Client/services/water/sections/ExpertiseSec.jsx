@@ -218,13 +218,7 @@ const ExpertiseSec = ({ data }) => {
 
                                 <div>
                                     {/* Image area: shows image for active index */}
-                                    <motion.div
-                                        variants={moveUp(0.8)}
-                                        initial="hidden"
-                                        whileInView="show"
-                                        viewport={{ amount: 0.2, once: true }}
-                                        className="w-[66px] h-[66px] bg-secondary rounded-full flex items-center justify-center"
-                                    >
+                                   
                                         <motion.div
                                             variants={moveUp(0.8)}
                                             initial="hidden"
@@ -241,15 +235,23 @@ const ExpertiseSec = ({ data }) => {
                                                     className="w-[29px] h-[42px] object-contain"
                                                 />
                                             )}
-                                        </motion.div>
-                                    </motion.div>
-                                    <hr className="border-0 border-t border-white/20 my-6" />
+                                        </motion.div> 
+                                        <motion.hr variants={moveUp(0.8)}
+                                            initial="hidden"
+                                            whileInView="show"
+                                            viewport={{ amount: 0.2, once: true }} className="border-0 border-t border-white/20 my-6" />
                                     <div className="water-our-expertise text-19 font-light">
-                                        <div
+                                     <motion.div
+                                            variants={moveUp(0.8)}
+                                            initial="hidden"
+                                            whileInView="show"
+                                            viewport={{ amount: 0.2, once: true }}
+                                           
                                             dangerouslySetInnerHTML={{
                                                 __html: normalizeHtml(activelist),
                                             }}
-                                        />
+                                        >
+                                            </motion.div>
                                     </div>
                                 </div>
                             </div>

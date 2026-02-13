@@ -5,7 +5,7 @@ import { assets } from "../../assets"
 import H2Title from "./H2Title";
 import VideoPlayer from "./VideoPlayer";
 import { motion } from "framer-motion";
-import { moveUp} from "@/app/components/motionVarients";
+import { moveUp,moveLeft } from "@/app/components/motionVarients";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
@@ -75,7 +75,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
   return (
     <section className="relative sectm-100 pb30" ref={sectionRef}>
       <div className={`absolute top-custom-100 h-fit w-fit z-0 ${isArabic ? "left-0 lg:right-[-4%] xl:right-0 2xl:right-[-6%] 3xl:right-0" : "right-0 lg:left-[-4%] xl:left-0 2xl:left-[-6%] 3xl:left-0"}`}>
-        <MotionImage width={1500} height={1000} style={{ y: shapeY }} src={assets.mainShape2} alt="" className={`${isArabic && "-scale-x-100"} w-[152px] lg:w-[400px] xl:w-[55%] 2xl:w-[70%] 3xl:w-[100%] h-fit object-contain vdo-shape`} />
+        <MotionImage width={1500} height={1000} style={{ y: shapeY }} variants={moveLeft(0.4)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}  src={assets.mainShape2} alt="" className={`${isArabic && "-scale-x-100"} w-[152px] lg:w-[400px] xl:w-[55%] 2xl:w-[70%] 3xl:w-[100%] h-fit object-contain vdo-shape`} />
       </div>
       <div className="container">
         <div className={`w-full lg:max-w-[70%] xl:max-w-[100%] 2xl:max-w-[74%] 3xl:max-w-[70%] ${isArabic ? "mr-auto 2xl:ml-[137px]" : "ml-auto 2xl:mr-[137px]"} relative z-10 overflow-hidden vdo-content-wrapper`}>
@@ -86,7 +86,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
               {/* </motion.div> */}
               {
                 t.description.split("\n").map((item, i) => (
-                  <motion.p key={i} variants={moveUp(1.4)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
+                  <motion.p key={i} variants={moveUp(1.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
                 ))
               }
             </div>

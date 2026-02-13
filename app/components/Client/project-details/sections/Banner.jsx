@@ -73,14 +73,18 @@ const Banner = ({ firstSection, secondSection }) => {
                             </div>
                         </motion.div>
                         <div className={`w-fit ${isArabic ? "mr-auto" : "ml-auto"}`}>
-                            <div className="text-[18px] font-light text-paragraph/70 leading-[1.8] border-b [border-image-source:linear-gradient(270deg,#1E45A2_0%,#30B6F9_100%)] [border-image-slice:1]">
+                            <motion.div  variants={moveUp(0.2)}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ amount: 0.2, once: true }}
+                            className="text-[18px] font-light text-paragraph/70 leading-[1.8] border-b [border-image-source:linear-gradient(270deg,#1E45A2_0%,#30B6F9_100%)] [border-image-slice:1]">
                                 <SplitTextAnimation
                                     children={tSecondSection?.sector?.name}
                                     staggerDelay={0.2}
                                     animationDuration={0.8}
                                     delay={0.8}
                                 />
-                            </div>
+                            </motion.div>
                         </div>
                     </div>
                 </div>
@@ -230,7 +234,11 @@ const Banner = ({ firstSection, secondSection }) => {
                 })}
             </div>
             <div className="absolute top-[61px] lg:-top-20 right-0 z-0">
-                <Image
+                <MotionImage
+                   variants={moveUp(0.2)}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ amount: 0.2, once: true }}
                     width={1500}
                     height={1000}
                     src="/assets/images/project-details/bannerbg.svg"

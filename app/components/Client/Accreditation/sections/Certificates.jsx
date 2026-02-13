@@ -15,7 +15,7 @@ const Certificates = ({ data }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const [activeImage, setActiveImage] = useState(null);
     return (
-        <section className="py-30">
+        <section className="py30">
             <div className="container ">
                 {/* <H2Title titleText={data.title} titleColor="black" marginClass="mb-4 2xl:mb-50px" /> */}
                 <div className="relative">

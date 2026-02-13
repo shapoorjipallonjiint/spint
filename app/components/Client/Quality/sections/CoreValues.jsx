@@ -43,7 +43,7 @@ const CoreValues = ({ data }) => {
                     <div className="relative overflow-hidden" ref={imageContainerRefTwo}>
                         <MotionImage
                             style={{ y: imageY }}
-                            variants={moveUp(1.6)}
+                            variants={moveUp(1.2)}
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
@@ -62,7 +62,7 @@ const CoreValues = ({ data }) => {
                             delay={1.3}
                         />
                         <motion.p
-                            variants={moveUp(1.4)}
+                            variants={moveUp(1.6)}
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}

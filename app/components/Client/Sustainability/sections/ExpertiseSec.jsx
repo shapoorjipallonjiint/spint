@@ -214,20 +214,22 @@ const ExpertiseSec = (data) => {
                                             {activeTitle}
                                         </motion.h3>
                                     </div>
-
-                                    {activeDescription && (
-                                        <div className="mt-2 lg:mt-4 xl:mt-5 border-t border-black/20 pt-4 xl:pt-[28px]">
-                                            <motion.p
+                                        <motion.div
                                                 variants={moveUp(0.6)}
                                                 initial="hidden"
                                                 whileInView="show"
-                                                viewport={{ amount: 0.2, once: true }}
-                                                className="text-19 leading-[1.526] text-paragraph font-light max-w-lg"
-                                            >
-                                                {activeDescription}
-                                            </motion.p>
-                                        </div>
-                                    )}
+                                                viewport={{ amount: 0.2, once: true }}>
+                                                    {activeDescription && (
+                                                        <div className="mt-2 lg:mt-4 xl:mt-5 border-t border-black/20 pt-4 xl:pt-[28px]">
+                                                            <motion.p
+                                                            
+                                                                className="text-19 leading-[1.526] text-paragraph font-light max-w-lg"
+                                                            >
+                                                                {activeDescription}
+                                                            </motion.p>
+                                                        </div>
+                                                    )}
+                                            </motion.div>
                                 </div>
                             </div>
                         </div>

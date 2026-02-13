@@ -60,7 +60,7 @@ const ExpandingHorizons = ({ data }) => {
                 />
             </div>
                         <div
-                            className={`container lg:w-full   lg:max-w-[65%] 2xl:max-w-[74%] 3xl:max-w-[73.84%] ps-0 pe-4` }  style={
+                            className={`container lg:w-full   lg:max-w-[65%] 2xl:max-w-[74%] 3xl:max-w-[73.84%] lg:ps-0 lg:pe-4` }  style={
     isArabic
       ? { marginLeft: `${rightSpace}px` }
       : { marginRight: `${rightSpace}px` }
@@ -72,11 +72,11 @@ const ExpandingHorizons = ({ data }) => {
                                 titleColor="black"
                                 marginClass="mb-4 md:mb-6 2xl:mb-50px"
                                 maxW="xl:max-w-[32ch] 3xl:max-w-[22ch]"
-                                delay={1.6}
+                                delay={1.3}
                             />
                             {
                                 <motion.p
-                                    variants={moveUp(0.8)}
+                                    variants={moveUp(1.5)}
                                     initial="hidden"
                                     whileInView={"show"}
                                     viewport={{ amount: 0.2, once: false }}

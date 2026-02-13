@@ -14,7 +14,7 @@ const Banner = ({data}) => {
   const t = useApplyLang(data)
 
   return ( 
-    <section className="py-11 xl:py-15 2xl:py-22 3xl:pt-[171px] 3xl:pb-[76px] bg-f5f5 relative overflow-hidden">
+    <section className="py-8  md:py-11 xl:py-15 2xl:py-22 3xl:pt-[171px] 3xl:pb-[76px] bg-f5f5 relative overflow-hidden">
       <MotionImage width={1920} height={800} src={assets.mainShape2} alt="" className={`absolute -bottom-15 md:bottom-7 ${isArabic ? "-left-2 -scale-x-100" : "-right-2"}   w-[150px] md:w-[327px] lg:w-[327px] 3xl:w-[487px] h-fit`} />
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[830px_auto] gap-5 lg:gap-0">

@@ -230,7 +230,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         <section className="relative overflow-hidden" ref={sectionRef}>
             <div className="container">
                 <motion.div
-                    variants={moveUp(0)}
+                    variants={moveUp(1.8)}
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}

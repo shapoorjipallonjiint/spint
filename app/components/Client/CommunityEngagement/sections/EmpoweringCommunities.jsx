@@ -74,42 +74,42 @@ const EmpoweringCommunities = ({ data }) => {
     <section className="pt-10 xl:pt-15 2xl:pt-25 overflow-hidden relative" ref={sectionRef}>
       <div className="w-full h-[260px] sm:h-[320px] lg:h-[600px] 3xl:h-[670px] flex justify-center gap-1 lg:gap-3 2xl:gap-[16px]">
 
-        <motion.div variants={moveUp(0.1 * idx[0])} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-[120px] sm:mt-[200px] lg:mt-[280px] min-w-[15.27%]">
+        <motion.div variants={moveUp(1.1 * idx[0])} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-[120px] sm:mt-[200px] lg:mt-[280px] min-w-[15.27%]">
           <Block src={all[0][idx[0]]} size={size.extrasmall} fade={fade} />
         </motion.div>
 
-        <motion.div variants={moveUp(0.2 * idx[1])} initial="hidden" whileInView="show" viewport={{ once: true }} className="flex flex-col gap-1 lg:gap-4 mt-[100px] sm:mt-[120px] lg:mt-[218px] min-w-[15.27%]">
+        <motion.div variants={moveUp(1.2 * idx[1])} initial="hidden" whileInView="show" viewport={{ once: true }} className="flex flex-col gap-1 lg:gap-4 mt-[100px] sm:mt-[120px] lg:mt-[218px] min-w-[15.27%]">
           <Block src={all[1][idx[1]]} size={size.small} fade={fade} />
           <Block src={all[3][idx[3]]} size={size.medium} fade={fade} />
         </motion.div>
 
-        <motion.div variants={moveUp(0.3 * idx[2])} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-[60px] lg:mt-[136px] min-w-[20%] md:min-w-[15.74%]">
+        <motion.div variants={moveUp(1.3 * idx[2])} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-[60px] lg:mt-[136px] min-w-[20%] md:min-w-[15.74%]">
           <Block src={all[2][idx[2]]} size={size.large} fade={fade} />
         </motion.div>
 
-        <motion.div variants={moveUp(0.4 * idx[4])} initial="hidden" whileInView="show" viewport={{ once: true }} className="min-w-[30%] md:min-w-[21.71%]">
+        <motion.div variants={moveUp(1.4 * idx[4])} initial="hidden" whileInView="show" viewport={{ once: true }} className="min-w-[30%] md:min-w-[21.71%]">
           <Block src={all[4][idx[4]]} size={size.big} fade={fade} />
         </motion.div>
 
-        <motion.div variants={moveUp(0.5 * idx[5])} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-[60px] lg:mt-[136px] min-w-[20%] md:min-w-[15.74%]">
+        <motion.div variants={moveUp(1.5 * idx[5])} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-[60px] lg:mt-[136px] min-w-[20%] md:min-w-[15.74%]">
           <Block src={all[5][idx[5]]} size={size.large} fade={fade} />
         </motion.div>
 
-        <motion.div variants={moveUp(0.6 * idx[7])} initial="hidden" whileInView="show" viewport={{ once: true }} className="flex flex-col gap-1 lg:gap-3 mt-[100px] sm:mt-[120px] lg:mt-[218px] min-w-[15.27%]">
+        <motion.div variants={moveUp(1.6 * idx[7])} initial="hidden" whileInView="show" viewport={{ once: true }} className="flex flex-col gap-1 lg:gap-3 mt-[100px] sm:mt-[120px] lg:mt-[218px] min-w-[15.27%]">
           <Block src={all[7][idx[7]]} size={size.small} fade={fade} />
           <Block src={all[8][idx[8]]} size={size.medium} fade={fade} />
         </motion.div>
 
-        <motion.div variants={moveUp(0.7 * idx[6])} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-[150px] sm:mt-[200px] lg:mt-[320px] min-w-[15.27%]">
+        <motion.div variants={moveUp(1.7 * idx[6])} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-[150px] sm:mt-[200px] lg:mt-[320px] min-w-[15.27%]">
           <Block src={all[6][idx[6]]} size={size.extrasmall} fade={fade} />
         </motion.div>
       </div>
 
       <div className="container">
         <div className="pb30">
-          <h1 className="text-[32px] lg:text-60 font-light leading-[1.18] max-w-[20ch] text-center mb-5 m-auto">
-            <SplitTextAnimation children={t.title} staggerDelay={0.2} animationDuration={0.8} delay={0.4} />
-          </h1>
+          <motion.h1 variants={moveUp(0.6)} initial="hidden" whileInView="show" viewport={{ once: true }}  className="text-[32px] lg:text-60 font-light leading-[1.18] max-w-[20ch] text-center mb-5 m-auto">
+            <SplitTextAnimation children={t.title} staggerDelay={0.5} animationDuration={0.8} delay={0.4} />
+          </motion.h1>
 
           <motion.p variants={moveUp(0.6)} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-19 lg:text-29 text-paragraph font-light leading-[1.285] max-w-[46ch] m-auto text-center">
             {t.description}

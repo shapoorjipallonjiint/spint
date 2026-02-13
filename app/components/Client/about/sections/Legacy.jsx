@@ -166,12 +166,12 @@ const Legacy = ({ data }) => {
                                     height={1000}
                                     src={img.image}
                                     alt={img.imageAlt || ""}
-                                    className="object-cover scale-110 w-full h-[305px] xl:h-[505px]"
+                                    className="object-cover   w-full h-[305px] xl:h-[505px]"
                                   />
                                   {/* TITLE — directly under image */}
-                                  <span className="block xl:mt-10 mt-6 mb-2 text-white text-black text-29 font-light leading-[1]">
+                                  <p className="block xl:mt-5 mt-4 mb-2 text-white text-black text-29 font-light leading-[1]">
                                     {img.title}
-                                  </span>
+                                  </p>
 
 
                                 </div>

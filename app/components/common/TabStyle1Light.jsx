@@ -72,7 +72,7 @@ export default function TabStyle1Light({ data }) {
     <div className="w-full">
       {/* Tabs */}
       <div className=" 2xl:max-w-[1109px] 3xl:max-w-[1209px]">
-        <div ref={tabsContainerRef} className={`flex flex-wrap w-full overflow-hidden `}>
+        <div ref={tabsContainerRef} className={`grid  grid-cols-2 gap-2 md:gap-0 md:flex flex-wrap w-full overflow-hidden `}>
           {data.map((tab, index) => (
             <motion.button 
               variants={moveUp(0.4 + 0.1*index)} 
