@@ -11,9 +11,15 @@ import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { Textarea } from "@/components/ui/textarea";
 import { FormError } from "@/app/components/common/FormError";
 import { RiEditLine, RiDeleteBinLine } from "react-icons/ri";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+// import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { toast } from "sonner";
-import Image from 'next/image'
+import Image from "next/image";
+import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { arrayMove } from "@dnd-kit/sortable";
+import { TbReorder } from "react-icons/tb";
+import { GiConfirmed } from "react-icons/gi";
 
 interface LeadershipFormProps {
     metaTitle: string;
@@ -39,7 +45,7 @@ interface LeadershipFormProps {
             designation_ar?: string;
             description: string;
             description_ar: string;
-        }[]
+        }[];
     };
 
     secondSection: {
@@ -87,10 +93,7 @@ interface LeadershipFormProps {
     };
 }
 
-
 type PersonField = FieldArrayWithId<LeadershipFormProps, "secondSection.items", "id">;
-
-
 
 type PeopleListProps = {
     people: PersonField[];
@@ -99,12 +102,65 @@ type PeopleListProps = {
     onAdd: () => void;
 };
 
+const SortablePerson = ({
+    person,
+    index,
+    onEdit,
+    onDelete,
+}: {
+    person: PersonField;
+    index: number;
+    onEdit: (i: number) => void;
+    onDelete: (i: number) => void;
+}) => {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: person.id,
+    });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
+            className="flex items-center justify-between p-2 border rounded-md hover:bg-muted cursor-grab active:cursor-grabbing transition-all"
+        >
+            <div className="flex items-center gap-3">
+                <Image
+                    height={40}
+                    width={40}
+                    src={person.image}
+                    alt="profile"
+                    className="w-10 h-10 rounded-full object-cover"
+                />
+                <span className="font-medium">{person.name || "Unnamed Member"}</span>
+            </div>
+
+            <div className="flex gap-4">
+                <RiEditLine size={22} className="cursor-pointer" onClick={() => onEdit(index)} />
+                <RiDeleteBinLine size={20} className="cursor-pointer" onClick={() => onDelete(index)} />
+            </div>
+        </div>
+    );
+};
+
 const PeopleList = ({ people, onEdit, onDelete, onAdd }: PeopleListProps) => (
     <div className="p-4 flex flex-col gap-3">
         {people.map((person, i) => (
             <div key={person.id} className="flex items-center justify-between p-2 border rounded-md hover:bg-muted">
                 <div className="flex items-center gap-3 cursor-pointer" onClick={() => onEdit(i)}>
-                    <Image height={40} width={40} src={person.image} alt="profile" className="w-10 h-10 rounded-full object-cover" />
+                    <Image
+                        height={40}
+                        width={40}
+                        src={person.image}
+                        alt="profile"
+                        className="w-10 h-10 rounded-full object-cover"
+                    />
                     <span className="font-medium">{person.name || "Unnamed Member"}</span>
                 </div>
 
@@ -135,9 +191,24 @@ const LeadershipAdminPage = () => {
     } = useForm<LeadershipFormProps>();
 
     const [editingPerson, setEditingPerson] = useState<number | null>(null);
+    const [reorderMode, setReorderMode] = useState(false);
+
+    const handleDragEnd = async (event: DragEndEvent) => {
+        const { active, over } = event;
+
+        if (!over || active.id === over.id) return;
+
+        const oldIndex = peopleFields.findIndex((p) => p.id === active.id);
+        const newIndex = peopleFields.findIndex((p) => p.id === over.id);
+
+        const newItems = arrayMove(getValues("secondSection.items"), oldIndex, newIndex);
+
+        replacePeople(newItems);
+
+        await saveToAPI();
+    };
 
     /* ---------- Field Arrays ---------- */
-
 
     const {
         fields: peopleFields,
@@ -325,7 +396,10 @@ const LeadershipAdminPage = () => {
                                     <Label className="font-bold">Items</Label>
                                     <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                         {firstSectionItems.map((field, index) => (
-                                            <div key={field.id} className="px-5 grid grid-cols-2 gap-5 relative border-b pb-2">
+                                            <div
+                                                key={field.id}
+                                                className="px-5 grid grid-cols-2 gap-5 relative border-b pb-2"
+                                            >
                                                 <div className="absolute top-0 right-2">
                                                     <RiDeleteBinLine
                                                         onClick={() => firstSectionRemove(index)}
@@ -337,9 +411,13 @@ const LeadershipAdminPage = () => {
                                                         name={`firstSection.items.${index}.image`}
                                                         control={control}
                                                         rules={{ required: "Leader image is required" }}
-                                                        render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                                        render={({ field }) => (
+                                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                                        )}
                                                     />
-                                                    <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
+                                                    <FormError
+                                                        error={errors.firstSection?.items?.[index]?.image?.message}
+                                                    />
                                                 </div>
 
                                                 <div className="flex flex-col gap-3">
@@ -350,7 +428,9 @@ const LeadershipAdminPage = () => {
                                                                 required: "Leader name is required",
                                                             })}
                                                         />
-                                                        <FormError error={errors.firstSection?.items?.[index]?.name?.message} />
+                                                        <FormError
+                                                            error={errors.firstSection?.items?.[index]?.name?.message}
+                                                        />
                                                     </div>
 
                                                     <div>
@@ -360,7 +440,11 @@ const LeadershipAdminPage = () => {
                                                                 required: "Designation is required",
                                                             })}
                                                         />
-                                                        <FormError error={errors.firstSection?.items?.[index]?.designation?.message} />
+                                                        <FormError
+                                                            error={
+                                                                errors.firstSection?.items?.[index]?.designation?.message
+                                                            }
+                                                        />
                                                     </div>
 
                                                     <div>
@@ -370,7 +454,9 @@ const LeadershipAdminPage = () => {
                                                                 required: "Image alt text is required",
                                                             })}
                                                         />
-                                                        <FormError error={errors.firstSection?.items?.[index]?.imageAlt?.message} />
+                                                        <FormError
+                                                            error={errors.firstSection?.items?.[index]?.imageAlt?.message}
+                                                        />
                                                     </div>
                                                 </div>
 
@@ -382,7 +468,9 @@ const LeadershipAdminPage = () => {
                                                         })}
                                                         placeholder="Leader description"
                                                     />
-                                                    <FormError error={errors.firstSection?.items?.[index]?.description?.message} />
+                                                    <FormError
+                                                        error={errors.firstSection?.items?.[index]?.description?.message}
+                                                    />
                                                 </div>
                                             </div>
                                         ))}
@@ -402,7 +490,7 @@ const LeadershipAdminPage = () => {
                                                         description: "",
                                                         description_ar: "",
                                                         imageAlt: "",
-                                                        imageAlt_ar: ""
+                                                        imageAlt_ar: "",
                                                     })
                                                 }
                                             >
@@ -415,7 +503,6 @@ const LeadershipAdminPage = () => {
                         </div>
                     </div>
                 </AdminItemContainer>
-
 
                 {/* ================= Second SECTION ================= */}
                 <AdminItemContainer>
@@ -446,7 +533,9 @@ const LeadershipAdminPage = () => {
                                             name={`thirdSection.items.${index}.image`}
                                             control={control}
                                             rules={{ required: "Leader image is required" }}
-                                            render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                            render={({ field }) => (
+                                                <ImageUploader value={field.value} onChange={field.onChange} />
+                                            )}
                                         />
                                         <FormError error={errors.thirdSection?.items?.[index]?.image?.message} />
                                     </div>
@@ -498,7 +587,7 @@ const LeadershipAdminPage = () => {
                                             designation: "",
                                             designation_ar: "",
                                             imageAlt: "",
-                                            imageAlt_ar: ""
+                                            imageAlt_ar: "",
                                         })
                                     }
                                 >
@@ -508,7 +597,6 @@ const LeadershipAdminPage = () => {
                         </div>
                     </div>
                 </AdminItemContainer>
-
 
                 {/* ================= Third SECTION ================= */}
                 <AdminItemContainer>
@@ -539,7 +627,9 @@ const LeadershipAdminPage = () => {
                                             name={`fourthSection.items.${index}.image`}
                                             control={control}
                                             rules={{ required: "Leader image is required" }}
-                                            render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                            render={({ field }) => (
+                                                <ImageUploader value={field.value} onChange={field.onChange} />
+                                            )}
                                         />
                                         <FormError error={errors.fourthSection?.items?.[index]?.image?.message} />
                                     </div>
@@ -591,7 +681,7 @@ const LeadershipAdminPage = () => {
                                             designation: "",
                                             designation_ar: "",
                                             imageAlt: "",
-                                            imageAlt_ar: ""
+                                            imageAlt_ar: "",
                                         })
                                     }
                                 >
@@ -656,24 +746,25 @@ const LeadershipAdminPage = () => {
                                     <Label className="font-bold">Items</Label>
                                     <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                         {firstSectionItems.map((field, index) => (
-                                            <div className="px-5 rounded-md grid grid-cols-2 gap-5">
+                                            <div key={field.id} className="px-5 rounded-md grid grid-cols-2 gap-5">
                                                 <div>
                                                     <Controller
                                                         name={`firstSection.items.${index}.image`}
                                                         control={control}
                                                         rules={{ required: "Leader image is required" }}
-                                                        render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                                        render={({ field }) => (
+                                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                                        )}
                                                     />
-                                                    <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
+                                                    <FormError
+                                                        error={errors.firstSection?.items?.[index]?.image?.message}
+                                                    />
                                                 </div>
 
                                                 <div className="flex flex-col gap-3">
                                                     <div>
                                                         <Label className="font-bold">Name</Label>
-                                                        <Input
-                                                            {...register(`firstSection.items.${index}.name_ar`)}
-                                                        />
-
+                                                        <Input {...register(`firstSection.items.${index}.name_ar`)} />
                                                     </div>
 
                                                     <div>
@@ -681,15 +772,11 @@ const LeadershipAdminPage = () => {
                                                         <Input
                                                             {...register(`firstSection.items.${index}.designation_ar`)}
                                                         />
-
                                                     </div>
 
                                                     <div>
                                                         <Label className="font-bold">Image Alt</Label>
-                                                        <Input
-                                                            {...register(`firstSection.items.${index}.imageAlt_ar`)}
-                                                        />
-
+                                                        <Input {...register(`firstSection.items.${index}.imageAlt_ar`)} />
                                                     </div>
                                                 </div>
 
@@ -699,7 +786,6 @@ const LeadershipAdminPage = () => {
                                                         {...register(`firstSection.items.${index}.description_ar`)}
                                                         placeholder="Leader description"
                                                     />
-
                                                 </div>
                                             </div>
                                         ))}
@@ -719,7 +805,7 @@ const LeadershipAdminPage = () => {
                                                         description: "",
                                                         description_ar: "",
                                                         imageAlt: "",
-                                                        imageAlt_ar: ""
+                                                        imageAlt_ar: "",
                                                     })
                                                 }
                                             >
@@ -762,7 +848,9 @@ const LeadershipAdminPage = () => {
                                             name={`thirdSection.items.${index}.image`}
                                             control={control}
                                             rules={{ required: "Leader image is required" }}
-                                            render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                            render={({ field }) => (
+                                                <ImageUploader value={field.value} onChange={field.onChange} />
+                                            )}
                                         />
                                         <FormError error={errors.thirdSection?.items?.[index]?.image?.message} />
                                     </div>
@@ -770,23 +858,17 @@ const LeadershipAdminPage = () => {
                                     <div className="flex flex-col gap-3">
                                         <div>
                                             <Label className="font-bold">Name</Label>
-                                            <Input
-                                                {...register(`thirdSection.items.${index}.name_ar`)}
-                                            />
+                                            <Input {...register(`thirdSection.items.${index}.name_ar`)} />
                                         </div>
 
                                         <div>
                                             <Label className="font-bold">Designation</Label>
-                                            <Input
-                                                {...register(`thirdSection.items.${index}.designation_ar`)}
-                                            />
+                                            <Input {...register(`thirdSection.items.${index}.designation_ar`)} />
                                         </div>
 
                                         <div>
                                             <Label className="font-bold">Image Alt</Label>
-                                            <Input
-                                                {...register(`thirdSection.items.${index}.imageAlt_ar`)}
-                                            />
+                                            <Input {...register(`thirdSection.items.${index}.imageAlt_ar`)} />
                                         </div>
                                     </div>
                                 </div>
@@ -805,7 +887,7 @@ const LeadershipAdminPage = () => {
                                             designation: "",
                                             designation_ar: "",
                                             imageAlt: "",
-                                            imageAlt_ar: ""
+                                            imageAlt_ar: "",
                                         })
                                     }
                                 >
@@ -822,9 +904,7 @@ const LeadershipAdminPage = () => {
 
                     <div className="p-5 flex flex-col gap-2">
                         <Label className="font-bold">Title</Label>
-                        <Input
-                            {...register("fourthSection.title_ar")}
-                        />
+                        <Input {...register("fourthSection.title_ar")} />
                     </div>
                     <div className="p-5">
                         <Label className="font-bold">Items</Label>
@@ -842,7 +922,9 @@ const LeadershipAdminPage = () => {
                                             name={`fourthSection.items.${index}.image`}
                                             control={control}
                                             rules={{ required: "Leader image is required" }}
-                                            render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                            render={({ field }) => (
+                                                <ImageUploader value={field.value} onChange={field.onChange} />
+                                            )}
                                         />
                                         <FormError error={errors.fourthSection?.items?.[index]?.image?.message} />
                                     </div>
@@ -850,23 +932,17 @@ const LeadershipAdminPage = () => {
                                     <div className="flex flex-col gap-3">
                                         <div>
                                             <Label className="font-bold">Name</Label>
-                                            <Input
-                                                {...register(`fourthSection.items.${index}.name_ar`)}
-                                            />
+                                            <Input {...register(`fourthSection.items.${index}.name_ar`)} />
                                         </div>
 
                                         <div>
                                             <Label className="font-bold">Designation</Label>
-                                            <Input
-                                                {...register(`fourthSection.items.${index}.designation_ar`)}
-                                            />
+                                            <Input {...register(`fourthSection.items.${index}.designation_ar`)} />
                                         </div>
 
                                         <div>
                                             <Label className="font-bold">Image Alt</Label>
-                                            <Input
-                                                {...register(`fourthSection.items.${index}.imageAlt_ar`)}
-                                            />
+                                            <Input {...register(`fourthSection.items.${index}.imageAlt_ar`)} />
                                         </div>
                                     </div>
                                 </div>
@@ -885,7 +961,7 @@ const LeadershipAdminPage = () => {
                                             designation: "",
                                             designation_ar: "",
                                             imageAlt: "",
-                                            imageAlt_ar: ""
+                                            imageAlt_ar: "",
                                         })
                                     }
                                 >
@@ -919,8 +995,6 @@ const LeadershipAdminPage = () => {
                     Save Leadership Page
                 </Button>
             </div>
-
-
 
             {/* ================= EDIT PERSON ================= */}
             {editingPerson !== null && (
@@ -1008,8 +1082,6 @@ const LeadershipAdminPage = () => {
                                     placeholder="Image Alt (Arabic)"
                                     {...register(`secondSection.items.${editingPerson}.imageAlt_ar`)}
                                 />
-
-
                             </div>
                         </div>
 
@@ -1046,9 +1118,8 @@ const LeadershipAdminPage = () => {
 
             {/* ================= MANAGE SECTIONS ================= */}
             <div className="col-span-2 mt-10 grid grid-cols-1 gap-6">
-
                 {/* RIGHT: TEAM MEMBERS */}
-                <AdminItemContainer>
+                {/*   <AdminItemContainer>
                     <Label main>Team Members</Label>
                     <PeopleList
                         people={peopleFields}
@@ -1071,6 +1142,66 @@ const LeadershipAdminPage = () => {
                             setEditingPerson(peopleFields.length);
                         }}
                     />
+                </AdminItemContainer> */}
+
+                <AdminItemContainer>
+                    <div className="flex justify-between items-center p-3 border-b-1">
+                        <Label className="!text-lg !font-bold">Team Members</Label>
+
+                        <Button
+                            type="button"
+                            className="bg-green-600 text-white"
+                            onClick={() => setReorderMode(!reorderMode)}
+                        >
+                            {reorderMode ? <GiConfirmed /> : <TbReorder />}
+                        </Button>
+                    </div>
+
+                    {!reorderMode && (
+                        <PeopleList
+                            people={peopleFields}
+                            onEdit={(i) => setEditingPerson(i)}
+                            onDelete={async (i) => {
+                                removePerson(i);
+                                await saveToAPI();
+                            }}
+                            onAdd={() => {
+                                setValue(`secondSection.items.${peopleFields.length}`, {
+                                    image: "",
+                                    name: "",
+                                    name_ar: "",
+                                    designation: "",
+                                    designation_ar: "",
+                                    socialLink: "",
+                                });
+                                setEditingPerson(peopleFields.length);
+                            }}
+                        />
+                    )}
+
+                    {reorderMode && (
+                        <div className="p-4 flex flex-col gap-3">
+                            <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                                <SortableContext
+                                    items={peopleFields.map((p) => p.id)}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    {peopleFields.map((person, i) => (
+                                        <SortablePerson
+                                            key={person.id}
+                                            person={person}
+                                            index={i}
+                                            onEdit={(i) => setEditingPerson(i)}
+                                            onDelete={async (i) => {
+                                                removePerson(i);
+                                                await saveToAPI();
+                                            }}
+                                        />
+                                    ))}
+                                </SortableContext>
+                            </DndContext>
+                        </div>
+                    )}
                 </AdminItemContainer>
             </div>
         </form>
