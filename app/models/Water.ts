@@ -80,6 +80,27 @@ const waterSchema = new mongoose.Schema({
         poster:{
             type:String,
             required:true
+        },
+        headProfilePic:{
+            type:String,
+        },
+        headProfilePicAlt:{
+            type:String,
+        },
+        headProfilePicAlt_ar:{
+            type:String,
+        },
+        headName:{
+            type:String,
+        },
+        headName_ar:{
+            type:String,
+        },
+        headDesignation:{
+            type:String,
+        },
+        headDesignation_ar:{
+            type:String,
         }
     },
     secondSection:{

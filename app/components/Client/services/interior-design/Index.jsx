@@ -1,7 +1,7 @@
 import Banner from "@/app/components/common/Banner";
 // import MainNavbar from "../../MainLayout/MainNavbar";
 // import Footer from "../../MainLayout/Footer";
-import IDVdoSection from "./sections/IDVdoSection";
+import VideoSection from "@/app/components/common/VdoSection";
 import SecondSection from "./sections/SecondSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
@@ -25,7 +25,7 @@ const InteriorDesign = ({ data, projectData }) => {
         <MainNavbar /> 
       </header> */}
             <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
-            <IDVdoSection data={data.firstSection} />
+            <VideoSection data={data.firstSection} />
             <SecondSection data={data.secondSection} />
             <ExpertiseSec data={data.thirdSection} />
             <SectorsSec data={data.fourthSection} />

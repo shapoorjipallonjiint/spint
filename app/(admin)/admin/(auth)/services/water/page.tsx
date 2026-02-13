@@ -1,22 +1,21 @@
-"use client"
+"use client";
 
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { useEffect } from 'react'
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useEffect } from "react";
 
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { Button } from '@/components/ui/button'
-import { ImageUploader } from '@/components/ui/image-uploader'
+import { Button } from "@/components/ui/button";
+import { ImageUploader } from "@/components/ui/image-uploader";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { Textarea } from '@/components/ui/textarea'
-import AdminItemContainer from '@/app/components/common/AdminItemContainer';
-import { VideoUploader } from '@/components/ui/video-uploader';
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false })
-import 'react-quill-new/dist/quill.snow.css';
-import dynamic from 'next/dynamic'
+import { Textarea } from "@/components/ui/textarea";
+import AdminItemContainer from "@/app/components/common/AdminItemContainer";
+import { VideoUploader } from "@/components/ui/video-uploader";
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
 
 interface WaterProps {
-
     metaTitle: string;
     metaTitle_ar: string;
     metaDescription: string;
@@ -33,7 +32,7 @@ interface WaterProps {
     homeImage: string;
     homeImageAlt: string;
     homeImageAlt_ar: string;
-    link:string;
+    link: string;
     firstSection: {
         title: string;
         title_ar: string;
@@ -41,6 +40,13 @@ interface WaterProps {
         description_ar: string;
         video: string;
         poster: string;
+        headName: string;
+        headName_ar: string;
+        headDesignation: string;
+        headDesignation_ar: string;
+        headProfilePic: string;
+        headProfilePicAlt: string;
+        headProfilePicAlt_ar: string;
     };
     secondSection: {
         title: string;
@@ -58,7 +64,7 @@ interface WaterProps {
             title_ar: string;
             description: string;
             description_ar: string;
-        }[]
+        }[];
     };
     thirdSection: {
         title: string;
@@ -71,27 +77,36 @@ interface WaterProps {
             title_ar: string;
             description: string;
             description_ar: string;
-        }[]
+        }[];
     };
 }
 
 const WaterPage = () => {
-
-
-    const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<WaterProps>();
-
-
-    const { fields: secondSectionItems, append: secondSectionAppend, remove: secondSectionRemove } = useFieldArray({
+    const {
+        register,
+        handleSubmit,
+        setValue,
         control,
-        name: "secondSection.items"
+        formState: { errors },
+    } = useForm<WaterProps>();
+
+    const {
+        fields: secondSectionItems,
+        append: secondSectionAppend,
+        remove: secondSectionRemove,
+    } = useFieldArray({
+        control,
+        name: "secondSection.items",
     });
 
-    const { fields: thirdSectionItems, append: thirdSectionAppend, remove: thirdSectionRemove } = useFieldArray({
+    const {
+        fields: thirdSectionItems,
+        append: thirdSectionAppend,
+        remove: thirdSectionRemove,
+    } = useFieldArray({
         control,
-        name: "thirdSection.items"
+        name: "thirdSection.items",
     });
-
-
 
     const handleAddWater = async (data: WaterProps) => {
         try {
@@ -107,7 +122,7 @@ const WaterPage = () => {
         } catch (error) {
             console.log("Error in adding data", error);
         }
-    }
+    };
 
     const fetchWaterData = async () => {
         try {
@@ -134,8 +149,8 @@ const WaterPage = () => {
                 setValue("firstSection", data.data.firstSection);
                 setValue("secondSection", data.data.secondSection);
                 setValue("secondSection.items", data.data.secondSection.items);
-                setValue("thirdSection", data.data.thirdSection)
-                setValue("thirdSection.items", data.data.thirdSection.items)
+                setValue("thirdSection", data.data.thirdSection);
+                setValue("thirdSection.items", data.data.thirdSection.items);
             } else {
                 const data = await response.json();
                 alert(data.message);
@@ -143,747 +158,886 @@ const WaterPage = () => {
         } catch (error) {
             console.log("Error in fetching data", error);
         }
-    }
-
-
+    };
 
     useEffect(() => {
         fetchWaterData();
     }, []);
 
-
     return (
-        <form className='grid grid-cols-2 gap-10' onSubmit={handleSubmit(handleAddWater)}>
+        <form className="grid grid-cols-2 gap-10" onSubmit={handleSubmit(handleAddWater)}>
             {/*English Version */}
-            <div className='flex flex-col gap-5'>
-
-
+            <div className="flex flex-col gap-5">
                 <AdminItemContainer>
-                    <Label className="" main>Banner</Label>
-                    <div className='p-5 rounded-md grid grid-cols-2 gap-5'>
+                    <Label className="" main>
+                        Banner
+                    </Label>
+                    <div className="p-5 rounded-md grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
                                 control={control}
                                 rules={{ required: "Banner is required" }}
-                                render={({ field }) => (
-                                    <ImageUploader
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                    />
-                                )}
+                                render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                             />
-                            {errors.banner && (
-                                <p className="text-red-500">{errors.banner.message}</p>
-                            )}
+                            {errors.banner && <p className="text-red-500">{errors.banner.message}</p>}
                         </div>
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Alt Tag</Label>
-                                <Input type='text' placeholder='Alt Tag' {...register("bannerAlt")} />
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Alt Tag</Label>
+                                <Input type="text" placeholder="Alt Tag" {...register("bannerAlt")} />
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Page Title</Label>
-                                <Input type='text' placeholder='Page Title' {...register("pageTitle")} />
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Page Title</Label>
+                                <Input type="text" placeholder="Page Title" {...register("pageTitle")} />
                             </div>
-                            <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Title (for home and project page selector)</Label>
-                        <Input type='text' placeholder='Title' {...register("title")} />
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Description (for home)</Label>
-                        <Textarea {...register("description")} />
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Home Image</Label>
-                                                    <Controller
-                                                        name={`homeImage`}
-                                                        control={control}
-                                                        rules={{ required: "Image is required" }}
-                                                        render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
-                                                        )}
-                                                    />
-                                                    {errors.homeImage && (
-                                                        <p className="text-red-500">{errors.homeImage.message}</p>
-                                                    )}
-                                                </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title (for home and project page selector)</Label>
+                                <Input type="text" placeholder="Title" {...register("title")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Description (for home)</Label>
+                                <Textarea {...register("description")} />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2">
+                                    <Label className="font-bold">Home Image</Label>
+                                    <Controller
+                                        name={`homeImage`}
+                                        control={control}
+                                        rules={{ required: "Image is required" }}
+                                        render={({ field }) => (
+                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                        )}
+                                    />
+                                    {errors.homeImage && <p className="text-red-500">{errors.homeImage.message}</p>}
+                                </div>
 
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Home Image Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`homeImageAlt`, {
-                                                            required: "Value is required"
-                                                        })} />
-                                                        {errors.homeImageAlt && <p className='text-red-500'>{errors.homeImageAlt.message}</p>}
-                                                    </div>
-                                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex flex-col gap-2">
+                                        <Label className="font-bold">Home Image Alt Tag</Label>
+                                        <Input
+                                            type="text"
+                                            placeholder="Alt Tag"
+                                            {...register(`homeImageAlt`, {
+                                                required: "Value is required",
+                                            })}
+                                        />
+                                        {errors.homeImageAlt && (
+                                            <p className="text-red-500">{errors.homeImageAlt.message}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
 
-
-                                            </div>
-
-                                            <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Link (for home)</Label>
-                        <Input type='text' placeholder='Link' {...register("link")} />
-                    </div>
-
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Link (for home)</Label>
+                                <Input type="text" placeholder="Link" {...register("link")} />
+                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
 
                 <AdminItemContainer>
                     <Label main>First Section</Label>
-                    <div className='p-5 rounded-md flex flex-col gap-2'>
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title</Label>
-                                <Input type='text' placeholder='Title' {...register("firstSection.title", {
-                                    required: "Title is required"
-                                })} />
-                                {errors.firstSection?.title && <p className='text-red-500'>{errors.firstSection?.title.message}</p>}
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title</Label>
+                                <Input
+                                    type="text"
+                                    placeholder="Title"
+                                    {...register("firstSection.title", {
+                                        required: "Title is required",
+                                    })}
+                                />
+                                {errors.firstSection?.title && (
+                                    <p className="text-red-500">{errors.firstSection?.title.message}</p>
+                                )}
                             </div>
                             <div>
                                 <Label className="text-sm font-bold">Description</Label>
-                                <Controller name="firstSection.description" control={control} rules={{ required: "Description is required" }} render={({ field }) => {
-                                    return <Textarea value={field.value} onChange={field.onChange} />
-                                }} />
+                                <Controller
+                                    name="firstSection.description"
+                                    control={control}
+                                    rules={{ required: "Description is required" }}
+                                    render={({ field }) => {
+                                        return <Textarea value={field.value} onChange={field.onChange} />;
+                                    }}
+                                />
                             </div>
                         </div>
 
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-2'>
-                                <Label className=''>Video</Label>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2">
+                                <Label className="">Video</Label>
                                 <Controller
                                     name="firstSection.video"
                                     control={control}
                                     rules={{ required: "Video is required" }}
-                                    render={({ field }) => (
-                                        <VideoUploader
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                        />
-                                    )}
+                                    render={({ field }) => <VideoUploader value={field.value} onChange={field.onChange} />}
                                 />
                                 {errors.firstSection?.video && (
                                     <p className="text-red-500">{errors.firstSection?.video?.message}</p>
                                 )}
                             </div>
-
                         </div>
 
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-2'>
-                                <Label className='text-[16px] font-light'>Poster</Label>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2">
+                                <Label className="text-[16px] font-light">Poster</Label>
                                 <Controller
                                     name="firstSection.poster"
                                     control={control}
                                     rules={{ required: "Poster is required" }}
-                                    render={({ field }) => (
-                                        <ImageUploader
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                        />
-                                    )}
+                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                                 />
                                 {errors.firstSection?.poster && (
                                     <p className="text-red-500">{errors.firstSection?.poster?.message}</p>
                                 )}
                             </div>
-                            <div>
-
+                                                        <div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label className="font-bold">Head Name</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Head Name"
+                                        {...register("firstSection.headName")}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label className="font-bold">Head Designation</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Head Designation"
+                                        {...register("firstSection.headDesignation")}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label className="font-bold">Head Profile Picture</Label>
+                                    <Controller
+                                        name="firstSection.headProfilePic"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                        )}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <Label className="font-bold">Head Profile Picture Alt</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Head Profile Picture Alt"
+                                        {...register("firstSection.headProfilePicAlt")}
+                                    />
+                                </div>
                             </div>
-
                         </div>
-
-
                     </div>
                 </AdminItemContainer>
 
-
                 <AdminItemContainer>
                     <Label main>Second Section</Label>
-                    <div className='p-5 rounded-md flex flex-col gap-2'>
-                        <div className='flex flex-col gap-2'>
-
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title</Label>
-                                <Input type='text' placeholder='Title' {...register("secondSection.title", {
-                                    required: "Title is required"
-                                })} />
-                                {errors.secondSection?.title && <p className='text-red-500'>{errors.secondSection?.title.message}</p>}
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title</Label>
+                                <Input
+                                    type="text"
+                                    placeholder="Title"
+                                    {...register("secondSection.title", {
+                                        required: "Title is required",
+                                    })}
+                                />
+                                {errors.secondSection?.title && (
+                                    <p className="text-red-500">{errors.secondSection?.title.message}</p>
+                                )}
                             </div>
 
-
                             <div>
-                                <Label className='font-bold'>Items</Label>
-                                <div className='border p-2 rounded-md flex flex-col gap-5'>
-
-
+                                <Label className="font-bold">Items</Label>
+                                <div className="border p-2 rounded-md flex flex-col gap-5">
                                     {secondSectionItems.map((field, index) => (
-                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0'>
-                                            <div className='absolute top-2 right-2'>
-                                                <RiDeleteBinLine onClick={() => secondSectionRemove(index)} className='cursor-pointer text-red-600' />
+                                        <div
+                                            key={field.id}
+                                            className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        >
+                                            <div className="absolute top-2 right-2">
+                                                <RiDeleteBinLine
+                                                    onClick={() => secondSectionRemove(index)}
+                                                    className="cursor-pointer text-red-600"
+                                                />
                                             </div>
 
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Image</Label>
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Image</Label>
                                                     <Controller
                                                         name={`secondSection.items.${index}.image`}
                                                         control={control}
                                                         rules={{ required: "Image is required" }}
                                                         render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
+                                                            <ImageUploader value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
                                                     {errors.secondSection?.items?.[index]?.image && (
-                                                        <p className="text-red-500">{errors.secondSection?.items?.[index]?.image.message}</p>
+                                                        <p className="text-red-500">
+                                                            {errors.secondSection?.items?.[index]?.image.message}
+                                                        </p>
                                                     )}
                                                 </div>
 
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.imageAlt`, {
-                                                            required: "Value is required"
-                                                        })} />
-                                                        {errors.secondSection?.items?.[index]?.imageAlt && <p className='text-red-500'>{errors.secondSection?.items?.[index]?.imageAlt.message}</p>}
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Alt Tag</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Alt Tag"
+                                                            {...register(`secondSection.items.${index}.imageAlt`, {
+                                                                required: "Value is required",
+                                                            })}
+                                                        />
+                                                        {errors.secondSection?.items?.[index]?.imageAlt && (
+                                                            <p className="text-red-500">
+                                                                {errors.secondSection?.items?.[index]?.imageAlt.message}
+                                                            </p>
+                                                        )}
                                                     </div>
                                                 </div>
-
-
                                             </div>
 
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Logo</Label>
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Logo</Label>
                                                     <Controller
                                                         name={`secondSection.items.${index}.logo`}
                                                         control={control}
                                                         rules={{ required: "Logo is required" }}
                                                         render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
+                                                            <ImageUploader value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
                                                     {errors.secondSection?.items?.[index]?.logo && (
-                                                        <p className="text-red-500">{errors.secondSection?.items?.[index]?.logo.message}</p>
+                                                        <p className="text-red-500">
+                                                            {errors.secondSection?.items?.[index]?.logo.message}
+                                                        </p>
                                                     )}
                                                 </div>
 
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.logoAlt`)} />
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Alt Tag</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Alt Tag"
+                                                            {...register(`secondSection.items.${index}.logoAlt`)}
+                                                        />
                                                     </div>
                                                 </div>
-
-
                                             </div>
 
-                                            <div className='col-span-2 gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Title</Label>
-                                                        <Input type='text' placeholder='Title' {...register(`secondSection.items.${index}.title`, {
-                                                            required: "Value is required"
-                                                        })} />
-                                                        {errors.secondSection?.items?.[index]?.title && <p className='text-red-500'>{errors.secondSection?.items?.[index]?.title.message}</p>}
+                                            <div className="col-span-2 gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Title"
+                                                            {...register(`secondSection.items.${index}.title`, {
+                                                                required: "Value is required",
+                                                            })}
+                                                        />
+                                                        {errors.secondSection?.items?.[index]?.title && (
+                                                            <p className="text-red-500">
+                                                                {errors.secondSection?.items?.[index]?.title.message}
+                                                            </p>
+                                                        )}
                                                     </div>
 
                                                     <div>
                                                         <Label className="text-sm font-bold">Description</Label>
-                                                        <Controller name={`secondSection.items.${index}.description`} control={control} rules={{ required: "Description is required" }} render={({ field }) => {
-                                                            return <ReactQuill theme='snow' value={field.value} onChange={field.onChange} />
-                                                        }} />
+                                                        <Controller
+                                                            name={`secondSection.items.${index}.description`}
+                                                            control={control}
+                                                            rules={{ required: "Description is required" }}
+                                                            render={({ field }) => {
+                                                                return (
+                                                                    <ReactQuill
+                                                                        theme="snow"
+                                                                        value={field.value}
+                                                                        onChange={field.onChange}
+                                                                    />
+                                                                );
+                                                            }}
+                                                        />
                                                     </div>
-
                                                 </div>
                                             </div>
-
                                         </div>
                                     ))}
-
-
-
                                 </div>
-                                <div className='flex justify-end mt-2'>
-                                    <Button type='button' addItem onClick={() => secondSectionAppend({ title: "", image: "", imageAlt: "", logo: "", logoAlt: "", title_ar: "", imageAlt_ar: "", logoAlt_ar: "", description: "", description_ar: "" })}>Add Item</Button>
+                                <div className="flex justify-end mt-2">
+                                    <Button
+                                        type="button"
+                                        addItem
+                                        onClick={() =>
+                                            secondSectionAppend({
+                                                title: "",
+                                                image: "",
+                                                imageAlt: "",
+                                                logo: "",
+                                                logoAlt: "",
+                                                title_ar: "",
+                                                imageAlt_ar: "",
+                                                logoAlt_ar: "",
+                                                description: "",
+                                                description_ar: "",
+                                            })
+                                        }
+                                    >
+                                        Add Item
+                                    </Button>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </AdminItemContainer>
-
 
                 <AdminItemContainer>
                     <Label main>Third Section</Label>
 
-                    <div className='p-5 rounded-md flex flex-col gap-5'>
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-2'>
-                                <Label className='font-bold'>Title</Label>
-                                <Input type='text' placeholder='Title' {...register(`thirdSection.title`)} />
+                    <div className="p-5 rounded-md flex flex-col gap-5">
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="Title" {...register(`thirdSection.title`)} />
                             </div>
                         </div>
 
-
                         <div>
-                                <Label className='font-bold'>Items</Label>
-                                <div className='border p-2 rounded-md flex flex-col gap-5'>
-
-
-                                    {thirdSectionItems.map((field, index) => (
-                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0'>
-                                            <div className='absolute top-2 right-2'>
-                                                <RiDeleteBinLine onClick={() => thirdSectionRemove(index)} className='cursor-pointer text-red-600' />
-                                            </div>
-
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Image</Label>
-                                                    <Controller
-                                                        name={`thirdSection.items.${index}.image`}
-                                                        control={control}
-                                                        rules={{ required: "Image is required" }}
-                                                        render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
-                                                        )}
-                                                    />
-                                                    {errors.thirdSection?.items?.[index]?.image && (
-                                                        <p className="text-red-500">{errors.thirdSection?.items?.[index]?.image.message}</p>
-                                                    )}
-                                                </div>
-
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`thirdSection.items.${index}.imageAlt`)} />
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Title</Label>
-                                                        <Input type='text' placeholder='Title' {...register(`thirdSection.items.${index}.title`)} />
-                                                    </div>
-
-                                                    <div>
-                                                        <Label className="text-sm font-bold">Description</Label>
-                                                        <Controller name={`thirdSection.items.${index}.description`} control={control} render={({ field }) => {
-                                                            return <Textarea value={field.value} onChange={field.onChange} />
-                                                        }} />
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
+                            <Label className="font-bold">Items</Label>
+                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                                {thirdSectionItems.map((field, index) => (
+                                    <div
+                                        key={field.id}
+                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                    >
+                                        <div className="absolute top-2 right-2">
+                                            <RiDeleteBinLine
+                                                onClick={() => thirdSectionRemove(index)}
+                                                className="cursor-pointer text-red-600"
+                                            />
                                         </div>
-                                    ))}
 
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Image</Label>
+                                                <Controller
+                                                    name={`thirdSection.items.${index}.image`}
+                                                    control={control}
+                                                    rules={{ required: "Image is required" }}
+                                                    render={({ field }) => (
+                                                        <ImageUploader value={field.value} onChange={field.onChange} />
+                                                    )}
+                                                />
+                                                {errors.thirdSection?.items?.[index]?.image && (
+                                                    <p className="text-red-500">
+                                                        {errors.thirdSection?.items?.[index]?.image.message}
+                                                    </p>
+                                                )}
+                                            </div>
 
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Alt Tag</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Alt Tag"
+                                                        {...register(`thirdSection.items.${index}.imageAlt`)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                </div>
-                                <div className='flex justify-end mt-2'>
-                                    <Button type='button' addItem onClick={() => thirdSectionAppend({ title: "", image: "", imageAlt: "", title_ar: "", imageAlt_ar: "", description: "", description_ar: "" })}>Add Item</Button>
-                                </div>
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Title</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Title"
+                                                        {...register(`thirdSection.items.${index}.title`)}
+                                                    />
+                                                </div>
+
+                                                <div>
+                                                    <Label className="text-sm font-bold">Description</Label>
+                                                    <Controller
+                                                        name={`thirdSection.items.${index}.description`}
+                                                        control={control}
+                                                        render={({ field }) => {
+                                                            return (
+                                                                <Textarea value={field.value} onChange={field.onChange} />
+                                                            );
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-
+                            <div className="flex justify-end mt-2">
+                                <Button
+                                    type="button"
+                                    addItem
+                                    onClick={() =>
+                                        thirdSectionAppend({
+                                            title: "",
+                                            image: "",
+                                            imageAlt: "",
+                                            title_ar: "",
+                                            imageAlt_ar: "",
+                                            description: "",
+                                            description_ar: "",
+                                        })
+                                    }
+                                >
+                                    Add Item
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                 </AdminItemContainer>
 
-
-                <div className='flex flex-col gap-2'>
-                    <Label className='pl-3 font-bold'>Meta Title</Label>
-                    <Input type='text' placeholder='Meta Title' {...register("metaTitle")} />
+                <div className="flex flex-col gap-2">
+                    <Label className="pl-3 font-bold">Meta Title</Label>
+                    <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
                 </div>
-                <div className='flex flex-col gap-2'>
-                    <Label className='pl-3 font-bold'>Meta Description</Label>
-                    <Input type='text' placeholder='Meta Description' {...register("metaDescription")} />
+                <div className="flex flex-col gap-2">
+                    <Label className="pl-3 font-bold">Meta Description</Label>
+                    <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
                 </div>
-
-
-
             </div>
 
             {/*Arabic Version */}
-            <div className='flex flex-col gap-5'>
-
-
+            <div className="flex flex-col gap-5">
                 <AdminItemContainer>
-                    <Label className="" main>Banner</Label>
-                    <div className='p-5 rounded-md grid grid-cols-2 gap-5'>
+                    <Label className="" main>
+                        Banner
+                    </Label>
+                    <div className="p-5 rounded-md grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
                                 control={control}
                                 rules={{ required: "Banner is required" }}
-                                render={({ field }) => (
-                                    <ImageUploader
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                    />
-                                )}
+                                render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                             />
-                            {errors.banner && (
-                                <p className="text-red-500">{errors.banner.message}</p>
-                            )}
+                            {errors.banner && <p className="text-red-500">{errors.banner.message}</p>}
                         </div>
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Alt Tag</Label>
-                                <Input type='text' placeholder='Alt Tag' {...register("bannerAlt_ar")} />
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Alt Tag</Label>
+                                <Input type="text" placeholder="Alt Tag" {...register("bannerAlt_ar")} />
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Page Title</Label>
-                                <Input type='text' placeholder='Page Title' {...register("pageTitle_ar")} />
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Page Title</Label>
+                                <Input type="text" placeholder="Page Title" {...register("pageTitle_ar")} />
                             </div>
-                            <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Title (for home and project page selector)</Label>
-                        <Input type='text' placeholder='Title' {...register("title_ar")} />
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Description (for home)</Label>
-                        <Textarea {...register("description_ar")} />
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Home Image</Label>
-                                                    <Controller
-                                                        name={`homeImage`}
-                                                        control={control}
-                                                        rules={{ required: "Image is required" }}
-                                                        render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
-                                                        )}
-                                                    />
-                                                    {errors.homeImage && (
-                                                        <p className="text-red-500">{errors.homeImage.message}</p>
-                                                    )}
-                                                </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title (for home and project page selector)</Label>
+                                <Input type="text" placeholder="Title" {...register("title_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Description (for home)</Label>
+                                <Textarea {...register("description_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2">
+                                    <Label className="font-bold">Home Image</Label>
+                                    <Controller
+                                        name={`homeImage`}
+                                        control={control}
+                                        rules={{ required: "Image is required" }}
+                                        render={({ field }) => (
+                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                        )}
+                                    />
+                                    {errors.homeImage && <p className="text-red-500">{errors.homeImage.message}</p>}
+                                </div>
 
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Home Image Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`homeImageAlt_ar`)} />
-                                                    </div>
-                                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex flex-col gap-2">
+                                        <Label className="font-bold">Home Image Alt Tag</Label>
+                                        <Input type="text" placeholder="Alt Tag" {...register(`homeImageAlt_ar`)} />
+                                    </div>
+                                </div>
+                            </div>
 
-
-                                            </div>
-
-                                            <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Link (for home)</Label>
-                        <Input type='text' placeholder='Link' disabled />
-                    </div>
-
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Link (for home)</Label>
+                                <Input type="text" placeholder="Link" disabled />
+                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
 
                 <AdminItemContainer>
                     <Label main>First Section</Label>
-                    <div className='p-5 rounded-md flex flex-col gap-2'>
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title</Label>
-                                <Input type='text' placeholder='Title' {...register("firstSection.title_ar")} />
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="Title" {...register("firstSection.title_ar")} />
                             </div>
                             <div>
                                 <Label className="text-sm font-bold">Description</Label>
-                                <Controller name="firstSection.description_ar" control={control} render={({ field }) => {
-                                    return <Textarea value={field.value} onChange={field.onChange} />
-                                }} />
+                                <Controller
+                                    name="firstSection.description_ar"
+                                    control={control}
+                                    render={({ field }) => {
+                                        return <Textarea value={field.value} onChange={field.onChange} />;
+                                    }}
+                                />
                             </div>
                         </div>
 
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-2'>
-                                <Label className=''>Video</Label>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2">
+                                <Label className="">Video</Label>
                                 <Controller
                                     name="firstSection.video"
                                     control={control}
                                     rules={{ required: "Video is required" }}
-                                    render={({ field }) => (
-                                        <VideoUploader
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                        />
-                                    )}
+                                    render={({ field }) => <VideoUploader value={field.value} onChange={field.onChange} />}
                                 />
                                 {errors.firstSection?.video && (
                                     <p className="text-red-500">{errors.firstSection?.video?.message}</p>
                                 )}
                             </div>
-
                         </div>
 
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-2'>
-                                <Label className='text-[16px] font-light'>Poster</Label>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2">
+                                <Label className="text-[16px] font-light">Poster</Label>
                                 <Controller
                                     name="firstSection.poster"
                                     control={control}
                                     rules={{ required: "Poster is required" }}
-                                    render={({ field }) => (
-                                        <ImageUploader
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                        />
-                                    )}
+                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                                 />
                                 {errors.firstSection?.poster && (
                                     <p className="text-red-500">{errors.firstSection?.poster?.message}</p>
                                 )}
                             </div>
-                            <div>
-
+                                                        <div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label className="font-bold">Head Name</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Head Name"
+                                        {...register("firstSection.headName_ar")}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label className="font-bold">Head Designation</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Head Designation"
+                                        {...register("firstSection.headDesignation_ar")}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label className="font-bold">Head Profile Picture</Label>
+                                    <Controller
+                                        name="firstSection.headProfilePic"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                        )}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <Label className="font-bold">Head Profile Picture Alt</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Head Profile Picture Alt"
+                                        {...register("firstSection.headProfilePicAlt_ar")}
+                                    />
+                                </div>
                             </div>
-
                         </div>
-
-
                     </div>
                 </AdminItemContainer>
 
-
                 <AdminItemContainer>
                     <Label main>Second Section</Label>
-                    <div className='p-5 rounded-md flex flex-col gap-2'>
-                        <div className='flex flex-col gap-2'>
-
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title</Label>
-                                <Input type='text' placeholder='Title' {...register("secondSection.title_ar")} />
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="Title" {...register("secondSection.title_ar")} />
                             </div>
 
-
                             <div>
-                                <Label className='font-bold'>Items</Label>
-                                <div className='border p-2 rounded-md flex flex-col gap-5'>
-
-
+                                <Label className="font-bold">Items</Label>
+                                <div className="border p-2 rounded-md flex flex-col gap-5">
                                     {secondSectionItems.map((field, index) => (
-                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0'>
-                                            <div className='absolute top-2 right-2'>
-                                                <RiDeleteBinLine onClick={() => secondSectionRemove(index)} className='cursor-pointer text-red-600' />
+                                        <div
+                                            key={field.id}
+                                            className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        >
+                                            <div className="absolute top-2 right-2">
+                                                <RiDeleteBinLine
+                                                    onClick={() => secondSectionRemove(index)}
+                                                    className="cursor-pointer text-red-600"
+                                                />
                                             </div>
 
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Image</Label>
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Image</Label>
                                                     <Controller
                                                         name={`secondSection.items.${index}.image`}
                                                         control={control}
                                                         rules={{ required: "Image is required" }}
                                                         render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
+                                                            <ImageUploader value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
                                                     {errors.secondSection?.items?.[index]?.image && (
-                                                        <p className="text-red-500">{errors.secondSection?.items?.[index]?.image.message}</p>
+                                                        <p className="text-red-500">
+                                                            {errors.secondSection?.items?.[index]?.image.message}
+                                                        </p>
                                                     )}
                                                 </div>
 
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.imageAlt_ar`)} />
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Alt Tag</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Alt Tag"
+                                                            {...register(`secondSection.items.${index}.imageAlt_ar`)}
+                                                        />
                                                     </div>
                                                 </div>
-
-
                                             </div>
 
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Logo</Label>
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Logo</Label>
                                                     <Controller
                                                         name={`secondSection.items.${index}.logo`}
                                                         control={control}
                                                         rules={{ required: "Logo is required" }}
                                                         render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
+                                                            <ImageUploader value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
                                                     {errors.secondSection?.items?.[index]?.logo && (
-                                                        <p className="text-red-500">{errors.secondSection?.items?.[index]?.logo.message}</p>
+                                                        <p className="text-red-500">
+                                                            {errors.secondSection?.items?.[index]?.logo.message}
+                                                        </p>
                                                     )}
                                                 </div>
 
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.logoAlt_ar`)} />
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Alt Tag</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Alt Tag"
+                                                            {...register(`secondSection.items.${index}.logoAlt_ar`)}
+                                                        />
                                                     </div>
                                                 </div>
-
-
                                             </div>
 
-                                            <div className='col-span-2 gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Title</Label>
-                                                        <Input type='text' placeholder='Title' {...register(`secondSection.items.${index}.title_ar`)} />
+                                            <div className="col-span-2 gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Title"
+                                                            {...register(`secondSection.items.${index}.title_ar`)}
+                                                        />
                                                     </div>
 
                                                     <div>
                                                         <Label className="text-sm font-bold">Description</Label>
-                                                        <Controller name={`secondSection.items.${index}.description_ar`} control={control} render={({ field }) => {
-                                                            return <ReactQuill theme="snow" value={field.value} onChange={field.onChange} />
-                                                        }} />
+                                                        <Controller
+                                                            name={`secondSection.items.${index}.description_ar`}
+                                                            control={control}
+                                                            render={({ field }) => {
+                                                                return (
+                                                                    <ReactQuill
+                                                                        theme="snow"
+                                                                        value={field.value}
+                                                                        onChange={field.onChange}
+                                                                    />
+                                                                );
+                                                            }}
+                                                        />
                                                     </div>
-
                                                 </div>
                                             </div>
-
                                         </div>
                                     ))}
-
-
-
                                 </div>
-                                <div className='flex justify-end mt-2'>
-                                    <Button type='button' addItem onClick={() => secondSectionAppend({ title: "", image: "", imageAlt: "", logo: "", logoAlt: "", title_ar: "", imageAlt_ar: "", logoAlt_ar: "", description: "", description_ar: "" })}>Add Item</Button>
+                                <div className="flex justify-end mt-2">
+                                    <Button
+                                        type="button"
+                                        addItem
+                                        onClick={() =>
+                                            secondSectionAppend({
+                                                title: "",
+                                                image: "",
+                                                imageAlt: "",
+                                                logo: "",
+                                                logoAlt: "",
+                                                title_ar: "",
+                                                imageAlt_ar: "",
+                                                logoAlt_ar: "",
+                                                description: "",
+                                                description_ar: "",
+                                            })
+                                        }
+                                    >
+                                        Add Item
+                                    </Button>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </AdminItemContainer>
-
 
                 <AdminItemContainer>
                     <Label main>Third Section</Label>
 
-                    <div className='p-5 rounded-md flex flex-col gap-5'>
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-2'>
-                                <Label className='font-bold'>Title</Label>
-                                <Input type='text' placeholder='Title' {...register(`thirdSection.title_ar`)} />
+                    <div className="p-5 rounded-md flex flex-col gap-5">
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="Title" {...register(`thirdSection.title_ar`)} />
                             </div>
                         </div>
 
-
                         <div>
-                                <Label className='font-bold'>Items</Label>
-                                <div className='border p-2 rounded-md flex flex-col gap-5'>
-
-
-                                    {thirdSectionItems.map((field, index) => (
-                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0'>
-                                            <div className='absolute top-2 right-2'>
-                                                <RiDeleteBinLine onClick={() => thirdSectionRemove(index)} className='cursor-pointer text-red-600' />
-                                            </div>
-
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Image</Label>
-                                                    <Controller
-                                                        name={`thirdSection.items.${index}.image`}
-                                                        control={control}
-                                                        rules={{ required: "Image is required" }}
-                                                        render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
-                                                        )}
-                                                    />
-                                                    {errors.thirdSection?.items?.[index]?.image && (
-                                                        <p className="text-red-500">{errors.thirdSection?.items?.[index]?.image.message}</p>
-                                                    )}
-                                                </div>
-
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`thirdSection.items.${index}.imageAlt_ar`)} />
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Title</Label>
-                                                        <Input type='text' placeholder='Title' {...register(`thirdSection.items.${index}.title_ar`)} />
-                                                    </div>
-
-                                                    <div>
-                                                        <Label className="text-sm font-bold">Description</Label>
-                                                        <Controller name={`thirdSection.items.${index}.description_ar`} control={control} render={({ field }) => {
-                                                            return <Textarea value={field.value} onChange={field.onChange} />
-                                                        }} />
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
+                            <Label className="font-bold">Items</Label>
+                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                                {thirdSectionItems.map((field, index) => (
+                                    <div
+                                        key={field.id}
+                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                    >
+                                        <div className="absolute top-2 right-2">
+                                            <RiDeleteBinLine
+                                                onClick={() => thirdSectionRemove(index)}
+                                                className="cursor-pointer text-red-600"
+                                            />
                                         </div>
-                                    ))}
 
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Image</Label>
+                                                <Controller
+                                                    name={`thirdSection.items.${index}.image`}
+                                                    control={control}
+                                                    rules={{ required: "Image is required" }}
+                                                    render={({ field }) => (
+                                                        <ImageUploader value={field.value} onChange={field.onChange} />
+                                                    )}
+                                                />
+                                                {errors.thirdSection?.items?.[index]?.image && (
+                                                    <p className="text-red-500">
+                                                        {errors.thirdSection?.items?.[index]?.image.message}
+                                                    </p>
+                                                )}
+                                            </div>
 
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Alt Tag</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Alt Tag"
+                                                        {...register(`thirdSection.items.${index}.imageAlt_ar`)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                </div>
-                                <div className='flex justify-end mt-2'>
-                                    <Button type='button' addItem onClick={() => thirdSectionAppend({ title: "", image: "", imageAlt: "", title_ar: "", imageAlt_ar: "", description: "", description_ar: "" })}>Add Item</Button>
-                                </div>
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Title</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Title"
+                                                        {...register(`thirdSection.items.${index}.title_ar`)}
+                                                    />
+                                                </div>
+
+                                                <div>
+                                                    <Label className="text-sm font-bold">Description</Label>
+                                                    <Controller
+                                                        name={`thirdSection.items.${index}.description_ar`}
+                                                        control={control}
+                                                        render={({ field }) => {
+                                                            return (
+                                                                <Textarea value={field.value} onChange={field.onChange} />
+                                                            );
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-
+                            <div className="flex justify-end mt-2">
+                                <Button
+                                    type="button"
+                                    addItem
+                                    onClick={() =>
+                                        thirdSectionAppend({
+                                            title: "",
+                                            image: "",
+                                            imageAlt: "",
+                                            title_ar: "",
+                                            imageAlt_ar: "",
+                                            description: "",
+                                            description_ar: "",
+                                        })
+                                    }
+                                >
+                                    Add Item
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                 </AdminItemContainer>
 
-                <div className='flex flex-col gap-2'>
-                    <Label className='pl-3 font-bold'>Meta Title</Label>
-                    <Input type='text' placeholder='Meta Title' {...register("metaTitle_ar")} />
+                <div className="flex flex-col gap-2">
+                    <Label className="pl-3 font-bold">Meta Title</Label>
+                    <Input type="text" placeholder="Meta Title" {...register("metaTitle_ar")} />
                 </div>
-                <div className='flex flex-col gap-2'>
-                    <Label className='pl-3 font-bold'>Meta Description</Label>
-                    <Input type='text' placeholder='Meta Description' {...register("metaDescription_ar")} />
+                <div className="flex flex-col gap-2">
+                    <Label className="pl-3 font-bold">Meta Description</Label>
+                    <Input type="text" placeholder="Meta Description" {...register("metaDescription_ar")} />
                 </div>
-
-
-
             </div>
 
-            <div className='col-span-2'>
-                <Button type='submit' className="cursor-pointer text-white text-[16px] w-full">Submit</Button>
+            <div className="col-span-2">
+                <Button type="submit" className="cursor-pointer text-white text-[16px] w-full">
+                    Submit
+                </Button>
             </div>
-
         </form>
-    )
-}
+    );
+};
 
-export default WaterPage
+export default WaterPage;
