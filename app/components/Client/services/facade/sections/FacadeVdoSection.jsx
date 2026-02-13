@@ -77,9 +77,9 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
       <div className="absolute inset-0 z-10 hidden lg:block">
         <div className="container">
           <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="flex flex-col 3xl:ml-[8%] 3xl:-mt-6">
-            <Image src={"/assets/images/leadership/core-team/svp-mep.png"} alt="" width={300} height={350} className="object-cover w-[200px] h-[220px] xl:w-[200px] xl:h-[210px] 2xl:w-[250px] 2xl:h-[250px] 3xl:w-[300px] 3xl:h-[340px]" />
-            <motion.p variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-20 font-medium mt-1">Mr. Joseph E J</motion.p>
-            <motion.p variants={moveUp(0.42)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-16 font-light leading-[1.2]">SVP -MEP Division</motion.p>
+            <Image src={"/assets/images/leadership/core-team/t1.png"} alt="" width={300} height={350} className="object-cover w-[200px] h-[220px] xl:w-[200px] xl:h-[210px] 2xl:w-[250px] 2xl:h-[250px] 3xl:w-[300px] 3xl:h-[340px]" />
+            <motion.p variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-20 font-medium mt-1">John Doe</motion.p>
+            <motion.p variants={moveUp(0.42)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-16 font-light leading-[1.2]">Head – Facade Division</motion.p>
           </motion.div>
         </div>
       </div>
