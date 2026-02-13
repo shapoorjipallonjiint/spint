@@ -1,7 +1,7 @@
 // import MainNavbar from "../../MainLayout/MainNavbar";
 // import Footer from "../../MainLayout/Footer";
 import { facadeData } from "./data";
-import VdoSection from "@/app/components/common/VdoSection";
+import FacadeVdoSection from "./sections/FacadeVdoSection";
 import Banner from "@/app/components/common/Banner";
 import ExpertiseSec from "./sections/ExpertiseSec";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
@@ -21,7 +21,7 @@ const Facade = ({ data, projectData }) => {
     </header> */}
             <main>
                 <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
-                <VdoSection data={data.firstSection} />
+                <FacadeVdoSection data={data.firstSection} />
                 <ExpertiseSec data={data.secondSection} />
                 <ImgPointsComponent data={data.thirdSection} bgColor="white" sectionSpacing="pt-text30 pb30" />
                 {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
