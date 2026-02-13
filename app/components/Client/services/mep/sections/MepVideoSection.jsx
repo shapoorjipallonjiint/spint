@@ -76,11 +76,11 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
     <section className="relative sectm-100 pb30" ref={sectionRef}>
       <div className="absolute inset-0 z-10 hidden lg:block">
         <div className="container">
-          <div className="flex flex-col">
+          <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="flex flex-col">
             <Image src={"/assets/images/leadership/core-team/svp-mep.png"} alt="" width={250} height={350} className="object-cover w-[200px] h-[220px] xl:w-[250px] xl:h-[270px]" />
-            <p className="text-20 font-medium mt-1">Mr. Joseph E J</p>
-            <p className="text-16 font-light leading-[1.2]">SVP -MEP Division</p>
-          </div>
+            <motion.p variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-20 font-medium mt-1">Mr. Joseph E J</motion.p>
+            <motion.p variants={moveUp(0.42)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-16 font-light leading-[1.2]">SVP -MEP Division</motion.p>
+          </motion.div>
         </div>
       </div>
       <div className={`absolute top-custom-100 h-fit w-fit z-0 ${isArabic ? "left-0 lg:right-[-4%] xl:right-0 2xl:right-[-6%] 3xl:right-0" : "right-0 lg:left-[-4%] xl:left-0 2xl:left-[-6%] 3xl:left-0"}`}>
