@@ -3,7 +3,7 @@
 import { assets } from "../../../../assets/index"
 import SplitTextAnimation from "../../../common/SplitTextAnimation"
 import { motion } from "framer-motion"
-import { moveUp } from "../../../motionVarients"
+import { moveUp,moveLeft } from "../../../motionVarients"
 import Image from 'next/image'
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
@@ -15,7 +15,7 @@ const Banner = ({data}) => {
 
   return ( 
     <section className="py-11 xl:py-15 2xl:py-22 3xl:pt-[171px] 3xl:pb-[76px] mb-12 xl:mb-10 3xl:mb-18 bg-f5f5 relative overflow-hidden">
-      <MotionImage width={1920} height={800} src={assets.mainShape2} alt="" className={`absolute -bottom-15 md:bottom-7 ${isArabic ? "-left-2 -scale-x-100" : "-right-2"}   w-[150px] md:w-[327px] lg:w-[327px] 3xl:w-[487px] h-fit`} />
+      <MotionImage variants={moveLeft(0.4)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} width={1920} height={800} src={assets.mainShape2} alt="" className={`absolute -bottom-15 md:bottom-7 ${isArabic ? "-left-2 -scale-x-100" : "-right-2"}   w-[150px] md:w-[327px] lg:w-[327px] 3xl:w-[487px] h-fit`} />
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[830px_auto] gap-5 lg:gap-0">
           <div >

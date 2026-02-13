@@ -19,47 +19,47 @@ const Certifications = ({ data }) => {
   const MotionImage = motion.create(Image);
   const [activeImage, setActiveImage] = useState(null);
 
-  const items = [
-    {
-      fileName: "ISO 19650-2  2018",
-      imageAlt: "Building Information Modeling Management System",
-      description: "Building Information Modeling Management System ",
+  // const items = [
+  //   {
+  //     fileName: "ISO 19650-2  2018",
+  //     imageAlt: "Building Information Modeling Management System",
+  //     description: "Building Information Modeling Management System ",
 
-      // The main thumbnail/file image used in the grid/mobile view
-      fileImage: "/assets/pdf/bim/bim.jpg",
-      fileImageAlt: "Building Information Modeling Management System",
-      // The actual PDF path for the popup iframe
-      pdfUrl: [
-        {
-          name: "dubai",
-          url: "/assets/pdf/bim/bim.pdf",
-        },
-      ]
+  //     // The main thumbnail/file image used in the grid/mobile view
+  //     fileImage: "/assets/pdf/bim/bim.jpg",
+  //     fileImageAlt: "Building Information Modeling Management System",
+  //     // The actual PDF path for the popup iframe
+  //     pdfUrl: [
+  //       {
+  //         name: "dubai",
+  //         url: "/assets/pdf/bim/bim.pdf",
+  //       },
+  //     ]
 
-    },
-    {
-      fileName: "ISO 41001-2018",
-      imageAlt: "Facility Management System",
-      description: "Facility Management System",
+  //   },
+  //   {
+  //     fileName: "ISO 41001-2018",
+  //     imageAlt: "Facility Management System",
+  //     description: "Facility Management System",
 
-      fileImage: "/assets/pdf/fms/fms.jpg",
-      fileImageAlt: "Facility Management System",
-      pdfUrl: [
-        {
-          name: "Dubai",
-          url: "/assets/pdf/fms/41001-2018-fms-dubai.pdf",
-        },
-        {
-          name: "KSA",
-          url: "/assets/pdf/fms/41001-2018-fms-ksa.pdf",
-        },
-        {
-          name: "Oman",
-          url: "/assets/pdf/fms/41001-2018-fms-oman.pdf",
-        }
-      ]
-    }
-  ];
+  //     fileImage: "/assets/pdf/fms/fms.jpg",
+  //     fileImageAlt: "Facility Management System",
+  //     pdfUrl: [
+  //       {
+  //         name: "Dubai",
+  //         url: "/assets/pdf/fms/41001-2018-fms-dubai.pdf",
+  //       },
+  //       {
+  //         name: "KSA",
+  //         url: "/assets/pdf/fms/41001-2018-fms-ksa.pdf",
+  //       },
+  //       {
+  //         name: "Oman",
+  //         url: "/assets/pdf/fms/41001-2018-fms-oman.pdf",
+  //       }
+  //     ]
+  //   }
+  // ];
   const [imageSwiper, setImageSwiper] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -76,12 +76,12 @@ const Certifications = ({ data }) => {
 
   // PDF Navigation Logic
   const nextPdf = () => {
-    const pdfArray = items[itemIndex].pdfUrl;
+    const pdfArray = t.items[itemIndex].files;
     setPdfIndex((prev) => (prev + 1) % pdfArray.length);
   };
 
   const prevPdf = () => {
-    const pdfArray = items[itemIndex].pdfUrl;
+    const pdfArray = t.items[itemIndex].files;
     setPdfIndex((prev) => (prev - 1 + pdfArray.length) % pdfArray.length);
   };
 
@@ -137,8 +137,8 @@ const Certifications = ({ data }) => {
                     {/* Image */}
                     <div className="relative overflow-hidden">
                       <img
-                        src={item.fileImage}
-                        alt={item.fileImageAlt}
+                        src={item.thumbnail}
+                        alt={item.thumbnailAlt}
                         className="w-full h-full object-cover cursor-pointer"
                         onClick={() => {
                           setItemIndex(i);
@@ -152,7 +152,7 @@ const Certifications = ({ data }) => {
                         // viewport={{ amount: 0.2, once: true }}
                         className="text-19 lg:text-29 mt-7 text-white font-light leading-[1.312]  max-w-[15ch]"
                       >
-                        {item.fileName}
+                        {item.title}
                       </motion.h3>
 
                     </div>

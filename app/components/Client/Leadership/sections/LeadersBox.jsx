@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import { assets } from "../../../../assets/index";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { moveUp, fadeIn } from "../../../motionVarients";
+import { moveUp, fadeIn,moveLeft } from "../../../motionVarients";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
@@ -114,31 +114,31 @@ const LeaderBox = ({ data }) => {
                                         width={1000}
                                         height={1920}
                                         // style={{ y: imageY }}
-                                        // variants={fadeIn(0.6)}
-                                        // initial="hidden"
-                                        // whileInView="show"
-                                        // viewport={{ amount: 0.1, once: true }}
+                                        variants={moveLeft(0.3)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.1, once: true }}
                                         src={item.image}
                                         alt={item.imageAlt}
-                                        className={`relative w-fit object-contain z-20 ms-auto   lg:me-auto   3xl:me-auto  px-2 pb-4
+                                        className={`relative w-fit object-contain z-20 ms-auto    lg:me-auto   3xl:me-auto  px-2 pb-4
           `}
                                     />
 
                                     <motion.div
                                         // style={{ y: imageY }}
-                                        // variants={fadeIn(0.2)}
-                                        // initial="hidden"
-                                        // whileInView="show"
-                                        // viewport={{ amount: 0.1, once: true }}
+                                        variants={fadeIn(0.2)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.1, once: true }}
                                         className="absolute bottom-0 left-0 h-[80%] lg:h-[70%] xl:h-[75%] 3xl:h-[570px] w-full bg-primary z-10"
                                     />
 
                                     <motion.div
                                         // style={{ y: imageY }}
-                                        // variants={fadeIn(0.4)}
-                                        // initial="hidden"
-                                        // whileInView="show"
-                                        // viewport={{ amount: 0.1, once: true }}
+                                        variants={fadeIn(0.2)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.1, once: true }}
                                         className="absolute bottom-0 left-0 h-[60%] lg:h-[60%] xl:h-[60%] 3xl:h-[66%] w-full   z-30" style={{
                                             background:
                                                 "linear-gradient(360deg, rgba(30, 69, 162, 1) 0%, rgba(30, 69, 162, 1) 5%, rgba(30, 69, 162, 0.88) 20%, rgba(30, 69, 162, 0) 100%)",
@@ -163,7 +163,11 @@ const LeaderBox = ({ data }) => {
                                         {item.designation}
                                     </motion.h3>
 
-                                    <div
+                                    <motion.div
+                                     variants={moveUp(0.4)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.2, once: true }}
                                         className={` lg:max-h-[350px] xl:max-h-[450px] lg:overflow-y-auto scrollbar-thin scrollbar-pointer ${isArabic ? "pl-2" : "pr-2"}`}
                                         style={{ overscrollBehavior: "contain" }}
                                         onWheel={(e) => {
@@ -193,7 +197,7 @@ const LeaderBox = ({ data }) => {
                                                 {text}
                                             </p>
                                         ))}
-                                    </div>
+                                    </motion.div>
                                 </div>
                             </div>
                         );

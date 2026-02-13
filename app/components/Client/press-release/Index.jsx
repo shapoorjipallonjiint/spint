@@ -4,7 +4,7 @@ import { Listbox } from "@headlessui/react";
 import { pressReleases } from "./data";
 import { useState, useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { moveUp } from "../../motionVarients";
+import { moveLeft, moveRight, moveUp } from "../../motionVarients";
 import SplitTextAnimation from "../../../components/common/SplitTextAnimation";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
@@ -145,6 +145,10 @@ const Index = ({ newsData, topicData }) => {
               width={1500}
               height={1000}
               style={{ y: shapeY }}
+                  variants={moveLeft(0.4)}
+                                              initial="hidden"
+                                              whileInView="show"
+                                              viewport={{ amount: 0.2, once: true }}
               src="/assets/images/project-details/bannerbg.svg"
               alt=""
               className="w-[150px] h-[376px] md:w-[377px] md:h-[476px] lg:w-[577px] lg:h-[576px] object-fit"
@@ -167,7 +171,7 @@ const Index = ({ newsData, topicData }) => {
             </div>
 
             <motion.div variants={moveUp(0.8)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}
-              className="flex flex-col md:flex-row gap-x-6 md:gap-0 justify-between border-y border-cmnbdr py-35px mb-10 lg:mb-12  3xl:mb-20" >
+              className="flex flex-row gap-x-6 md:gap-0 justify-between border-y border-cmnbdr py-35px mb-10 lg:mb-12  3xl:mb-20" >
               <div className="flex flex-row gap-5 md:gap-15 xl:gap-[90px]">
                 {/* Topic filter */}
                 <div className="   md:min-w-[77px] relative">
@@ -388,6 +392,10 @@ const Index = ({ newsData, topicData }) => {
               width={1500}
               height={1000}
               style={{ y: shapeY }}
+              variants={moveRight(0.4)}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ amount: 0.2, once: true }}
               src="/assets/images/press-releases/listbody.svg"
               alt=""
               className="object-fit w-md200 lg:w-[350px] 2xl:w-[754px] 2xl:h-[1056px] relative 2xl:top-[14px]"

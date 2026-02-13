@@ -2,7 +2,7 @@
 import { useMediaQuery } from "react-responsive";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { moveUp } from "../../../motionVarients";
+import { moveUp,moveLeft } from "../../../motionVarients";
 import SplitTextAnimation from "../../../../components/common/SplitTextAnimation";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
@@ -78,6 +78,10 @@ const Banner = ({newsData}) => {
     width={1500}
     height={1000}
     style={{ y: shapeY }}
+    variants={moveLeft(0.4)}
+    initial="hidden"
+    whileInView="show"
+    viewport={{ amount: 0.2, once: true }}
     src="/assets/images/project-details/bannerbg.svg"
     alt=""
     className="w-md200 h-[450px] md:h-[476px] lg:w-[577px] lg:h-[576px] object-fit"

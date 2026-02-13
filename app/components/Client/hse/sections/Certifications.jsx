@@ -16,125 +16,125 @@ const Certifications = ({ data }) => {
   const MotionImage = motion.create(Image);
   const [activeImage, setActiveImage] = useState(null);
   const t = useApplyLang(data);
-  const items = [
-    {
-      fileName: "ISO 45001:2018",
-      imageAlt: "Occupational Health and Safety Management Systems",
-      description: "Occupational Health and Safety Management Systems ",
+  // const items = [
+  //   {
+  //     fileName: "ISO 45001:2018",
+  //     imageAlt: "Occupational Health and Safety Management Systems",
+  //     description: "Occupational Health and Safety Management Systems ",
 
-      // The main thumbnail/file image used in the grid/mobile view
-      fileImage: "/assets/pdf/ohsm/ohsmbanner.jpg",
-      fileImageAlt: "Occupational Health and Safety Management Systems",
-      // The actual PDF path for the popup iframe
-      pdfUrl: [
-        {
-          name: "Abu Dhabi",
-          url: "/assets/pdf/ohsm/45001-2018-occupational-abudhabi.pdf",
-        },
-        {
-          name: "Dubai",
-          url: "/assets/pdf/ohsm/45001-2018-occupational-dubai.pdf",
-        },
-        {
-          name: "Oman",
-          url: "/assets/pdf/ohsm/45001-2018-occupational-oman.pdf",
-        },
-        {
-          name: "Gambia",
-          url: "/assets/pdf/ohsm/45001-2018-occupational-gambia.pdf",
-        },
-        {
-          name: "Ghana",
-          url: "/assets/pdf/ohsm/45001-2018-occupational-ghana.pdf",
-        },
-        {
-          name: "Nigeria",
-          url: "/assets/pdf/ohsm/45001-2018-occupational-nigeria.pdf",
-        },
-        {
-          name: "KSA",
-          url: "/assets/pdf/ohsm/45001-2018-occupational-ksa.pdf",
-        },
-      ]
+  //     // The main thumbnail/file image used in the grid/mobile view
+  //     fileImage: "/assets/pdf/ohsm/ohsmbanner.jpg",
+  //     fileImageAlt: "Occupational Health and Safety Management Systems",
+  //     // The actual PDF path for the popup iframe
+  //     pdfUrl: [
+  //       {
+  //         name: "Abu Dhabi",
+  //         url: "/assets/pdf/ohsm/45001-2018-occupational-abudhabi.pdf",
+  //       },
+  //       {
+  //         name: "Dubai",
+  //         url: "/assets/pdf/ohsm/45001-2018-occupational-dubai.pdf",
+  //       },
+  //       {
+  //         name: "Oman",
+  //         url: "/assets/pdf/ohsm/45001-2018-occupational-oman.pdf",
+  //       },
+  //       {
+  //         name: "Gambia",
+  //         url: "/assets/pdf/ohsm/45001-2018-occupational-gambia.pdf",
+  //       },
+  //       {
+  //         name: "Ghana",
+  //         url: "/assets/pdf/ohsm/45001-2018-occupational-ghana.pdf",
+  //       },
+  //       {
+  //         name: "Nigeria",
+  //         url: "/assets/pdf/ohsm/45001-2018-occupational-nigeria.pdf",
+  //       },
+  //       {
+  //         name: "KSA",
+  //         url: "/assets/pdf/ohsm/45001-2018-occupational-ksa.pdf",
+  //       },
+  //     ]
 
-    },
-    {
-      fileName: "ISO 14001:2015",
-      imageAlt: "Environmental Management System",
-      description: "Environmental Management System",
+  //   },
+  //   {
+  //     fileName: "ISO 14001:2015",
+  //     imageAlt: "Environmental Management System",
+  //     description: "Environmental Management System",
 
-      fileImage: "/assets/pdf/ems/ems.jpg",
-      fileImageAlt: "Environmental Management System",
-      pdfUrl: [
-        {
-          name: "Abu Dhabi",
-          url: "/assets/pdf/ems/14001-2015-ems-abudhabi.pdf",
-        },
-        {
-          name: "Dubai",
-          url: "/assets/pdf/ems/14001-2015-ems-dubai.pdf",
-        },
-        {
-          name: "Gambia",
-          url: "/assets/pdf/ems/14001-2015-ems-gambia.pdf",
-        },
-        {
-          name: "Ghana",
-          url: "/assets/pdf/ems/14001-2015-ems-ghana.pdf",
-        },
-        {
-          name: "KSA",
-          url: "/assets/pdf/ems/14001-2015-ems-ksa.pdf",
-        },
-        {
-          name: "Nigeria",
-          url: "/assets/pdf/ems/14001-2015-ems-nigeria.pdf",
-        },
-        {
-          name: "Oman",
-          url: "/assets/pdf/ems/14001-2015-ems-oman.pdf",
-        },
-      ]
-    },
-    {
-      fileName: "ISO 9001 2015",
-      imageAlt: "Quality Management System",
-      description: "Quality Management System",
+  //     fileImage: "/assets/pdf/ems/ems.jpg",
+  //     fileImageAlt: "Environmental Management System",
+  //     pdfUrl: [
+  //       {
+  //         name: "Abu Dhabi",
+  //         url: "/assets/pdf/ems/14001-2015-ems-abudhabi.pdf",
+  //       },
+  //       {
+  //         name: "Dubai",
+  //         url: "/assets/pdf/ems/14001-2015-ems-dubai.pdf",
+  //       },
+  //       {
+  //         name: "Gambia",
+  //         url: "/assets/pdf/ems/14001-2015-ems-gambia.pdf",
+  //       },
+  //       {
+  //         name: "Ghana",
+  //         url: "/assets/pdf/ems/14001-2015-ems-ghana.pdf",
+  //       },
+  //       {
+  //         name: "KSA",
+  //         url: "/assets/pdf/ems/14001-2015-ems-ksa.pdf",
+  //       },
+  //       {
+  //         name: "Nigeria",
+  //         url: "/assets/pdf/ems/14001-2015-ems-nigeria.pdf",
+  //       },
+  //       {
+  //         name: "Oman",
+  //         url: "/assets/pdf/ems/14001-2015-ems-oman.pdf",
+  //       },
+  //     ]
+  //   },
+  //   {
+  //     fileName: "ISO 9001 2015",
+  //     imageAlt: "Quality Management System",
+  //     description: "Quality Management System",
 
-      fileImage: "/assets/pdf/qms/qms.jpg",
-      fileImageAlt: "Quality Management System",
-      pdfUrl: [
-        {
-          name: "Abu Dhabi",
-          url: "/assets/pdf/qms/9001-2015-qms-abudhabi.pdf",
-        },
-        {
-          name: "Dubai",
-          url: "/assets/pdf/qms/9001-2015-qms-dubai.pdf",
-        },
-        {
-          name: "Ghana",
-          url: "/assets/pdf/qms/9001-2015-qms-ghana.pdf",
-        },
-        {
-          name: "Gambia",
-          url: "/assets/pdf/qms/9001-2015-qms-gmbia.pdf",
-        },
-        {
-          name: "KSA",
-          url: "/assets/pdf/qms/9001-2015-qms-ksa.pdf",
-        },
-        {
-          name: "Nigeria",
-          url: "/assets/pdf/qms/9001-2015-qms-nigeria.pdf",
-        },
-        {
-          name: "Oman",
-          url: "/assets/pdf/qms/9001-2015-qms-oman.pdf",
-        },
-      ]
-    }
-  ];
+  //     fileImage: "/assets/pdf/qms/qms.jpg",
+  //     fileImageAlt: "Quality Management System",
+  //     pdfUrl: [
+  //       {
+  //         name: "Abu Dhabi",
+  //         url: "/assets/pdf/qms/9001-2015-qms-abudhabi.pdf",
+  //       },
+  //       {
+  //         name: "Dubai",
+  //         url: "/assets/pdf/qms/9001-2015-qms-dubai.pdf",
+  //       },
+  //       {
+  //         name: "Ghana",
+  //         url: "/assets/pdf/qms/9001-2015-qms-ghana.pdf",
+  //       },
+  //       {
+  //         name: "Gambia",
+  //         url: "/assets/pdf/qms/9001-2015-qms-gmbia.pdf",
+  //       },
+  //       {
+  //         name: "KSA",
+  //         url: "/assets/pdf/qms/9001-2015-qms-ksa.pdf",
+  //       },
+  //       {
+  //         name: "Nigeria",
+  //         url: "/assets/pdf/qms/9001-2015-qms-nigeria.pdf",
+  //       },
+  //       {
+  //         name: "Oman",
+  //         url: "/assets/pdf/qms/9001-2015-qms-oman.pdf",
+  //       },
+  //     ]
+  //   }
+  // ];
   const [imageSwiper, setImageSwiper] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPdfLoading, setIsPdfLoading] = useState(true);
@@ -151,13 +151,13 @@ const Certifications = ({ data }) => {
   };
 
   // PDF Navigation Logic
-  const nextPdf = () => {
-    const pdfArray = items[itemIndex].pdfUrl;
+   const nextPdf = () => {
+    const pdfArray = t.items[itemIndex].files;
     setPdfIndex((prev) => (prev + 1) % pdfArray.length);
   };
 
   const prevPdf = () => {
-    const pdfArray = items[itemIndex].pdfUrl;
+    const pdfArray = t.items[itemIndex].files;
     setPdfIndex((prev) => (prev - 1 + pdfArray.length) % pdfArray.length);
   };
 
@@ -206,15 +206,15 @@ const Certifications = ({ data }) => {
               onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
               className="legacy-main-swiper"
             >
-              {items.map((item, i) => (
+              {t.items.map((item, i) => (
                 <SwiperSlide key={i}>
                   <div className="grid grid-cols-1 gap-7 items-center pt-6 pb-4 border-b border-white/20">
 
                     {/* Image */}
                     <div className="relative overflow-hidden">
                       <img
-                        src={item.fileImage}
-                        alt={item.fileImageAlt}
+                        src={item.thumbnail}
+                        alt={item.thumbnailAlt}
                         className="w-full h-full object-cover cursor-pointer"
                         onClick={() => {
                           setItemIndex(i);
@@ -228,7 +228,7 @@ const Certifications = ({ data }) => {
                         // viewport={{ amount: 0.2, once: true }}
                         className="text-19 lg:text-29 mt-7 text-white font-light leading-[1.312]  max-w-[15ch]"
                       >
-                        {item.fileName}
+                        {item.title}
                       </motion.h3>
 
                     </div>
@@ -324,7 +324,7 @@ const Certifications = ({ data }) => {
 
 
                   {/* Internal PDF Nav Arrows */}
-                  {items[itemIndex].pdfUrl.length > 1 && (
+                  {t.items[itemIndex].files.length > 1 && (
                     <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
                       <button onClick={prevPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>←</button>
                       <button onClick={nextPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>→</button>

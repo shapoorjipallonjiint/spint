@@ -10,8 +10,9 @@ const Certifications = ({ data }) => {
   const t = useApplyLang(data);
   return (
     <section className="pt-text25  ">
-      <div className="container">
-        <H2Title titleText={t.title} marginClass="mb-5 lg:mb-10 2xl:mb-15" />
+      <div className="container ">
+       <div className="border-b border-cmnbdr pb25">
+         <H2Title titleText={t.title} marginClass="mb-5 lg:mb-10 2xl:mb-15" />
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-10">
           {
             t.itemsOne.map((item, index) => (
@@ -26,6 +27,7 @@ const Certifications = ({ data }) => {
             ))
           }
         </div>
+       </div>
       </div>
     </section>
   );

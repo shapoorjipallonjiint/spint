@@ -108,13 +108,13 @@ const Banner = ({ title, image, imageAlt, data }) => {
                     { x: "0%" },
                     {
                         x: isArabic ? "-100%" : "100%",
-                        duration: 1.6,
+                        duration: 0.8,
                         ease: "power4.inOut",
                     },
                 )
 
                 // Step 2: subtle image zoom-out
-                .fromTo(imgRef.current, { scale: 1.15 }, { scale: 1, duration: 1.6, ease: "power3.out" }, "-=1.2")
+                .fromTo(imgRef.current, { scale: 1.15 }, { scale: 1, duration: 1.9, ease: "power3.out" }, "-=1.2")
                 // Step 3: text fade-in after reveal
                 .fromTo(
                     titleRef.current,

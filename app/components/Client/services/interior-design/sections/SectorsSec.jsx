@@ -14,6 +14,7 @@ const SectorsSec = ({ data }) => {
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
 
+    const MotionImage = motion.create(Image);
     const containerRef = useRef(null);
     const dynamicRef = useRef(null);
 
@@ -83,13 +84,17 @@ const SectorsSec = ({ data }) => {
                                     }`}
                                 >
                                     <motion.div
-                                        variants={moveUp(0.2 * index)}
+                                        variants={moveUp(0.4)}
                                         initial="hidden"
                                         animate="show"
                                         viewport={{ amount: 0.6, once: true }}
                                         className="w-15 h-15 xl:w-20 xl:h-20 bg-secondary rounded-full flex items-center justify-center mb-5"
                                     >
-                                        <Image
+                                        <MotionImage
+                                             variants={moveUp(0.2 * index)}
+                                        initial="hidden"
+                                        animate="show"
+                                        viewport={{ amount: 0.6, once: true }}
                                             width={20}
                                             height={20}
                                             src={item.image}
@@ -98,10 +103,10 @@ const SectorsSec = ({ data }) => {
                                         />
                                     </motion.div>
                                     <div className="">
-                                        <h3 className="text-32 leading-[1.3125] font-light mb-2 xl:mb-3">{item.title}</h3>
-                                        <p className="text-19 leading-[1.526315789473684] font-light text-paragraph">
+                                        <motion.h3 variants={moveUp(0.4 * index)} initial="hidden" animate="show" viewport={{ amount: 0.6, once: true }} className="text-32 leading-[1.3125] font-light mb-2 xl:mb-3">{item.title}</motion.h3>
+                                        <motion.p variants={moveUp(0.4 * index)} initial="hidden" animate="show" viewport={{ amount: 0.6, once: true }} className="text-19 leading-[1.526315789473684] font-light text-paragraph">
                                             {item.description}
-                                        </p>
+                                        </motion.p>
                                     </div>
                                 </div>
                             </SwiperSlide>
