@@ -3326,7 +3326,7 @@ useEffect(() => {
                                         >
                                             <LangLink href="/careers">
                                                 <div className="flex items-center gap-[6px]">
-                                                    <p className="text-white text-16 font-light uppercase">Careers</p>
+                                                    <p className="text-white text-16 font-light uppercase">People & Careers</p>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="27"
@@ -3471,7 +3471,7 @@ transition-all duration-300 cursor-pointer ${
                             >
                                 <LangLink href="/careers">
                                     <div className="flex items-center gap-[6px]">
-                                        <p className="text-white text-16 font-light uppercase">Careers</p>
+                                        <p className="text-white text-16 font-light uppercase">People & Careers</p>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="27"
