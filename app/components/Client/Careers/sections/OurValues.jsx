@@ -97,15 +97,16 @@ const ValuesSection = ({ data }) => {
               {title}
             </motion.h2> */}
                         <H2Title titleText={title} marginClass={"mb-[24px] md:mb-[30px] max-w-[10ch]"} />
-                        <motion.p
-                            variants={moveUp(0.2)}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ amount: 0.2, once: true }}
-                            className="text-19 font-light text-white leading-[1.473684210526316] max-w-[43ch]"
-                        >
-                            {description}
-                        </motion.p>
+<motion.p
+  variants={moveUp(0.2)}
+  initial="hidden"
+  whileInView="show"
+  viewport={{ amount: 0.2, once: true }}
+  className="text-19 font-light text-white leading-[1.473684210526316] max-w-[43ch] [&_p]:mb-3 [&_p:last-child]:mb-0"
+  dangerouslySetInnerHTML={{ __html: description }}
+/>
+
+
                     </div>
                 </div>
 
