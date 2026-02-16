@@ -319,6 +319,7 @@ body::-webkit-scrollbar {
 .st11 {
   stroke: #264a9b;
 }
+
 .st12 {
   stroke: #264a9b;
 }
@@ -761,7 +762,7 @@ body::-webkit-scrollbar {
     padding-left: 0 !important;
   }
 
-    .no-pr0:nth-child(3n+1) {
+  .no-pr0:nth-child(3n+1) {
     padding-right: 0 !important;
   }
 
@@ -791,6 +792,7 @@ body::-webkit-scrollbar {
 
 
 @media (min-width: 1280px) {
+
   [dir="rtl"] .bdrrst:nth-child(3n),
   [dir="rtl"] .bdrrst:nth-child(7n) {
     @apply border-l border-r;
@@ -798,6 +800,7 @@ body::-webkit-scrollbar {
 }
 
 @media (max-width: 1279px) {
+
   [dir="rtl"] .bdrrst:nth-child(2n),
   [dir="rtl"] .bdrrst:nth-child(7n) {
     @apply border-l border-r-0;
@@ -826,7 +829,7 @@ body::-webkit-scrollbar {
   direction: rtl;
 }
 
-.custom-scroll-left > * {
+.custom-scroll-left>* {
   direction: ltr;
 }
 
@@ -836,7 +839,7 @@ body::-webkit-scrollbar {
   direction: ltr;
 }
 
-.is-ar .custom-scroll-left > * {
+.is-ar .custom-scroll-left>* {
   direction: rtl;
 }
 
@@ -1234,7 +1237,7 @@ body::-webkit-scrollbar {
 .our-expertise-item-desc li {
   position: relative;
   /* padding-left: 20px; */
-  padding-inline-start: 20px; 
+  padding-inline-start: 20px;
   margin-bottom: 8px;
   @apply text-19;
 }
@@ -1551,6 +1554,7 @@ h2,
 h1 {
   letter-spacing: -1.5px;
 }
+
 @media (max-width:1600px) {
 
   h2,
@@ -1558,6 +1562,7 @@ h1 {
     letter-spacing: -1px;
   }
 }
+
 @media (max-width:1200px) {
 
   h2,
@@ -1570,28 +1575,94 @@ h2.text-19,
 h1.text-19 {
   letter-spacing: -1px;
 }
+
 .st00 {
-        fill: #fff;
-        stroke: #fff;
-      }
+  fill: #fff;
+  stroke: #fff;
+}
 
 .h-screen {
   height: 100dvh;
 }
-.iosswipe{overflow-x: auto;
-  -webkit-overflow-scrolling: touch;}
-  .letterspacing-2-5{letter-spacing: -2.5px;}
+
+.iosswipe {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.letterspacing-2-5 {
+  letter-spacing: -2.5px;
+}
 
 @media (max-width:992px) {
-  .letterspacing-2-5{letter-spacing: -.5px;}
+  .letterspacing-2-5 {
+    letter-spacing: -.5px;
+  }
 }
 
 @keyframes carouselLoop {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-carousel {
   animation: carouselLoop 40s linear infinite;
   width: max-content;
+}
+
+.ql-container {
+  min-height: 100px;
+  max-height: 100px;
+  /* important */
+  overflow-y: auto;
+  /* scroll happens here */
+}
+
+.ql-editor {
+  overflow: hidden
+}
+
+.project-scope-description {
+  max-width: 100%;
+  white-space: normal;
+  word-break: normal;
+  /* ✅ do NOT break words */
+  overflow-wrap: normal;
+  /* ✅ break only at spaces */
+}
+
+
+.project-scope-description {
+  p {
+    @apply text-19 font-light text-paragraph mb-3 xl:mb-5 3xl:mb-[25.4px] last:mb-6 last:lg:mb-10 last:2xl:mb-[80px];
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+    @apply mb-3 xl:mb-5 3xl:mb-[25.4px] last:mb-6 last:lg:mb-10 last:2xl:mb-[80px];
+  }
+
+  li {
+    @apply relative pl-5 mb-2 font-light text-18 text-paragraph;
+  }
+
+  li::before {
+    content: "";
+    position: absolute;
+    /* left: 0; */
+    inset-inline-start: 0;
+    /* auto left/right */
+    top: 0.55em;
+    /* aligns dot with text */
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--primary);
+  }
 }
