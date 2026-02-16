@@ -54,7 +54,7 @@ const MoreDetrails = ({ data }) => {
                                                 initial="hidden"
                                                 whileInView="show"
                                                 viewport={{ amount: 0.2, once: true }}
-                                                className={`text-19 font-light text-paragraph mb-3 xl:mb-5 3xl:mb-[25.4px] ${t.scopeDescription ? "" : "last:mb-6 last:lg:mb-10 last:2xl:mb-[80px]"}`}
+                                                className={`text-19 font-light text-paragraph mb-3 xl:mb-5 3xl:mb-[25.4px] ${t.scopeDescription && t.scopeDescription !== "<p></p>" ? "" : "last:mb-6 last:lg:mb-10 last:2xl:mb-[80px]"}`}
                                             >
                                                 {paragraph}
                                             </motion.p>
@@ -64,7 +64,7 @@ const MoreDetrails = ({ data }) => {
                         </div>
                     </div>
 
-                    {t.scopeDescription && <div className={`2xl:max-w-[1008px] 3xl:max-w-[1208px] ${isArabic ? "mr-auto" : "ml-auto"}  mt-3 xl:mt-5 3xl:mt-[25.4px]`}>
+                    {t.scopeDescription && t.scopeDescription !== "<p></p>" && <div className={`2xl:max-w-[1008px] 3xl:max-w-[1208px] ${isArabic ? "mr-auto" : "ml-auto"}  mt-3 xl:mt-5 3xl:mt-[25.4px]`}>
                         <div className="flex  justify-between items-center border-b border-black/20">
                             <div className="relative z-20">
                                 <H2Title titleText="Scope of MEP Work" marginClass="mb-3 lg:mb-7" />
