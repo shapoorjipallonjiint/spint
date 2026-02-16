@@ -110,11 +110,10 @@ const ExpertiseSec = ({ data }) => {
     md:grid-cols-[50%_1fr]
     2xl:grid-cols-[55%_1fr]
     3xl:grid-cols-[961px_1fr]
-    ${
-        isArabic
-            ? "md:[grid-template-columns:1fr_50%] 2xl:[grid-template-columns:1fr_55%] 3xl:[grid-template-columns:1fr_961px]"
-            : ""
-    }
+    ${isArabic
+                                ? "md:[grid-template-columns:1fr_50%] 2xl:[grid-template-columns:1fr_55%] 3xl:[grid-template-columns:1fr_961px]"
+                                : ""
+                            }
     gap-4 lg:gap-8 xl:gap-[70px]`}
                     >
                         <div className="h-full relative overflow-hidden" ref={imageContainerRef}>
@@ -175,19 +174,17 @@ const ExpertiseSec = ({ data }) => {
                                             onMouseEnter={() => setActiveIndex(index)}
                                         >
                                             <p
-                                                className={`text-19  text-white leading-[1.75] cursor-pointer transition-all duration-300 ${
-                                                    activeIndex === index ? "font-bold" : "font-light group-hover:font-bold"
-                                                }`}
+                                                className={`text-19  text-white leading-[1.75] cursor-pointer transition-all duration-300 ${activeIndex === index ? "font-bold" : "font-light group-hover:font-bold"
+                                                    }`}
                                             >
                                                 {item.title}
                                             </p>
 
                                             <div
-                                                className={`transition-all duration-300 opacity-0 ${
-                                                    activeIndex === index
+                                                className={`transition-all duration-300 opacity-0 ${activeIndex === index
                                                         ? "rotate-0 opacity-100"
                                                         : "group-hover:opacity-100 rotate-45 "
-                                                }`}
+                                                    }`}
                                             >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -218,40 +215,40 @@ const ExpertiseSec = ({ data }) => {
 
                                 <div>
                                     {/* Image area: shows image for active index */}
-                                   
+
+                                    <motion.div
+                                        variants={moveUp(0.8)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.2, once: true }}
+                                        className="w-[66px] h-[66px] bg-secondary rounded-full flex items-center justify-center"
+                                    >
+                                        {activeItem?.logo && (
+                                            <Image
+                                                src={activeItem.logo}
+                                                alt={activeItem.logoAlt || ""}
+                                                width={32}
+                                                height={42}
+                                                className="w-[29px] h-[42px] object-contain"
+                                            />
+                                        )}
+                                    </motion.div>
+                                    <motion.hr variants={moveUp(0.8)}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ amount: 0.2, once: true }} className="border-0 border-t border-white/20 my-6" />
+                                    <div className="water-our-expertise text-19 font-light">
                                         <motion.div
                                             variants={moveUp(0.8)}
                                             initial="hidden"
                                             whileInView="show"
                                             viewport={{ amount: 0.2, once: true }}
-                                            className="w-[66px] h-[66px] bg-secondary rounded-full flex items-center justify-center"
-                                        >
-                                            {activeItem?.logo && (
-                                                <Image
-                                                    src={activeItem.logo}
-                                                    alt={activeItem.logoAlt || ""}
-                                                    width={32}
-                                                    height={42}
-                                                    className="w-[29px] h-[42px] object-contain"
-                                                />
-                                            )}
-                                        </motion.div> 
-                                        <motion.hr variants={moveUp(0.8)}
-                                            initial="hidden"
-                                            whileInView="show"
-                                            viewport={{ amount: 0.2, once: true }} className="border-0 border-t border-white/20 my-6" />
-                                    <div className="water-our-expertise text-19 font-light">
-                                     <motion.div
-                                            variants={moveUp(0.8)}
-                                            initial="hidden"
-                                            whileInView="show"
-                                            viewport={{ amount: 0.2, once: true }}
-                                           
+
                                             dangerouslySetInnerHTML={{
                                                 __html: normalizeHtml(activelist),
                                             }}
                                         >
-                                            </motion.div>
+                                        </motion.div>
                                     </div>
                                 </div>
                             </div>

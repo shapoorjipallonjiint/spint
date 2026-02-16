@@ -1,43 +1,43 @@
 import mongoose, { InferSchemaType } from "mongoose";
 
 const projectSchema = new mongoose.Schema({
-    metaTitle: {
-        type: String,
-    },
-    metaTitle_ar:{
-        type:String
-    },
-    metaDescription: {
-        type: String,
-    },
-    metaDescription_ar:{
-        type:String
-    },
-    banner:{
-        type:String,
-        required:true
-    },
-    bannerAlt:{
-        type:String,
-    },
-    bannerAlt_ar:{
-        type:String,
-    },
-    pageTitle:{
-        type:String,
-    },
-    pageTitle_ar:{
-        type:String
-    },
-    firstSection:{
-        items:[{
-            number:{type:String},
-            number_ar:{type:String},
-            value:{type:String},
-            value_ar:{type:String},
-        }]
-    },
-    projects:[{
+  metaTitle: {
+    type: String,
+  },
+  metaTitle_ar: {
+    type: String
+  },
+  metaDescription: {
+    type: String,
+  },
+  metaDescription_ar: {
+    type: String
+  },
+  banner: {
+    type: String,
+    required: true
+  },
+  bannerAlt: {
+    type: String,
+  },
+  bannerAlt_ar: {
+    type: String,
+  },
+  pageTitle: {
+    type: String,
+  },
+  pageTitle_ar: {
+    type: String
+  },
+  firstSection: {
+    items: [{
+      number: { type: String },
+      number_ar: { type: String },
+      value: { type: String },
+      value_ar: { type: String },
+    }]
+  },
+  projects: [{
     slug: {
       type: String,
       required: true,
@@ -123,6 +123,9 @@ const projectSchema = new mongoose.Schema({
 
       description: { type: String },
       description_ar: { type: String },
+
+      scopeDescription: { type: String },
+      scopeDescription_ar: { type: String },
     },
 
     sixthSection: {

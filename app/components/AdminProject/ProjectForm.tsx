@@ -21,6 +21,9 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { statusData } from "./statusData";
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
 
 interface ProjectFormProps {
     firstSection: {
@@ -62,6 +65,8 @@ interface ProjectFormProps {
         title_ar: string;
         description: string;
         description_ar: string;
+        scopeDescription: string;
+        scopeDescription_ar: string;
     };
     images: string[];
     sixthSection: {
@@ -671,7 +676,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                     <Label className="" main>
                         Fourth Section
                     </Label>
-                    <div className="p-5 flex flex-col gap-2">
+                    <div className="p-5 flex flex-col gap-2 h-[500px]">
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
                                 <Label className=" font-bold">Title</Label>
@@ -697,6 +702,31 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                 {errors.fourthSection?.description && (
                                     <p className="text-red-500">{errors.fourthSection?.description.message}</p>
                                 )}
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Scope Title</Label>
+                                <Input
+                                    type="text"
+                                    placeholder="Title"
+                                    value={"Scope of MEP Work"}
+                                    disabled
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Scope Description</Label>
+                                <Controller
+                                    name={`fourthSection.scopeDescription`}
+                                    control={control}
+                                    render={({ field }) => {
+                                        return (
+                                            <ReactQuill
+                                                theme="snow"
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        );
+                                    }}
+                                />
                             </div>
                         </div>
                     </div>
@@ -1163,6 +1193,31 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             <div className="flex flex-col gap-1">
                                 <Label className=" font-bold">Description</Label>
                                 <Textarea placeholder="Description" {...register("fourthSection.description_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Scope Title</Label>
+                                <Input
+                                    type="text"
+                                    placeholder="Title"
+                                    value={"Scope of MEP Work"}
+                                    disabled
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Scope Description</Label>
+                                <Controller
+                                    name={`fourthSection.scopeDescription_ar`}
+                                    control={control}
+                                    render={({ field }) => {
+                                        return (
+                                            <ReactQuill
+                                                theme="snow"
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        );
+                                    }}
+                                />
                             </div>
                         </div>
                     </div>
