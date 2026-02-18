@@ -192,6 +192,8 @@ const LeadershipAdminPage = () => {
 
     const [editingPerson, setEditingPerson] = useState<number | null>(null);
     const [reorderMode, setReorderMode] = useState(false);
+    const [newMemberIndex, setNewMemberIndex] = useState<number | null>(null);
+
 
     const handleDragEnd = async (event: DragEndEvent) => {
         const { active, over } = event;
@@ -1000,12 +1002,19 @@ const LeadershipAdminPage = () => {
             {editingPerson !== null && (
                 <Dialog
                     open={editingPerson !== null}
-                    onOpenChange={(open) => {
-                        if (!open && editingPerson !== null) {
-                            // resetField(`secondSection.items.${editingPerson}`);
-                            setEditingPerson(null);
-                        }
-                    }}
+onOpenChange={(open) => {
+  if (!open && editingPerson !== null) {
+
+    // if user closed without saving → remove temp member
+    if (newMemberIndex === editingPerson) {
+      removePerson(editingPerson);
+      setNewMemberIndex(null);
+    }
+
+    setEditingPerson(null);
+  }
+}}
+
                 >
                     <DialogContent className="max-w-3xl">
                         <DialogHeader>
@@ -1105,6 +1114,7 @@ const LeadershipAdminPage = () => {
 
                                 updatePerson(index, data);
 
+                                setNewMemberIndex(null);
                                 await saveToAPI();
 
                                 setEditingPerson(null);
@@ -1165,17 +1175,22 @@ const LeadershipAdminPage = () => {
                                 removePerson(i);
                                 await saveToAPI();
                             }}
-                            onAdd={() => {
-                                setValue(`secondSection.items.${peopleFields.length}`, {
-                                    image: "",
-                                    name: "",
-                                    name_ar: "",
-                                    designation: "",
-                                    designation_ar: "",
-                                    socialLink: "",
-                                });
-                                setEditingPerson(peopleFields.length);
-                            }}
+onAdd={() => {
+  const index = peopleFields.length;
+
+  setValue(`secondSection.items.${index}`, {
+    image: "",
+    name: "",
+    name_ar: "",
+    designation: "",
+    designation_ar: "",
+    socialLink: "",
+  });
+
+  setNewMemberIndex(index);
+  setEditingPerson(index);
+}}
+
                         />
                     )}
 
