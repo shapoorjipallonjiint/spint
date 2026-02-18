@@ -4,7 +4,7 @@ import { Listbox } from "@headlessui/react";
 // import { pjtList } from "../data";
 import { useState, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { dropdownItemVariants, dropdownListVariants, moveUp } from "../../../motionVarients";
+import { dropdownItemVariants, dropdownListVariants, moveUp, moveUpV2 } from "../../../motionVarients";
 import LangLink from "@/lib/LangLink"
 import { useRef } from "react";
 import { statusData, UI_LABELS } from "@/app/components/AdminProject/statusData";
@@ -14,12 +14,13 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import Reveal from "@/app/components/common/Reveal";
+
 
 
 const ITEMS_PER_PAGE = 12;
 
 const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
-    console.log(serviceData);
     const tSectorData = useApplyLang(sectorData);
     const tCountryData = useApplyLang(countryData);
     const tServiceData = useApplyLang(serviceData);
@@ -225,12 +226,11 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     };
     const [showFilters, setShowFilters] = useState(false);
 
-
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
             <div className="container">
                 <motion.div
-                    variants={moveUp(1.8)}
+                    variants={moveUp(0.5)}
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
@@ -645,14 +645,10 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                     }}
                 >
                     {currentItems.map((item, index) => (
-                        <motion.div
-                            key={index}
-                            variants={moveUp(0.2 * index)}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ amount: 0.2, once: true }}
-                            className="group"
-                        >
+
+<Reveal key={index} variants={moveUpV2} className="group">
+
+
                             <LangLink href={`/projects/${item.slug}`}>
                                 <div className="relative">
                                     {item?.thumbnail ? (
@@ -737,7 +733,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     </p>
                                 </div>
                             </LangLink>
-                        </motion.div>
+                            </Reveal>
                     ))}
 
                     {currentItems.length === 0 && (
@@ -759,14 +755,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                     }}
                 >
                     {currentItems.map((item, index) => (
-                        <motion.div
-                            key={index}
-                            variants={moveUp(0.2 * index)}
-                            initial="hidden"
-                            whileInView="show"
-                            className="border-b border-black/20 pb-[30px] mb-[30px] group"
-                            viewport={{ amount: 0.2, once: true }}
-                        >
+                        <Reveal key={index} variants={moveUpV2} className="border-b border-black/20 pb-[30px] mb-[30px] group">
                             <LangLink href={`/projects/${item.slug}`}>
                                 <div className="flex flex-col lg:grid grid-cols-[240px_244px_448px_0px] xl:grid-cols-[240px_244px_448px_32px] 2xl:grid-cols-[274px_324px_458px_32px] 3xl:grid-cols-[274px_384px_658px_32px] justify-between gap-3 md:gap-8 lg:gap-4 3xl:gap-[69px] ">
                                     <div className="w-full xl:w-full">
@@ -842,7 +831,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     </div>
                                 </div>
                             </LangLink>
-                        </motion.div>
+                        </Reveal>
                     ))}
 
                     {currentItems.length === 0 && (
