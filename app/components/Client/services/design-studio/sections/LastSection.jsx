@@ -75,9 +75,8 @@ const LastSection = ({ data }) => {
                 style={{ y: shapeY }}
                 src={assets.mainShape2}
                 alt=""
-                className={`absolute -bottom-15 lg:bottom-0 w-[152px] lg:w-[45%] xl:w-[365px] 3xl:w-[465px] h-auto object-contain ${
-                    isArabic ? "left-0 lg:right-0 -scale-x-100" : "right-0 lg:left-0"
-                }`}
+                className={`absolute -bottom-15 lg:bottom-0 w-[152px] lg:w-[45%] xl:w-[365px] 3xl:w-[465px] h-auto object-contain ${isArabic ? "left-0 lg:right-0 -scale-x-100" : "right-0 lg:left-0"
+                    }`}
             />
 
             <div className="container">
@@ -98,8 +97,8 @@ const LastSection = ({ data }) => {
                         <div className="relative" ref={imageContainerRefOne}>
                             <MotionImage
                                 style={{ y: imageY }}
-                                src="../../assets/images/design-studio/design-inpires.jpg"
-                                alt=""
+                                src={t.image}
+                                alt={t.imageAlt}
                                 width={932}
                                 height={532}
                                 className="w-full h-[200px] md:h-[300px] xl:h-[350px] 2xl:h-[470px] 3xl:h-[532px] scale-110 md:scale-150 lg:scale-110 object-cover"
