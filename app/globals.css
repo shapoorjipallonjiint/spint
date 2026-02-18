@@ -1645,7 +1645,8 @@ h1.text-19 {
   ul {
     list-style: none;
     padding-left: 0;
-    @apply mb-3 xl:mb-5 3xl:mb-[25.4px] last:mb-6 last:lg:mb-10 last:2xl:mb-[80px];
+    /* @apply mb-3 xl:mb-5 3xl:mb-[25.4px] last:mb-6 last:lg:mb-10 last:2xl:mb-[80px]; */
+    @apply mb-3 xl:mb-5 3xl:mb-[25.4px];
   }
 
   li {
