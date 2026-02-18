@@ -27,6 +27,19 @@ export const moveUp = (delay: number = 0) => ({
   },
 });
 
+export const moveUpV2 = {
+  hidden: { opacity: 0, y: 60 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: silkyEase
+    }
+  }
+};
+
+
 export const moveDown = (delay: number = 0) => ({
   hidden: { opacity: 0, y: -60 },
   show: {
