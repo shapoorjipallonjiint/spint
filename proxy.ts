@@ -57,7 +57,7 @@ img-src 'self' data: blob: https:;
 font-src 'self' https://fonts.gstatic.com https://cdn.tiny.cloud;
 connect-src 'self' https://www.google.com https://www.google-analytics.com https://vitals.vercel-insights.com https://cdn.tiny.cloud https://api.resend.com;
 frame-src 'self' https://www.google.com;
-frame-ancestors 'none';
+frame-ancestors 'self';
 media-src 'self' https://dl.dropboxusercontent.com blob:;
 object-src 'none';
 base-uri 'self';
