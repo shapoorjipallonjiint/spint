@@ -27,8 +27,8 @@ export default async function RootLayout({
 
 
   return (
-    <html>
-      <body>
+    <div>
+      <div>
     <div lang="en">
      <div className={`${dmSans.variable} font-sans antialiased`}>
       {/* <SmoothScroll/> */}
@@ -38,7 +38,7 @@ export default async function RootLayout({
      </SearchProvider>
       </div>
     </div>
-    </body>
-    </html>
+    </div>
+    </div>
   );
 }
