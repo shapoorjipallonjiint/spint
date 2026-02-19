@@ -269,7 +269,7 @@ const Home = () => {
                     </Label>
                     <div className="p-5 flex flex-col gap-2">
                         <div className="flex flex-col gap-1">
-                            <Label className=" font-bold">Title</Label>
+                            <Label className="">Title</Label>
                             <Input
                                 type="text"
                                 placeholder="Main Title"
@@ -587,7 +587,7 @@ const Home = () => {
                                             <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Key</Label>
                                                 <Textarea
-                                                    
+
                                                     placeholder="Key"
                                                     {...register(`thirdSection.items.${index}.key`, {
                                                         required: "Key is required",

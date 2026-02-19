@@ -3,14 +3,12 @@ import mongoose from "mongoose";
 const accreditationSchema = new mongoose.Schema({
     metaTitle: {
         type: String,
-        required: true,
     },
     metaTitle_ar: {
         type: String,
     },
     metaDescription: {
         type: String,
-        required: true,
     },
     metaDescription_ar: {
         type: String,
@@ -39,24 +37,60 @@ const accreditationSchema = new mongoose.Schema({
     secondSection: {
         items: [
             {
-                fileName:{
-                    type:String
+                fileName: {
+                    type: String
                 },
-                fileName_ar:{
-                    type:String
+                fileName_ar: {
+                    type: String
                 },
-                fileImage:{
-                    type:String
+                fileImage: {
+                    type: String
                 },
-                fileImageAlt:{
-                    type:String
+                fileImageAlt: {
+                    type: String
                 },
-                fileImageAlt_ar:{
-                    type:String
+                fileImageAlt_ar: {
+                    type: String
                 },
             },
         ],
     },
+    categories: [
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            name_ar: {
+                type: String,
+            },
+            accreditations: [
+                {
+                    title: {
+                        type: String
+                    },
+                    title_ar: {
+                        type: String
+                    },
+                    fileImage: {
+                        type: String
+                    },
+                    fileImageAlt: {
+                        type: String
+                    },
+                    fileImageAlt_ar: {
+                        type: String
+                    },
+                    file: {
+                        type: String
+                    },
+                    category: {
+                        type: String
+                    }
+                }
+            ]
+        }
+    ]
 });
 
 export default mongoose.models.Accreditation || mongoose.model("Accreditation", accreditationSchema);

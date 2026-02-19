@@ -151,7 +151,7 @@ const Certifications = ({ data }) => {
   };
 
   // PDF Navigation Logic
-   const nextPdf = () => {
+  const nextPdf = () => {
     const pdfArray = t.items[itemIndex].files;
     setPdfIndex((prev) => (prev + 1) % pdfArray.length);
   };
