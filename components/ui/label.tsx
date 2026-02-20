@@ -19,7 +19,7 @@ const Label = React.forwardRef<
 >(({ className, main, oneInput, ...props }, ref) => (
   <LabelPrimitive.Root
     ref={ref}
-    className={cn(labelVariants(), className, `${main ? "pl-5 border-b py-2" : "text-[16px] font-normal"} ${oneInput ? "font-semibold text-md" : ""}`)}
+    className={cn(labelVariants(), className, `${main ? "pl-5 border-b  border-black/20 py-2 font-semibold" : "text-[16px] font-normal"} ${oneInput ? "font-semibold text-md" : ""}`)}
     {...props}
   />
 ))

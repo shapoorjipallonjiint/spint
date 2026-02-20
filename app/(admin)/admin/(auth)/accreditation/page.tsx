@@ -22,6 +22,26 @@ import {
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileUploader } from "@/components/ui/file-uploader";
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
+import { TbReorder } from "react-icons/tb";
+import { closestCorners, DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+    arrayMove,
+    SortableContext,
+    verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import AccreditationsCard from "./AccreditationCard";
+import { toast } from "sonner";
+import CategoryCard from "./CategoryCard";
 
 interface AccreditationFormProps {
     metaTitle: string;
@@ -64,10 +84,11 @@ const AccreditationPage = () => {
     const [category_ar, setCategory_ar] = useState("")
     const [selectedCategory, setSelectedCategory] = useState("")
 
-    const [categoryList, setCategoryList] = useState<{ _id: string, name: string, name_ar: string }[]>([])
+    const [categoryList, setCategoryList] = useState<{ _id: string, name: string, name_ar: string, accreditations: { _id: string, title: string, title_ar: string }[] }[]>([])
     const [accreditationList, setAccreditationList] = useState<{ _id: string, fileImage: string, fileImageAlt: string, fileImageAlt_ar: string, title: string, title_ar: string, category: string, file: string }[]>([])
 
-
+    const [toReorderCategory, setToReorderCategory] = useState<string>("")
+    const [reorderMode, setReorderMode] = useState(false)
 
 
     const handleAddAccreditation = async () => {
@@ -237,6 +258,82 @@ const AccreditationPage = () => {
         }
     };
 
+    const reorderArrayById = <T extends { _id: string }>(
+        list: T[],
+        activeId: string,
+        overId: string
+    ) => {
+        const oldIndex = list.findIndex((item) => item._id === activeId);
+        const newIndex = list.findIndex((item) => item._id === overId);
+
+        return arrayMove(list, oldIndex, newIndex);
+    };
+
+    const handleDragEnd = (
+        event: DragEndEvent,
+        type: "categories" | "accreditations"
+    ) => {
+        const { active, over } = event;
+
+        if (!over || active.id === over.id) return;
+
+        if (type === "categories") {
+            setCategoryList((prev) =>
+                reorderArrayById(prev, active.id as string, over.id as string)
+            );
+        }
+
+        if (type === "accreditations") {
+            setCategoryList((prev) =>
+                prev.map((category) => {
+                    if (category._id !== toReorderCategory) return category;
+
+                    return {
+                        ...category,
+                        accreditations: reorderArrayById(
+                            category.accreditations,
+                            active.id as string,
+                            over.id as string
+                        ),
+                    };
+                })
+            );
+        }
+    };
+
+
+    const confirmPosition = async (type: "categories" | "accreditations") => {
+        if (type === "categories") {
+            await fetch("/api/admin/accreditation/category/reorder", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    categories: categoryList,
+                }),
+            });
+            setReorderMode(false)
+        }
+
+        if (type === "accreditations") {
+            const currentCategory = categoryList.find(
+                (item) => item._id === toReorderCategory
+            );
+
+            if (!currentCategory) return;
+
+            await fetch("/api/admin/accreditation/reorder", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    categoryId: toReorderCategory,
+                    accreditations: currentCategory.accreditations,
+                }),
+            });
+        }
+
+        toast.success("Order updated successfully");
+    };
+
 
 
     useEffect(() => {
@@ -370,16 +467,20 @@ const AccreditationPage = () => {
                     </div>
                 </AdminItemContainer> */}
 
-                    <div className="p-5">
-                        <div className="flex flex-col gap-2 mb-4">
-                            <Label className="pl-3 font-bold">Meta Title</Label>
-                            <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
+                    <AdminItemContainer>
+                        <Label main>SEO</Label>
+
+                        <div className="p-5">
+                            <div className="flex flex-col gap-2 mb-4">
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="" {...register("metaTitle")} />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Description</Label>
+                                <Input type="text" placeholder="" {...register("metaDescription")} />
+                            </div>
                         </div>
-                        <div className="flex flex-col gap-2">
-                            <Label className="pl-3 font-bold">Meta Description</Label>
-                            <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
-                        </div>
-                    </div>
+                    </AdminItemContainer>
                 </div>
 
                 {/*Arabic Version */}
@@ -490,16 +591,19 @@ const AccreditationPage = () => {
                 </AdminItemContainer> */}
 
 
-                    <div className="p-5">
-                        <div className="flex flex-col gap-2 mb-4">
-                            <Label className="pl-3 font-bold">Meta Title</Label>
-                            <Input type="text" placeholder="Meta Title" {...register("metaTitle_ar")} />
+                    <AdminItemContainer>
+                        <Label main>SEO</Label>
+                        <div className="p-5">
+                            <div className="flex flex-col gap-2 mb-4">
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="" {...register("metaTitle_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Description</Label>
+                                <Input type="text" placeholder="" {...register("metaDescription_ar")} />
+                            </div>
                         </div>
-                        <div className="flex flex-col gap-2">
-                            <Label className="pl-3 font-bold">Meta Description</Label>
-                            <Input type="text" placeholder="Meta Description" {...register("metaDescription_ar")} />
-                        </div>
-                    </div>
+                    </AdminItemContainer>
                 </div>
 
                 <div className="flex col-span-2">
@@ -512,57 +616,118 @@ const AccreditationPage = () => {
 
             <div className="h-screen grid grid-cols-2 gap-5 mt-10">
                 <div className="flex flex-col gap-2 h-screen">
-                    <div className="h-full w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
-                        <div className="flex justify-between border-b-2 pb-2">
+                    <div className="h-full w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white">
+                        <div className="flex justify-between border-b-2 border-black/20 pb-2">
                             <Label className="text-sm font-bold">Category</Label>
-                            <Dialog>
-                                <DialogTrigger
-                                    className="bg-black text-white px-2 py-1 rounded-md"
-                                    onClick={() => {
-                                        setCategory("");
-                                        setCategory_ar("");
-                                    }}
-                                >
-                                    Add Category
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <DialogTitle>Add Category</DialogTitle>
-                                        <DialogDescription>
-                                            <Label>Category Name (English)</Label>
-                                            <Input
-                                                type="text"
-                                                placeholder="Category Name"
-                                                value={category}
-                                                onChange={(e) => setCategory(e.target.value)}
-                                            />
-
-                                            <Label>Category Name (Arabic)</Label>
-                                            <Input
-                                                type="text"
-                                                placeholder="Category Name"
-                                                value={category_ar}
-                                                onChange={(e) => setCategory_ar(e.target.value)}
-                                            />
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <DialogClose
+                            <div className="flex gap-2">
+                                <Button type="button" className={`text-white text-[16px] ${reorderMode ? "bg-yellow-700" : "bg-green-700"}`} onClick={() => reorderMode ? confirmPosition("categories") : setReorderMode(!reorderMode)}>{reorderMode ? "Done" : "Reorder"}</Button>
+                                <Dialog>
+                                    <DialogTrigger
                                         className="bg-black text-white px-2 py-1 rounded-md"
-                                        onClick={handleAddCategory}
+                                        onClick={() => {
+                                            setCategory("");
+                                            setCategory_ar("");
+                                        }}
+                                        disabled={reorderMode}
                                     >
-                                        Save
-                                    </DialogClose>
-                                </DialogContent>
-                            </Dialog>
+                                        Add Category
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Add Category</DialogTitle>
+                                            <DialogDescription>
+                                                <Label>Category Name (English)</Label>
+                                                <Input
+                                                    type="text"
+                                                    placeholder="Category Name"
+                                                    value={category}
+                                                    onChange={(e) => setCategory(e.target.value)}
+                                                />
+
+                                                <Label>Category Name (Arabic)</Label>
+                                                <Input
+                                                    type="text"
+                                                    placeholder="Category Name"
+                                                    value={category_ar}
+                                                    onChange={(e) => setCategory_ar(e.target.value)}
+                                                />
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <DialogClose
+                                            className="bg-black text-white px-2 py-1 rounded-md"
+                                            onClick={handleAddCategory}
+                                        >
+                                            Save
+                                        </DialogClose>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
                         </div>
-                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[80%]">
-                            {categoryList.map((item) => (
+                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
+                            {reorderMode &&
+
+                                <DndContext
+                                    collisionDetection={closestCorners}
+                                    onDragEnd={(event) => handleDragEnd(event, "categories")}
+                                >
+                                    <SortableContext items={categoryList.map((item) => item._id)} strategy={verticalListSortingStrategy}>
+                                        {categoryList?.map((item, index) => (
+                                            <CategoryCard key={index} title={item.name} id={item._id} />
+                                        ))}
+                                    </SortableContext>
+                                </DndContext>
+
+                            }
+
+                            {!reorderMode && categoryList.map((item) => (
                                 <div
-                                    className="flex justify-between border p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
+                                    className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
                                     key={item._id}
                                 >
                                     <div className="text-[16px]">{item.name}</div>
                                     <div className="flex gap-5">
+
+                                        {/* reorder sheet for certificates inside*/}
+                                        <Sheet>
+                                            <SheetTrigger asChild>
+                                                <TbReorder onClick={() => setToReorderCategory(item._id)} />
+                                            </SheetTrigger>
+                                            <SheetContent>
+                                                <SheetHeader>
+                                                    <SheetTitle>Reorder Accreditations</SheetTitle>
+                                                    <SheetDescription>
+                                                        Reorder items here. Click save when you&apos;re done.
+                                                    </SheetDescription>
+                                                </SheetHeader>
+                                                <div className="grid flex-1  gap-3 px-4">
+                                                    {
+                                                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-full">
+                                                            <DndContext
+                                                                collisionDetection={closestCorners}
+                                                                onDragEnd={(event) => handleDragEnd(event, "accreditations")}
+                                                            >
+                                                                <SortableContext
+                                                                    items={categoryList.find((item) => item._id === toReorderCategory)?.accreditations?.map((item) => item._id) || []}
+                                                                    strategy={verticalListSortingStrategy}
+                                                                >
+                                                                    {categoryList.find((item) => item._id === toReorderCategory)?.accreditations?.map((item) => (
+                                                                        <AccreditationsCard key={item._id} title={item.title} id={item._id} />
+                                                                    ))}
+                                                                </SortableContext>
+                                                            </DndContext>
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                                <SheetFooter>
+                                                    {/* <Button type="submit">Save changes</Button> */}
+                                                    <SheetClose asChild>
+                                                        <Button variant="outline" className="bg-primary text-white" onClick={() => confirmPosition("accreditations")}>Save Order</Button>
+                                                    </SheetClose>
+                                                </SheetFooter>
+                                            </SheetContent>
+                                        </Sheet>
+
                                         <Dialog>
                                             <DialogTrigger
                                                 onClick={() => {
@@ -708,8 +873,8 @@ const AccreditationPage = () => {
           </div> */}
                 </div>
 
-                <div className="h-screen w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
-                    <div className="border-b-2 pb-3">
+                <div className="h-screen w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white">
+                    <div className="border-b-2 border-black/20 pb-3">
                         <div className="flex justify-between items-center">
                             {/* LEFT: Title */}
                             <Label className="text-sm font-bold">Accreditations</Label>
@@ -728,6 +893,7 @@ const AccreditationPage = () => {
                                             setSelectedCategory("");
                                             setFile("")
                                         }}
+                                        disabled={reorderMode}
                                     >
                                         Add Accreditation
                                     </DialogTrigger>
@@ -838,7 +1004,7 @@ const AccreditationPage = () => {
                         {accreditationList.map((item) => (
                             <div
                                 key={item._id}
-                                className="flex justify-between border p-2 items-center rounded-md shadow-md"
+                                className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md"
                             >
                                 <div>
                                     {categoryList.find(category => category._id === item.category)?.name ?? "Unknown Category"}

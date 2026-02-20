@@ -185,7 +185,7 @@ const IndiGallery = () => {
                         categoryList.map((item) => (
                             <div
                                 key={item._id}
-                                className="flex justify-between items-center border rounded-md p-4 hover:bg-gray-100 transition"
+                                className="flex justify-between items-center border border-black/20 rounded-md p-4 hover:bg-gray-100 transition"
                             >
                                 <div className="flex flex-col gap-2">
                                     <p>{item.title}</p>

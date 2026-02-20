@@ -179,14 +179,15 @@ const AdminGallery = () => {
                     </AdminItemContainer>
 
                     <AdminItemContainer>
+                        <Label main>SEO</Label>
                         <div className="p-5">
                             <div className="flex flex-col gap-2 mb-4">
-                                <Label className="font-bold">Meta Title</Label>
-                                <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="" {...register("metaTitle")} />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Meta Description</Label>
-                                <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
+                                <Label className="font-bold">Description</Label>
+                                <Input type="text" placeholder="" {...register("metaDescription")} />
                                 <FormError error={errors.metaDescription?.message} />
                             </div>
                         </div>
@@ -208,14 +209,15 @@ const AdminGallery = () => {
                     </AdminItemContainer>
 
                     <AdminItemContainer>
+                        <Label main>SEO</Label>
                         <div className="p-5">
                             <div className="flex flex-col gap-2 mb-4">
-                                <Label className="font-bold">Meta Title</Label>
-                                <Input type="text" placeholder="Meta Title" {...register("metaTitle_ar")} />
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="" {...register("metaTitle_ar")} />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Meta Description</Label>
-                                <Input type="text" placeholder="Meta Description" {...register("metaDescription_ar")} />
+                                <Label className="font-bold">Description</Label>
+                                <Input type="text" placeholder="" {...register("metaDescription_ar")} />
                             </div>
                         </div>
                     </AdminItemContainer>
@@ -279,7 +281,7 @@ const AdminGallery = () => {
                         <p className="text-sm py-10">No items found</p>
                     ) : (
                         categoryList.map((item) => (
-                            <div key={item._id} className="flex justify-between items-center border rounded-md p-4">
+                            <div key={item._id} className="flex justify-between items-center border border-black/20 rounded-md p-4">
                                 <div>
                                     <p>{item.title}</p>
                                     <p className="text-sm">{item.title_ar?.trim() || "----------"}</p>

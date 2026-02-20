@@ -88,7 +88,7 @@ export function VideoUploader({ value, onChange, className, deleteAfterUpload = 
   return (
     <div className={cn("space-y-4 w-full", className)}>
       {displayUrl && isUploadComplete ? (
-        <div className="relative w-full max-w-[400px] aspect-video overflow-hidden rounded-lg border">
+        <div className="relative w-full max-w-[400px] aspect-video overflow-hidden rounded-lg border border-black/20">
           <video src={value ? value : displayUrl} controls className="object-cover w-full h-full" />
           <Button
             type="button"

@@ -403,11 +403,11 @@ export default function Projects() {
                         </Label>
                         <div className="p-5 flex flex-col gap-2">
                             <Label>Items</Label>
-                            <div className="border p-2 rounded-md">
+                            <div className="border border-black/20 p-2 rounded-md">
                                 {firstSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-2 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -453,14 +453,19 @@ export default function Projects() {
                         </div>
                     </AdminItemContainer>
 
-                    <div className="flex flex-col gap-2">
-                        <Label className="font-bold">Meta Title</Label>
-                        <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <Label className="font-bold">Meta Description</Label>
-                        <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
-                    </div>
+                    <AdminItemContainer>
+                        <Label main>SEO</Label>
+                        <div className="flex flex-col gap-2 p-5">
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="" {...register("metaTitle")} />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Description</Label>
+                                <Input type="text" placeholder="" {...register("metaDescription")} />
+                            </div>
+                        </div>
+                    </AdminItemContainer>
                 </div>
 
                 {/*Arabic Version */}
@@ -511,11 +516,11 @@ export default function Projects() {
                         </Label>
                         <div className="p-5 flex flex-col gap-2">
                             <Label>Items</Label>
-                            <div className="border p-2 rounded-md">
+                            <div className="border border-black/20 p-2 rounded-md">
                                 {firstSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-2 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -561,14 +566,19 @@ export default function Projects() {
                         </div>
                     </AdminItemContainer>
 
-                    <div className="flex flex-col gap-2">
-                        <Label className="font-bold">Meta Title</Label>
-                        <Input type="text" placeholder="Meta Title" {...register("metaTitle_ar")} />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <Label className="font-bold">Meta Description</Label>
-                        <Input type="text" placeholder="Meta Description" {...register("metaDescription_ar")} />
-                    </div>
+                    <AdminItemContainer>
+                        <Label main>SEO</Label>
+                        <div className="flex flex-col gap-2 p-5">
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Title</Label>
+                                <Input type="text" placeholder="" {...register("metaTitle_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Label className="font-bold">Description</Label>
+                                <Input type="text" placeholder="" {...register("metaDescription_ar")} />
+                            </div>
+                        </div>
+                    </AdminItemContainer>
                 </div>
 
                 <div className="col-span-2">
@@ -580,14 +590,14 @@ export default function Projects() {
 
             <div className="h-screen grid grid-cols-2 gap-5">
                 <div className="flex flex-col gap-2 h-screen">
-                    <div className="h-1/2 w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
-                        <div className="flex justify-between border-b-2 pb-2">
+                    <div className="h-1/2 w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white">
+                        <div className="flex justify-between border-b-2 border-black/20 pb-2">
                             <Label className="text-sm font-bold">Service</Label>
                         </div>
                         <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[80%]">
                             {serviceList.map((item) => (
                                 <div
-                                    className="flex justify-between border p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
+                                    className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
                                     key={item._id}
                                 >
                                     <div className="text-[16px]">{item.pageTitle}</div>
@@ -596,8 +606,8 @@ export default function Projects() {
                         </div>
                     </div>
 
-                    <div className="h-1/2 w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
-                        <div className="flex justify-between border-b-2 pb-2">
+                    <div className="h-1/2 w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white">
+                        <div className="flex justify-between border-b-2 border-black/20 pb-2">
                             <Label className="text-sm font-bold">Sector</Label>
                             <Dialog>
                                 <DialogTrigger
@@ -642,7 +652,7 @@ export default function Projects() {
                         <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[80%]">
                             {sectorList.map((item) => (
                                 <div
-                                    className="flex justify-between border p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
+                                    className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
                                     key={item._id}
                                 >
                                     <div className="text-[16px]">{item.name}</div>
@@ -792,8 +802,8 @@ export default function Projects() {
           </div> */}
                 </div>
 
-                <div className="h-screen w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
-                    <div className="border-b-2 pb-3">
+                <div className="h-screen w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white">
+                    <div className="border-b-2 border-black/20 pb-3">
                         <div className="flex justify-between items-center">
                             {/* LEFT: Title */}
                             <Label className="text-sm font-bold">Projects</Label>
@@ -847,7 +857,7 @@ export default function Projects() {
                             {filteredProjects.map((item) => (
                                 <div
                                     key={item._id}
-                                    className="flex justify-between border p-2 items-center rounded-md shadow-md"
+                                    className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md"
                                 >
                                     <div>{item.firstSection.title}</div>
                                     <div className="flex gap-5">

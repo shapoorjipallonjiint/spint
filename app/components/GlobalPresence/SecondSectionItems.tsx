@@ -69,7 +69,7 @@ const SecondSectionItem = ({ index, removeItem, side }: Props) => {
     const isRight = side === "right";
 
     return (
-        <div className="border p-3 rounded-md relative flex flex-col gap-4">
+        <div className="border border-black/20 p-3 rounded-md relative flex flex-col gap-4">
             {/* REMOVE ITEM — ONLY LEFT */}
             {isLeft && (
                 <RiDeleteBinLine
@@ -185,7 +185,7 @@ const SecondSectionItem = ({ index, removeItem, side }: Props) => {
             <div>
                 <Label className="font-bold">Countries</Label>
 
-                <div className="border p-2 rounded-md flex flex-col gap-2 mt-1">
+                <div className="border border-black/20 p-2 rounded-md flex flex-col gap-2 mt-1">
                     {countryFields.map((field, cIndex) => (
                         <div key={field.id} className="flex gap-2 items-center">
                             {isLeft && (

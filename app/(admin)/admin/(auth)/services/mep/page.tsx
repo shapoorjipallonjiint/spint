@@ -385,11 +385,11 @@ const MEPPage = () => {
                             </div>
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border p-2 rounded-md flex flex-col gap-5">
+                                <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                            className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                         >
                                             <div className="absolute top-2 right-2">
                                                 <RiDeleteBinLine
@@ -501,11 +501,11 @@ const MEPPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                 {thirdSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -615,11 +615,11 @@ const MEPPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                 {fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -673,7 +673,7 @@ const MEPPage = () => {
                                                     control={control}
                                                     rules={{ required: "Logo is required" }}
                                                     render={({ field }) => (
-                                                        <ImageUploader value={field.value} onChange={field.onChange} />
+                                                        <ImageUploader isLogo value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                                 {errors.fourthSection?.items?.[index]?.logo && (
@@ -858,14 +858,19 @@ const MEPPage = () => {
                 </div>
                 </AdminItemContainer> */}
 
-                <div className="flex flex-col gap-2">
-                    <Label className="pl-3 font-bold">Meta Title</Label>
-                    <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
-                </div>
-                <div className="flex flex-col gap-2">
-                    <Label className="pl-3 font-bold">Meta Description</Label>
-                    <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
-                </div>
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Title</Label>
+                            <Input type="text" placeholder="" {...register("metaTitle")} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Description</Label>
+                            <Input type="text" placeholder="" {...register("metaDescription")} />
+                        </div>
+                    </div>
+                </AdminItemContainer>
             </div>
 
             {/*Arabic Version */}
@@ -979,7 +984,7 @@ const MEPPage = () => {
                                     <p className="text-red-500">{errors.firstSection?.poster?.message}</p>
                                 )}
                             </div>
-                                                        <div>
+                            <div>
                                 <div className="flex flex-col gap-2 mb-2">
                                     <Label className="font-bold">Head Name</Label>
                                     <Input
@@ -1030,11 +1035,11 @@ const MEPPage = () => {
 
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border p-2 rounded-md flex flex-col gap-5">
+                                <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                            className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                         >
                                             <div className="absolute top-2 right-2">
                                                 <RiDeleteBinLine
@@ -1123,11 +1128,11 @@ const MEPPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                 {thirdSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -1214,11 +1219,11 @@ const MEPPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                 {fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -1265,7 +1270,7 @@ const MEPPage = () => {
                                                     control={control}
                                                     rules={{ required: "Logo is required" }}
                                                     render={({ field }) => (
-                                                        <ImageUploader value={field.value} onChange={field.onChange} />
+                                                        <ImageUploader isLogo value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                                 {errors.fourthSection?.items?.[index]?.logo && (
@@ -1421,14 +1426,19 @@ const MEPPage = () => {
                 </div>
                 </AdminItemContainer> */}
 
-                <div className="flex flex-col gap-2">
-                    <Label className="pl-3 font-bold">Meta Title</Label>
-                    <Input type="text" placeholder="Meta Title" {...register("metaTitle_ar")} />
-                </div>
-                <div className="flex flex-col gap-2">
-                    <Label className="pl-3 font-bold">Meta Description</Label>
-                    <Input type="text" placeholder="Meta Description" {...register("metaDescription_ar")} />
-                </div>
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Title</Label>
+                            <Input type="text" placeholder="" {...register("metaTitle_ar")} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Description</Label>
+                            <Input type="text" placeholder="" {...register("metaDescription_ar")} />
+                        </div>
+                    </div>
+                </AdminItemContainer>
             </div>
 
             <div className="col-span-2">

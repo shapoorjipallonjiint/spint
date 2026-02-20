@@ -334,9 +334,9 @@ const QualityPage = () => {
                             <div className="grid grid-cols-1 gap-2">
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                         {unifiedStandardSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
                                                 <div className="absolute top-2 right-2">
                                                     <RiDeleteBinLine
                                                         onClick={() => unifiedStandardSectionRemove(index)}
@@ -350,7 +350,7 @@ const QualityPage = () => {
                                                         control={control}
                                                         rules={{ required: "Logo is required" }}
                                                         render={({ field }) => (
-                                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                                            <ImageUploader isLogo value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
                                                     {errors.unifiedStandardSection?.items?.[index]?.logo && (
@@ -452,11 +452,11 @@ const QualityPage = () => {
 
                         <div>
                             <Label className="font-bold">First Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                 {fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -580,9 +580,9 @@ const QualityPage = () => {
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                         {secondSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
                                                 <div className="absolute top-2 right-2">
                                                     <RiDeleteBinLine
                                                         onClick={() => secondSectionRemove(index)}
@@ -732,13 +732,13 @@ const QualityPage = () => {
                             </div>
                         </div>
 
-                        <div className="border p-5 rounded-md">
+                        <div className="border border-black/20 p-5 rounded-md">
                             <Label>Items One (Key Values)</Label>
-                            <div className="border p-2 rounded-md mt-2">
+                            <div className="border border-black/20 p-2 rounded-md mt-2">
                                 {thirdSectionItemsOne.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-2 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -785,13 +785,13 @@ const QualityPage = () => {
                             </div>
                         </div>
 
-                        <div className="border rounded-md p-5">
+                        <div className="border border-black/20 rounded-md p-5">
                             <Label>Items Two (Images)</Label>
-                            <div className="border p-2 rounded-md mt-2">
+                            <div className="border border-black/20 p-2 rounded-md mt-2">
                                 {thirdSectionItemsTwo.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 pt-2 relative border-b pb-4 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 pt-2 relative border-b border-black/20 pb-4 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -910,16 +910,19 @@ const QualityPage = () => {
                     </div>
                 </AdminItemContainer>
 
-                <div className="p-5">
-                    <div className="flex flex-col gap-2 mb-4">
-                        <Label className="pl-3 font-bold">Meta Title</Label>
-                        <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className="flex flex-col gap-2 mb-4">
+                            <Label className="font-bold">Title</Label>
+                            <Input type="text" placeholder="" {...register("metaTitle")} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Description</Label>
+                            <Input type="text" placeholder="" {...register("metaDescription")} />
+                        </div>
                     </div>
-                    <div className="flex flex-col gap-2">
-                        <Label className="pl-3 font-bold">Meta Description</Label>
-                        <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
-                    </div>
-                </div>
+                </AdminItemContainer>
             </div>
 
             {/*Arabic Version */}
@@ -1009,9 +1012,9 @@ const QualityPage = () => {
                             <div className="grid grid-cols-1 gap-2">
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                         {unifiedStandardSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
                                                 <div className="absolute top-2 right-2">
                                                     <RiDeleteBinLine
                                                         onClick={() => unifiedStandardSectionRemove(index)}
@@ -1025,7 +1028,7 @@ const QualityPage = () => {
                                                         control={control}
                                                         // rules={{ required: "Logo is required" }}
                                                         render={({ field }) => (
-                                                            <ImageUploader value={field.value} onChange={field.onChange} />
+                                                            <ImageUploader isLogo value={field.value} onChange={field.onChange} />
                                                         )}
                                                     />
                                                 </div>
@@ -1094,11 +1097,11 @@ const QualityPage = () => {
 
                         <div>
                             <Label className="font-bold">First Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                 {fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -1201,9 +1204,9 @@ const QualityPage = () => {
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                         {secondSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
                                                 <div className="absolute top-2 right-2">
                                                     <RiDeleteBinLine
                                                         onClick={() => secondSectionRemove(index)}
@@ -1343,13 +1346,13 @@ const QualityPage = () => {
                             </div>
                         </div>
 
-                        <div className="border p-5 rounded-md">
+                        <div className="border border-black/20 p-5 rounded-md">
                             <Label>Items One (Key Values)</Label>
-                            <div className="border p-2 rounded-md mt-2">
+                            <div className="border border-black/20 p-2 rounded-md mt-2">
                                 {thirdSectionItemsOne.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-2 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -1396,13 +1399,13 @@ const QualityPage = () => {
                             </div>
                         </div>
 
-                        <div className="border rounded-md p-5">
+                        <div className="border border-black/20 rounded-md p-5">
                             <Label>Items Two (Images)</Label>
-                            <div className="border p-2 rounded-md mt-2">
+                            <div className="border border-black/20 p-2 rounded-md mt-2">
                                 {thirdSectionItemsTwo.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-4 pt-2 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-4 pt-2 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -1513,16 +1516,19 @@ const QualityPage = () => {
                     </div>
                 </AdminItemContainer>
 
-                <div className="p-5">
-                    <div className="flex flex-col gap-2 mb-4">
-                        <Label className="pl-3 font-bold">Meta Title</Label>
-                        <Input type="text" placeholder="Meta Title" {...register("metaTitle_ar")} />
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className="flex flex-col gap-2 mb-4">
+                            <Label className="font-bold">Title</Label>
+                            <Input type="text" placeholder="" {...register("metaTitle_ar")} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Description</Label>
+                            <Input type="text" placeholder="" {...register("metaDescription_ar")} />
+                        </div>
                     </div>
-                    <div className="flex flex-col gap-2">
-                        <Label className="pl-3 font-bold">Meta Description</Label>
-                        <Input type="text" placeholder="Meta Description" {...register("metaDescription_ar")} />
-                    </div>
-                </div>
+                </AdminItemContainer>
             </div>
 
             <div className="flex col-span-2">

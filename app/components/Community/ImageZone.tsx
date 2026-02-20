@@ -21,7 +21,7 @@ export function ImageZone<TFieldValues extends FieldValues>({ label, zoneKey, fi
     const images: ImageItem[] = field.value ?? [];
 
     return (
-        <div className="border rounded-lg px-2 py-3 h-full w-full">
+        <div className="border border-black/20 rounded-lg px-2 py-3 h-full w-full">
             <div className="flex justify-between items-center mb-3 gap-4 w-full">
                 <h4 className="font-semibold text-sm">{label}</h4>
 
