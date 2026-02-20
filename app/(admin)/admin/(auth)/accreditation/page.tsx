@@ -510,9 +510,9 @@ const AccreditationPage = () => {
             </form>
 
 
-            <div className="h-screen grid grid-cols-2 gap-5">
+            <div className="h-screen grid grid-cols-2 gap-5 mt-10">
                 <div className="flex flex-col gap-2 h-screen">
-                    <div className="h-1/2 w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
+                    <div className="h-full w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
                         <div className="flex justify-between border-b-2 pb-2">
                             <Label className="text-sm font-bold">Category</Label>
                             <Dialog>
@@ -718,6 +718,7 @@ const AccreditationPage = () => {
                             <div className="flex items-center gap-4">
                                 <Dialog>
                                     <DialogTrigger
+                                        className="bg-black text-white px-2 py-1 rounded-md"
                                         onClick={() => {
                                             setFileImage("");
                                             setFileImageAlt("");
@@ -858,7 +859,6 @@ const AccreditationPage = () => {
                                                     <div className="grid grid-cols-2 gap-2 relative pb-5">
                                                         <div className="flex flex-col gap-2">
                                                             <div className="flex flex-col gap-2">
-                                                                {item.category}
                                                                 <Label className="font-bold">File Image</Label>
 
                                                                 <ImageUploader value={fileImage} onChange={(url) => setFileImage(url)} />

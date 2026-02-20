@@ -91,7 +91,10 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
         <div className="absolute inset-0 z-10 hidden lg:block">
           <div className="container">
             <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`flex flex-col 3xl:ml-[10%] 3xl:-mt-6 ${pathname === "/services/interior-design" ? "lg:-translate-y-[8%]" : ""}`}>
-              <Image src={t.headProfilePic} alt={t.headProfilePicAlt} width={300} height={350} className="object-cover w-[200px] h-[220px] xl:w-[200px] xl:h-[210px] 2xl:w-[240px] 2xl:h-[245px] 3xl:w-[290px] 3xl:h-[290px]" />
+              <div className="border-b w-fit px-3 border-black/20">
+
+                <Image src={t.headProfilePic} alt={t.headProfilePicAlt} width={300} height={350} className="object-cover w-[200px] h-[220px] xl:w-[200px] xl:h-[210px] 2xl:w-[240px] 2xl:h-[245px] 3xl:w-[290px] 3xl:h-[290px]" />
+              </div>
               <motion.p variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-20 3xl:text-24 font-medium mt-1">{t.headName}</motion.p>
               <motion.p variants={moveUp(0.42)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-16 3xl:text-18 font-light leading-[1.2]">{t.headDesignation}</motion.p>
             </motion.div>
