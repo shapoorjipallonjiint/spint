@@ -204,9 +204,9 @@ const ContactPage = () => {
 
                         <Label className="font-bold">Items</Label>
 
-                        <div className="border p-3 rounded-md flex flex-col gap-5">
+                        <div className="border border-black/20 p-3 rounded-md flex flex-col gap-5">
                             {secondSectionItems.map((field, index) => (
-                                <div key={field.id} className="grid grid-cols-2 gap-4 relative border-b pb-5">
+                                <div key={field.id} className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-5">
                                     <RiDeleteBinLine
                                         className="absolute right-2 top-2 cursor-pointer text-red-600"
                                         onClick={() => secondSectionRemove(index)}
@@ -276,15 +276,20 @@ const ContactPage = () => {
                 </AdminItemContainer>
 
                 {/* Meta */}
-                <div className="flex flex-col gap-2">
-                    <Label className="font-bold">Meta Title</Label>
-                    <Input {...register("metaTitle")} />
-                </div>
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Title</Label>
+                            <Input {...register("metaTitle")} />
+                        </div>
 
-                <div className="flex flex-col gap-2">
-                    <Label className="font-bold">Meta Description</Label>
-                    <Input {...register("metaDescription")} />
-                </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Description</Label>
+                            <Input {...register("metaDescription")} />
+                        </div>
+                    </div>
+                </AdminItemContainer>
             </div>
 
             {/* Arabic Version */}
@@ -367,9 +372,9 @@ const ContactPage = () => {
 
                         <Label className="font-bold">Items</Label>
 
-                        <div className="border p-3 rounded-md flex flex-col gap-5">
+                        <div className="border border-black/20 p-3 rounded-md flex flex-col gap-5">
                             {secondSectionItems.map((field, index) => (
-                                <div key={field.id} className="grid grid-cols-2 gap-4 relative border-b pb-5">
+                                <div key={field.id} className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-5">
                                     <RiDeleteBinLine
                                         className="absolute right-2 top-2 cursor-pointer text-red-600"
                                         onClick={() => secondSectionRemove(index)}
@@ -441,15 +446,20 @@ const ContactPage = () => {
                 </AdminItemContainer>
 
                 {/* Meta */}
-                <div className="flex flex-col gap-2">
-                    <Label className="font-bold">Meta Title</Label>
-                    <Input {...register("metaTitle_ar")} />
-                </div>
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Title</Label>
+                            <Input {...register("metaTitle_ar")} />
+                        </div>
 
-                <div className="flex flex-col gap-2">
-                    <Label className="font-bold">Meta Description</Label>
-                    <Input {...register("metaDescription_ar")} />
-                </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Description</Label>
+                            <Input {...register("metaDescription_ar")} />
+                        </div>
+                    </div>
+                </AdminItemContainer>
             </div>
 
             <div className="col-span-2">

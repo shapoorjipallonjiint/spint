@@ -238,19 +238,22 @@ const GlobalPresencePage = () => {
                     </AdminItemContainer>
 
                     {/* META */}
-                    <div className="flex flex-col gap-4 p-1">
-                        <div className="flex flex-col gap-1">
-                            <Label>Meta Title</Label>
-                            <Input {...register("metaTitle")} />
-                            <FormError error={errors.metaTitle?.message} />
-                        </div>
+                    <AdminItemContainer>
+                        <Label main>SEO</Label>
+                        <div className="flex flex-col gap-4 p-5">
+                            <div className="flex flex-col gap-1">
+                                <Label>Title</Label>
+                                <Input {...register("metaTitle")} />
+                                <FormError error={errors.metaTitle?.message} />
+                            </div>
 
-                        <div className="flex flex-col gap-1">
-                            <Label>Meta Description</Label>
-                            <Input {...register("metaDescription")} />
-                            <FormError error={errors.metaDescription?.message} />
+                            <div className="flex flex-col gap-1">
+                                <Label>Description</Label>
+                                <Input {...register("metaDescription")} />
+                                <FormError error={errors.metaDescription?.message} />
+                            </div>
                         </div>
-                    </div>
+                    </AdminItemContainer>
                 </div>
 
                 <div className="flex flex-col gap-6">
@@ -338,17 +341,20 @@ const GlobalPresencePage = () => {
                     </AdminItemContainer>
 
                     {/* META */}
-                    <div className="flex flex-col gap-4 p-1">
-                        <div className="flex flex-col gap-1">
-                            <Label>Meta Title</Label>
-                            <Input {...register("metaTitle_ar")} />
-                        </div>
+                    <AdminItemContainer>
+                        <Label main>SEO</Label>
+                        <div className="flex flex-col gap-4 p-5">
+                            <div className="flex flex-col gap-1">
+                                <Label>Title</Label>
+                                <Input {...register("metaTitle_ar")} />
+                            </div>
 
-                        <div className="flex flex-col gap-1">
-                            <Label>Meta Description</Label>
-                            <Input {...register("metaDescription_ar")} />
+                            <div className="flex flex-col gap-1">
+                                <Label>Description</Label>
+                                <Input {...register("metaDescription_ar")} />
+                            </div>
                         </div>
-                    </div>
+                    </AdminItemContainer>
                 </div>
 
                 {/* SUBMIT */}

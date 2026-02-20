@@ -30,7 +30,7 @@ interface DesignStudioProps {
     homeImage: string;
     homeImageAlt: string;
     homeImageAlt_ar: string;
-    link:string;
+    link: string;
     firstSection: {
         title: string;
         title_ar: string;
@@ -183,49 +183,49 @@ const DesignStudioPage = () => {
                                 <Input type='text' placeholder='Page Title' {...register("pageTitle")} />
                             </div>
                             <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Title (for home and project page selector)</Label>
-                        <Input type='text' placeholder='Title' {...register("title")} />
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Description (for home)</Label>
-                        <Textarea {...register("description")} />
-                    </div>
+                                <Label className='font-bold'>Title (for home and project page selector)</Label>
+                                <Input type='text' placeholder='Title' {...register("title")} />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Description (for home)</Label>
+                                <Textarea {...register("description")} />
+                            </div>
 
-                    <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Home Image</Label>
-                                                    <Controller
-                                                        name={`homeImage`}
-                                                        control={control}
-                                                        rules={{ required: "Image is required" }}
-                                                        render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
-                                                        )}
-                                                    />
-                                                    {errors.homeImage && (
-                                                        <p className="text-red-500">{errors.homeImage.message}</p>
-                                                    )}
-                                                </div>
+                            <div className='flex flex-col gap-2'>
+                                <div className='flex flex-col gap-2'>
+                                    <Label className='font-bold'>Home Image</Label>
+                                    <Controller
+                                        name={`homeImage`}
+                                        control={control}
+                                        rules={{ required: "Image is required" }}
+                                        render={({ field }) => (
+                                            <ImageUploader
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        )}
+                                    />
+                                    {errors.homeImage && (
+                                        <p className="text-red-500">{errors.homeImage.message}</p>
+                                    )}
+                                </div>
 
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Home Image Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`homeImageAlt`, {
-                                                            required: "Value is required"
-                                                        })} />
-                                                        {errors.homeImageAlt && <p className='text-red-500'>{errors.homeImageAlt.message}</p>}
-                                                    </div>
-                                                </div>
+                                <div className='flex flex-col gap-2'>
+                                    <div className='flex flex-col gap-2'>
+                                        <Label className='font-bold'>Home Image Alt Tag</Label>
+                                        <Input type='text' placeholder='Alt Tag' {...register(`homeImageAlt`, {
+                                            required: "Value is required"
+                                        })} />
+                                        {errors.homeImageAlt && <p className='text-red-500'>{errors.homeImageAlt.message}</p>}
+                                    </div>
+                                </div>
 
 
-                                            </div>
-                                            <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Link (for home)</Label>
-                        <Input type='text' placeholder='Link' {...register("link")} />
-                    </div>
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Link (for home)</Label>
+                                <Input type='text' placeholder='Link' {...register("link")} />
+                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -313,11 +313,11 @@ const DesignStudioPage = () => {
                             </div>
                             <div>
                                 <Label className='font-bold'>Items</Label>
-                                <div className='border p-2 rounded-md flex flex-col gap-5'>
+                                <div className='border border-black/20 p-2 rounded-md flex flex-col gap-5'>
 
 
                                     {secondSectionItems.map((field, index) => (
-                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0'>
+                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
                                             <div className='absolute top-2 right-2'>
                                                 <RiDeleteBinLine onClick={() => secondSectionRemove(index)} className='cursor-pointer text-red-600' />
                                             </div>
@@ -492,15 +492,19 @@ const DesignStudioPage = () => {
                     </div>
                 </AdminItemContainer>
 
-
-                <div className='flex flex-col gap-2'>
-                    <Label className='pl-3 font-bold'>Meta Title</Label>
-                    <Input type='text' placeholder='Meta Title' {...register("metaTitle")} />
-                </div>
-                <div className='flex flex-col gap-2'>
-                    <Label className='pl-3 font-bold'>Meta Description</Label>
-                    <Input type='text' placeholder='Meta Description' {...register("metaDescription")} />
-                </div>
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className='flex flex-col gap-2'>
+                            <Label className='font-bold'>Title</Label>
+                            <Input type='text' placeholder='' {...register("metaTitle")} />
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <Label className='font-bold'>Description</Label>
+                            <Input type='text' placeholder='' {...register("metaDescription")} />
+                        </div>
+                    </div>
+                </AdminItemContainer>
 
 
 
@@ -539,47 +543,47 @@ const DesignStudioPage = () => {
                                 <Input type='text' placeholder='Page Title' {...register("pageTitle_ar")} />
                             </div>
                             <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Title (for home and project page selector)</Label>
-                        <Input type='text' placeholder='Title' {...register("title_ar")} />
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Description (for home)</Label>
-                        <Textarea {...register("description_ar")} />
-                    </div>
+                                <Label className='font-bold'>Title (for home and project page selector)</Label>
+                                <Input type='text' placeholder='Title' {...register("title_ar")} />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Description (for home)</Label>
+                                <Textarea {...register("description_ar")} />
+                            </div>
 
-                    <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Home Image</Label>
-                                                    <Controller
-                                                        name={`homeImage`}
-                                                        control={control}
-                                                        rules={{ required: "Image is required" }}
-                                                        render={({ field }) => (
-                                                            <ImageUploader
-                                                                value={field.value}
-                                                                onChange={field.onChange}
-                                                            />
-                                                        )}
-                                                    />
-                                                    {errors.homeImage && (
-                                                        <p className="text-red-500">{errors.homeImage.message}</p>
-                                                    )}
-                                                </div>
+                            <div className='flex flex-col gap-2'>
+                                <div className='flex flex-col gap-2'>
+                                    <Label className='font-bold'>Home Image</Label>
+                                    <Controller
+                                        name={`homeImage`}
+                                        control={control}
+                                        rules={{ required: "Image is required" }}
+                                        render={({ field }) => (
+                                            <ImageUploader
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        )}
+                                    />
+                                    {errors.homeImage && (
+                                        <p className="text-red-500">{errors.homeImage.message}</p>
+                                    )}
+                                </div>
 
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <Label className='font-bold'>Home Image Alt Tag</Label>
-                                                        <Input type='text' placeholder='Alt Tag' {...register(`homeImageAlt_ar`)} />
-                                                    </div>
-                                                </div>
+                                <div className='flex flex-col gap-2'>
+                                    <div className='flex flex-col gap-2'>
+                                        <Label className='font-bold'>Home Image Alt Tag</Label>
+                                        <Input type='text' placeholder='Alt Tag' {...register(`homeImageAlt_ar`)} />
+                                    </div>
+                                </div>
 
-                                                <div className='flex flex-col gap-1'>
-                        <Label className='font-bold'>Link (for home)</Label>
-                        <Input disabled type='text' placeholder='Link' />
-                    </div>
+                                <div className='flex flex-col gap-1'>
+                                    <Label className='font-bold'>Link (for home)</Label>
+                                    <Input disabled type='text' placeholder='Link' />
+                                </div>
 
 
-                                            </div>
+                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -659,15 +663,15 @@ const DesignStudioPage = () => {
                                 <Label className='font-bold'>Title</Label>
                                 <Input type='text' placeholder='Title' {...register("secondSection.title_ar")} />
                             </div>
-                            
+
 
                             <div>
                                 <Label className='font-bold'>Items</Label>
-                                <div className='border p-2 rounded-md flex flex-col gap-5'>
+                                <div className='border border-black/20 p-2 rounded-md flex flex-col gap-5'>
 
 
                                     {secondSectionItems.map((field, index) => (
-                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0'>
+                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
                                             <div className='absolute top-2 right-2'>
                                                 <RiDeleteBinLine onClick={() => secondSectionRemove(index)} className='cursor-pointer text-red-600' />
                                             </div>
@@ -836,14 +840,19 @@ const DesignStudioPage = () => {
                     </div>
                 </AdminItemContainer>
 
-                <div className='flex flex-col gap-2'>
-                    <Label className='pl-3 font-bold'>Meta Title</Label>
-                    <Input type='text' placeholder='Meta Title' {...register("metaTitle_ar")} />
-                </div>
-                <div className='flex flex-col gap-2'>
-                    <Label className='pl-3 font-bold'>Meta Description</Label>
-                    <Input type='text' placeholder='Meta Description' {...register("metaDescription_ar")} />
-                </div>
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className='flex flex-col gap-2'>
+                            <Label className='font-bold'>Title</Label>
+                            <Input type='text' placeholder='' {...register("metaTitle_ar")} />
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <Label className='font-bold'>Description</Label>
+                            <Input type='text' placeholder='' {...register("metaDescription_ar")} />
+                        </div>
+                    </div>
+                </AdminItemContainer>
 
 
 

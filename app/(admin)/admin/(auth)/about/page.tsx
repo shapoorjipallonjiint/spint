@@ -272,9 +272,9 @@ const AboutPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                 {firstSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
                                                 onClick={() => firstSectionRemove(index)}
@@ -354,7 +354,7 @@ const AboutPage = () => {
                                 <div className="col-span-2 flex flex-col gap-2">
                                     <Label className="font-bold">Description</Label>
                                     <textarea
-                                        className="min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                        className="min-h-[120px] w-full rounded-md border border-black/20 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                                         {...register("secondSection.description")}
                                     />
                                 </div>
@@ -362,11 +362,11 @@ const AboutPage = () => {
 
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border p-3 rounded-md flex flex-col gap-4 mt-2">
+                                <div className="border border-black/20 p-3 rounded-md flex flex-col gap-4 mt-2">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-4 relative border-b pb-4 last:border-b-0"
+                                            className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-4 last:border-b-0"
                                         >
                                             <RiDeleteBinLine
                                                 onClick={() => secondSectionRemove(index)}
@@ -391,7 +391,7 @@ const AboutPage = () => {
                                             <div className="col-span-2 flex flex-col gap-2">
                                                 <Label className="font-bold">Description</Label>
                                                 <textarea
-                                                    className="min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                                    className="min-h-[120px] w-full rounded-md border border-black/20 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                                                     {...register(`secondSection.items.${index}.description`)}
                                                 />
                                             </div>
@@ -445,11 +445,11 @@ const AboutPage = () => {
                         </div>
 
                         <Label>Items</Label>
-                        <div className="border p-2 rounded-md">
+                        <div className="border border-black/20 p-2 rounded-md">
                             {thirdSectionItems.map((field, index) => (
                                 <div
                                     key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b pb-2 last:border-b-0"
+                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
                                 >
                                     <div className="absolute top-2 right-2">
                                         <RiDeleteBinLine
@@ -524,11 +524,11 @@ const AboutPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                 {fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -741,14 +741,19 @@ const AboutPage = () => {
                     </div>
                 </AdminItemContainer>
 
-                <div className="flex flex-col gap-2">
-                    <Label className="pl-3 font-bold">Meta Title</Label>
-                    <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
-                </div>
-                <div className="flex flex-col gap-2">
-                    <Label className="pl-3 font-bold">Meta Description</Label>
-                    <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
-                </div>
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Title</Label>
+                            <Input type="text" placeholder="" {...register("metaTitle")} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Description</Label>
+                            <Input type="text" placeholder="" {...register("metaDescription")} />
+                        </div>
+                    </div>
+                </AdminItemContainer>
             </div>
 
             {/*Arabic Version */}
@@ -802,9 +807,9 @@ const AboutPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
                                 {firstSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b pb-5">
+                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
                                                 onClick={() => firstSectionRemove(index)}
@@ -869,7 +874,7 @@ const AboutPage = () => {
                                 <div className="col-span-2 flex flex-col gap-2">
                                     <Label className="font-bold">Description</Label>
                                     <textarea
-                                        className="min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                        className="min-h-[120px] w-full rounded-md border border-black/20 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                                         {...register("secondSection.description_ar")}
                                     />
                                 </div>
@@ -877,11 +882,11 @@ const AboutPage = () => {
 
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border p-3 rounded-md flex flex-col gap-4 mt-2">
+                                <div className="border border-black/20 p-3 rounded-md flex flex-col gap-4 mt-2">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-4 relative border-b pb-4 last:border-b-0"
+                                            className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-4 last:border-b-0"
                                         >
                                             <RiDeleteBinLine
                                                 onClick={() => secondSectionRemove(index)}
@@ -906,7 +911,7 @@ const AboutPage = () => {
                                             <div className="col-span-2 flex flex-col gap-2">
                                                 <Label className="font-bold">Description</Label>
                                                 <textarea
-                                                    className="min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                                    className="min-h-[120px] w-full rounded-md border border-black/20 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                                                     {...register(`secondSection.items.${index}.description_ar`)}
                                                 />
                                             </div>
@@ -951,11 +956,11 @@ const AboutPage = () => {
                         </div>
 
                         <Label>Items</Label>
-                        <div className="border p-2 rounded-md">
+                        <div className="border border-black/20 p-2 rounded-md">
                             {thirdSectionItems.map((field, index) => (
                                 <div
                                     key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b pb-2 last:border-b-0"
+                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
                                 >
                                     <div className="absolute top-2 right-2">
                                         <RiDeleteBinLine
@@ -1021,11 +1026,11 @@ const AboutPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
                                 {fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b pb-5 last:border-b-0"
+                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
                                     >
                                         <div className="absolute top-2 right-2">
                                             <RiDeleteBinLine
@@ -1188,14 +1193,19 @@ const AboutPage = () => {
                     </div>
                 </AdminItemContainer>
 
-                <div className="flex flex-col gap-2">
-                    <Label className="pl-3 font-bold">Meta Title</Label>
-                    <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
-                </div>
-                <div className="flex flex-col gap-2">
-                    <Label className="pl-3 font-bold">Meta Description</Label>
-                    <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
-                </div>
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="flex flex-col gap-2 p-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Title</Label>
+                            <Input type="text" placeholder="" {...register("metaTitle")} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Description</Label>
+                            <Input type="text" placeholder="" {...register("metaDescription")} />
+                        </div>
+                    </div>
+                </AdminItemContainer>
             </div>
 
             <div className="flex col-span-2">
