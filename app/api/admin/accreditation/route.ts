@@ -39,8 +39,8 @@ export async function PATCH(request: NextRequest) {
             }
 
             let movedAccreditation: any = null;
+            let originalIndex: number | null = null;
 
-            // 1️⃣ Remove accreditation from wherever it exists
             accreditationDoc.categories.forEach((category: any) => {
                 const index = category.accreditations.findIndex(
                     (acc: any) => acc._id.toString() === id
@@ -48,6 +48,7 @@ export async function PATCH(request: NextRequest) {
 
                 if (index !== -1) {
                     movedAccreditation = category.accreditations[index];
+                    originalIndex = index; // store index
                     category.accreditations.splice(index, 1);
                 }
             });
@@ -82,7 +83,11 @@ export async function PATCH(request: NextRequest) {
 
 
             // 4️⃣ Add accreditation to target category
-            targetCategory.accreditations.push(movedAccreditation);
+            if (originalIndex !== null && originalIndex <= targetCategory.accreditations.length) {
+                targetCategory.accreditations.splice(originalIndex, 0, movedAccreditation);
+            } else {
+                targetCategory.accreditations.push(movedAccreditation);
+            }
 
             // 5️⃣ Save once
             await accreditationDoc.save();

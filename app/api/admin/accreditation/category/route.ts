@@ -67,7 +67,7 @@ export async function PATCH(request: NextRequest) {
                 // update all accreditations inside this category
                 category.accreditations = category.accreditations.map((a: { _id: string; }) => ({
                     ...a,
-                    category: a._id,
+                    category: category._id,
                 }));
             }
             return category;
