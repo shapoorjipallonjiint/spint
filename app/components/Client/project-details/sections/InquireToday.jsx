@@ -94,7 +94,7 @@ const InquireToday = ({ data }) => {
             </div>
             <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0, once: true }} className="flex items-center gap-2">
               <p className="font-16 font-light text-white uppercase leading-[1.75]">Email</p>
-              <p className="font-16 font-light text-[#97B6FF] leading-[1.75]">{t.email}</p>
+              <p className="font-16 font-light text-[#97B6FF] leading-[1.75]">info@spinternational.com</p>
               <div className={isArabic ? "-scale-x-100" : ""}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="27" height="17" viewBox="0 0 27 17" fill="none">
                   <path d="M17.6328 1.93262L25.0111 8.5134L17.6579 15.0679" stroke="#30B6F9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

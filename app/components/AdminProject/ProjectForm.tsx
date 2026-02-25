@@ -40,9 +40,11 @@ interface ProjectFormProps {
         title: string;
         title_ar: string;
         location: string;
-        sector: string;
+        sector: string[];
         service: string[];
         status: string;
+        project: string;
+        project_ar: string;
         items: {
             key: string;
             key_ar: string;
@@ -113,7 +115,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                 title: "",
                 title_ar: "",
                 location: "",
-                sector: "",
+                sector: [],
                 status: "",
             },
             images: [],
@@ -177,7 +179,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                 setImageUrls(data.data.images);
                 setValue("secondSection", {
                     ...data.data.secondSection,
-                    sector: data.data.secondSection.sector?._id || "",
+                    sector: data.data.secondSection.sector?.map((s: any) => s._id) || [],
                     location: data.data.secondSection.location?._id || "",
                     // service: data.data.secondSection.service._id || "",
                     service: data.data.secondSection.service?.map((s: any) => s._id) || [],
@@ -442,20 +444,30 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             <Controller
                                 name="secondSection.sector"
                                 control={control}
-                                rules={{ required: "Sector is required" }}
+                                rules={{ required: "Select at least one sector" }}
                                 render={({ field }) => (
-                                    <Select onValueChange={field.onChange} value={field.value} defaultValue="">
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select Sector" />
-                                        </SelectTrigger>
-                                        <SelectContent className="max-h-[300px] overflow-y-scroll bg-white">
-                                            {sectorList.map((item, index) => (
-                                                <SelectItem key={index} value={item._id} className="hover:bg-gray-200">
+                                    <div className="flex flex-col gap-2">
+                                        {sectorList.map((item) => {
+                                            const selected = field.value?.includes(item._id);
+
+                                            return (
+                                                <label key={item._id} className="flex items-center gap-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selected}
+                                                        onChange={() => {
+                                                            if (selected) {
+                                                                field.onChange(field.value.filter((v) => v !== item._id));
+                                                            } else {
+                                                                field.onChange([...(field.value || []), item._id]);
+                                                            }
+                                                        }}
+                                                    />
                                                     {item.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                                </label>
+                                            );
+                                        })}
+                                    </div>
                                 )}
                             />
                             {errors.secondSection?.sector && (
@@ -544,6 +556,13 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                 <p className="text-red-500">{errors.secondSection.status.message}</p>
                             )}
                         </div>
+
+                        <Label className=" font-bold">Project</Label>
+                        <Input
+                            type="text"
+                            placeholder="Project"
+                            {...register("secondSection.project")}
+                        />
 
                         <div className="flex flex-col gap-2">
                             <Label className=" font-bold">Items</Label>
@@ -972,22 +991,31 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             <Controller
                                 name="secondSection.sector"
                                 control={control}
-                                rules={{ required: "Sector is required" }}
+                                rules={{ required: "Select at least one sector" }}
                                 render={({ field }) => (
-                                    <Select disabled onValueChange={field.onChange} value={field.value} defaultValue="">
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select Sector" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {sectorList.map((item, index) => (
-                                                <SelectItem key={index} value={item._id}>
-                                                    {item.name_ar?.trim()
-                                                        ? `${item.name_ar} (${item.name})`
-                                                        : `${item.name}`}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    <div className="flex flex-col gap-2">
+                                        {sectorList.map((item) => {
+                                            const selected = field.value?.includes(item._id);
+
+                                            return (
+                                                <label key={item._id} className="flex items-center gap-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selected}
+                                                        onChange={() => {
+                                                            if (selected) {
+                                                                field.onChange(field.value.filter((v) => v !== item._id));
+                                                            } else {
+                                                                field.onChange([...(field.value || []), item._id]);
+                                                            }
+                                                        }}
+                                                    />
+                                                    {item.name}{" "}
+                                                    <span className="text-primary text-sm">AR:({item.name_ar})</span>
+                                                </label>
+                                            );
+                                        })}
+                                    </div>
                                 )}
                             />
                             {errors.secondSection?.sector && (
@@ -1059,6 +1087,13 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                 <p className="text-red-500">{errors.firstSection.status.message}</p>
                             )}
                         </div>
+
+                        <Label className=" font-bold">Project</Label>
+                        <Input
+                            type="text"
+                            placeholder="Project"
+                            {...register("secondSection.project_ar")}
+                        />
 
                         <div className="flex flex-col gap-2">
                             <Label className=" font-bold">Items</Label>
