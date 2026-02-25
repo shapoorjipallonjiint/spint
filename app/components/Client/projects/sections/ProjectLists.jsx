@@ -15,6 +15,7 @@ import { useRouter, usePathname } from "next/navigation";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import Reveal from "@/app/components/common/Reveal";
+import { useToNavigateCountryContext } from "@/contexts/toNavigateCountry";
 
 
 
@@ -90,14 +91,17 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const [selectedStatus, setSelectedStatus] = useState(status[0]);
     const [selectedCountry, setSelectedCountry] = useState(country[0]);
     const [selectedService, setSelectedService] = useState(service[0]);
+    const { toNavigateCountry, setToNavigateCountry } = useToNavigateCountryContext();
 
     // 🔹 Filter items based on all dropdowns
     const filteredItems = useMemo(() => {
         let items = [...tData];
         console.log(items);
         if (selectedSector.id !== 1) {
-            items = items.filter(
-                (item) => item.secondSection?.sector?.name.toLowerCase() === selectedSector?.name.toLowerCase(),
+            items = items.filter((item) =>
+                item.secondSection?.sector?.some(
+                    (sector) => sector.name.toLowerCase() === selectedSector?.name.toLowerCase(),
+                ),
             );
         }
 
@@ -176,11 +180,11 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setCurrentPage(1);
 
         // update URL (no state reading from it)
-        if (opt.name === "All") {
-            router.push(pathname);
-        } else {
-            router.push(`${pathname}?country=${encodeURIComponent(opt.name)}`);
-        }
+        // if (opt.name === "All") {
+        //     router.push(pathname);
+        // } else {
+        //     router.push(`${pathname}?country=${encodeURIComponent(opt.name)}`);
+        // }
     };
 
     const handleServiceChange = (opt) => {
@@ -197,21 +201,42 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setCurrentPage(1);
     };
 
+
     useEffect(() => {
-        if (isInitialized.current) return;
 
-        const countryFromUrl = searchParams.get("country");
-        if (!countryFromUrl) return;
 
-        const matchedCountry = country.find((c) => c.name.toLowerCase() === countryFromUrl.toLowerCase());
+        // 🔴 Case 1: User did NOT come from home → remove query
+        if (toNavigateCountry) {
+            // 🟢 Case 2: User came from home → apply filter
+            if (isInitialized.current) return;
 
-        if (matchedCountry) {
-            setSelectedCountry(matchedCountry);
-            setCurrentPage(1);
+
+            const matchedCountry = country.find(
+                (c) => c.name.toLowerCase() === toNavigateCountry.toLowerCase()
+            );
+
+            if (matchedCountry) {
+                setSelectedCountry(matchedCountry);
+                setCurrentPage(1);
+            }
+
+            isInitialized.current = true;
+
+            // ✅ Important: delay resetting flag
+            setToNavigateCountry("");
+        } else {
+            if (toNavigateCountry) {
+                router.replace(pathname);
+            }
+            return;
         }
 
-        isInitialized.current = true;
-    }, [country, searchParams]);
+    }, [country, searchParams, toNavigateCountry]);
+
+
+
+
+
     const handleView = () => {
         const params = new URLSearchParams(searchParams);
         params.set("view", "list");
@@ -247,53 +272,53 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                             </button>
                         </div>
                         <div className={` ${showFilters ? "block" : "hidden"} md:block mb-3`}>
-                        <div className="flex flex-col md:flex-row gap-5 md:items-center lg:gap-12  2xl:gap-25  3xl:gap-[174px] justify-between">
-                            <div className="flex flex-col md:flex-row gap-3 lg:gap-10 2xl:gap-[90px] w-full ">
-                                {/* Sector */}
-                                <div className="w-full lg:w-fit relative">
-                                    <Listbox value={selectedSector} onChange={handleSectorChange}>
-                                        <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
-                                            <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {/* {selectedSector?.name === "All" ? "Sector" : selectedSector?.name} */}
-                                                {selectedSector?.name === "All"
-                                                    ? isArabic
-                                                        ? UI_LABELS.SECTOR.ar
-                                                        : UI_LABELS.SECTOR.en
-                                                    : isArabic
-                                                    ? selectedSector?.name_ar ?? selectedSector?.name
-                                                    : selectedSector?.name}
-                                            </span>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="14"
-                                                height="7"
-                                                viewBox="0 0 16 9"
-                                                fill="none"
-                                                className="w-[14px] h-[7px]"
-                                            >
-                                                <path
-                                                    d="M15 1L7.9992 8L1 1.00159"
-                                                    stroke="#464646"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                />
-                                            </svg>
-                                        </Listbox.Button>
-                                        <Listbox.Options
-                                            as={motion.div}
-                                            initial="hidden"
-                                            animate="show"
-                                            variants={dropdownListVariants}
-                                            onWheel={(e) => {
-                                                e.stopPropagation();
-                                                e.preventDefault();
-                                            }}
-                                            onTouchMove={(e) => {
-                                                e.stopPropagation();
-                                                e.preventDefault();
-                                            }}
-                                            className="
+                            <div className="flex flex-col md:flex-row gap-5 md:items-center lg:gap-12  2xl:gap-25  3xl:gap-[174px] justify-between">
+                                <div className="flex flex-col md:flex-row gap-3 lg:gap-10 2xl:gap-[90px] w-full ">
+                                    {/* Sector */}
+                                    <div className="w-full lg:w-fit relative">
+                                        <Listbox value={selectedSector} onChange={handleSectorChange}>
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
+                                                <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
+                                                    {/* {selectedSector?.name === "All" ? "Sector" : selectedSector?.name} */}
+                                                    {selectedSector?.name === "All"
+                                                        ? isArabic
+                                                            ? UI_LABELS.SECTOR.ar
+                                                            : UI_LABELS.SECTOR.en
+                                                        : isArabic
+                                                            ? selectedSector?.name_ar ?? selectedSector?.name
+                                                            : selectedSector?.name}
+                                                </span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="14"
+                                                    height="7"
+                                                    viewBox="0 0 16 9"
+                                                    fill="none"
+                                                    className="w-[14px] h-[7px]"
+                                                >
+                                                    <path
+                                                        d="M15 1L7.9992 8L1 1.00159"
+                                                        stroke="#464646"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            </Listbox.Button>
+                                            <Listbox.Options
+                                                as={motion.div}
+                                                initial="hidden"
+                                                animate="show"
+                                                variants={dropdownListVariants}
+                                                onWheel={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                }}
+                                                onTouchMove={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                }}
+                                                className="
     absolute
     w-full md:w-[290px]
     h-[290px]
@@ -304,290 +329,290 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     shadow-sm
     z-[50]
   "
-                                        >
-                                            {sector.map((opt) => (
-                                                <Listbox.Option
-                                                    key={opt.id}
-                                                    value={opt}
-                                                    as={motion.div}
-                                                    variants={dropdownItemVariants}
-                                                    className="
+                                            >
+                                                {sector.map((opt) => (
+                                                    <Listbox.Option
+                                                        key={opt.id}
+                                                        value={opt}
+                                                        as={motion.div}
+                                                        variants={dropdownItemVariants}
+                                                        className="
         py-1 px-4
         cursor-pointer group
         hover:bg-[#f0f0f0]
         hover:font-bold transition-colors duration-300
         w-full
       "
-                                                >
-                                                    <span
-                                                        className="
+                                                    >
+                                                        <span
+                                                            className="
           transition-transform duration-300
           group-hover:scale-[1.03]
         "
-                                                    >
-                                                        {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
-                                                    </span>
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </Listbox>
-                                </div>
+                                                        >
+                                                            {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
+                                                        </span>
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </Listbox>
+                                    </div>
 
-                                {/* Status */}
-                                <div className="w-full lg:w-fit relative">
-                                    <Listbox value={selectedStatus} onChange={handleStatusChange}>
-                                        <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
-                                            <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {/* {selectedStatus?.name === "All" ? "Status" : selectedStatus?.name} */}
-                                                {selectedStatus?.name === "All"
-                                                    ? isArabic
-                                                        ? UI_LABELS.STATUS.ar
-                                                        : UI_LABELS.STATUS.en
-                                                    : isArabic
-                                                    ? selectedStatus?.name_ar
-                                                    : selectedStatus?.name}
-                                            </span>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="14"
-                                                height="7"
-                                                viewBox="0 0 16 9"
-                                                fill="none"
+                                    {/* Status */}
+                                    <div className="w-full lg:w-fit relative">
+                                        <Listbox value={selectedStatus} onChange={handleStatusChange}>
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
+                                                <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
+                                                    {/* {selectedStatus?.name === "All" ? "Status" : selectedStatus?.name} */}
+                                                    {selectedStatus?.name === "All"
+                                                        ? isArabic
+                                                            ? UI_LABELS.STATUS.ar
+                                                            : UI_LABELS.STATUS.en
+                                                        : isArabic
+                                                            ? selectedStatus?.name_ar
+                                                            : selectedStatus?.name}
+                                                </span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="14"
+                                                    height="7"
+                                                    viewBox="0 0 16 9"
+                                                    fill="none"
+                                                >
+                                                    <path
+                                                        d="M15 1L7.9992 8L1 1.00159"
+                                                        stroke="#464646"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            </Listbox.Button>
+                                            <Listbox.Options
+                                                as={motion.div}
+                                                initial="hidden"
+                                                animate="show"
+                                                variants={dropdownListVariants}
+                                                className="border-0 outline-0 absolute w-full md:w-[150px] bg-white rounded-sm shadow-sm z-[1]"
                                             >
-                                                <path
-                                                    d="M15 1L7.9992 8L1 1.00159"
-                                                    stroke="#464646"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                />
-                                            </svg>
-                                        </Listbox.Button>
-                                        <Listbox.Options
-                                            as={motion.div}
-                                            initial="hidden"
-                                            animate="show"
-                                            variants={dropdownListVariants}
-                                            className="border-0 outline-0 absolute w-full md:w-[150px] bg-white rounded-sm shadow-sm z-[1]"
-                                        >
-                                            {status.map((opt) => (
-                                                <Listbox.Option
-                                                    key={opt.id}
-                                                    value={opt}
-                                                    as={motion.div}
-                                                    variants={dropdownItemVariants}
-                                                    className="
+                                                {status.map((opt) => (
+                                                    <Listbox.Option
+                                                        key={opt.id}
+                                                        value={opt}
+                                                        as={motion.div}
+                                                        variants={dropdownItemVariants}
+                                                        className="
         py-1 px-4
         cursor-pointer group
         hover:bg-[#f0f0f0]
         hover:font-bold
         w-full transition-colors duration-300
       "
-                                                >
-                                                    <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                        {/* {opt?.name} */}
-                                                        {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
-                                                    </span>
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </Listbox>
-                                </div>
+                                                    >
+                                                        <span className="group-hover:scale-[1.03] transition-transform duration-300">
+                                                            {/* {opt?.name} */}
+                                                            {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
+                                                        </span>
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </Listbox>
+                                    </div>
 
-                                {/* Country */}
-                                <div className="w-full lg:w-fit relative">
-                                    <Listbox value={selectedCountry} onChange={handleCountryChange}>
-                                        <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
-                                            <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {/* {selectedCountry?.name === "All" ? "Country" : selectedCountry?.name} */}
-                                                {selectedCountry?.name === "All"
-                                                    ? isArabic
-                                                        ? UI_LABELS.COUNTRY.ar
-                                                        : UI_LABELS.COUNTRY.en
-                                                    : isArabic
-                                                    ? selectedCountry?.name_ar ?? selectedCountry?.name
-                                                    : selectedCountry?.name}
-                                            </span>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="14"
-                                                height="7"
-                                                viewBox="0 0 16 9"
-                                                fill="none"
-                                            >
-                                                <path
-                                                    d="M15 1L7.9992 8L1 1.00159"
-                                                    stroke="#464646"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                />
-                                            </svg>
-                                        </Listbox.Button>
-                                        <Listbox.Options
-                                            as={motion.div}
-                                            initial="hidden"
-                                            animate="show"
-                                            variants={dropdownListVariants}
-                                            className="
+                                    {/* Country */}
+                                    <div className="w-full lg:w-fit relative">
+                                        <Listbox value={selectedCountry} onChange={handleCountryChange}>
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
+                                                <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
+                                                    {/* {selectedCountry?.name === "All" ? "Country" : selectedCountry?.name} */}
+                                                    {selectedCountry?.name === "All"
+                                                        ? isArabic
+                                                            ? UI_LABELS.COUNTRY.ar
+                                                            : UI_LABELS.COUNTRY.en
+                                                        : isArabic
+                                                            ? selectedCountry?.name_ar ?? selectedCountry?.name
+                                                            : selectedCountry?.name}
+                                                </span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="14"
+                                                    height="7"
+                                                    viewBox="0 0 16 9"
+                                                    fill="none"
+                                                >
+                                                    <path
+                                                        d="M15 1L7.9992 8L1 1.00159"
+                                                        stroke="#464646"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            </Listbox.Button>
+                                            <Listbox.Options
+                                                as={motion.div}
+                                                initial="hidden"
+                                                animate="show"
+                                                variants={dropdownListVariants}
+                                                className="
     border-0 outline-0
     absolute w-full md:w-[200px]
     max-h-[220px] overflow-y-auto
     bg-white rounded-sm shadow-sm z-[50]
   "
-                                            onWheel={(e) => e.stopPropagation()}
-                                            onTouchMove={(e) => e.stopPropagation()}
-                                        >
-                                            {country.map((opt) => (
-                                                <Listbox.Option
-                                                    key={opt.id}
-                                                    value={opt}
-                                                    as={motion.div}
-                                                    variants={dropdownItemVariants}
-                                                    className="
+                                                onWheel={(e) => e.stopPropagation()}
+                                                onTouchMove={(e) => e.stopPropagation()}
+                                            >
+                                                {country.map((opt) => (
+                                                    <Listbox.Option
+                                                        key={opt.id}
+                                                        value={opt}
+                                                        as={motion.div}
+                                                        variants={dropdownItemVariants}
+                                                        className="
         py-1 px-4
         cursor-pointer group
         hover:bg-[#f0f0f0]
         hover:font-bold transition-colors duration-300
         w-full
       "
+                                                    >
+                                                        <span className="group-hover:scale-[1.03] transition-transform duration-300">
+                                                            {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
+                                                        </span>
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </Listbox>
+                                    </div>
+
+                                    {/* Service */}
+                                    <div className="w-full lg:w-fit relative">
+                                        <Listbox value={selectedService} onChange={handleServiceChange}>
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
+                                                <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
+                                                    {/* {selectedService?.title === "All" ? "Service" : selectedService?.title} */}
+                                                    {selectedService?.title === "All"
+                                                        ? isArabic
+                                                            ? UI_LABELS.SERVICE.ar
+                                                            : UI_LABELS.SERVICE.en
+                                                        : isArabic
+                                                            ? selectedService?.title_ar ?? selectedService?.title
+                                                            : selectedService?.title}
+                                                </span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="14"
+                                                    height="7"
+                                                    viewBox="0 0 16 9"
+                                                    fill="none"
                                                 >
-                                                    <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                        {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
-                                                    </span>
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </Listbox>
+                                                    <path
+                                                        d="M15 1L7.9992 8L1 1.00159"
+                                                        stroke="#464646"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            </Listbox.Button>
+                                            <Listbox.Options
+                                                as={motion.div}
+                                                initial="hidden"
+                                                animate="show"
+                                                variants={{
+                                                    hidden: {},
+                                                    show: {
+                                                        transition: {
+                                                            staggerChildren: 0.08,
+                                                        },
+                                                    },
+                                                }}
+                                                className="border-0 outline-0 absolute w-full md:w-[200px] 2xl:w-[270px] bg-white rounded-sm shadow-sm z-[1]"
+                                            >
+                                                {service.map((opt) => (
+                                                    <Listbox.Option
+                                                        key={opt.id}
+                                                        value={opt}
+                                                        as={motion.div}
+                                                        variants={{
+                                                            hidden: {
+                                                                opacity: 0,
+                                                                x: -6,
+                                                                y: -10,
+                                                                filter: "blur(1px)",
+                                                            },
+                                                            show: {
+                                                                opacity: 1,
+                                                                x: 0,
+                                                                y: 0,
+                                                                filter: "blur(0px)",
+                                                                transition: {
+                                                                    duration: 0.4,
+                                                                    ease: "easeOut",
+                                                                },
+                                                            },
+                                                        }}
+                                                        className="py-1 px-4 hover:bg-[#f0f0f0] cursor-pointer group hover:font-bold transition-colors duration-300 w-full"
+                                                    >
+                                                        <span className="group-hover:scale-[1.03] transition-transform duration-300">
+                                                            {opt?.title}
+                                                        </span>
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </Listbox>
+                                    </div>
                                 </div>
 
-                                {/* Service */}
-                                <div className="w-full lg:w-fit relative">
-                                    <Listbox value={selectedService} onChange={handleServiceChange}>
-                                        <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
-                                            <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                {/* {selectedService?.title === "All" ? "Service" : selectedService?.title} */}
-                                                {selectedService?.title === "All"
-                                                    ? isArabic
-                                                        ? UI_LABELS.SERVICE.ar
-                                                        : UI_LABELS.SERVICE.en
-                                                    : isArabic
-                                                    ? selectedService?.title_ar ?? selectedService?.title
-                                                    : selectedService?.title}
-                                            </span>
+                                {/* Clear Filter */}
+                                <div className="">
+                                    <button
+                                        type="button"
+                                        onClick={handleClearFilters}
+                                        className="flex items-center gap-[8px] lg:gap-[10px] cursor-pointer"
+                                    >
+                                        <div className={`${isArabic ? "rotate-180" : ""}`}>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                width="14"
-                                                height="7"
-                                                viewBox="0 0 16 9"
+                                                viewBox="0 0 27 17"
                                                 fill="none"
+                                                className="w-[20px] h-[14px] lg:w-[27px] lg:h-[17px]"
                                             >
-                                                <path
-                                                    d="M15 1L7.9992 8L1 1.00159"
-                                                    stroke="#464646"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                />
+                                                <g clipPath="url(#clip0_3119_4427)">
+                                                    <path
+                                                        d="M9.36719 1.93262L1.98894 8.5134L9.34206 15.0679"
+                                                        stroke="#30B6F9"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                    <path
+                                                        d="M2.40464 8.5H25.0195"
+                                                        stroke="#30B6F9"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_3119_4427">
+                                                        <rect
+                                                            width="27"
+                                                            height="17"
+                                                            fill="white"
+                                                            transform="matrix(-1 0 0 1 27 0)"
+                                                        />
+                                                    </clipPath>
+                                                </defs>
                                             </svg>
-                                        </Listbox.Button>
-                                        <Listbox.Options
-                                            as={motion.div}
-                                            initial="hidden"
-                                            animate="show"
-                                            variants={{
-                                                hidden: {},
-                                                show: {
-                                                    transition: {
-                                                        staggerChildren: 0.08,
-                                                    },
-                                                },
-                                            }}
-                                            className="border-0 outline-0 absolute w-full md:w-[200px] 2xl:w-[270px] bg-white rounded-sm shadow-sm z-[1]"
-                                        >
-                                            {service.map((opt) => (
-                                                <Listbox.Option
-                                                    key={opt.id}
-                                                    value={opt}
-                                                    as={motion.div}
-                                                    variants={{
-                                                        hidden: {
-                                                            opacity: 0,
-                                                            x: -6,
-                                                            y: -10,
-                                                            filter: "blur(1px)",
-                                                        },
-                                                        show: {
-                                                            opacity: 1,
-                                                            x: 0,
-                                                            y: 0,
-                                                            filter: "blur(0px)",
-                                                            transition: {
-                                                                duration: 0.4,
-                                                                ease: "easeOut",
-                                                            },
-                                                        },
-                                                    }}
-                                                    className="py-1 px-4 hover:bg-[#f0f0f0] cursor-pointer group hover:font-bold transition-colors duration-300 w-full"
-                                                >
-                                                    <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                        {opt?.title}
-                                                    </span>
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </Listbox>
+                                        </div>
+                                        <p className="uppercase text-16 text-paragraph font-light w-max">
+                                            {isArabic ? UI_LABELS.CLEAR_FILTER.ar : UI_LABELS.CLEAR_FILTER.en}
+                                        </p>
+                                    </button>
                                 </div>
                             </div>
-
-                            {/* Clear Filter */}
-                            <div className="">
-                                <button
-                                    type="button"
-                                    onClick={handleClearFilters}
-                                    className="flex items-center gap-[8px] lg:gap-[10px] cursor-pointer"
-                                >
-                                    <div className={`${isArabic ? "rotate-180" : ""}`}>
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 27 17"
-                                            fill="none"
-                                            className="w-[20px] h-[14px] lg:w-[27px] lg:h-[17px]"
-                                        >
-                                            <g clipPath="url(#clip0_3119_4427)">
-                                                <path
-                                                    d="M9.36719 1.93262L1.98894 8.5134L9.34206 15.0679"
-                                                    stroke="#30B6F9"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                />
-                                                <path
-                                                    d="M2.40464 8.5H25.0195"
-                                                    stroke="#30B6F9"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                />
-                                            </g>
-                                            <defs>
-                                                <clipPath id="clip0_3119_4427">
-                                                    <rect
-                                                        width="27"
-                                                        height="17"
-                                                        fill="white"
-                                                        transform="matrix(-1 0 0 1 27 0)"
-                                                    />
-                                                </clipPath>
-                                            </defs>
-                                        </svg>
-                                    </div>
-                                    <p className="uppercase text-16 text-paragraph font-light w-max">
-                                        {isArabic ? UI_LABELS.CLEAR_FILTER.ar : UI_LABELS.CLEAR_FILTER.en}
-                                    </p>
-                                </button>
-                            </div>
-                        </div>
                         </div>
                         {/* View toggles */}
                         <div className="flex items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-end">
@@ -596,9 +621,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 19 19"
                                     fill="none"
-                                    className={`w-[16px] h-[16px] md:w-[19px] md:h-[19px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${
-                                        view === "grid" ? "brightness-100" : "brightness-0"
-                                    }`}
+                                    className={`w-[16px] h-[16px] md:w-[19px] md:h-[19px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${view === "grid" ? "brightness-100" : "brightness-0"
+                                        }`}
                                 >
                                     <rect width="8" height="8" fill="#30B6F9" />
                                     <rect y="11" width="8" height="8" fill="#30B6F9" />
@@ -606,7 +630,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <rect x="11" y="11" width="8" height="8" fill="#30B6F9" />
                                 </svg>
                                 <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
-                                        {isArabic ? UI_LABELS.GRID_VIEW.ar : UI_LABELS.GRID_VIEW.en}
+                                    {isArabic ? UI_LABELS.GRID_VIEW.ar : UI_LABELS.GRID_VIEW.en}
                                 </p>
                             </div>
                             <div
@@ -616,9 +640,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className={`w-[14px] h-[11px] md:w-[19px] md:h-[13px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${
-                                        view === "list" ? "brightness-100" : "brightness-0"
-                                    }`}
+                                    className={`w-[14px] h-[11px] md:w-[19px] md:h-[13px] brightness-0 group-hover:brightness-100 transition-all duration-300 ${view === "list" ? "brightness-100" : "brightness-0"
+                                        }`}
                                     viewBox="0 0 19 13"
                                     fill="none"
                                 >
@@ -626,7 +649,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <line y1="12.5" x2="19" y2="12.5" stroke="#30B6F9" />
                                 </svg>
                                 <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
-                                   {isArabic ? UI_LABELS.LIST_VIEW.ar : UI_LABELS.LIST_VIEW.en}
+                                    {isArabic ? UI_LABELS.LIST_VIEW.ar : UI_LABELS.LIST_VIEW.en}
                                 </p>
                             </div>
                         </div>
@@ -636,9 +659,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 {/* GRID VIEW */}
                 <div
                     className={`gap-5 3xl:gap-x-[30px]  gap-y-10 md:gap-y-12 xl:gap-y-[80px] pb-10 xl:pb-[80px] transition-all duration-300 
-          ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${
-                        view === "grid" ? "grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3" : "hidden"
-                    }`}
+          ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${view === "grid" ? "grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3" : "hidden"
+                        }`}
                     style={{
                         transform: isAnimating ? "translateY(16px)" : "translateY(0)",
                         transition: "opacity 300ms ease-in-out, transform 300ms ease-in-out",
@@ -646,7 +668,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 >
                     {currentItems.map((item, index) => (
 
-<Reveal key={index} variants={moveUpV2} className="group">
+                        <Reveal key={index} variants={moveUpV2} className="group">
 
 
                             <LangLink href={`/projects/${item.slug}`}>
@@ -673,9 +695,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     )}
 
                                     <div
-                                        className={` ${
-                                            isArabic ? "-scale-x-100 right-0" : "left-0"
-                                        } opacity-0 group-hover:opacity-100 transition-all duration-300 absolute bottom-0 w-[50px] h-[50px]  xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}
+                                        className={` ${isArabic ? "-scale-x-100 right-0" : "left-0"
+                                            } opacity-0 group-hover:opacity-100 transition-all duration-300 absolute bottom-0 w-[50px] h-[50px]  xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary`}
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -717,11 +738,15 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         const label = buaItem?.key ?? "BUA";
                                         const value = buaItem?.value ?? "";
 
-                                        return (
-                                            <p className="text-paragraph text-19 font-light leading-[2.44] pe-1 3xl:xl:pe-6 max-w-[18ch] truncate">
-                                                {label}: {value}
-                                            </p>
-                                        );
+                                        if (buaItem?.value == "" || buaItem?.value == null) {
+                                            return null;
+                                        } else {
+                                            return (
+                                                <p className="text-paragraph text-19 font-light leading-[2.44] pe-1 3xl:xl:pe-6 max-w-[18ch] truncate">
+                                                    {label}: {value}
+                                                </p>
+                                            );
+                                        }
                                     })()}
                                 </div>
                                 <div className="border-b border-b-black/20">
@@ -733,7 +758,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     </p>
                                 </div>
                             </LangLink>
-                            </Reveal>
+                        </Reveal>
                     ))}
 
                     {currentItems.length === 0 && (
@@ -746,9 +771,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 {/* LIST VIEW */}
                 <div
                     className={`   pb-10 xl:pb-[80px] transition-all duration-300 
-          ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${
-                        view === "list" ? "flex flex-col " : "hidden"
-                    }`}
+          ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${view === "list" ? "flex flex-col " : "hidden"
+                        }`}
                     style={{
                         transform: isAnimating ? "translateY(16px)" : "translateY(0)",
                         transition: "opacity 300ms ease-in-out, transform 300ms ease-in-out",
@@ -802,9 +826,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         </div>
                                     </div>
                                     <div
-                                        className={` ${
-                                            isArabic ? "-scale-x-100" : ""
-                                        } opacity-0 group-hover:opacity-100 transition-all duration-300 hidden lg:block`}
+                                        className={` ${isArabic ? "-scale-x-100" : ""
+                                            } opacity-0 group-hover:opacity-100 transition-all duration-300 hidden lg:block`}
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -843,11 +866,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 <div className="flex items-center justify-center gap-2 w-full pb-10 xl:pb-15 2xl:pb-[120px]">
                     <div className="pagination flex items-center gap-5 justify-center ">
                         <button
-                            className={`prev cursor-pointer transition-all duration-200 hover:scale-110 ${
-                                isArabic ? "rotate-180" : ""
-                            }  disabled:opacity-30 disabled:cursor-not-allowed ${
-                                currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
-                            }`}
+                            className={`prev cursor-pointer transition-all duration-200 hover:scale-110 ${isArabic ? "rotate-180" : ""
+                                }  disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
+                                }`}
                             onClick={handlePrev}
                             disabled={currentPage === 1 || isAnimating}
                         >
@@ -871,11 +892,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         </p>
 
                         <button
-                            className={`next cursor-pointer transition-all duration-200 hover:scale-110 ${
-                                isArabic ? "rotate-180" : ""
-                            } disabled:opacity-30 disabled:cursor-not-allowed ${
-                                currentPage === totalPages || isAnimating ? "opacity-30" : "opacity-100"
-                            }`}
+                            className={`next cursor-pointer transition-all duration-200 hover:scale-110 ${isArabic ? "rotate-180" : ""
+                                } disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === totalPages || isAnimating ? "opacity-30" : "opacity-100"
+                                }`}
                             onClick={handleNext}
                             disabled={currentPage === totalPages || isAnimating}
                         >
@@ -896,13 +915,12 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
             {view === "grid" && (
                 <>
                     <div
-                        className={`${
-                            currentItems.length === 0
-                                ? "hidden"
-                                : currentItems.length < 4
+                        className={`${currentItems.length === 0
+                            ? "hidden"
+                            : currentItems.length < 4
                                 ? "top-[27%] 3xl:bottom-[-16%]"
                                 : "top-[25%] lg:bottom-[30%] xl:bottom-[30%] 3xl:bottom-3/7"
-                        } absolute 3xl:top-auto translate-y-[58px] z-[-1]
+                            } absolute 3xl:top-auto translate-y-[58px] z-[-1]
     ${isArabic ? "left-0 lg:right-[-140px] 3xl:right-0" : "right-0 lg:left-[-140px] 3xl:left-0"}`}
                     >
                         <MotionImage
@@ -911,20 +929,18 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                             style={{ y: shapeY }}
                             src="/assets/images/projects/pjtbdy1.svg"
                             alt=""
-                            className={` ${
-                                isArabic ? "-scale-x-100" : ""
-                            } w-[150px] sm:w-[270px] lg:w-[670px] object-contain`}
+                            className={` ${isArabic ? "-scale-x-100" : ""
+                                } w-[150px] sm:w-[270px] lg:w-[670px] object-contain`}
                         />
                     </div>
 
                     <div
-                        className={`${
-                            currentItems.length === 0
-                                ? "hidden"
-                                : currentItems.length < 4
+                        className={`${currentItems.length === 0
+                            ? "hidden"
+                            : currentItems.length < 4
                                 ? "bottom-[5%] hidden"
                                 : "bottom-[5%] lg:bottom-0"
-                        } absolute z-[-1]
+                            } absolute z-[-1]
     ${isArabic ? "left-0 lg:left-[-150px] 3xl:left-0 scale-x-[-1]" : "right-0 lg:right-[-150px] 3xl:right-0"}`}
                     >
                         <MotionImage

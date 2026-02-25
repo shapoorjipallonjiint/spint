@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "@/app/globals.css";
 import ScrollToTop from "@/app/components/common/ScrollToTop";
 import { SearchProvider } from "@/contexts/searchContext";
+import { ToNavigateCountryProvider } from "@/contexts/toNavigateCountry";
 
 
 const dmSans = DM_Sans({
@@ -29,16 +30,18 @@ export default async function RootLayout({
   return (
     <div>
       <div>
-    <div lang="en">
-     <div className={`${dmSans.variable} font-sans antialiased`}>
-      {/* <SmoothScroll/> */}
-      <SearchProvider>
-     <ScrollToTop />
-        {children}
-     </SearchProvider>
+        <div lang="en">
+          <div className={`${dmSans.variable} font-sans antialiased`}>
+            {/* <SmoothScroll/> */}
+            <SearchProvider>
+              <ToNavigateCountryProvider>
+                <ScrollToTop />
+                {children}
+              </ToNavigateCountryProvider>
+            </SearchProvider>
+          </div>
+        </div>
       </div>
-    </div>
-    </div>
     </div>
   );
 }

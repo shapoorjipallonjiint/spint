@@ -73,11 +73,11 @@ const Banner = ({ firstSection, secondSection }) => {
                             </div>
                         </motion.div>
                         <div className={`w-fit ${isArabic ? "mr-auto" : "ml-auto"}`}>
-                            <motion.div  variants={moveUp(0.2)}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ amount: 0.2, once: true }}
-                            className="text-[18px] font-light text-paragraph/70 leading-[1.8] border-b [border-image-source:linear-gradient(270deg,#1E45A2_0%,#30B6F9_100%)] [border-image-slice:1]">
+                            <motion.div variants={moveUp(0.2)}
+                                initial="hidden"
+                                whileInView="show"
+                                viewport={{ amount: 0.2, once: true }}
+                                className="text-[18px] font-light text-paragraph/70 leading-[1.8] border-b [border-image-source:linear-gradient(270deg,#1E45A2_0%,#30B6F9_100%)] [border-image-slice:1]">
                                 <SplitTextAnimation
                                     children={tSecondSection?.sector?.name}
                                     staggerDelay={0.2}
@@ -131,7 +131,7 @@ const Banner = ({ firstSection, secondSection }) => {
                 >
                     <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 lg:border-b-0">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Project:</p>
-                        <p className="text-19 font-light   leading-[1.475] text-black">{tFirstSection?.title}</p>
+                        <p className="text-19 font-light   leading-[1.475] text-black">{tSecondSection?.project == "" || tSecondSection?.project == undefined ? tFirstSection.title : tSecondSection?.project}</p>
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
@@ -152,7 +152,12 @@ const Banner = ({ firstSection, secondSection }) => {
                 >
                     <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 lg:border-b-0">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Sector:</p>
-                        <p className="text-19 font-light   leading-[1.475] text-black">{tSecondSection.sector?.name}</p>
+                        {tSecondSection.sector?.map((item, i) => (
+                            <div key={i}>
+                                <p className="text-19 font-light   leading-[1.475] text-black">{item.name}</p>
+                                {i !== tSecondSection.sector?.length - 1 && <span> ,</span>}
+                            </div>
+                        ))}
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
@@ -235,10 +240,10 @@ const Banner = ({ firstSection, secondSection }) => {
             </div>
             <div className="absolute top-[61px] lg:-top-20 right-0 z-0">
                 <MotionImage
-                   variants={moveUp(0.2)}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ amount: 0.2, once: true }}
+                    variants={moveUp(0.2)}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ amount: 0.2, once: true }}
                     width={1500}
                     height={1000}
                     src="/assets/images/project-details/bannerbg.svg"

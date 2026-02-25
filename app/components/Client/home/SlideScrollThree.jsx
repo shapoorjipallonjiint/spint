@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { getSuffix } from "@/helpers/getSuffix.ts";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import { useToNavigateCountryContext } from "@/contexts/toNavigateCountry";
 
 const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData }) => {
     const tData = useApplyLang(data);
@@ -142,7 +143,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
     const [isLargeScreen, setIsLargeScreen] = useState(false);
     const swiperRef = useRef(null); // Add this ref for Swiper
-const [showBlueBox, setShowBlueBox] = useState(false);
+    const [showBlueBox, setShowBlueBox] = useState(false);
+
+    const { setToNavigateCountry } = useToNavigateCountryContext();
 
 
     // Add this useEffect to detect screen size
@@ -1209,16 +1212,16 @@ const [showBlueBox, setShowBlueBox] = useState(false);
 
         return result;
     };
-useEffect(() => {
-    setShowBlueBox(false);
+    useEffect(() => {
+        setShowBlueBox(false);
 
-    const timer = setTimeout(() => {
-        setShowBlueBox(true);
-    }, 1500); // delay after image change
-    
+        const timer = setTimeout(() => {
+            setShowBlueBox(true);
+        }, 1500); // delay after image change
 
-    return () => clearTimeout(timer);
-}, [displayedIndex]);
+
+        return () => clearTimeout(timer);
+    }, [displayedIndex]);
 
     const visibleSectors = getVisibleSectors();
     const activeSector = sectors[displayedIndex];
@@ -1296,7 +1299,7 @@ useEffect(() => {
 
         const basePath = isArabic ? "/ar/projects" : "/projects";
 
-        router.push(`${basePath}?country=${encodeURIComponent(city.name)}`);
+        router.push(`${basePath}`);
     };
 
     return (
@@ -1475,9 +1478,8 @@ useEffect(() => {
                                     ref={titleOneRef}
                                 >
                                     <h1
-                                        className={`text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] lg:leading-[80px] ${
-                                            isArabic ? "ps-2" : "pe-2"
-                                        }`}
+                                        className={`text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] lg:leading-[80px] ${isArabic ? "ps-2" : "pe-2"
+                                            }`}
                                     >
                                         {tData.firstSection.title}
                                     </h1>
@@ -1487,9 +1489,8 @@ useEffect(() => {
                             <div ref={brdrRef} className="hidden lg:block my-10 w-full border-t border-white/30"></div>
 
                             <div
-                                className={`w-full lg:w-[50%] xl:w-[45%] px-5 lg:px-0 text-white mb-[22dvh] lg:mb-19 flex justify-between items-center ${
-                                    isArabic ? "ml-38 mr-auto" : "mr-38 ml-auto"
-                                } gap-7`}
+                                className={`w-full lg:w-[50%] xl:w-[45%] px-5 lg:px-0 text-white mb-[22dvh] lg:mb-19 flex justify-between items-center ${isArabic ? "ml-38 mr-auto" : "mr-38 ml-auto"
+                                    } gap-7`}
                             >
                                 <div
                                     className="flex flex-col lg:flex-row lg:items-center gap-[17px] lg:gap-2"
@@ -1504,9 +1505,8 @@ useEffect(() => {
                                             alt="Logo"
                                             width={71}
                                             height={71}
-                                            className={`w-[30px] h-[30px] lg:w-[71px] lg:h-[71px] cursor-pointer ${
-                                                isArabic ? "-scale-x-100" : ""
-                                            }`}
+                                            className={`w-[30px] h-[30px] lg:w-[71px] lg:h-[71px] cursor-pointer ${isArabic ? "-scale-x-100" : ""
+                                                }`}
                                         />
                                     </LangLink>
                                 </div>
@@ -1559,11 +1559,10 @@ useEffect(() => {
                                 ref={leftBgRef}
                             >
                                 <div
-                                    className={`absolute top-0 z-20 w-full h-full ${
-                                        isArabic
-                                            ? "right-0 bg-gradient-to-r from-black/30 from-0% to-black/80 to-100%"
-                                            : "left-0 bg-gradient-to-l from-black/30 from-0% to-black/80 to-100%"
-                                    }`}
+                                    className={`absolute top-0 z-20 w-full h-full ${isArabic
+                                        ? "right-0 bg-gradient-to-r from-black/30 from-0% to-black/80 to-100%"
+                                        : "left-0 bg-gradient-to-l from-black/30 from-0% to-black/80 to-100%"
+                                        }`}
                                 ></div>
 
                                 <Image
@@ -1586,11 +1585,10 @@ useEffect(() => {
                             >
                                 {/* <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/85 from-0% via-black/65 via-75% to-black/60 to-100% "></div> */}
                                 <div
-                                    className={`absolute top-0 z-[22] w-full h-full ${
-                                        isArabic
-                                            ? "right-0 bg-gradient-to-l from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
-                                            : "left-0 bg-gradient-to-r from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
-                                    }`}
+                                    className={`absolute top-0 z-[22] w-full h-full ${isArabic
+                                        ? "right-0 bg-gradient-to-l from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
+                                        : "left-0 bg-gradient-to-r from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
+                                        }`}
                                 ></div>
 
                                 <video
@@ -1605,9 +1603,8 @@ useEffect(() => {
                             </div>
 
                             <div
-                                className={`mb-[33px] lg:mb-0 z-40 pt-6 xl:pt-[35px] text-white absolute bottom-0 lg:relative ${
-                                    isArabic ? "right-0 lg:right-auto" : "left-0 lg:left-auto"
-                                } px-5 lg:px-0`}
+                                className={`mb-[33px] lg:mb-0 z-40 pt-6 xl:pt-[35px] text-white absolute bottom-0 lg:relative ${isArabic ? "right-0 lg:right-auto" : "left-0 lg:left-auto"
+                                    } px-5 lg:px-0`}
                                 ref={title2Ref}
                             >
                                 <h1 className="text-[36px] lg:text-48 3xl:text-60 font-light leading-[1.166666666666667] mb-[15px] lg:mb-3 3xl:mb-[25px]">
@@ -1626,11 +1623,10 @@ useEffect(() => {
                                         viewBox="0 0 27 18"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className={`transition-all ease-in-out duration-300 ${
-                                            isArabic
-                                                ? "group-hover:-translate-x-2 -scale-x-100"
-                                                : "group-hover:translate-x-2"
-                                        }`}
+                                        className={`transition-all ease-in-out duration-300 ${isArabic
+                                            ? "group-hover:-translate-x-2 -scale-x-100"
+                                            : "group-hover:translate-x-2"
+                                            }`}
                                     >
                                         <path
                                             d="M17.6328 2.43262L25.0111 9.0134L17.6579 15.5679"
@@ -1754,9 +1750,8 @@ useEffect(() => {
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
-                                className={`absolute ${
-                                    isArabic ? "left-0" : "right-0"
-                                } bottom-0 z-[1] w-[394px] h-[554px] opacity-50`}
+                                className={`absolute ${isArabic ? "left-0" : "right-0"
+                                    } bottom-0 z-[1] w-[394px] h-[554px] opacity-50`}
                             />
                         </div>
                     </div>
@@ -1781,9 +1776,8 @@ useEffect(() => {
                                 alt={tData.thirdSection.imageAlt}
                                 width={2000}
                                 height={1500}
-                                className={`w-full h-full object-cover absolute object-right" ${
-                                    isArabic ? "-scale-x-100" : ""
-                                } hidden lg:block`}
+                                className={`w-full h-full object-cover absolute object-right" ${isArabic ? "-scale-x-100" : ""
+                                    } hidden lg:block`}
                             />
                             <Image
                                 src={tData.thirdSection.image}
@@ -1800,9 +1794,8 @@ useEffect(() => {
                                 src="/assets/images/svg/sv-02.svg"
                                 width={600}
                                 height={600}
-                                className={`absolute ${
-                                    isArabic ? "left-0" : "right-0"
-                                } bottom-0 z-[0] w-[394px] h-[554px] opacity-50`}
+                                className={`absolute ${isArabic ? "left-0" : "right-0"
+                                    } bottom-0 z-[0] w-[394px] h-[554px] opacity-50`}
                             />
                         </div>
                         <div
@@ -1810,9 +1803,8 @@ useEffect(() => {
                             ref={sprghtBx}
                         >
                             <div
-                                className={`lg:bg-primary absolute w-full ${
-                                    isArabic ? "right-0" : "left-0"
-                                } h-full top-0 z-[-1]`}
+                                className={`lg:bg-primary absolute w-full ${isArabic ? "right-0" : "left-0"
+                                    } h-full top-0 z-[-1]`}
                                 ref={sprgtbg}
                             ></div>
                             <Image
@@ -1821,9 +1813,8 @@ useEffect(() => {
                                 width={600}
                                 height={600}
                                 alt="logo"
-                                className={`hidden lg:block absolute ${
-                                    isArabic ? "-scale-x-100 left-0" : "right-0"
-                                } w-[250px] 3xl:w-[353px]`}
+                                className={`hidden lg:block absolute ${isArabic ? "-scale-x-100 left-0" : "right-0"
+                                    } w-[250px] 3xl:w-[353px]`}
                             />
                             <div className="relative z-[99]">
                                 <h1
@@ -1852,11 +1843,10 @@ useEffect(() => {
                                         viewBox="0 0 27 18"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className={`transition-all ease-in-out duration-300 ${
-                                            isArabic
-                                                ? "group-hover:-translate-x-2 -scale-x-[1]"
-                                                : "group-hover:translate-x-2"
-                                        }`}
+                                        className={`transition-all ease-in-out duration-300 ${isArabic
+                                            ? "group-hover:-translate-x-2 -scale-x-[1]"
+                                            : "group-hover:translate-x-2"
+                                            }`}
                                     >
                                         <path
                                             d="M17.6328 2.43262L25.0111 9.0134L17.6579 15.5679"
@@ -1878,9 +1868,8 @@ useEffect(() => {
                             <div className="mt-auto relative">
                                 <hr
                                     ref={spBrdOne}
-                                    className={`border-white opacity-20 absolute top-[57px] ${
-                                        isArabic ? "right-[-30%] left-0" : "left-[-30%] right-0"
-                                    }`}
+                                    className={`border-white opacity-20 absolute top-[57px] ${isArabic ? "right-[-30%] left-0" : "left-[-30%] right-0"
+                                        }`}
                                 />
                                 <div className="hidden lg:grid grid-cols-3 " ref={spStats}>
                                     {tData.thirdSection.items.map((item, index) => (
@@ -2074,11 +2063,10 @@ useEffect(() => {
                         <div className="flex lg:h-full">
                             {/*      <div className="w-1/3"></div> */}
                             <div
-                                className={`w-full pt-[16.3dvh] lg:pt-33 ${
-                                    isArabic
-                                        ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[283px]"
-                                        : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px]"
-                                } bg-primary lg:bg-transparent`}
+                                className={`w-full pt-[16.3dvh] lg:pt-33 ${isArabic
+                                    ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[283px]"
+                                    : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px]"
+                                    } bg-primary lg:bg-transparent`}
                                 ref={srvLftBx}
                             >
                                 <div className={`absolute top-[-195px] ${isArabic ? "left-0" : "right-0"}`} ref={srvsVct}>
@@ -2111,18 +2099,16 @@ useEffect(() => {
                                         {/* Desktop (>= 1024px): Original div with flex-col */}
                                         {isLargeScreen ? (
                                             <div
-                                                className={`flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden border-b border-[#ffffff20] mb-5 lg:mb-0 xs-pt-1 pt-[4dvh] lg:pt-18 lg:pb-21 3xl:pt-14 3xl:pb-21 ${
-                                                    isArabic ? "pl-2" : "pr-2"
-                                                }`}
+                                                className={`flex lg:flex-col gap-6 lg:gap-0 overflow-x-auto scrollbar-hide whitespace-nowrap lg:whitespace-normal lg:overflow-x-hidden border-b border-[#ffffff20] mb-5 lg:mb-0 xs-pt-1 pt-[4dvh] lg:pt-18 lg:pb-21 3xl:pt-14 3xl:pb-21 ${isArabic ? "pl-2" : "pr-2"
+                                                    }`}
                                             >
                                                 {tServiceData.map((service, index) => (
                                                     <div
                                                         key={index}
-                                                        className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0 ${
-                                                            activeServiceIndex === index
-                                                                ? "border-white "
-                                                                : "border-transparent"
-                                                        }`}
+                                                        className={`pb-[7px] lg:pb-0 flex items-center gap-3 cursor-pointer group w-fit border-b lg:border-b-0 ${activeServiceIndex === index
+                                                            ? "border-white "
+                                                            : "border-transparent"
+                                                            }`}
                                                         ref={(el) => (textItemsRef.current[index] = el)}
                                                     >
                                                         <LangLink
@@ -2130,11 +2116,10 @@ useEffect(() => {
                                                             onClick={() => handleServiceClick()}
                                                         >
                                                             <p
-                                                                className={`${
-                                                                    activeServiceIndex === index
-                                                                        ? "text-white lg:text-black font-light lg:font-bold bo "
-                                                                        : "text-white/70 lg:text-black font-light"
-                                                                } text-[14px] lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9] 2xl:leading-[1.70] 3xl:leading-[1.607142857142857] cursor-pointer group-hover:lg:text-black group-hover:lg:font-bold`}
+                                                                className={`${activeServiceIndex === index
+                                                                    ? "text-white lg:text-black font-light lg:font-bold bo "
+                                                                    : "text-white/70 lg:text-black font-light"
+                                                                    } text-[14px] lg:text-[22px] 3xl:text-28 leading-[1.607142857142857] lg:leading-[1.9] 2xl:leading-[1.70] 3xl:leading-[1.607142857142857] cursor-pointer group-hover:lg:text-black group-hover:lg:font-bold`}
                                                                 onMouseOver={() => [
                                                                     setActiveService({
                                                                         image: service.homeImage,
@@ -2170,9 +2155,8 @@ useEffect(() => {
                                                 freeMode={true}
                                                 slidesPerView="auto"
                                                 spaceBetween={24}
-                                                className={`border-b border-[#ffffff20] mb-5 xs-pt-1 pt-[4dvh] ${
-                                                    isArabic ? "pl-2" : "pr-2"
-                                                }`}
+                                                className={`border-b border-[#ffffff20] mb-5 xs-pt-1 pt-[4dvh] ${isArabic ? "pl-2" : "pr-2"
+                                                    }`}
                                                 touchStartPreventDefault={false}
                                                 preventClicks={false}
                                                 preventClicksPropagation={false}
@@ -2192,11 +2176,10 @@ useEffect(() => {
                                                         className="!w-auto !mt-1"
                                                     >
                                                         <div
-                                                            className={`pb-[7px] flex items-center gap-3 cursor-pointer group w-fit border-b ${
-                                                                activeServiceIndex === index
-                                                                    ? "border-white"
-                                                                    : "border-transparent"
-                                                            }`}
+                                                            className={`pb-[7px] flex items-center gap-3 cursor-pointer group w-fit border-b ${activeServiceIndex === index
+                                                                ? "border-white"
+                                                                : "border-transparent"
+                                                                }`}
                                                             onClick={() => {
                                                                 setActiveService({
                                                                     image: service.homeImage,
@@ -2209,11 +2192,10 @@ useEffect(() => {
                                                             }}
                                                         >
                                                             <p
-                                                                className={`${
-                                                                    activeServiceIndex === index
-                                                                        ? "text-white font-light"
-                                                                        : "text-white/70 font-light"
-                                                                } text-[14px] leading-[1.607142857142857] cursor-pointer`}
+                                                                className={`${activeServiceIndex === index
+                                                                    ? "text-white font-light"
+                                                                    : "text-white/70 font-light"
+                                                                    } text-[14px] leading-[1.607142857142857] cursor-pointer`}
                                                             >
                                                                 <span className="duration-400">{service.title}</span>
                                                             </p>
@@ -2272,15 +2254,13 @@ useEffect(() => {
                                 {/* <div className="absolute inset-0 z-30 bg-gradient-to-r from-black/60 via-black/60 to-black/60 pointer-events-none"></div> */}
                                 {/* <div className="absolute inset-0 z-30 bg-gradient-to-r from-black/50 via-black/30 to-black/20 pointer-events-none"></div> */}
                                 <div
-                                    className={`absolute inset-0 z-30 ${
-                                        isArabic ? "bg-gradient-to-l" : "bg-gradient-to-r"
-                                    } pointer-events-none
+                                    className={`absolute inset-0 z-30 ${isArabic ? "bg-gradient-to-l" : "bg-gradient-to-r"
+                                        } pointer-events-none
   transition-opacity duration-300 ease-in-out
-    ${
-        activeService?.title === "Interior Fit-Out" || activeService?.title === "Facade"
-            ? "from-black/75 from-0% via-black/70 via-60% to-black/45 to-100%"
-            : "from-black/50 from-0% via-black/30 via-60% to-black/20 to-100%"
-    }
+    ${activeService?.title === "Interior Fit-Out" || activeService?.title === "Facade"
+                                            ? "from-black/75 from-0% via-black/70 via-60% to-black/45 to-100%"
+                                            : "from-black/50 from-0% via-black/30 via-60% to-black/20 to-100%"
+                                        }
   `}
                                 ></div>
                             </div>
@@ -2310,27 +2290,24 @@ useEffect(() => {
                                 />
                             </AnimatePresence>
                             <div
-                                className={`lg:absolute xs-ptop-15 top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px] ${
-                                    isArabic ? "right-[40px] 3xl:right-[58px]" : "left-[40px] 3xl:left-[58px]"
-                                } z-10 px-5 lg:px-0 pt-7 lg:pt-0`}
+                                className={`lg:absolute xs-ptop-15 top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px] ${isArabic ? "right-[40px] 3xl:right-[58px]" : "left-[40px] 3xl:left-[58px]"
+                                    } z-10 px-5 lg:px-0 pt-7 lg:pt-0`}
                                 ref={srvsCntb}
                             >
                                 <hr
                                     ref={brdonRef}
-                                    className={`hidden lg:block lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none ${
-                                        isArabic
-                                            ? "left-[25%] right-[-85%] lg:right-[-434px] xl:right-[-594px] 2xl:right-[-594px] 3xl:right-[-643px] bg-gradient-to-l from-black to-white"
-                                            : "right-[25%] left-[-85%] lg:left-[-434px] xl:left-[-594px] 2xl:left-[-594px] 3xl:left-[-643px] bg-gradient-to-r from-black to-white"
-                                    }`}
+                                    className={`hidden lg:block lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none ${isArabic
+                                        ? "left-[25%] right-[-85%] lg:right-[-434px] xl:right-[-594px] 2xl:right-[-594px] 3xl:right-[-643px] bg-gradient-to-l from-black to-white"
+                                        : "right-[25%] left-[-85%] lg:left-[-434px] xl:left-[-594px] 2xl:left-[-594px] 3xl:left-[-643px] bg-gradient-to-r from-black to-white"
+                                        }`}
                                 />
 
                                 <hr
                                     ref={brdonRef}
-                                    className={`lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none bg-white ${
-                                        isArabic
-                                            ? "right-[-40px] 3xl:right-[-58px] left-[25%]"
-                                            : "left-[-40px] 3xl:left-[-58px] right-[25%]"
-                                    }`}
+                                    className={`lg:absolute h-[1px] top-[60px] opacity-20 bottom-0 z-20 border-none bg-white ${isArabic
+                                        ? "right-[-40px] 3xl:right-[-58px] left-[25%]"
+                                        : "left-[-40px] 3xl:left-[-58px] right-[25%]"
+                                        }`}
                                 />
 
                                 <motion.div
@@ -2341,9 +2318,8 @@ useEffect(() => {
                                     animate="show"
                                 >
                                     <div
-                                        className={`flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] z-10 w-7 h-7 ${
-                                            isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
-                                        }`}
+                                        className={`flex items-center justify-center lg:hidden bg-secondary rounded-full bottom-10 3xl:bottom-[50px] z-10 w-7 h-7 ${isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
+                                            }`}
                                         ref={srvsArrw}
                                     >
                                         <Image
@@ -2364,9 +2340,8 @@ useEffect(() => {
                                         </h3>
                                     </LangLink>
                                     <div
-                                        className={`lg:hidden bottom-10 3xl:bottom-[50px] z-10 ${
-                                            isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
-                                        }`}
+                                        className={`lg:hidden bottom-10 3xl:bottom-[50px] z-10 ${isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
+                                            }`}
                                         ref={srvsArrw}
                                     >
                                         <LangLink href={`/services/${activeService?.link}`}>
@@ -2394,9 +2369,8 @@ useEffect(() => {
                             </div>
                             <LangLink href={`/services/${activeService?.link}`}>
                                 <div
-                                    className={`hidden lg:block absolute bottom-10 cursor-pointer 3xl:bottom-[50px] z-10 ${
-                                        isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
-                                    }`}
+                                    className={`hidden lg:block absolute bottom-10 cursor-pointer 3xl:bottom-[50px] z-10 ${isArabic ? "right-[45px] 3xl:right-[58px]" : "left-[45px] 3xl:left-[58px]"
+                                        }`}
                                     ref={srvsArrw}
                                 >
                                     <Image
@@ -2427,11 +2401,10 @@ useEffect(() => {
                         {/* left start */}
                         <div ref={sectorLeft} className="flex lg:h-full bg-primary lg:bg-transparent">
                             <div
-                                className={`w-full pt-[16.5dvh] lg:pt-25 xl:pt-25 3xl:pt-33 ${
-                                    isArabic
-                                        ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
-                                        : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
-                                }`}
+                                className={`w-full pt-[16.5dvh] lg:pt-25 xl:pt-25 3xl:pt-33 ${isArabic
+                                    ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
+                                    : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
+                                    }`}
                             >
                                 <div className={`absolute top-[-195px] ${isArabic ? "left-0" : "right-0"}`} ref={srvsVct}>
                                     <Image
@@ -2451,16 +2424,14 @@ useEffect(() => {
                                     </h1>
                                     <div
                                         ref={talentlist}
-                                        className={`xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible ${
-                                            isArabic ? "lg:pr-4 3xl:pr-0" : "lg:pl-4 3xl:pl-0"
-                                        }`}
+                                        className={`xs-mt-1 scrollbar-hide w-full flex flex-col justify-center lg:h-full mt-[4.5dvh] lg:mt-3 relative overflow-y-hidden 3xl:overflow-visible ${isArabic ? "lg:pr-4 3xl:pr-0" : "lg:pl-4 3xl:pl-0"
+                                            }`}
                                     >
                                         <div className="lg:pb-4 relative h-full flex items-center">
                                             {/* curved line svg */}
                                             <div
-                                                className={`absolute top-0 ${
-                                                    isArabic ? "right-0 -scale-x-100" : "left-0"
-                                                } h-full hidden lg:flex flex-col justify-center`}
+                                                className={`absolute top-0 ${isArabic ? "right-0 -scale-x-100" : "left-0"
+                                                    } h-full hidden lg:flex flex-col justify-center`}
                                             >
                                                 <Image
                                                     width={81}
@@ -2473,9 +2444,8 @@ useEffect(() => {
                                             {isLargeScreen ? (
                                                 /* Desktop (>= 1024px): Original vertical list */
                                                 <div
-                                                    className={`flex flex-row lg:flex-col 3xl:gap-1 sectors-list lg:pt-5 gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0 ${
-                                                        isArabic ? "lg:pr-4" : "lg:pl-4"
-                                                    }`}
+                                                    className={`flex flex-row lg:flex-col 3xl:gap-1 sectors-list lg:pt-5 gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0 ${isArabic ? "lg:pr-4" : "lg:pl-4"
+                                                        }`}
                                                 >
                                                     {visibleSectors.map((sector) => {
                                                         const isActive = sector.position === 0;
@@ -2504,13 +2474,12 @@ useEffect(() => {
                                                         return (
                                                             <div
                                                                 key={`${sector.originalIndex}-${sector.position}`}
-                                                                className={`flex items-center gap-5 cursor-pointer ${
-                                                                    isActive
-                                                                        ? isArabic
-                                                                            ? "lg:mr-[-27px] lg:py-5"
-                                                                            : "lg:ml-[-27px] lg:py-5"
-                                                                        : "lg:py-1"
-                                                                }`}
+                                                                className={`flex items-center gap-5 cursor-pointer ${isActive
+                                                                    ? isArabic
+                                                                        ? "lg:mr-[-27px] lg:py-5"
+                                                                        : "lg:ml-[-27px] lg:py-5"
+                                                                    : "lg:py-1"
+                                                                    }`}
                                                                 style={{
                                                                     opacity: opacity,
                                                                     transform: `scale(${scale})`,
@@ -2541,11 +2510,10 @@ useEffect(() => {
                                                                 )}
 
                                                                 <h3
-                                                                    className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${
-                                                                        isActive
-                                                                            ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
-                                                                            : "text-[14px] lg:text-19 leading-[1.842105263157895]"
-                                                                    }`}
+                                                                    className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${isActive
+                                                                        ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
+                                                                        : "text-[14px] lg:text-19 leading-[1.842105263157895]"
+                                                                        }`}
                                                                     style={{
                                                                         transition: "all 0.5s ease-out",
                                                                         willChange: "font-size, font-weight",
@@ -2598,11 +2566,10 @@ useEffect(() => {
                                                                     onClick={() => handleSlideClick(sector.originalIndex)}
                                                                 >
                                                                     <h3
-                                                                        className={`whitespace-nowrap hover:opacity-100 transition-opacity duration-500 text-white ${
-                                                                            isActive
-                                                                                ? "text-[14px] leading-[1.842105263157895] border-b border-white"
-                                                                                : "text-[14px] leading-[1.842105263157895]"
-                                                                        }`}
+                                                                        className={`whitespace-nowrap hover:opacity-100 transition-opacity duration-500 text-white ${isActive
+                                                                            ? "text-[14px] leading-[1.842105263157895] border-b border-white"
+                                                                            : "text-[14px] leading-[1.842105263157895]"
+                                                                            }`}
                                                                     >
                                                                         {sector.name?.toLowerCase() === "industrial"
                                                                             ? "Entertainment and Leisure"
@@ -2616,9 +2583,8 @@ useEffect(() => {
                                             )}
 
                                             <div
-                                                className={`hidden lg:block absolute ${
-                                                    isArabic ? "right-[-10px]" : "left-[-10px]"
-                                                } top-1/2 -translate-y-[75%] z-10`}
+                                                className={`hidden lg:block absolute ${isArabic ? "right-[-10px]" : "left-[-10px]"
+                                                    } top-1/2 -translate-y-[75%] z-10`}
                                             >
                                                 <div className="bg-[#30B6F94D] rounded-full w-[83px] h-[83px] flex items-center justify-center relative">
                                                     <Image
@@ -2678,9 +2644,8 @@ useEffect(() => {
                                         }}
                                     ></div>
                                     <div
-                                        className={`lg:hidden tlnits p-5 group cursor-pointer absolute bottom-0 ${
-                                            isArabic ? "right-0" : "left-0"
-                                        }`}
+                                        className={`lg:hidden tlnits p-5 group cursor-pointer absolute bottom-0 ${isArabic ? "right-0" : "left-0"
+                                            }`}
                                     >
                                         <LangLink
                                             href="/projects"
@@ -2692,11 +2657,10 @@ useEffect(() => {
                                                 height={27}
                                                 src="../assets/images/icons/arrow-right.svg"
                                                 alt="arrow right"
-                                                className={`transition-all duration-300 ${
-                                                    isArabic
-                                                        ? "group-hover:-translate-x-2 -scale-x-100"
-                                                        : "group-hover:translate-x-2"
-                                                }`}
+                                                className={`transition-all duration-300 ${isArabic
+                                                    ? "group-hover:-translate-x-2 -scale-x-100"
+                                                    : "group-hover:translate-x-2"
+                                                    }`}
                                             />
                                         </LangLink>
                                     </div>
@@ -2704,12 +2668,11 @@ useEffect(() => {
                                 {/* hear the absolute positioned box with project details */}
                                 {/* Absolute positioned box with project details */}
                                 <div
-                                    className={`lg:absolute bottom-20 ${
-                                        isArabic ? "right-0" : "left-0"
-                                    } lg:bg-primary text-black lg:text-white z-50 cursor-pointer` }
+                                    className={`lg:absolute bottom-20 ${isArabic ? "right-0" : "left-0"
+                                        } lg:bg-primary text-black lg:text-white z-50 cursor-pointer`}
                                     style={{
-                                     transition: "transform 0.5s ease-out, opacity 0.5s ease-out",
-                                    //    transform: isAnimating ? "translateY(10px)" : "translateY(0)",
+                                        transition: "transform 0.5s ease-out, opacity 0.5s ease-out",
+                                        //    transform: isAnimating ? "translateY(10px)" : "translateY(0)",
                                         // opacity: isAnimating ? 0.8 : 1,
                                         opacity: showBlueBox ? 1 : 0,
                                     }}
@@ -2726,7 +2689,7 @@ useEffect(() => {
                                                         className="text-[26px] lg:text-40 font-light lg:mb-2"
                                                         style={{
                                                             animation: "slideUpFadeIn 0.6s ease-out",
-                                                            animationFillMode: "both", 
+                                                            animationFillMode: "both",
                                                             animationDelay: "2s",
                                                         }}
                                                     >
@@ -2735,17 +2698,17 @@ useEffect(() => {
                                                             value={activeSector.projectsCompleted}
                                                             trigger={currentVisibleSlide === "section5"}
                                                             delay={delayProjects}
-                                                            
-                                                        /> 
+
+                                                        />
                                                         {/* + */}
                                                     </h3>
                                                 </div>
                                                 <p className="text-[14px]  md:text-[16px]  lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]"
-                                                  style={{
-                                                            animation: "slideUpFadeIn 0.6s ease-out",
-                                                            animationFillMode: "both", 
-                                                            animationDelay: "2s",
-                                                        }}>
+                                                    style={{
+                                                        animation: "slideUpFadeIn 0.6s ease-out",
+                                                        animationFillMode: "both",
+                                                        animationDelay: "2s",
+                                                    }}>
                                                     Completed Projects
                                                 </p>
                                             </div>
@@ -2765,19 +2728,19 @@ useEffect(() => {
                                                             value={activeSector.ongoingProjects}
                                                             trigger={currentVisibleSlide === "section5"}
                                                             delay={delayProjects}
-                                                        /> 
+                                                        />
                                                         {/* + */}
                                                     </h3>
                                                 </div>
-                                                 <div style={{ position: "relative", overflow: "hidden" }}>
-                                                <p className="text-[14px] md:text-[16px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]"
-                                                  style={{
+                                                <div style={{ position: "relative", overflow: "hidden" }}>
+                                                    <p className="text-[14px] md:text-[16px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]"
+                                                        style={{
                                                             animation: "slideUpFadeIn 0.6s ease-out",
-                                                            animationFillMode: "both", 
+                                                            animationFillMode: "both",
                                                             animationDelay: "2s",
                                                         }}>
-                                                    Ongoing Projects
-                                                </p>
+                                                        Ongoing Projects
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2789,11 +2752,10 @@ useEffect(() => {
                                                     height={27}
                                                     src="../assets/images/icons/arrow-right.svg"
                                                     alt="arrow right"
-                                                    className={`transition-all duration-300 ${
-                                                        isArabic
-                                                            ? "group-hover:-translate-x-2 -scale-x-100"
-                                                            : "group-hover:translate-x-2"
-                                                    }`}
+                                                    className={`transition-all duration-300 ${isArabic
+                                                        ? "group-hover:-translate-x-2 -scale-x-100"
+                                                        : "group-hover:translate-x-2"
+                                                        }`}
                                                 />
                                             </LangLink>
                                         </div>
@@ -2816,17 +2778,15 @@ useEffect(() => {
             >
                 <section id="section6" className="h-screen relative md:overflow-hidden whitebgref scroll-area bg-white">
                     <div
-                        className={`w-full pt-[11.5dvh] 3xl:pt-33 ${
-                            isArabic
-                                ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
-                                : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
-                        }`}
+                        className={`w-full pt-[11.5dvh] 3xl:pt-33 ${isArabic
+                            ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
+                            : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
+                            }`}
                     >
                         <div
                             dir={isArabic ? "rtl" : "ltr"}
-                            className={`absolute-maptitle px-5 lg:px-0 pt-[4.7dvh] lg:pt-0 pb-6 lg:pb-0 ${
-                                isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
-                            } flex flex-col h-full`}
+                            className={`absolute-maptitle px-5 lg:px-0 pt-[4.7dvh] lg:pt-0 pb-6 lg:pb-0 ${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
+                                } flex flex-col h-full`}
                         >
                             <h1
                                 ref={maptitle}
@@ -2836,20 +2796,20 @@ useEffect(() => {
                             </h1>
                         </div>
 
-                                 <div className="relative">
-                                      <div className=" absolute container right-0 lg:right-10 3xl:right-36 bottom-[-5px] sm:bottom-auto">
-                                     <div className="flex justify-end items-center  ">
-                                            <div className="flex items-center gap-[5px] md:gap-2 me-3">
-                                                <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-[#30B6F9] border border-[#97DCFF] scale-85"></div>
-                                                <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP Group</p>
-                                            </div>
-                                            <div className="flex items-center gap-[5px] md:gap-2">
-                                                <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-primary border border-white scale-85"></div>
-                                                <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP International</p>
-                                           </div> 
+                        <div className="relative">
+                            <div className=" absolute container right-0 lg:right-10 3xl:right-36 bottom-[-5px] sm:bottom-auto">
+                                <div className="flex justify-end items-center  ">
+                                    <div className="flex items-center gap-[5px] md:gap-2 me-3">
+                                        <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-[#30B6F9] border border-[#97DCFF] scale-85"></div>
+                                        <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP Group</p>
                                     </div>
-                                   </div>
-                                 </div>
+                                    <div className="flex items-center gap-[5px] md:gap-2">
+                                        <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-primary border border-white scale-85"></div>
+                                        <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP International</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div className="  flex justify-center" ref={mapimage}>
                             <div className="[position:initial] lg:relative  overflow-x-scroll lg:overflow-x-visible  scrollbar-hide responsive-map-position ">
                                 <div className="relative lg:[position:initial]   overflow-hide   " ref={containersRef}>
@@ -2860,7 +2820,7 @@ useEffect(() => {
                   height={355}
                   className="object-cover img-f select-none min-w-[86.2dvh] max-h-[355px] lg:hidden  "
                 /> */}
-                
+
                                     <MotionImage
                                         // initial={{ opacity: 0 }}
                                         // animate={{ opacity: 1 }}
@@ -2880,9 +2840,8 @@ useEffect(() => {
                                                 // className={` absolute   transition-all duration-300 flex items-center justify-center    w-[480px] h-[480px] ${
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
-                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${
-                                                    activeDot === city.id ? "z-[999]" : "z-[1]"
-                                                }`}
+                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${activeDot === city.id ? "z-[999]" : "z-[1]"
+                                                    }`}
                                                 style={{ left: `calc(${city.left} - 4.8%)`, top: city.top }}
                                             >
                                                 <div
@@ -2909,15 +2868,14 @@ useEffect(() => {
                                                     //     ? "bg-[#30F955] shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
                                                     //     : "bg-[#30B6F9]   border border-[#97DCFF] scale-85"
                                                     // }`}
-                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${
-                                                        city.groupId === "sp-group"
-                                                            ? activeDot === city.id
-                                                                ? "bg-primary/40 shadow-[0_0_35px_rgba(239,68,68,0.9),0_0_50px_rgba(239,68,68,0.6)] border border-[#97DCFF] scale-full"
-                                                                : "bg-[#30B6F9] border border-[#97DCFF] scale-85"
-                                                            : activeDot === city.id
+                                                    className={`w-[8px] h-[8px] lg:w-[15px] lg:h-[15px] group cursor-pointer relative z-20 pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] ${city.groupId === "sp-group"
+                                                        ? activeDot === city.id
+                                                            ? "bg-primary/40 shadow-[0_0_35px_rgba(239,68,68,0.9),0_0_50px_rgba(239,68,68,0.6)] border border-[#97DCFF] scale-full"
+                                                            : "bg-[#30B6F9] border border-[#97DCFF] scale-85"
+                                                        : activeDot === city.id
                                                             ? "bg-primary/40 shadow-[0_0_35px_#30F955,0_0_50px_rgba(0,255,136,0.6)] border border-[#97DCFF] scale-full"
                                                             : "bg-primary border border-white scale-85"
-                                                    }`}
+                                                        }`}
                                                 ></div>
                                                 {/* <span
                       className={`relative   -left-1 border border-[#30F95533] min-w-[110px] text-center backdrop-blur-[10px] uppercase bg-[#0015FF99] text-white text-[14px] font-bold px-2 py-[2px] rounded-full opacity-0 
@@ -3041,14 +2999,14 @@ useEffect(() => {
   p-3 rounded-full shadow-[0_0_25px_rgba(59,130,246,0.6)]
   absolute left-[0%] top-[28%]
     ${city.isClickable ? "cursor-pointer" : "cursor-default"}
-  ${
-      activeDot === city.id
-          ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
-          : "opacity-0 scale-80 pointer-events-none"
-  }`}
+  ${activeDot === city.id
+                                                                            ? "opacity-100 scale-full float-bubble1 pointer-events-auto"
+                                                                            : "opacity-0 scale-80 pointer-events-none"
+                                                                        }`}
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
                                                                         goToProjects(city);
+                                                                        setToNavigateCountry(city.name);
                                                                     }}
                                                                 >
                                                                     <p className="text-[24px] font-normal leading-tight">
@@ -3113,11 +3071,10 @@ useEffect(() => {
 
                                                             {/* Ring */}
                                                             <div
-                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${
-                                                                    activeDot === city.id
-                                                                        ? "opacity-100 scale-full"
-                                                                        : "opacity-0"
-                                                                } transition-all duration-500 delay-300`}
+                                                                className={`absolute -left-[50px] w-full h-full rounded-full z-[-1] scale-pulse ${activeDot === city.id
+                                                                    ? "opacity-100 scale-full"
+                                                                    : "opacity-0"
+                                                                    } transition-all duration-500 delay-300`}
                                                                 style={{
                                                                     backgroundImage: `url(../assets/images/ring3.svg)`,
                                                                     backgroundSize: "cover",
@@ -3194,9 +3151,8 @@ useEffect(() => {
                                     </div>
 
                                     <div
-                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${
-                                            activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
-                                        }   transition-all duration-500 delay-300`}
+                                        className={`hidden lg:block absolute -left-[50px] w-[100%] h-[100%] rounded-full z-[-1] scale-pulse ${activeDot === selectedCity.id ? "opacity-100 scale-full" : "opacity-0 "
+                                            }   transition-all duration-500 delay-300`}
                                         style={{
                                             backgroundImage: `url(../assets/images/ring3.svg)`,
                                             backgroundSize: "cover",
@@ -3231,11 +3187,10 @@ useEffect(() => {
                         />
                         <div
                             className={`absolute w-full h-full z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.75)_82.45%)]
-    ${
-        isArabic
-            ? "lg:bg-[linear-gradient(90deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
-            : "lg:bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
-    }`}
+    ${isArabic
+                                    ? "lg:bg-[linear-gradient(90deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
+                                    : "lg:bg-[linear-gradient(270deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.65)_51.29%,rgba(0,0,0,0.75)_100%)]"
+                                }`}
                         ></div>
                     </figure>
                     <div
@@ -3244,16 +3199,14 @@ useEffect(() => {
                     >
                         {/* LEFT SIDE */}
                         <div
-                            className={`w-full pt-33 px-5 lg:pe-0 ${
-                                isArabic
-                                    ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[280px]"
-                                    : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[280px]"
-                            } lg:pb-[120px] 3xl:pb-[212px] h-full lg:h-auto`}
+                            className={`w-full pt-33 px-5 lg:pe-0 ${isArabic
+                                ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[280px]"
+                                : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[280px]"
+                                } lg:pb-[120px] 3xl:pb-[212px] h-full lg:h-auto`}
                         >
                             <div
-                                className={`${
-                                    isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
-                                } flex flex-col justify-between h-full lg:gap-0`}
+                                className={`${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
+                                    } flex flex-col justify-between h-full lg:gap-0`}
                             >
                                 <h1
                                     ref={cutltttl}
@@ -3290,9 +3243,8 @@ useEffect(() => {
 
                                     <div
                                         ref={talentDescMob}
-                                        className={`max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0 ${
-                                            isArabic ? "-right-5 md:right-0" : "-left-5 md:left-0"
-                                        }`}
+                                        className={`max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0 ${isArabic ? "-right-5 md:right-0" : "-left-5 md:left-0"
+                                            }`}
                                     >
                                         <div className="p-5 md:p-10 lg:p-7 3xl:py-12 3xl:px-15 bg-primary w-fit 2xl:w-[400px] 3xl:w-[550px] text-white relative ">
                                             <div className="h-fit mb-3 md:mb-5 overflow-hidden">
@@ -3371,21 +3323,19 @@ useEffect(() => {
     lg:pb-1 transition-all duration-300 `}
                                                     >
                                                         <div
-                                                            className={`py-1 lg:py-0  ${
-                                                                activeItem.id === item.id
-                                                                    ? "   bg-[linear-gradient(90deg,rgba(30,69,162,0.35)_0%,rgba(48,182,249,0)_100%)] lg:bg-none"
-                                                                    : ""
-                                                            }`}
+                                                            className={`py-1 lg:py-0  ${activeItem.id === item.id
+                                                                ? "   bg-[linear-gradient(90deg,rgba(30,69,162,0.35)_0%,rgba(48,182,249,0)_100%)] lg:bg-none"
+                                                                : ""
+                                                                }`}
                                                         >
                                                             <div
                                                                 className={`text-[15px] md:text-[18px] lg:text-[20px] 3xl:text-19 lg:min-w-[110px] py-1 lg:py-0 3xl:min-w-[130px] text-white/80 leading-[1.473684210526316]
-transition-all duration-300 cursor-pointer ${
-                                                                    activeItem.id === item.id
+transition-all duration-300 cursor-pointer ${activeItem.id === item.id
                                                                         ? isArabic
                                                                             ? "font-bold text-white border-r-[2px] border-secondary lg:border-r-0 pe-2 lg:pe-0"
                                                                             : "font-bold text-white border-l-[2px] border-secondary lg:border-l-0 ps-2 lg:ps-0"
                                                                         : "hover:font-bold hover:text-white font-light"
-                                                                }`}
+                                                                    }`}
                                                             >
                                                                 {item.title.split(" ").map((word, i) => (
                                                                     <span key={i}>
@@ -3405,18 +3355,16 @@ transition-all duration-300 cursor-pointer ${
 
                             <div className="relative">
                                 <div
-                                    className={`border-b border-white/20 absolute bottom-0 w-full ${
-                                        isArabic ? "right-0" : "left-0"
-                                    }`}
+                                    className={`border-b border-white/20 absolute bottom-0 w-full ${isArabic ? "right-0" : "left-0"
+                                        }`}
                                 ></div>
                             </div>
                         </div>
 
                         {/* RIGHT SIDE */}
                         <div
-                            className={`hidden lg:flex flex-col justify-end h-full  pt-[120px] 3xl:pt-[150px] overflow-hidden relative ${
-                                isArabic ? "border-r" : "border-l"
-                            } border-white/25`}
+                            className={`hidden lg:flex flex-col justify-end h-full  pt-[120px] 3xl:pt-[150px] overflow-hidden relative ${isArabic ? "border-r" : "border-l"
+                                } border-white/25`}
                         >
                             <motion.div
                                 ref={cutltmain}

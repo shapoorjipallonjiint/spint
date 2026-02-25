@@ -79,11 +79,11 @@ const projectSchema = new mongoose.Schema({
         required: true,
       },
 
-      sector: {
+      sector: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Sector",
         required: true,
-      },
+      }],
 
       service: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -92,6 +92,9 @@ const projectSchema = new mongoose.Schema({
       }],
 
       status: { type: String },
+
+      project: { type: String },
+      project_ar: { type: String },
 
       items: [
         {
