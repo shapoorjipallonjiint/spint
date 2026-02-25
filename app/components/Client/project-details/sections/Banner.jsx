@@ -131,14 +131,14 @@ const Banner = ({ firstSection, secondSection }) => {
                 >
                     <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 lg:border-b-0">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Project:</p>
-                        <p className="text-19 font-light   leading-[1.475] text-black">{tFirstSection.title}</p>
+                        <p className="text-19 font-light   leading-[1.475] text-black">{tFirstSection?.title}</p>
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
                             Location:
                         </p>
                         <p className="text-19 font-light   leading-[1.475] text-black">
-                            {tSecondSection.items.find((item) => item.key === "Location").value}
+                            {tSecondSection.items.find((item) => item.key === "Location")?.value}
                         </p>
                     </div>
                 </motion.div>
@@ -213,19 +213,19 @@ const Banner = ({ firstSection, secondSection }) => {
                             {/* Left item */}
                             <div className="flex items-center py-3 lg:py-6 border-black/20 border-b lg:border-b-0">
                                 <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">
-                                    {item.key}:
+                                    {item?.key}:
                                 </p>
-                                <p className="text-19 font-light leading-[1.475] text-black">{item.value}</p>
+                                <p className="text-19 font-light leading-[1.475] text-black">{item?.value}</p>
                             </div>
 
                             {/* Right item */}
                             {itemsWithoutLocation[i + 1] && (
                                 <div className="flex items-center py-3 lg:py-6">
                                     <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
-                                        {itemsWithoutLocation[i + 1].key}:
+                                        {itemsWithoutLocation[i + 1]?.key}:
                                     </p>
                                     <p className="text-19 font-light leading-[1.475] text-black">
-                                        {itemsWithoutLocation[i + 1].value}
+                                        {itemsWithoutLocation[i + 1]?.value}
                                     </p>
                                 </div>
                             )}

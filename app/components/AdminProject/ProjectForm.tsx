@@ -609,9 +609,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register("thirdSection.title", {
-                                        required: "Title is required",
-                                    })}
+                                    {...register("thirdSection.title")}
                                 />
                                 {errors.thirdSection?.title && (
                                     <p className="text-red-500">{errors.thirdSection?.title.message}</p>
