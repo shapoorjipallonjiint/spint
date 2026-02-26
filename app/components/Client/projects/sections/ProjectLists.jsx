@@ -730,7 +730,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                 </div>
                                 <div className="flex justify-between border-t border-t-black/20 border-b border-b-black/20">
                                     <p className="text-paragraph text-19 font-light leading-[2.44] max-w-[18ch] truncate">
-                                        {isArabic ? UI_LABELS.SECTOR.ar : UI_LABELS.SECTOR.en}: {item?.secondSection?.sector?.name}
+                                        {isArabic ? UI_LABELS.SECTOR.ar : UI_LABELS.SECTOR.en}: {item?.secondSection?.sector?.map((item, i) => (<span key={i}>{item.name}</span>))}
                                     </p>
                                     {(() => {
                                         const buaItem = item?.secondSection?.items?.find((i) => i?.key?.includes("BUA"));

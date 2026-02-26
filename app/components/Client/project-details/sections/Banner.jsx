@@ -152,12 +152,12 @@ const Banner = ({ firstSection, secondSection }) => {
                 >
                     <div className="flex items-center  py-3 lg:py-6 border-b border-black/20 lg:border-b-0">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Sector:</p>
-                        {tSecondSection.sector?.map((item, i) => (
-                            <div key={i}>
+                        {Array.isArray(tSecondSection?.sector) ? tSecondSection?.sector?.map((item, i) => (
+                            <div key={i} className="flex items-center">
                                 <p className="text-19 font-light   leading-[1.475] text-black">{item.name}</p>
-                                {i !== tSecondSection.sector?.length - 1 && <span> ,</span>}
+                                {i !== tSecondSection.sector?.length - 1 && <span>,&nbsp;</span>}
                             </div>
-                        ))}
+                        )) : <p className="text-19 font-light   leading-[1.475] text-black">{tSecondSection?.sector.name}</p>}
                     </div>
                     <div className="flex items-center  py-3 lg:py-6">
                         <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
