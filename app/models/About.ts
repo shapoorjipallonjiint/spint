@@ -154,6 +154,12 @@ const aboutSchema = new mongoose.Schema({
             description_ar: {
                 type: String,
             },
+            title: {
+                type: String,
+            },
+            title_ar: {
+                type: String,
+            },
             images: [{
                 image: {
                     type: String,
