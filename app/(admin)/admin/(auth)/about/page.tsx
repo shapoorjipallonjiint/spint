@@ -74,6 +74,8 @@ interface AboutFormProps {
             year_ar: string;
             description: string;
             description_ar: string;
+            title: string;
+            title_ar: string;
             images: {
                 image: string;
                 imageAlt: string;
@@ -576,6 +578,24 @@ const AboutPage = () => {
 
                                                 <div className="flex flex-col gap-2">
                                                     <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Title</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Title"
+                                                            {...register(`fourthSection.items.${index}.title`, {
+                                                                required: "Value is required",
+                                                            })}
+                                                        />
+                                                        {errors.fourthSection?.items?.[index]?.title && (
+                                                            <p className="text-red-500">
+                                                                {errors.fourthSection?.items?.[index]?.title.message}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="flex flex-col gap-2">
                                                         <Label className="font-bold">Description</Label>
                                                         <Controller
                                                             name={`fourthSection.items.${index}.description`}
@@ -684,6 +704,8 @@ const AboutPage = () => {
                                             images: [],
                                             year_ar: "",
                                             description_ar: "",
+                                            title: "",
+                                            title_ar: "",
                                         })
                                     }
                                 >
@@ -1080,6 +1102,22 @@ const AboutPage = () => {
 
                                             <div className="flex flex-col gap-2">
                                                 <div className="flex flex-col gap-2">
+                                                    <Label className="font-bold">Title</Label>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Title"
+                                                        {...register(`fourthSection.items.${index}.title_ar`)}
+                                                    />
+                                                    {errors.fourthSection?.items?.[index]?.title_ar && (
+                                                        <p className="text-red-500">
+                                                            {errors.fourthSection?.items?.[index]?.title_ar.message}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-2">
                                                     <Label className="font-bold">Description</Label>
                                                     <Controller
                                                         name={`fourthSection.items.${index}.description_ar`}
@@ -1163,6 +1201,8 @@ const AboutPage = () => {
                                             images: [],
                                             year_ar: "",
                                             description_ar: "",
+                                            title: "",
+                                            title_ar: ""
                                         })
                                     }
                                 >
