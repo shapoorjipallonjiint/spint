@@ -1201,6 +1201,8 @@ const AboutPage = () => {
                                             images: [],
                                             year_ar: "",
                                             description_ar: "",
+                                            title: "",
+                                            title_ar: ""
                                         })
                                     }
                                 >
