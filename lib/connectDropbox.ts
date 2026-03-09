@@ -63,7 +63,7 @@ async function getAccessToken(): Promise<string> {
 let dropboxInstance: Dropbox | null = null;
 let currentAccessToken: string | null = null;
 
-async function getDropboxInstance(): Promise<Dropbox> {
+export async function getDropboxInstance(): Promise<Dropbox> {
   const accessToken = await getAccessToken();
 
   if (!dropboxInstance || currentAccessToken !== accessToken) {

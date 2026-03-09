@@ -48,14 +48,22 @@ function generateNonce() {
 }
 
 function applySecurityHeaders(response: NextResponse, nonce: string) {
-const csp = `
+  const csp = `
 default-src 'self';
 script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://www.google.com https://www.gstatic.com https://cdn.tiny.cloud;
 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tiny.cloud;
 style-src-attr 'unsafe-inline';
 img-src 'self' data: blob: https:;
 font-src 'self' https://fonts.gstatic.com https://cdn.tiny.cloud;
-connect-src 'self' https://www.google.com https://www.google-analytics.com https://vitals.vercel-insights.com https://cdn.tiny.cloud https://api.resend.com;
+connect-src 'self'
+  https://www.google.com
+  https://www.google-analytics.com
+  https://vitals.vercel-insights.com
+  https://cdn.tiny.cloud
+  https://api.resend.com
+  https://api.dropboxapi.com
+  https://content.dropboxapi.com
+  https://dl.dropboxusercontent.com;
 frame-src 'self' https://www.google.com;
 frame-ancestors 'self';
 media-src 'self' https://dl.dropboxusercontent.com blob:;

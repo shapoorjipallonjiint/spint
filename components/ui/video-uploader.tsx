@@ -6,6 +6,7 @@ import { Upload, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { uploadToDropbox } from "@/lib/connectDropbox";
+import { toast } from "sonner";
 
 interface VideoUploaderProps {
   value?: string;
@@ -77,11 +78,25 @@ export function VideoUploader({ value, onChange, className, deleteAfterUpload = 
     multiple: false,
   });
 
-  const removeVideo = useCallback(() => {
-    setLocalVideoUrl(null);
-    setIsUploadComplete(false);
-    onChange("", undefined);
-  }, [onChange]);
+  const removeVideo = async () => {
+
+    if (!displayUrl) return;
+
+    const response = await fetch("/api/admin/delete-image", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: displayUrl }),
+    });
+
+    if (response.ok) {
+      setLocalVideoUrl(null);
+      setIsUploadComplete(false);
+      onChange("", undefined);
+      toast.success("Video deleted successfully")
+    }
+  };
 
   const displayUrl = localVideoUrl || value;
 
@@ -89,7 +104,11 @@ export function VideoUploader({ value, onChange, className, deleteAfterUpload = 
     <div className={cn("space-y-4 w-full", className)}>
       {displayUrl && isUploadComplete ? (
         <div className="relative w-full max-w-[400px] aspect-video overflow-hidden rounded-lg border border-black/20">
-          <video src={value ? value : displayUrl} controls className="object-cover w-full h-full" />
+          <video src={value ? value : `{${displayUrl}?t=${Date.now()}`} onError={() => {
+            setLocalVideoUrl(null);
+            setIsUploadComplete(false);
+            onChange("", undefined);
+          }} controls className="object-cover w-full h-full" />
           <Button
             type="button"
             variant="destructive"

@@ -6,6 +6,7 @@ import { Upload, X, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
+import { toast } from "sonner";
 
 interface ImageUploaderProps {
   value?: string;
@@ -105,11 +106,26 @@ export function ImageUploader({ value, onChange, className, deleteAfterUpload = 
     multiple: multiple,
   });
 
-  const removeImage = useCallback(() => {
-    setLocalImageUrl(null);
-    setIsUploadComplete(false);
-    onChange("", undefined);
-  }, [onChange, localImageUrl]);
+  const removeImage = async () => {
+    if (!displayUrl) return;
+
+    const response = await fetch("/api/admin/delete-image", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: displayUrl }),
+    });
+
+    if (response.ok) {
+      setLocalImageUrl(null);
+      setIsUploadComplete(false);
+      onChange("", undefined);
+      toast.success("Image deleted successfully")
+    }
+
+
+  };
 
   const displayUrl = localImageUrl || value;
 
@@ -117,7 +133,16 @@ export function ImageUploader({ value, onChange, className, deleteAfterUpload = 
     <div className={cn("space-y-4 w-full", className)}>
       {displayUrl && isUploadComplete ? (
         <div className={` relative w-full max-w-[300px] aspect-[4/3] overflow-hidden rounded-lg border border-black/20 ${isLogo ? "max-w-[100px] h-[100px] bg-black" : "max-w-[300px]"}`}>
-          <Image src={value ? value : displayUrl} alt="Uploaded image" className={isLogo ? "object-contain p-2 bg-black" : "object-cover"} fill />
+          <Image
+            src={value ? value : `{${displayUrl}?t=${Date.now()}`}
+            alt="Uploaded image"
+            className={isLogo ? "object-contain p-2 bg-black" : "object-cover"}
+            fill
+            onError={() => {
+              setLocalImageUrl(null);
+              setIsUploadComplete(false);
+            }}
+          />
           <Button
             type="button"
             variant="destructive"
