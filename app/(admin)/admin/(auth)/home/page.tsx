@@ -228,7 +228,9 @@ const Home = () => {
 
     const fetchHomeData = async () => {
         try {
-            const response = await fetch(`/api/admin/home`);
+            const response = await fetch(`/api/admin/home`, {
+                cache: "no-store"
+            });
             if (response.ok) {
                 const data = await response.json();
                 setValue("metaTitle", data.data.metaTitle);
