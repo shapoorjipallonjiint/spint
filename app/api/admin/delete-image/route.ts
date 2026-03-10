@@ -8,6 +8,7 @@ export async function POST(request: NextRequest) {
 
         const fileName = url.split("?")[0].split("/").pop();
         const filePath = `/uploads/image/${fileName}`;
+        console.log("filePAth", filePath);
 
         const deleteImage = await dropbox.filesDeleteV2({
             path: filePath,
