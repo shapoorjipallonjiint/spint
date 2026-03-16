@@ -82,7 +82,7 @@ export function VideoUploader({ value, onChange, className, deleteAfterUpload = 
 
     if (!displayUrl) return;
 
-    const response = await fetch("/api/admin/delete-image", {
+    const response = await fetch("/api/admin/delete-video", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
