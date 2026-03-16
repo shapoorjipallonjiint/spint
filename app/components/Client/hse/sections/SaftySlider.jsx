@@ -50,7 +50,7 @@ const SaftySlider = ({ data }) => {
     };
 
     return (
-        <section className="max-w-[1920px] mx-auto overflow-hidden " ref={sectionRef}>
+        <section className="overflow-hidden " ref={sectionRef}>
             <div className="relative mb-3">
 <MotionImage
   style={{ y: shapeY }}
