@@ -31,7 +31,7 @@ const JourneySlider = ({ data }) => {
     }, []);
 
     return (
-        <section className="overflow-hidden max-w-[1920px] bg-white 2xl:pt-30 pt-8 xl:pt-15 ">
+        <section className="overflow-hidden bg-white 2xl:pt-30 pt-8 xl:pt-15 ">
             <div className={isMdUp ? "container" : "px-[15px]"}>
                 <motion.h2
                     variants={moveUp(0.2)}

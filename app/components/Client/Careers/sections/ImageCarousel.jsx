@@ -56,7 +56,7 @@ const ImageCarousel = ({ data }) => {
       : 0.6;
 
   return (
-    <section className="max-w-[1920px] mx-auto">
+    <section className="">
       <div className="w-full bg-white pb30">
         <motion.div
           variants={moveLeft(0.3)}
