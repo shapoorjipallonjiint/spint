@@ -1,53 +1,43 @@
 "use client";
 
 import Link from "next/link";
+import type { ComponentProps } from "react";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
-interface LangLinkProps {
-  href: string;
-  children: React.ReactNode;
-  className?: string;
-}
+type LangLinkProps = ComponentProps<typeof Link>;
 
-export default function LangLink({ href, children, className }: LangLinkProps) {
+export default function LangLink({ href, children, className, ...props }: LangLinkProps) {
   const isArabic = useIsPreferredLanguageArabic();
+  const hrefValue = typeof href === "string" ? href : href?.toString() ?? "";
 
-  // 1️⃣ If external URL → do NOT modify
-  if (href.startsWith("http")) {
+  if (hrefValue.startsWith("http")) {
     return (
-      <Link href={href} className={className}>
+      <Link href={href} className={className} {...props}>
         {children}
       </Link>
     );
   }
 
-  // 2️⃣ Normalize root path
-  let finalHref = href.startsWith("/") ? href : `${href}`;
+  let finalHref = hrefValue.startsWith("/") ? hrefValue : `${hrefValue}`;
 
-  // 3️⃣ If ENGLISH mode → ensure link stays EN
   if (!isArabic) {
-    // If link already has "/ar", strip it
-    if (finalHref.startsWith("/ar/")) finalHref = finalHref.replace("/ar", "");
+    if (finalHref.startsWith("/ar/")) {
+      finalHref = finalHref.replace("/ar", "");
+    }
+
     return (
-      <Link href={finalHref} className={className}>
+      <Link href={finalHref} className={className} {...props}>
         {children}
       </Link>
     );
   }
 
-  // 4️⃣ If ARABIC mode → ensure link keeps "/ar"
-  if (isArabic) {
-    if (!finalHref.startsWith("/ar")) {
-      if(href ==   "#" || ''){
-        finalHref =    finalHref  ;
-      }else{
-        finalHref = "/ar" + finalHref;
-      }
-    }
+  if (!finalHref.startsWith("/ar") && hrefValue !== "#" && hrefValue !== "") {
+    finalHref = `/ar${finalHref}`;
   }
 
   return (
-    <Link href={finalHref} className={className}>
+    <Link href={finalHref} className={className} {...props}>
       {children}
     </Link>
   );

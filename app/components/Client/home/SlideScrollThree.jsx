@@ -1122,8 +1122,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 name: item.title,
                 icon: item.logo,
                 image: item.image,
-                projectsCompleted: item.completedProjects,
-                ongoingProjects: item.ongoingProjects,
+                projectsCompleted: Number(item.completedProjects),
+                ongoingProjects: Number(item.ongoingProjects),
             };
         }),
     ];
@@ -2678,10 +2678,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     }}
                                 >
                                     <div ref={talentdtls}>
-                                        <div
-                                            className="flex gap-[56px] lg:gap-5 xl:gap-[77px] pb-6   lg:px-15 pt-7 lg:py-6 xl:pt-[28px] xl:pb-[33px]
-                     border-b  border-black/20 lg:border-white/20 mx-5 lg:mx-0"
-                                        >
+                                        <div className="flex gap-[56px] lg:gap-5 xl:gap-[77px] pb-6   lg:px-15 pt-7 lg:py-6 xl:pt-[28px] xl:pb-[33px] border-b  border-black/20 lg:border-white/20 mx-5 lg:mx-0" >
                                             <div className="tlnits">
                                                 <div style={{ position: "relative", overflow: "hidden" }}>
                                                     <h3
@@ -2709,40 +2706,48 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         animationFillMode: "both",
                                                         animationDelay: "2s",
                                                     }}>
-                                                    Completed Projects
+                                                    {
+                                                        activeSector.projectsCompleted === 1 ? "Project Completed" : "Projects Completed"
+                                                    }
                                                 </p>
                                             </div>
-                                            <div className="tlnits">
-                                                <div style={{ position: "relative", overflow: "hidden" }}>
-                                                    <h3
-                                                        key={`projects-${displayedIndex}`}
-                                                        className="text-[26px] lg:text-40 font-light lg:mb-2"
-                                                        style={{
-                                                            animation: "slideUpFadeIn 0.6s ease-out 0.1s",
-                                                            animationFillMode: "both",
-                                                            animationDelay: "2s",
-                                                        }}
-                                                    >
-                                                        {/* <CountUp value={activeSector.ongoingProjects} trigger={currentVisibleSlide === "section5"} delay={100} />+ */}
-                                                        <CountUp
-                                                            value={activeSector.ongoingProjects}
-                                                            trigger={currentVisibleSlide === "section5"}
-                                                            delay={delayProjects}
-                                                        />
-                                                        {/* + */}
-                                                    </h3>
-                                                </div>
-                                                <div style={{ position: "relative", overflow: "hidden" }}>
-                                                    <p className="text-[14px] md:text-[16px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]"
-                                                        style={{
-                                                            animation: "slideUpFadeIn 0.6s ease-out",
-                                                            animationFillMode: "both",
-                                                            animationDelay: "2s",
-                                                        }}>
-                                                        Ongoing Projects
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            {
+                                                activeSector.ongoingProjects > 0 && (
+                                                    <div className="tlnits">
+                                                        <div style={{ position: "relative", overflow: "hidden" }}>
+                                                            <h3
+                                                                key={`projects-${displayedIndex}`}
+                                                                className="text-[26px] lg:text-40 font-light lg:mb-2"
+                                                                style={{
+                                                                    animation: "slideUpFadeIn 0.6s ease-out 0.1s",
+                                                                    animationFillMode: "both",
+                                                                    animationDelay: "2s",
+                                                                }}
+                                                            >
+                                                                {/* <CountUp value={activeSector.ongoingProjects} trigger={currentVisibleSlide === "section5"} delay={100} />+ */}
+                                                                <CountUp
+                                                                    value={activeSector.ongoingProjects}
+                                                                    trigger={currentVisibleSlide === "section5"}
+                                                                    delay={delayProjects}
+                                                                />
+                                                                {/* + */}
+                                                            </h3>
+                                                        </div>
+                                                        <div style={{ position: "relative", overflow: "hidden" }}>
+                                                            <p className="text-[14px] md:text-[16px] lg:text-19 font-light text-paragraph lg:text-white/70 leading-[1.473684210526316]"
+                                                                style={{
+                                                                    animation: "slideUpFadeIn 0.6s ease-out",
+                                                                    animationFillMode: "both",
+                                                                    animationDelay: "2s",
+                                                                }}>
+                                                                {
+                                                                    activeSector.ongoingProjects === 1 ? "Ongoing Project" : "Ongoing Projects"
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    )
+                                            }
                                         </div>
                                         <div className="hidden lg:block tlnits px-15 py-6 xl:pt-[42px] xl:pb-[49px] group cursor-pointer">
                                             <LangLink href="/projects" className="flex items-center gap-2">
