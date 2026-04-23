@@ -4,7 +4,7 @@ import H2Title from "../../../../components/common/H2Title";
 import { assets } from "../../../../assets";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
-import { useRef,useEffect,useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
@@ -20,60 +20,51 @@ const ExpandingHorizons = ({ data }) => {
         offset: ["start end", "end start"],
     });
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
-   const [rightSpace, setRightSpace] = useState(0);
+    const [rightSpace, setRightSpace] = useState(0);
 
-  useEffect(() => {
-    function updateSpace() {
-      const container = document.querySelector(".container");
-      if (!container) return;
+    useEffect(() => {
+        function updateSpace() {
+            const container = document.querySelector(".container");
+            if (!container) return;
 
-      const rect = container.getBoundingClientRect();
-      const space = window.innerWidth - rect.right;
+            const rect = container.getBoundingClientRect();
+            const space = window.innerWidth - rect.right;
 
-      setRightSpace(space);
-    }
+            setRightSpace(space);
+        }
 
-    updateSpace();
-    window.addEventListener("resize", updateSpace);
+        updateSpace();
+        window.addEventListener("resize", updateSpace);
 
-    return () => window.removeEventListener("resize", updateSpace);
-  }, []);
+        return () => window.removeEventListener("resize", updateSpace);
+    }, []);
     return (
         <section className="relative overflow-hidden pt-text25  " ref={sectionRef}>
-            
- 
             <div className="">
                 <div>
                     <div className="flex gap-10 lg:gap-18 2xl:gap-25">
                         <div
-                className={`hidden md:block bottom-[-10px] lg:bottom-0 w-fit ${
-                    isArabic ? "left-0 lg:right-0" : "right-0 lg:left-0"
-                }`}
-            >
-                <MotionImage
-                    height={1200}
-                    width={563}
-                    style={{ y: shapeY }}
-                    src={assets.mainShape2}
-                    alt=""
-                    className={`w-[150px] lg:w-[350px] 3xl:w-full h-auto   object-contain relative `}
-                />
-            </div>
+                            className={`hidden md:block bottom-[-10px] lg:bottom-0 w-fit ${isArabic ? "left-0 lg:right-0" : "right-0 lg:left-0"
+                                }`}
+                        >
+                            <MotionImage
+                                height={1200}
+                                width={563}
+                                style={{ y: shapeY }}
+                                src={assets.mainShape2}
+                                alt=""
+                                className={`w-[150px] lg:w-[350px] 3xl:w-full h-auto   object-contain relative `}
+                            />
+                        </div>
                         <div
-                            className={`container lg:w-full   lg:max-w-[65%] 2xl:max-w-[74%] 3xl:max-w-[73.84%] lg:ps-0 lg:pe-4` }  style={
-    isArabic
-      ? { marginLeft: `${rightSpace}px` }
-      : { marginRight: `${rightSpace}px` }
-  }
+                            className={`container lg:w-full   lg:max-w-[65%] 2xl:max-w-[74%] 3xl:max-w-[73.84%] lg:ps-0 lg:pe-4`} style={
+                                isArabic
+                                    ? { marginLeft: `${rightSpace}px` }
+                                    : { marginRight: `${rightSpace}px` }
+                            }
                         >
                             {/* <h2 className="text-60 font-light leading-[1.166666666666667] mb-50px max-w-[22ch]">{data.title}</h2> */}
-                            <H2Title
-                                titleText={t.title}
-                                titleColor="black"
-                                marginClass="mb-4 md:mb-6 2xl:mb-50px"
-                                maxW="xl:max-w-[32ch] 3xl:max-w-[22ch]"
-                                delay={1.3}
-                            />
+                            <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-50px" maxW="xl:max-w-[32ch] 3xl:max-w-[22ch]" delay={1.3} />
                             {
                                 <motion.p
                                     variants={moveUp(1.5)}

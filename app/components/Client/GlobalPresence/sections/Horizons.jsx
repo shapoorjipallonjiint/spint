@@ -99,7 +99,11 @@ const Horizons = ({ data }) => {
                                             <InsideCounter value={item.country} delay={10} />
                                         </p>
 
-                                        <p className="text-19 font-light text-black/70">Countries</p>
+                                        <p className="text-19 font-light text-black/70">
+                                        {
+                                            item.country > 1 ? "Countries" : "Country"
+                                        }
+                                        </p>
                                     </div>
                                 </div>
                                 <ul className="flex flex-wrap gap-1 xl:gap-2 ulst pt-3 lg:pt-5 2xl:pt-[35px] mt-3 lg:mt-5 2xl:mt-[35px] border-t border-black/20">
