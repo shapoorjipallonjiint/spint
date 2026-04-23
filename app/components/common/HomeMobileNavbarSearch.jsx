@@ -19,6 +19,11 @@ const HomeMobileNavbarSearch = ({ isOpen, onClose, navbarClose }) => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    const normalizedQuery = searchQuery.trim().replace(/\s+/g, " ");
+    if (!normalizedQuery) {
+      setResult(null);
+      return;
+    }
     try {
       setLoading(true);
       const res = await fetch("/api/search", {
@@ -26,7 +31,7 @@ const HomeMobileNavbarSearch = ({ isOpen, onClose, navbarClose }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ searchQuery }),
+        body: JSON.stringify({ searchQuery: normalizedQuery }),
       });
 
       const data = await res.json();
@@ -34,8 +39,6 @@ const HomeMobileNavbarSearch = ({ isOpen, onClose, navbarClose }) => {
       if (data.success) {
         console.log(data)
         setResult(data.data);
-
-        setSearchQuery("")
       }
     } catch (err) {
       console.log(err);

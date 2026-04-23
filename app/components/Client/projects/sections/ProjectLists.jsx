@@ -2,16 +2,14 @@
 
 import { Listbox } from "@headlessui/react";
 // import { pjtList } from "../data";
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { dropdownItemVariants, dropdownListVariants, moveUp, moveUpV2 } from "../../../motionVarients";
 import LangLink from "@/lib/LangLink"
-import { useRef } from "react";
 import { statusData, UI_LABELS } from "@/app/components/AdminProject/statusData";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import Reveal from "@/app/components/common/Reveal";
@@ -20,6 +18,8 @@ import { useToNavigateCountryContext } from "@/contexts/toNavigateCountry";
 
 
 const ITEMS_PER_PAGE = 12;
+const PROJECT_FILTER_STORAGE_KEY = "project-list-filters";
+const normalizeFilterValue = (value) => value?.toString().trim().toLowerCase() ?? "";
 
 const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const tSectorData = useApplyLang(sectorData);
@@ -31,6 +31,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const searchParams = useSearchParams();
     const isInitialized = useRef(false);
+    const hasHydratedFilters = useRef(false);
     const MotionImage = motion.create(Image);
     const [currentPage, setCurrentPage] = useState(1);
     const [isAnimating, setIsAnimating] = useState(false);
@@ -43,15 +44,6 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
     const [view, setView] = useState("grid");
 
-    useEffect(() => {
-        const urlView = searchParams.get("view");
-
-        if (urlView === "list") {
-            setView("list");
-        } else {
-            setView("grid");
-        }
-    }, [searchParams]);
     // Project with Countries
     const projectCountries = useMemo(() => {
         if (!tData?.length) return new Set();
@@ -66,25 +58,28 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
     const { ALL_OPTION } = UI_LABELS;
 
-    const sector = [ALL_OPTION, ...tSectorData];
+    const sector = useMemo(() => [ALL_OPTION, ...tSectorData], [ALL_OPTION, tSectorData]);
 
-    const status = [
-        ALL_OPTION,
-        ...statusData
-            .filter((item) => item.name && item.name.toLowerCase() !== "nill")
-            .map((item, index) => ({
-                id: index + 2,
-                ...item,
-            })),
-    ];
+    const status = useMemo(
+        () => [
+            ALL_OPTION,
+            ...statusData
+                .filter((item) => item.name && item.name.toLowerCase() !== "nill")
+                .map((item, index) => ({
+                    id: index + 2,
+                    ...item,
+                })),
+        ],
+        [ALL_OPTION],
+    );
 
     const filteredCountryData = useMemo(() => {
         return tCountryData.filter((c) => c.showInProjectFilter);
     }, [tCountryData]);
 
-    const country = [ALL_OPTION, ...filteredCountryData];
+    const country = useMemo(() => [ALL_OPTION, ...filteredCountryData], [ALL_OPTION, filteredCountryData]);
 
-    const service = [ALL_OPTION, ...tServiceData];
+    const service = useMemo(() => [ALL_OPTION, ...tServiceData], [ALL_OPTION, tServiceData]);
 
     // 🔹 Filter states
     const [selectedSector, setSelectedSector] = useState(sector[0]);
@@ -92,6 +87,64 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const [selectedCountry, setSelectedCountry] = useState(country[0]);
     const [selectedService, setSelectedService] = useState(service[0]);
     const { toNavigateCountry, setToNavigateCountry } = useToNavigateCountryContext();
+
+    useEffect(() => {
+        const urlView = searchParams.get("view");
+        setView(urlView === "list" ? "list" : "grid");
+    }, [searchParams]);
+
+    useEffect(() => {
+        if (hasHydratedFilters.current) return;
+        if (typeof window === "undefined") return;
+
+        const savedFilters = sessionStorage.getItem(PROJECT_FILTER_STORAGE_KEY);
+        if (!savedFilters) {
+            hasHydratedFilters.current = true;
+            return;
+        }
+
+        try {
+            const parsed = JSON.parse(savedFilters);
+
+            const matchedSector =
+                sector.find((opt) => normalizeFilterValue(opt?.name) === normalizeFilterValue(parsed.selectedSectorName)) ??
+                sector[0];
+            const matchedStatus =
+                status.find((opt) => normalizeFilterValue(opt?.name) === normalizeFilterValue(parsed.selectedStatusName)) ??
+                status[0];
+            const matchedCountry =
+                country.find((opt) => normalizeFilterValue(opt?.name) === normalizeFilterValue(parsed.selectedCountryName)) ??
+                country[0];
+            const matchedService =
+                service.find((opt) => normalizeFilterValue(opt?.title) === normalizeFilterValue(parsed.selectedServiceTitle)) ??
+                service[0];
+
+            setSelectedSector(matchedSector);
+            setSelectedStatus(matchedStatus);
+            setSelectedCountry(matchedCountry);
+            setSelectedService(matchedService);
+            setCurrentPage(parsed.currentPage > 0 ? parsed.currentPage : 1);
+        } catch {
+            sessionStorage.removeItem(PROJECT_FILTER_STORAGE_KEY);
+        }
+        hasHydratedFilters.current = true;
+    }, [sector, status, country, service]);
+
+    useEffect(() => {
+        if (!hasHydratedFilters.current) return;
+        if (typeof window === "undefined") return;
+
+        sessionStorage.setItem(
+            PROJECT_FILTER_STORAGE_KEY,
+            JSON.stringify({
+                selectedSectorName: selectedSector?.name,
+                selectedStatusName: selectedStatus?.name,
+                selectedCountryName: selectedCountry?.name,
+                selectedServiceTitle: selectedService?.title,
+                currentPage,
+            }),
+        );
+    }, [currentPage, selectedCountry, selectedSector, selectedService, selectedStatus]);
 
     // 🔹 Filter items based on all dropdowns
     const filteredItems = useMemo(() => {
@@ -126,12 +179,18 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         }
 
         return items;
-    }, [selectedSector, selectedStatus, selectedCountry, selectedService]);
+    }, [selectedSector, selectedStatus, selectedCountry, selectedService, tData]);
 
     // 🔹 Total pages based on filtered data
     const totalPages = useMemo(() => {
         return Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE));
     }, [filteredItems.length]);
+
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            setCurrentPage(totalPages);
+        }
+    }, [currentPage, totalPages]);
 
     // 🔹 Current page items from filtered list
     const currentItems = useMemo(() => {
@@ -175,16 +234,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setCurrentPage(1);
     };
     const handleCountryChange = (opt) => {
-        // update filter immediately
         setSelectedCountry(opt);
         setCurrentPage(1);
-
-        // update URL (no state reading from it)
-        // if (opt.name === "All") {
-        //     router.push(pathname);
-        // } else {
-        //     router.push(`${pathname}?country=${encodeURIComponent(opt.name)}`);
-        // }
     };
 
     const handleServiceChange = (opt) => {
@@ -199,6 +250,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
         setSelectedCountry(country[0]);
         setSelectedService(service[0]);
         setCurrentPage(1);
+        if (typeof window !== "undefined") {
+            sessionStorage.removeItem(PROJECT_FILTER_STORAGE_KEY);
+        }
     };
 
 
@@ -233,20 +287,16 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
     }, [country, searchParams, toNavigateCountry]);
 
-
-
-
-
     const handleView = () => {
-        const params = new URLSearchParams(searchParams);
+        const params = new URLSearchParams(searchParams.toString());
         params.set("view", "list");
         router.push(`${pathname}?${params.toString()}`);
         setView("list");
     };
     const handleGrid = () => {
-        const params = new URLSearchParams(searchParams);
-        params.set("view", "grid");
-        router.push(`${pathname}?${params.toString()}`);
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("view");
+        router.push(params.toString() ? `${pathname}?${params.toString()}` : pathname);
         setView("grid");
     };
     const [showFilters, setShowFilters] = useState(false);

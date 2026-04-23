@@ -83,6 +83,8 @@ const MainNavbar = () => {
             return;
         }
 
+        const normalizedQuery = debouncedSearchQuery.trim().replace(/\s+/g, " ");
+
         const fetchSearch = async (e) => {
             if (loading) return;
             try {
@@ -92,7 +94,7 @@ const MainNavbar = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ searchQuery: debouncedSearchQuery }),
+                    body: JSON.stringify({ searchQuery: normalizedQuery }),
                 });
 
                 const data = await res.json();
@@ -132,6 +134,11 @@ const MainNavbar = () => {
     const handleSearch = async (e) => {
         e.preventDefault();
         if (loading) return;
+        const normalizedQuery = searchQuery.trim().replace(/\s+/g, " ");
+        if (!normalizedQuery) {
+            setResult(null);
+            return;
+        }
         try {
             setLoading(true);
             const res = await fetch("/api/search", {
@@ -139,7 +146,7 @@ const MainNavbar = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ searchQuery }),
+                body: JSON.stringify({ searchQuery: normalizedQuery }),
             });
 
             const data = await res.json();
@@ -147,8 +154,6 @@ const MainNavbar = () => {
             if (data.success) {
                 console.log(data);
                 setResult(data.data);
-
-                setSearchQuery("");
             }
         } catch (err) {
             console.log(err);
