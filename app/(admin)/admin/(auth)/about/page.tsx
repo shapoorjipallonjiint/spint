@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,12 @@ import "react-quill-new/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
+import { closestCorners, DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+    SortableContext,
+    verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import CompanyCard from "./CompanyCard";
 
 interface AboutFormProps {
     metaTitle: string;
@@ -105,6 +111,8 @@ const AboutPage = () => {
         formState: { errors },
     } = useForm<AboutFormProps>();
 
+    const [reorderMode, setReorderMode] = useState(false);
+
     const {
         fields: firstSectionItems,
         append: firstSectionAppend,
@@ -136,6 +144,7 @@ const AboutPage = () => {
         fields: fourthSectionItems,
         append: fourthSectionAppend,
         remove: fourthSectionRemove,
+        move
     } = useFieldArray({
         control,
         name: "fourthSection.items",
@@ -205,6 +214,22 @@ const AboutPage = () => {
             `fourthSection.items.${index}.images`,
             currentImages.filter((_, i) => i !== fileIndex)
         );
+    };
+
+
+    const getTaskPos = (id: number | string) =>
+        fourthSectionItems.findIndex((item: { id: string }) => item.id == id);
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+
+        if (!over || active.id === over.id) return;
+
+        const originalPos = getTaskPos(active.id);
+        const newPos = getTaskPos(over.id);
+
+        if (originalPos !== -1 && newPos !== -1) {
+            move(originalPos, newPos);
+        }
     };
 
     useEffect(() => {
@@ -525,9 +550,36 @@ const AboutPage = () => {
                         </div>
 
                         <div>
-                            <Label className="font-bold">Items</Label>
+                            <div className="flex justify-between mb-5">
+                                <Label className="font-bold">Items</Label>
+                                <Button
+                                    disabled={fourthSectionItems.length < 2}
+                                    type="button"
+                                    className={`text-white text-[16px] ${reorderMode ? "bg-yellow-700" : "bg-green-700"}`}
+                                    onClick={() => setReorderMode(!reorderMode)}
+                                >
+                                    {reorderMode ? "Done" : "Reorder"}
+                                </Button>
+                            </div>
                             <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
-                                {fourthSectionItems.map((field, index) => (
+
+                                {reorderMode && (
+                                    <DndContext
+                                        collisionDetection={closestCorners}
+                                        onDragEnd={handleDragEnd}
+                                    >
+                                        <SortableContext
+                                            items={fourthSectionItems.map((item) => item.id)}
+                                            strategy={verticalListSortingStrategy}
+                                        >
+                                            {fourthSectionItems?.map((item, index) => (
+                                                <CompanyCard key={index} item={item} id={item.id} />
+                                            ))}
+                                        </SortableContext>
+                                    </DndContext>
+                                )}
+
+                                {!reorderMode && fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
                                         className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
