@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import H2Title from "../../../../components/common/H2Title";
 import { detailsTabsData } from "../data";
@@ -45,6 +45,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
   const mobileScrollFrame = useRef<number | null>(null);
   const tabs = detailsTabsData as DetailsTabItem[];
   const [activeTab, setActiveTab] = useState("MEP");
+  const [direction, setDirection] = useState(1);
   const [openMobileTab, setOpenMobileTab] = useState(() => {
     const defaultIndex = tabs.findIndex((tab) => tab.title === "MEP");
 
@@ -71,6 +72,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
   const showPreviousImage = () => {
     if (!activeImages.length) return;
 
+    setDirection(-1);
     setActiveImage((current) =>
       current === 0 ? activeImages.length - 1 : current - 1
     );
@@ -79,10 +81,24 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
   const showNextImage = () => {
     if (!activeImages.length) return;
 
+    setDirection(1);
     setActiveImage((current) =>
       current === activeImages.length - 1 ? 0 : current + 1
     );
   };
+
+useEffect(() => {
+  if (!activeImages.length) return;
+
+  const interval = setInterval(() => {
+    setDirection(1); // always forward
+    setActiveImage((current) =>
+      current === activeImages.length - 1 ? 0 : current + 1
+    );
+  }, 4000);
+
+  return () => clearInterval(interval);
+}, [activeImages]);
 
   const renderAccordionContent = (section: WorkSection) => {
     if (!section.items.length) return null;
@@ -174,12 +190,12 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
 
   const renderScopeContent = (tab: DetailsTabItem) => (
     <motion.div key={tab.title} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} >
-      <motion.h2 variants={moveUp(0)}  className="text-38 xl:text-50 3xl:text-60 font-light leading-[1.166666666666667] text-black mb-4" >
+      {/* <motion.h2 variants={moveUp(0)}  className="text-38 xl:text-50 3xl:text-60 font-light leading-[1.166666666666667] text-black mb-4" >
         {tab.title}
-      </motion.h2>
+      </motion.h2> */}
 
       {tab.subtitle && (
-        <motion.p variants={moveUp(0.1)} className="text-20 xl:text-29 text-black font-light leading-[1.34482758621] mb-5">
+        <motion.p variants={moveUp(0.1)} className="text-40 font-light leading-[1.25] text-black mb-6 xl:mb-[30px]">
           {tab.subtitle}
         </motion.p>
       )}
@@ -225,9 +241,9 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
   const renderTabContent = (tab: DetailsTabItem) =>
     tab.type === "accordion" ? (
       <>
-        <H2Title titleText={`${tab.title} Work`} titleColor="" marginClass="mb-4 lg:mb-5" maxW="" />
+        {/* <H2Title titleText={`${tab.title} Work`} titleColor="" marginClass="mb-4 lg:mb-5" maxW="" /> */}
 
-        <motion.div variants={moveUp(0.1)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="border-t border-black/20" >
+        <motion.div variants={moveUp(0.1)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className=" border-black/20" >
           {(tab.workSections ?? []).map((section, index) => {
             const isOpen = openSection === index;
 
@@ -310,14 +326,25 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
     const images = tab.images ?? [];
 
     return images.length ? (
-      <div className="relative mt-8 lg:mt-15 overflow-hidden">
-        <Image
-          src={images[activeImage]}
-          alt={`${tab.title} work reference`}
-          width={1207}
-          height={600}
-          className="w-full aspect-[1207/600] object-cover max-h-[600px]"
-        />
+      <div className="relative mt-8 lg:mt-15 overflow-hidden aspect-[1207/600] max-h-[600px]">
+        <AnimatePresence mode="wait" initial={false}>
+    <motion.div
+      key={activeImage}
+      initial={{ opacity: 0 }}
+      animate={{opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="absolute inset-0"
+    >
+      <Image
+        src={images[activeImage]}
+        alt={`${tab.title} work reference`}
+        width={1207}
+        height={600}
+        className="w-full aspect-[1207/600] object-cover max-h-[600px]"
+      />
+    </motion.div>
+  </AnimatePresence>
         <button
           type="button"
           onClick={showPreviousImage}
@@ -345,7 +372,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
           <div className={`2xl:max-w-[1008px] 3xl:max-w-[1208px] ${ isArabic ? "mr-auto" : "ml-auto" }`} >
             <div className="relative z-20">
               <div className="hidden lg:block">
-                <div className="grid grid-cols-5 border border-black/10 mb-10 xl:mb-60px">
+                <div className="grid grid-cols-4 border border-black/10 mb-10 xl:mb-60px">
                   {tabs.map((tab) => {
                     const isActive = activeTab === tab.title;
 
