@@ -38,7 +38,7 @@ const MoreDetrails = ({ data }) => {
 
   return (
     <section className="relative overflow-hidden" ref={sectionRef}>
-      <div className="pt-8 pb-9 xl:py-15 2xl:py-22  3xl:py-[80px]  relative bg-f5f5 ">
+      <div className="pt-8 pb-9 xl:py-15 2xl:py-22 3xl:py-[80px] relative bg-f5f5 ">
         <div className="container relative">
           <div
             className={`2xl:max-w-[1008px] 3xl:max-w-[1208px] ${isArabic ? "mr-auto" : "ml-auto"} `}
@@ -90,12 +90,10 @@ const MoreDetrails = ({ data }) => {
           )}
         </div>
         <div
-          className={`absolute hidden xl:block bottom-8 lg:bottom-[73px] z-10
-    ${
-      isArabic
-        ? "left-0 lg:right-[-400px] 3xl:right-[-290px]"
-        : "right-0 lg:left-[-400px] 3xl:left-[-290px]"
-    }
+          className={`absolute hidden xl:block bottom-8 lg:bottom-[73px] z-10 ${isArabic
+              ? "left-0 lg:right-[-400px] 3xl:right-[-290px]"
+              : "right-0 lg:left-[-400px] 3xl:left-[-290px]"
+            }
   `}
         >
           <MotionImage
