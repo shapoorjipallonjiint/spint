@@ -349,17 +349,30 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
                         key={tab.title}
                         type="button"
                         onClick={() => handleTabChange(tab)}
-                        className={`min-h-[42px] py-3 xl:py-6 text-19 leading-[1.473684210526316] cursor-pointer border-black/10 transition-colors ${
-                          isActive
-                            ? "bg-gradient-to-r from-[#4bb5f4] to-[#2d41b8] text-white font-medium"
-                            : "bg-transparent text-paragraph font-light hover:bg-white"
-                        } ${
-                          isArabic
+                        className={`relative overflow-hidden min-h-[42px] py-3 xl:py-6 text-19 leading-[1.473684210526316] cursor-pointer border-black/10 transition-colors duration-300 ${isArabic
                             ? "border-l last:border-l-0"
                             : "border-r last:border-r-0"
-                        }`}
+                          }`}
                       >
-                        {tab.title}
+                        {/* 👉 Base background (for hover) */}
+                        <span
+                          className={`absolute inset-0 transition-colors duration-300 ${!isActive ? "bg-transparent hover:bg-white" : ""
+                            }`}
+                        />
+
+                        {/* 👉 Gradient layer (one-direction animation) */}
+                        <span className={`absolute inset-0 bg-gradient-to-r from-[#4bb5f4] to-[#2d41b8] origin-left
+                          ${isActive
+                              ? "scale-x-100 transition-transform duration-300 ease-out"
+                              : "scale-x-0 transition-none"
+                            }`}
+                        />
+
+                        {/* 👉 Text */}
+                        <span className={`relative z-10 ${isActive ? "text-white font-medium" : "text-paragraph font-light" } transition-colors duration-300`}
+                        >
+                          {tab.title}
+                        </span>
                       </button>
                     );
                   })}
