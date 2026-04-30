@@ -349,7 +349,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
                         key={tab.title}
                         type="button"
                         onClick={() => handleTabChange(tab)}
-                        className={`min-h-[42px] py-3 xl:py-6 text-19 leading-[1.473684210526316] border-black/10 transition-colors ${
+                        className={`min-h-[42px] py-3 xl:py-6 text-19 leading-[1.473684210526316] cursor-pointer border-black/10 transition-colors ${
                           isActive
                             ? "bg-gradient-to-r from-[#4bb5f4] to-[#2d41b8] text-white font-medium"
                             : "bg-transparent text-paragraph font-light hover:bg-white"
