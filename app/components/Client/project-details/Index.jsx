@@ -4,6 +4,7 @@ import MoreDetrails from "./sections/MoreDetrails";
 import ProjectSlider from "./sections/ProjectSlider";
 import InquireToday from "./sections/InquireToday";
 import NextProject from "./sections/NextProject";
+import DetailsTab from "./sections/DetailsTab";
 const Index = ({ data, nextProject }) => {
     return (
         <>
@@ -13,8 +14,9 @@ const Index = ({ data, nextProject }) => {
             <main>
                 <Banner firstSection={data.firstSection} secondSection={data.secondSection} />
                 {data.thirdSection.items?.length > 0 && <KeyFacts data={data.thirdSection} />}
-                <MoreDetrails data={data.fourthSection} />
-                {data.images?.length > 0 && <ProjectSlider data={data.images} />}
+                <DetailsTab/>
+                {/* <MoreDetrails data={data.fourthSection} /> */}
+                {/* {data.images?.length > 0 && <ProjectSlider data={data.images} />} */}
                 <InquireToday data={data.sixthSection} />
                 <NextProject
                     slug={nextProject?.slug}

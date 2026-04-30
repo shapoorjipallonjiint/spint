@@ -38,6 +38,8 @@ html {
   --spacing-30px: clamp(0.75rem, 1.5vw + 0.5rem, 30px);
   --spacing-35px: clamp(0.875rem, 1.5vw + 0.5rem, 35px);
   --spacing-50px: clamp(1.4rem, 10vw + 0.1em, 50px);
+  --spacing-60px: clamp(1.4rem, 10vw + 0.1em, 60px);
+  --spacing-120px: clamp(1.4rem, 10vw + 0.1em, 120px);
 }
 
 @theme {
@@ -128,6 +130,8 @@ html {
   --spacing-30px: var(--spacing-30px);
   --spacing-35px: var(--spacing-35px);
   --spacing-50px: var(--spacing-50px);
+  --spacing-60px: var(--spacing-60px);
+  --spacing-120px: var(--spacing-120px);
 
 }
 
