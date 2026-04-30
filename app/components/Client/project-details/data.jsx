@@ -88,9 +88,10 @@ export const detailsTabsData = [
       },
     ],
     images: [
-      "/assets/images/project-details/prj-details-cmn.jpg",
-      "/assets/images/project-details/abtsl1.jpg",
-      "/assets/images/project-details/abtsl2.jpg",
+      "/assets/images/project-details/tab-imgs/civil-1.webp",
+      "/assets/images/project-details/tab-imgs/civil-2.jpg",
+      "/assets/images/project-details/tab-imgs/civil-3.webp",
+      "/assets/images/project-details/tab-imgs/civil-4.jpg",
     ],
   },
   {
@@ -215,9 +216,8 @@ export const detailsTabsData = [
       },
     ],
     images: [
-      "/assets/images/project-details/prj-details-cmn.jpg",
-      "/assets/images/project-details/abtsl1.jpg",
-      "/assets/images/project-details/abtsl2.jpg",
+      "/assets/images/project-details/tab-imgs/facade-1.jpg",
+      "/assets/images/project-details/tab-imgs/facade-2.jpg",
     ],
   },
   {
@@ -254,9 +254,9 @@ export const detailsTabsData = [
       },
     ],
     images: [
-      "/assets/images/project-details/prj-details-cmn.jpg",
-      "/assets/images/project-details/abtsl1.jpg",
-      "/assets/images/project-details/abtsl2.jpg",
+      "/assets/images/project-details/tab-imgs/id-1.webp",
+      "/assets/images/project-details/tab-imgs/id-2.webp",
+      "/assets/images/project-details/tab-imgs/id-3.webp",
     ],
   },
   {
