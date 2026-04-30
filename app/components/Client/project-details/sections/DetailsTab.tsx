@@ -311,7 +311,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
           alt={`${tab.title} work reference`}
           width={1207}
           height={600}
-          className="w-full aspect-[1207/600] object-cover"
+          className="w-full aspect-[1207/600] object-cover max-h-[600px]"
         />
         <button
           type="button"
