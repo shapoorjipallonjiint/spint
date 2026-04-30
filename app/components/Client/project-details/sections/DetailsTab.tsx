@@ -174,16 +174,12 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
 
   const renderScopeContent = (tab: DetailsTabItem) => (
     <motion.div key={tab.title} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} >
-      <motion.h2 variants={moveUp(0)}  className="text-38 xl:text-50 3xl:text-60 font-light leading-[1.166666666666667] text-black mb-4"
-      >
+      <motion.h2 variants={moveUp(0)}  className="text-38 xl:text-50 3xl:text-60 font-light leading-[1.166666666666667] text-black mb-4" >
         {tab.title}
       </motion.h2>
 
       {tab.subtitle && (
-        <motion.p
-          variants={moveUp(0.1)}
-          className="text-20 xl:text-24 text-black font-light leading-[1.45] mb-5"
-        >
+        <motion.p variants={moveUp(0.1)} className="text-20 xl:text-29 text-black font-light leading-[1.34482758621] mb-5">
           {tab.subtitle}
         </motion.p>
       )}
@@ -197,12 +193,12 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
       )}
 
       {tab.scopeTitle && (
-        <motion.h3 variants={moveUp(0.3)} className="text-40 font-light leading-[1.25] text-black mb-6 xl:mb-10" >
+        <motion.h3 variants={moveUp(0.3)} className="text-40 font-light leading-[1.25] text-black mb-6 xl:mb-[30px]" >
           {tab.scopeTitle}
         </motion.h3>
       )}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 xl:gap-x-10 gap-y-8 xl:gap-y-12 2xl:gap-y-60px 2xl:gap-x-30px">
+      {/* <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 xl:gap-x-10 gap-y-8 xl:gap-y-12 2xl:gap-y-60px 2xl:gap-x-30px">
         {(tab.scopeItems ?? []).map((item, index) => (
           <motion.div key={item.title} variants={moveUp(0.35 + index * 0.08)}>
             <h4 className="text-29 font-light text-black leading-[1.344827586206897] pb-3 border-b border-black/15 mb-4">
@@ -213,7 +209,16 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
             </p>
           </motion.div>
         ))}
-      </div>
+      </div> */}
+      <ul>
+        {(tab.scopeItems ?? []).map((item, index) => (
+          <motion.li key={item.title} variants={moveUp(0.35 + index * 0.08)}
+           className="text-19 text-paragraph font-light 2xl:leading-[1.2] flex md:items-center gap-1 md:gap-3 mb-3 xl:mb-4">
+            <span className="w-[7px] h-[7px] bg-secondary block shrink-0 mt-[6px] md:mt-0 ">
+            </span><span><span className="font-bold">{item.title}:</span> {item.description}</span>
+          </motion.li>
+        ))}
+      </ul>
     </motion.div>
   );
 
@@ -401,8 +406,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
                           isOpen ? "text-white" : "text-black"
                         }`}
                       >
-                        <span
-                          className={`text-18 font-light leading-[1.35] ${
+                        <span className={`text-18 font-light leading-[1.35] ${
                             isOpen
                               ? "bg-gradient-to-r from-[#4bb5f4] to-[#2d41b8] px-4 py-2 text-white"
                               : ""
@@ -411,16 +415,8 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
                           {tab.title}
                         </span>
                         <span
-                          className={`flex w-[35px] h-[35px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 ${
-                            isOpen ? "rotate-180" : ""
-                          }`}
-                        >
-                          <Image
-                            src="/assets/images/about-us/toparrow.svg"
-                            width={14}
-                            height={14}
-                            alt="arrow"
-                          />
+                          className={`flex w-[35px] h-[35px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 ${ isOpen ? "rotate-180" : "" }`} >
+                          <Image src="/assets/images/about-us/toparrow.svg" width={14} height={14} alt="arrow" />
                         </span>
                       </button>
 
