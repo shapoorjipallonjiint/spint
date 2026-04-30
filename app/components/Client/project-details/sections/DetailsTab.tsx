@@ -309,25 +309,25 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical" }: DetailsTabProps) => {
         <Image
           src={images[activeImage]}
           alt={`${tab.title} work reference`}
-          width={1200}
+          width={1207}
           height={600}
-          className="w-full aspect-[2.02/1] object-cover"
+          className="w-full aspect-[1207/600] object-cover"
         />
         <button
           type="button"
           onClick={showPreviousImage}
           aria-label="Previous image"
-          className="absolute left-5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full border border-white/70 bg-black/20 text-white flex items-center justify-center hover:bg-secondary transition-colors"
+          className="absolute left-5 top-1/2 -translate-y-1/2 w-8 h-8 xl:w-10 xl:h-10 2xl:h-[50px] 2xl:w-[50px] rounded-full border border-white/70 bg-black/20 text-white flex items-center justify-center hover:bg-secondary transition-colors group cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" strokeWidth={1.7} />
+          <ArrowLeft className="w-4 h-4 xl:w-auto xl:h-auto text-secondary group-hover:text-white group-hover:-translate-x-[1px] transition transition-all linear" strokeWidth={1.7} />
         </button>
         <button
           type="button"
           onClick={showNextImage}
           aria-label="Next image"
-          className="absolute right-5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full border border-white/70 bg-black/20 text-white flex items-center justify-center hover:bg-secondary transition-colors"
+          className="absolute right-5 top-1/2 -translate-y-1/2 w-8 h-8 xl:w-10 xl:h-10 2xl:h-[50px] 2xl:w-[50px] rounded-full border border-white/70 bg-black/20 text-white flex items-center justify-center hover:bg-secondary transition-colors group cursor-pointer"
         >
-          <ArrowRight className="w-4 h-4" strokeWidth={1.7} />
+          <ArrowRight className="w-4 h-4 xl:w-auto xl:h-auto text-secondary group-hover:text-white group-hover:translate-x-[1px] transition transition-all linear" strokeWidth={1.7} />
         </button>
       </div>
     ) : null;
