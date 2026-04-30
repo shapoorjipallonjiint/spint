@@ -259,43 +259,43 @@ export const detailsTabsData = [
       "/assets/images/project-details/tab-imgs/id-3.webp",
     ],
   },
-  {
-    title: "Facility Management",
-    subtitle: "Operational Readiness & Long-term Asset Support",
-    description:
-      "Facility Management focuses on the smooth transition from project delivery to operation, supporting building performance, maintainability, and user experience.",
-    scopeTitle: "Technical Scope",
-    scopeItems: [
-      {
-        title: "Handover",
-        description:
-          "Coordination of asset information, manuals, and operational readiness requirements.",
-      },
-      {
-        title: "Maintenance",
-        description:
-          "Planned maintenance strategies for critical building systems and finishes.",
-      },
-      {
-        title: "Soft Services",
-        description:
-          "Support services planning for occupant comfort and daily facility operations.",
-      },
-      {
-        title: "Systems",
-        description:
-          "Operational integration of MEP, life safety, and building management systems.",
-      },
-      {
-        title: "Performance",
-        description:
-          "Monitoring and improvement of facility performance after project completion.",
-      },
-    ],
-    images: [
-      "/assets/images/project-details/prj-details-cmn.jpg",
-      "/assets/images/project-details/abtsl1.jpg",
-      "/assets/images/project-details/abtsl2.jpg",
-    ],
-  },
+  // {
+  //   title: "Facility Management",
+  //   subtitle: "Operational Readiness & Long-term Asset Support",
+  //   description:
+  //     "Facility Management focuses on the smooth transition from project delivery to operation, supporting building performance, maintainability, and user experience.",
+  //   scopeTitle: "Technical Scope",
+  //   scopeItems: [
+  //     {
+  //       title: "Handover",
+  //       description:
+  //         "Coordination of asset information, manuals, and operational readiness requirements.",
+  //     },
+  //     {
+  //       title: "Maintenance",
+  //       description:
+  //         "Planned maintenance strategies for critical building systems and finishes.",
+  //     },
+  //     {
+  //       title: "Soft Services",
+  //       description:
+  //         "Support services planning for occupant comfort and daily facility operations.",
+  //     },
+  //     {
+  //       title: "Systems",
+  //       description:
+  //         "Operational integration of MEP, life safety, and building management systems.",
+  //     },
+  //     {
+  //       title: "Performance",
+  //       description:
+  //         "Monitoring and improvement of facility performance after project completion.",
+  //     },
+  //   ],
+  //   images: [
+  //     "/assets/images/project-details/prj-details-cmn.jpg",
+  //     "/assets/images/project-details/abtsl1.jpg",
+  //     "/assets/images/project-details/abtsl2.jpg",
+  //   ],
+  // },
 ];
