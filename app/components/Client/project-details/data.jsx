@@ -88,6 +88,7 @@ export const detailsTabsData = [
       },
     ],
     images: [
+      "/assets/images/project-details/prj-details-cmn.jpg",
       "/assets/images/project-details/abtsl1.jpg",
       "/assets/images/project-details/abtsl2.jpg",
     ],
@@ -175,6 +176,7 @@ export const detailsTabsData = [
         ], },
     ],
     images: [
+      "/assets/images/project-details/prj-details-cmn.jpg",
       "/assets/images/project-details/abtsl1.jpg",
       "/assets/images/project-details/abtsl2.jpg",
     ],
@@ -213,6 +215,7 @@ export const detailsTabsData = [
       },
     ],
     images: [
+      "/assets/images/project-details/prj-details-cmn.jpg",
       "/assets/images/project-details/abtsl1.jpg",
       "/assets/images/project-details/abtsl2.jpg",
     ],
@@ -251,6 +254,7 @@ export const detailsTabsData = [
       },
     ],
     images: [
+      "/assets/images/project-details/prj-details-cmn.jpg",
       "/assets/images/project-details/abtsl1.jpg",
       "/assets/images/project-details/abtsl2.jpg",
     ],
@@ -289,6 +293,7 @@ export const detailsTabsData = [
       },
     ],
     images: [
+      "/assets/images/project-details/prj-details-cmn.jpg",
       "/assets/images/project-details/abtsl1.jpg",
       "/assets/images/project-details/abtsl2.jpg",
     ],
