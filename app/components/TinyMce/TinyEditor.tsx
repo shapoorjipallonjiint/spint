@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Editor as TinyMCEEditor } from 'tinymce';
 
-export default function TinyEditor({ setNewsContent,newsContent }: {newsContent?:string | boolean, setNewsContent: Dispatch<SetStateAction<string>> }) {
+export default function TinyEditor({ setNewsContent, newsContent }: { newsContent?: string | boolean, setNewsContent: Dispatch<SetStateAction<string>> }) {
     const editorRef = useRef<TinyMCEEditor | null>(null);
 
 
@@ -19,10 +19,13 @@ export default function TinyEditor({ setNewsContent,newsContent }: {newsContent?
                 onInit={(_evt, editor) => {
                     editorRef.current = editor
                 }}
-                initialValue = {newsContent && typeof newsContent=="string" ?  newsContent :"<p>This is the initial content of the editor.</p>"}
+                initialValue={newsContent && typeof newsContent == "string" ? newsContent : "<p>This is the initial content of the editor.</p>"}
                 init={{
                     height: 500,
                     menubar: false,
+                    branding: false,
+                    statusbar: false,
+                    resize: false,
                     advcode_inline: true,
                     theme: 'silver',
                     image_title: true,

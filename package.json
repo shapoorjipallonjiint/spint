@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "create-admin": "ts-node --project tsconfig.json scripts/create-admin.ts"
+    "create-admin": "ts-node --project tsconfig.json scripts/create-admin.ts",
+    "change-key": "ts-node --project tsconfig.json scripts/changeIdToServiceId.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
