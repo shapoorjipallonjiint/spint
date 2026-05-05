@@ -24,8 +24,24 @@ import { statusData } from "./statusData";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
 import dynamic from "next/dynamic";
+import { ServiceItemsEditor } from './ServiceItemEditor';
+import { XIcon } from "lucide-react"
 
-interface ProjectFormProps {
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
+import { FaRegEdit } from "react-icons/fa";
+import { ServiceImagesEditor } from "./ServiceImageEditor";
+
+
+export interface ProjectFormProps {
     firstSection: {
         title: string;
         title_ar: string;
@@ -41,7 +57,26 @@ interface ProjectFormProps {
         title_ar: string;
         location: string;
         sector: string[];
-        service: string[];
+        service: {
+            serviceId: string;
+            firstSection: {
+                title: string;
+                title_ar: string;
+                description: string;
+                description_ar: string;
+            },
+            secondSection: {
+                title: string;
+                title_ar: string;
+                description: string;
+                description_ar: string;
+            },
+            items?: {
+                title: string;
+                description: string;
+            }[]
+            images: { url: string }[]
+        }[];
         status: string;
         project: string;
         project_ar: string;
@@ -100,6 +135,8 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
     >([]);
     const [reorderMode, setReorderMode] = useState(false);
 
+    const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+
     const {
         register,
         handleSubmit,
@@ -140,8 +177,10 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
         name: "thirdSection.items",
     });
 
+
     const handleAddProject = async (data: ProjectFormProps) => {
         try {
+            console.log(data.secondSection.service)
             const response = await fetch(editMode ? `/api/admin/project?id=${id}` : `/api/admin/project`, {
                 method: editMode ? "PATCH" : "POST",
                 body: JSON.stringify(data),
@@ -182,7 +221,14 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                     sector: data.data.secondSection.sector?.map((s: any) => s._id) || [],
                     location: data.data.secondSection.location?._id || "",
                     // service: data.data.secondSection.service._id || "",
-                    service: data.data.secondSection.service?.map((s: any) => s._id) || [],
+                    service: data.data.secondSection.service.map((s: any) => ({
+                        ...s,
+                        images: Array.isArray(s.images)
+                            ? s.images.map((img: any) =>
+                                typeof img === "string" ? { url: img } : img
+                            )
+                            : [],
+                    })),
                 });
             } else {
                 const data = await response.json();
@@ -499,27 +545,278 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             <Controller
                                 name="secondSection.service"
                                 control={control}
-                                rules={{ required: "Select at least one service" }}
+
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-2">
-                                        {serviceList.map((item) => {
-                                            const selected = field.value?.includes(item._id);
+                                        {serviceList.map((item, index) => {
+                                            const serviceIndex = field.value?.findIndex(
+                                                (s) => s.serviceId === item._id
+                                            );
+
+                                            const selected = serviceIndex !== -1;
+
+
 
                                             return (
-                                                <label key={item._id} className="flex items-center gap-2">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={selected}
-                                                        onChange={() => {
-                                                            if (selected) {
-                                                                field.onChange(field.value.filter((v) => v !== item._id));
-                                                            } else {
-                                                                field.onChange([...(field.value || []), item._id]);
+                                                <div className="flex justify-between">
+                                                    <label key={item._id} className="flex items-center gap-2">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={selected}
+                                                            onChange={() => {
+                                                                if (selected) {
+                                                                    field.onChange(field.value.filter((s) => s.serviceId !== item._id));
+                                                                } else {
+                                                                    field.onChange([
+                                                                        ...(field.value || []),
+                                                                        {
+                                                                            serviceId: item._id,
+                                                                            firstSection: {
+                                                                                title: "",
+                                                                                title_ar: "",
+                                                                                description: "",
+                                                                                description_ar: "",
+                                                                            },
+                                                                            secondSection: {
+                                                                                title: "",
+                                                                                title_ar: "",
+                                                                                description: "",
+                                                                                description_ar: "",
+                                                                            },
+                                                                            items: item.pageTitle.includes("MEP") ? [] : undefined,
+                                                                            images: []
+                                                                        },
+                                                                    ]);
+                                                                }
+                                                            }}
+                                                        />
+                                                        {item.pageTitle}
+                                                    </label>
+                                                    {item.pageTitle.includes("MEP") && serviceIndex !== -1 && (
+                                                        <FaRegEdit
+                                                            className="cursor-pointer"
+                                                            onClick={() =>
+                                                                setOpenIndex(openIndex === serviceIndex ? null : serviceIndex)
                                                             }
-                                                        }}
-                                                    />
-                                                    {item.pageTitle}
-                                                </label>
+                                                        />
+                                                    )}
+                                                    {item.pageTitle.includes("MEP") && openIndex === serviceIndex && (
+                                                        <>
+                                                            {/* Overlay (same as SheetOverlay) */}
+                                                            <div
+                                                                className="fixed inset-0 z-50 bg-black/10 backdrop-blur-xs transition-opacity duration-100"
+                                                                onClick={() => setOpenIndex(null)}
+                                                            />
+
+                                                            {/* Sheet Content clone */}
+                                                            <div
+                                                                className="fixed z-50 flex flex-col gap-4 bg-background text-sm shadow-lg transition duration-200 ease-in-out 
+                 inset-y-0 right-0 h-full w-1/2 border-l"
+                                                                onClick={(e) => e.stopPropagation()}
+                                                            >
+                                                                {/* Close button (same as Sheet) */}
+                                                                <button
+                                                                    onClick={() => setOpenIndex(null)}
+                                                                    className="absolute top-3 right-3 p-2"
+                                                                >
+                                                                    <XIcon />
+                                                                </button>
+
+                                                                {/* Header */}
+                                                                <div className="p-4 flex flex-col gap-0.5">
+                                                                    <h2 className="text-base font-medium">Edit MEP Content</h2>
+                                                                </div>
+
+                                                                {/* Body */}
+                                                                <div className="flex-1 overflow-y-auto">
+                                                                    <ServiceItemsEditor
+                                                                        control={control}
+                                                                        register={register}
+                                                                        serviceIndex={serviceIndex}
+                                                                        selected={selected}
+                                                                        errors={errors}
+                                                                    />
+
+                                                                    <div className="p-5">
+                                                                        <div className="flex justify-between items-center">
+                                                                            <Label className="block text-sm">Images</Label>
+                                                                        </div>
+                                                                        {/* <div className="mt-2">
+                                                                            <ImageUploader onChange={handleImageUpload} deleteAfterUpload={true} multiple={true} />
+                                                                        </div> */}
+                                                                        <div className="mt-4 grid grid-cols-1 gap-4">
+                                                                            <ServiceImagesEditor
+                                                                                control={control}
+                                                                                serviceIndex={serviceIndex}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                {/* Footer */}
+                                                                <div className="p-4 mt-auto flex flex-col gap-2">
+                                                                    <Button
+                                                                        className="bg-primary text-white"
+                                                                        onClick={() => setOpenIndex(null)}
+                                                                    >
+                                                                        Save
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    )}
+
+                                                    {!item.pageTitle.includes("MEP") && <Sheet open={openIndex === serviceIndex}
+                                                        onOpenChange={(open) => setOpenIndex(open ? serviceIndex : null)}>
+                                                        <SheetTrigger asChild>
+                                                            {serviceIndex !== -1 && <FaRegEdit />}
+                                                        </SheetTrigger>
+                                                        <SheetContent className="h-[400px] overflow-y-auto">
+                                                            <SheetHeader>
+                                                                <SheetTitle>Edit Content</SheetTitle>
+                                                                {/* <SheetDescription>
+                                                                    Reorder items here. Click save when you&apos;re done.
+                                                                </SheetDescription> */}
+                                                            </SheetHeader>
+                                                            {!item.pageTitle.includes("MEP") ? <div className="grid flex-1  gap-3 px-4">
+                                                                <AdminItemContainer>
+                                                                    <Label className="" main>
+                                                                        First Section
+                                                                    </Label>
+                                                                    <div className="p-5 rounded-md flex flex-col gap-5">
+                                                                        <div>
+                                                                            <Label className="">Title</Label>
+                                                                            <Input
+                                                                                type="text"
+                                                                                placeholder="Title"
+                                                                                {...register(`secondSection.service.${serviceIndex}.firstSection.title`, {
+                                                                                    validate: (value) => {
+                                                                                        if (!selected) return true; // skip validation
+                                                                                        return value?.trim() !== "" || "Title is required";
+                                                                                    }
+                                                                                })}
+                                                                            />
+                                                                            {errors?.secondSection?.service?.[serviceIndex]?.firstSection?.title && (
+                                                                                <p className="text-red-500">{errors.secondSection?.service?.[serviceIndex]?.firstSection?.title.message}</p>
+                                                                            )}
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <Label className="">Description</Label>
+                                                                            <Textarea
+
+                                                                                placeholder="Description"
+                                                                                {...register(`secondSection.service.${serviceIndex}.firstSection.description`, {
+                                                                                    validate: (value) => {
+                                                                                        if (!selected) return true; // skip validation
+                                                                                        return value?.trim() !== "" || "Description is required";
+                                                                                    }
+                                                                                })}
+                                                                            />
+                                                                            {errors?.secondSection?.service?.[serviceIndex]?.firstSection?.description && (
+                                                                                <p className="text-red-500">{errors.secondSection?.service?.[serviceIndex]?.firstSection?.description.message}</p>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </AdminItemContainer>
+
+
+                                                                <AdminItemContainer>
+                                                                    <Label className="" main>
+                                                                        Second Section
+                                                                    </Label>
+                                                                    <div className="p-5 rounded-md flex flex-col gap-5">
+                                                                        <div>
+                                                                            <Label className="">Title</Label>
+                                                                            <Input
+                                                                                type="text"
+                                                                                placeholder="Title"
+                                                                                {...register(`secondSection.service.${serviceIndex}.secondSection.title`, {
+                                                                                    validate: (value) => {
+                                                                                        if (!selected) return true; // skip validation
+                                                                                        return value?.trim() !== "" || "Title is required";
+                                                                                    }
+                                                                                })}
+                                                                            />
+                                                                            {errors.secondSection?.service?.[serviceIndex]?.secondSection?.title && (
+                                                                                <p className="text-red-500">{errors.secondSection?.service?.[serviceIndex]?.secondSection?.title.message}</p>
+                                                                            )}
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <Label className="">Description</Label>
+                                                                            <Controller
+                                                                                name={`secondSection.service.${serviceIndex}.secondSection.description`}
+                                                                                control={control}
+                                                                                rules={{
+                                                                                    validate: (value) => {
+                                                                                        if (!selected) return true; // skip validation if not selected
+                                                                                        return value?.trim() !== "" || "Description is required";
+                                                                                    }
+                                                                                }}
+                                                                                render={({ field }) => {
+                                                                                    return (
+                                                                                        <ReactQuill
+                                                                                            theme="snow"
+                                                                                            value={field.value}
+                                                                                            onChange={field.onChange}
+                                                                                        />
+                                                                                    );
+                                                                                }}
+                                                                            />
+                                                                            {/* <Textarea
+
+                                                                                placeholder="Description"
+                                                                                {...register(`secondSection.service.${serviceIndex}.secondSection.description`, {
+                                                                                    validate: (value) => {
+                                                                                        if (!selected) return true; // skip validation
+                                                                                        return value?.trim() !== "" || "Description is required";
+                                                                                    }
+                                                                                })}
+                                                                            /> */}
+                                                                            {errors.secondSection?.service?.[serviceIndex]?.secondSection?.description && (
+                                                                                <p className="text-red-500">{errors.secondSection?.service?.[serviceIndex]?.secondSection?.description.message}</p>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </AdminItemContainer>
+
+                                                                <div className="p-5">
+                                                                    <div className="flex justify-between items-center">
+                                                                        <Label className="block text-sm">Images</Label>
+                                                                    </div>
+                                                                    {/* <div className="mt-2">
+                                                                            <ImageUploader onChange={handleImageUpload} deleteAfterUpload={true} multiple={true} />
+                                                                        </div> */}
+                                                                    <div className="mt-4 grid grid-cols-1 gap-4">
+                                                                        <ServiceImagesEditor
+                                                                            control={control}
+                                                                            serviceIndex={serviceIndex}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                            </div> : (
+
+                                                                // <ServiceItemsEditor
+                                                                //     control={control}
+                                                                //     register={register}
+                                                                //     serviceIndex={serviceIndex}
+                                                                //     selected={selected}
+                                                                //     errors={errors}
+                                                                // />
+                                                                null
+                                                            )}
+                                                            <SheetFooter>
+                                                                {/* <Button type="submit">Save changes</Button> */}
+                                                                <SheetClose asChild>
+                                                                    <Button variant="outline" className="bg-primary text-white">Save</Button>
+                                                                </SheetClose>
+                                                            </SheetFooter>
+                                                        </SheetContent>
+                                                    </Sheet>}
+                                                </div>
                                             );
                                         })}
                                     </div>
@@ -1028,28 +1325,145 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             <Controller
                                 name="secondSection.service"
                                 control={control}
-                                rules={{ required: "Select at least one service" }}
+                                rules={{
+                                    validate: (value) =>
+                                        value?.length > 0 || "Select at least one service",
+                                }}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-2">
-                                        {serviceList.map((item) => {
-                                            const selected = field.value?.includes(item._id);
+                                        {serviceList.map((item, index) => {
+                                            const serviceIndex = field.value?.findIndex(
+                                                (s) => s.serviceId === item._id
+                                            );
+
+                                            const selected = serviceIndex !== -1;
 
                                             return (
-                                                <label key={item._id} className="flex items-center gap-2">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={selected}
-                                                        onChange={() => {
-                                                            if (selected) {
-                                                                field.onChange(field.value.filter((v) => v !== item._id));
-                                                            } else {
-                                                                field.onChange([...(field.value || []), item._id]);
-                                                            }
-                                                        }}
-                                                    />
-                                                    {item.pageTitle}{" "}
-                                                    <span className="text-primary text-sm">AR:({item.title_ar})</span>
-                                                </label>
+                                                <div className="flex justify-between">
+                                                    <label key={item._id} className="flex items-center gap-2">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={selected}
+                                                            onChange={() => {
+                                                                if (selected) {
+                                                                    field.onChange(field.value.filter((s) => s.serviceId !== item._id));
+                                                                } else {
+                                                                    field.onChange([
+                                                                        ...(field.value || []),
+                                                                        {
+                                                                            serviceId: item._id,
+                                                                            firstSection: {
+                                                                                title: "",
+                                                                                title_ar: "",
+                                                                                description: "",
+                                                                                description_ar: "",
+                                                                            },
+                                                                            secondSection: {
+                                                                                title: "",
+                                                                                title_ar: "",
+                                                                                description: "",
+                                                                                description_ar: "",
+                                                                            },
+                                                                        },
+                                                                    ]);
+                                                                }
+                                                            }}
+                                                        />
+                                                        {item.pageTitle}{" "}
+                                                        <span className="text-primary text-sm">AR:({item.title_ar})</span>
+                                                    </label>
+
+                                                    <Sheet>
+                                                        <SheetTrigger asChild>
+                                                            <FaRegEdit />
+                                                        </SheetTrigger>
+                                                        <SheetContent>
+                                                            <SheetHeader>
+                                                                <SheetTitle>Edit Content</SheetTitle>
+                                                                {/* <SheetDescription>
+                                                                    Reorder items here. Click save when you&apos;re done.
+                                                                </SheetDescription> */}
+                                                            </SheetHeader>
+                                                            <div className="grid flex-1  gap-3 px-4">
+                                                                <AdminItemContainer>
+                                                                    <Label className="" main>
+                                                                        First Section
+                                                                    </Label>
+                                                                    <div className="p-5 rounded-md flex flex-col gap-5">
+                                                                        <div>
+                                                                            <Label className="">Title</Label>
+                                                                            <Input
+                                                                                type="text"
+                                                                                placeholder="Title"
+                                                                                {...register(`secondSection.service.${serviceIndex}.firstSection.title_ar`)}
+                                                                            />
+
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <Label className="">Description</Label>
+                                                                            <Textarea
+
+                                                                                placeholder="Description"
+                                                                                {...register(`secondSection.service.${serviceIndex}.firstSection.description_ar`)}
+                                                                            />
+
+                                                                        </div>
+                                                                    </div>
+                                                                </AdminItemContainer>
+
+
+                                                                <AdminItemContainer>
+                                                                    <Label className="" main>
+                                                                        Second Section
+                                                                    </Label>
+                                                                    <div className="p-5 rounded-md flex flex-col gap-5">
+                                                                        <div>
+                                                                            <Label className="">Title</Label>
+                                                                            <Input
+                                                                                type="text"
+                                                                                placeholder="Title"
+                                                                                {...register(`secondSection.service.${serviceIndex}.secondSection.title_ar`)}
+                                                                            />
+
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <Label className="">Description</Label>
+                                                                            <Controller
+                                                                                name={`secondSection.service.${serviceIndex}.secondSection.description_ar`}
+                                                                                control={control}
+
+                                                                                render={({ field }) => {
+                                                                                    return (
+                                                                                        <ReactQuill
+                                                                                            theme="snow"
+                                                                                            value={field.value}
+                                                                                            onChange={field.onChange}
+                                                                                        />
+                                                                                    );
+                                                                                }}
+                                                                            />
+                                                                            {/* <Textarea
+
+                                                                                placeholder="Description"
+                                                                                {...register(`secondSection.service.${serviceIndex}.secondSection.description_ar`)}
+                                                                            /> */}
+
+                                                                        </div>
+                                                                    </div>
+                                                                </AdminItemContainer>
+
+                                                            </div>
+                                                            <SheetFooter>
+                                                                {/* <Button type="submit">Save changes</Button> */}
+                                                                <SheetClose asChild>
+                                                                    <Button variant="outline" className="bg-primary text-white">Save</Button>
+                                                                </SheetClose>
+                                                            </SheetFooter>
+                                                        </SheetContent>
+                                                    </Sheet>
+                                                </div>
                                             );
                                         })}
                                     </div>

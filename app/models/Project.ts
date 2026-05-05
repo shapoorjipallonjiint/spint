@@ -85,11 +85,37 @@ const projectSchema = new mongoose.Schema({
         required: true,
       }],
 
-      service: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Service",
-        required: true,
-      }],
+      service: [
+        {
+          serviceId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Service",
+            required: true,
+          },
+
+          firstSection: {
+            title: { type: String },
+            title_ar: { type: String },
+            description: { type: String },
+            description_ar: { type: String },
+          },
+
+          secondSection: {
+            title: { type: String },
+            title_ar: { type: String },
+            description: { type: String },
+            description_ar: { type: String },
+          },
+
+          items:[{
+            title:{type:String},
+            description:{type:String},
+          }],
+          images:[{
+            url:{type:String}
+          }]
+        }
+      ],
 
       status: { type: String },
 

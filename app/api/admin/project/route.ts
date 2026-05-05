@@ -72,19 +72,55 @@ export async function GET(request: NextRequest) {
 
     /* ---------- MAPPER ---------- */
     const mapProject = (p: ProjectItem) => {
-      const services =
-        Array.isArray(p.secondSection?.service)
-          ? p.secondSection.service
-              .map((id) => serviceMap.get(id.toString()))
-              .filter(Boolean)
-          : [];
-    
+const services =
+  Array.isArray(p.secondSection?.service)
+    ? p.secondSection.service.map((s: any) => {
+        const serviceId = s.serviceId?.toString();
+        const serviceDetails = serviceMap.get(serviceId);
+
+        return {
+          serviceId,
+
+          // ✅ ADD THESE
+          serviceName: serviceDetails?.title || "",
+          serviceName_ar: serviceDetails?.title_ar || "",
+
+          firstSection: s.firstSection || {
+            title: "",
+            title_ar: "",
+            description: "",
+            description_ar: "",
+          },
+
+          secondSection: s.secondSection || {
+            title: "",
+            title_ar: "",
+            description: "",
+            description_ar: "",
+          },
+
+          items: Array.isArray(s.items)
+            ? s.items.map((item: any) => ({
+                title: item.title || "",
+                description: item.description || "",
+              }))
+            : [],
+
+          images: Array.isArray(s.images)
+            ? s.images.map((img: any) =>
+                typeof img === "string" ? { url: img } : img
+              )
+            : [],
+        };
+      })
+    : [];
+
       const locationId = p.secondSection?.location;
       const location =
         typeof locationId === "string"
           ? locationMap.get(locationId) ?? null
           : null;
-    
+
       return {
         ...p,
         secondSection: {
@@ -94,7 +130,7 @@ export async function GET(request: NextRequest) {
         },
       };
     };
-    
+
     /* ----------------------------- */
 
     /* ===== SINGLE PROJECT BY ID ===== */
@@ -184,11 +220,11 @@ export async function PATCH(request: NextRequest) {
       project.banner = body.banner
       project.metaTitle = body.metaTitle
       project.metaDescription = body.metaDescription
-      project.bannerAlt_ar =  body.bannerAlt_ar,
-      project.pageTitle_ar = body.pageTitle_ar,
-      project.metaTitle_ar = body.metaTitle_ar,
-      project.metaDescription_ar = body.metaDescription_ar,
-      project.firstSection = body.firstSection
+      project.bannerAlt_ar = body.bannerAlt_ar,
+        project.pageTitle_ar = body.pageTitle_ar,
+        project.metaTitle_ar = body.metaTitle_ar,
+        project.metaDescription_ar = body.metaDescription_ar,
+        project.firstSection = body.firstSection
       await project.save()
       return NextResponse.json(
         { data: project, message: "Project updated successfully" },
@@ -218,7 +254,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     Object.assign(found, body);
-    await project.save();
+    await project.save({ validateBeforeSave: false });
 
     return NextResponse.json(
       { data: project, message: "Project updated successfully" },
@@ -255,7 +291,7 @@ export async function POST(request: NextRequest) {
     }
 
     project.projects.push(body);
-    await project.save();
+    await project.save({ validateBeforeSave: false });
 
     return NextResponse.json(
       { data: project, message: "Project created successfully" },

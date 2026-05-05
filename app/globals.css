@@ -1671,3 +1671,31 @@ h1.text-19 {
     background-color: var(--primary);
   }
 }
+
+
+.project-services-secondsection-description li {
+  @apply text-19 text-paragraph font-light 2xl:leading-[1.2] flex md:items-center mb-3 xl:mb-4
+}
+
+.project-services-secondsection-description li strong {
+  @apply font-bold pl-3
+}
+
+.project-services-secondsection-description li::before {
+  content: "";
+  @apply w-[7px] h-[7px] bg-secondary block shrink-0 ;
+}
+
+.mep-tab-description-project-details ul{
+  @apply flex-col gap-3 text-13 lg:text-14 text-paragraph font-light space-y-2;
+}
+
+
+.mep-tab-description-project-details li {
+  @apply flex gap-3
+}
+
+.mep-tab-description-project-details li::before {
+  content: "";
+  @apply w-[5px] h-[5px] bg-[#39aef0] block shrink-0 mt-[8px];
+}
