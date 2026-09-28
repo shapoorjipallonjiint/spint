@@ -13,7 +13,7 @@ const H2Title = ({
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   // Split text into words
-  const words = titleText.split(" ");
+  const words = titleText?.split(" ");
 
   const container = {
     hidden: { opacity: 0 },
@@ -49,7 +49,7 @@ const H2Title = ({
         initial="hidden"
         animate={isInView ? "show" : "hidden"}
       >
-        {words.map((word, wordIndex) => (
+        {words?.map((word, wordIndex) => (
           <span key={wordIndex}>
             {/* <span className="overflow-hidden inline-block align-top"> */}
             <span className="inline-block align-top">
@@ -60,7 +60,7 @@ const H2Title = ({
                 {word}
               </motion.span>
             </span>
-            {wordIndex < words.length - 1 && " "}
+            {wordIndex < words?.length - 1 && " "}
           </span>
         ))}
       </motion.span>
