@@ -99,7 +99,8 @@ const LeaderBox = ({ data }) => {
 
                     {t.map((item, index) => {
                         const isReverse = index % 2 !== 0;
-
+                        console.log(`rahees data ${item}`);
+                        
                         return (
                             <div
                                 key={index}
