@@ -3,7 +3,7 @@ export const leaderData = {
   chairmanData: {
     image: "../assets/images/leadership/leader-1.png",
     name: "Mr. Shapoor P. Mistry",
-    designation: "Group Chairman",
+    designation: "Chairman, Shapoorji Pallonji Group ",
     description: `<p>Mr. Shapoor P. Mistry is the architect of its modern transformation and global expansion. His strategic vision has accelerated growth while reinforcing corporate governance and innovation. Under his leadership, the Group has deepened its international presence delivering landmark projects and cultivating enduring global partnerships.</p>
 
 <p>Mr. Mistry has championed the Group’s re-emergence and scale-up in Real Estate and led strategic diversification into renewables and power. These efforts have established the conglomerate as a vital partner in nation-building and energy transitions.</p>
@@ -13,7 +13,7 @@ export const leaderData = {
   chiefExData: {
     image: "../assets/images/leadership/chief-ex.png",
     name: "Mr. Batchu V. Sagar ",
-    designation: "Chief Executive Officer – Shapoorji Pallonji Internationa",
+    designation: "Chief Executive Officer – Shapoorji Pallonji International",
     description: `<p>Mr. Batchu V. Sagar is a central figure in Shapoorji Pallonji International's global expansion. Holding a B.Tech from NIT Jamshedpur and an MBA from XLRI, he combines technical expertise with strategic leadership. </p>
 
 <p>Since joining the organisation in 2011, Mr. Sagar has experienced a rapid career trajectory, initially managing projects before advancing to Country Head for Saudi Arabia. He later served as Vice President, overseeing diverse portfolios across the UAE, Saudi Arabia, and Algeria alongside the specialised Facade Division. </p>

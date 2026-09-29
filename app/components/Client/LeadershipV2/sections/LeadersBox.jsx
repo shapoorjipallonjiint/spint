@@ -71,10 +71,10 @@ const LeaderBox = ({data,big}) => {
             <div className="container">
                 <div className="border-b py-80px border-cmnbdr relative overflow-hidden " ref={imageContainerRef}>
                    {/* ================= LEADER ================= */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-[594px_auto] gap-y-6 lg:gap-y-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-[594px_auto] gap-y-6 lg:gap-y-10 gap-x-100px">
 
                         {/* IMAGE */}
-                        <div className="relative flex flex-col justify-end">
+                        {/* <div className="relative flex flex-col justify-end">
 
                             <MotionImage
                                 width={1000}
@@ -85,7 +85,7 @@ const LeaderBox = ({data,big}) => {
                                 viewport={{ amount: 0.1, once: true }}
                                 src={data.image}
                                 alt={data.name}
-                                className="relative w-fit object-contain z-20 ms-auto lg:me-auto 3xl:me-auto px-2 pb-4"
+                                className="relative w-fit object-contain z-20 ms-auto lg:me-auto 3xl:me-auto px-2 pb-4 max-h-[571px]"
                             />
                             {
                                 
@@ -95,7 +95,7 @@ const LeaderBox = ({data,big}) => {
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.1, once: true }}
-                                className={`absolute bottom-0 left-0 h-[80%] lg:h-[70%] xl:h-[75%] ${big ?"3xl:h-[530px]":"3xl:h-[410px]"}  w-full bg-primary z-10`}
+                                className={`absolute bottom-0 left-0 h-[80%] lg:h-[70%] xl:h-[75%] ${big ? "3xl:h-[530px]" : "3xl:h-[410px]"}  w-full bg-linear-to-b from-[#0079BA] to-[#003792] z-10`}
                             />
 
                             <motion.div
@@ -108,11 +108,45 @@ const LeaderBox = ({data,big}) => {
                                 }}
                             />
 
+                        </div> */}
+
+                        <div className="relative flex flex-col items-center justify-end w-full max-w-[594px] overflow-x-hidden">
+
+                            <MotionImage
+                                width={1000}
+                                height={1920}
+                                variants={moveLeft(0.3)}
+                                initial="hidden"
+                                whileInView="show"
+                                viewport={{ amount: 0.1, once: true }}
+                                src={data.image}
+                                alt={data.name}
+                                className={`relative z-20 mx-auto block h-auto w-auto max-w-full object-contain object-bottom 
+                                    ${big
+                                        ? "max-h-[571.67px] 3xl:h-[571.67px]"
+                                        : "max-h-[470px] 3xl:h-[470px]"
+                                    }`}
+                                style={{
+                                    WebkitMaskImage: "linear-gradient(to bottom, #000 35.6%, transparent 100%)",
+                                    maskImage: "linear-gradient(to bottom, #000 35.6%, transparent 100%)",
+                                }}
+                            />
+
+                            {/* Blue gradient box: 594 x 530, flush with the image bottom */}
+                            <motion.div
+                                variants={fadeIn(0.2)}
+                                initial="hidden"
+                                whileInView="show"
+                                viewport={{ amount: 0.1, once: true }}
+                                className={`absolute bottom-0 left-0 w-full z-10 bg-linear-to-b from-[#0079BA] to-[#003792] h-[80%] lg:h-[70%] xl:h-[75%] 
+                                    ${big ? "3xl:h-[530px]" : "3xl:h-[410px]"
+                                    }`}
+                            />
                         </div>
 
 
                         {/* RIGHT CONTENT */}
-                        <div className="lg:ps-8 xl:ps-15 2xl:ps-17 3xl:ps-[80px]">
+                        <div className="">
                             <H2Title titleText={t?.name} marginClass="mb-[10px]" />
                             <motion.h3 variants={moveUp(0.4)} initial="hidden" whileInView="show"
                                 viewport={{ amount: 0.1, once: true }}
@@ -123,7 +157,7 @@ const LeaderBox = ({data,big}) => {
 
                             <div className="description">
                                 {data.description &&
-                                    <motion.div variants={fadeIn(0.6)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-19 leading-[1.47] text-paragraph font-light lg:max-w-[58.7ch] [&>p]:mb-4 [&>p]:2xl:mb-7 [&>p]:last:mb-0"
+                                    <motion.div variants={fadeIn(0.6)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-19 leading-[1.47] text-paragraph font-light [&>p]:mb-4 [&>p]:2xl:mb-7 [&>p]:last:mb-0"
                                      dangerouslySetInnerHTML={{ __html: data.description }}>
                                     </motion.div>
                                 }
