@@ -15,7 +15,7 @@ const Promoters = ({ items,title, btmBorder }) => {
   return (
     <section className="relative overflow-hidden pt-80px">
       <div className="container overflow-visible">
-        <div className="flex justify-between mb-50px">
+        <div className="flex justify-between mb-40px 3xl:mb-[45px]">
           <H2Title titleText={title} />
 
           <div className="">
@@ -58,7 +58,8 @@ const Promoters = ({ items,title, btmBorder }) => {
                 slidesPerView: 4,
               },
               1400:{
-                slidesPerView: 4.1
+                slidesPerView: 4.1,
+                spaceBetween:40,
               }
             }}
           >
@@ -76,7 +77,7 @@ const Promoters = ({ items,title, btmBorder }) => {
                           alt={item.name}
                           className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0 px-2"
                         />
-                        <div className="bg-f5f5  w-full h-[70%] md:h-[70%] lg:h-[78%] 2xl:h-[79%] z-[-1]"></div>
+                        <div className="bg-f5f5  w-full h-[70%] md:h-[70%] lg:h-[78%] 2xl:h-[79%] max-h-[303.94px] z-[-1]"></div>
 
                       </div>
                       <div className="mt-3 xl:mt-[27px]">
