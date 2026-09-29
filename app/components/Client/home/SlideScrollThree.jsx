@@ -147,6 +147,28 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
     const { setToNavigateCountry } = useToNavigateCountryContext();
 
+    // Snap the hero divider line to the header's "scroll down" border so both read as one line
+    useEffect(() => {
+        const alignLine = () => {
+            const line = brdrRef.current;
+            const headerLine = document.querySelector("header .scrlldwn");
+            if (!line) return;
+            line.style.marginBottom = "";
+            if (!headerLine || window.innerWidth < 1024) return;
+
+            // ignore the header's intro gsap y-offset so we align to its final position
+            const headerTop = headerLine.getBoundingClientRect().top - (Number(gsap.getProperty(headerLine, "y")) || 0);
+            const lineTop = line.getBoundingClientRect().top;
+            const baseMargin = parseFloat(getComputedStyle(line).marginBottom) || 0;
+            line.style.marginBottom = `${baseMargin - (headerTop - lineTop)}px`;
+        };
+
+        alignLine();
+        document.fonts?.ready.then(alignLine);
+        window.addEventListener("resize", alignLine);
+        return () => window.removeEventListener("resize", alignLine);
+    }, []);
+
 
     // Add this useEffect to detect screen size
     useEffect(() => {
