@@ -1,9 +1,9 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import { useScroll, useTransform } from "framer-motion";
-import { assets } from "../../assets"
-import H2Title from "./H2Title";
-import VideoPlayer from "./VideoPlayer";
+import { assets } from "@/app/assets"; 
+import H2Title from "@/app/components/common/H2Title";
+import VideoPlayer from "@/app/components/common/VideoPlayer";
 import { motion } from "framer-motion";
 import { moveUp, moveLeft } from "@/app/components/motionVarients";
 import Image from "next/image";
@@ -86,7 +86,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
 
 
   return (
-    <section className="relative sectm-100 pb30" ref={sectionRef}>
+    <section className="relative sectm-100 pb-150px" ref={sectionRef}>
       {showProfile && (
         <div className="absolute inset-0 z-10 hidden lg:block">
           <div className="container">
@@ -102,13 +102,14 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
         </div>
       )}
 
-      <div className={`absolute top-custom-100 h-fit w-fit z-0 ${isArabic ? "left-0 lg:right-[-4%] xl:right-0 2xl:right-[-6%] 3xl:right-0" : "right-0 lg:left-[-4%] xl:left-0 2xl:left-[-6%] 3xl:left-0"}`}>
+      <div className={`absolute top-custom-100 h-fit w-fit z-0 max-w-[662px] 
+        ${isArabic ? "left-0 lg:right-[-4%] xl:right-0 2xl:right-[-6%] 3xl:right-0" : "right-0 lg:left-[-4%] xl:left-0 2xl:left-[-6%] 3xl:left-0"}`}>
         <MotionImage width={1500} height={1000} style={{ y: shapeY }} variants={moveLeft(0.4)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} src={assets.mainShape2} alt="" className={`${isArabic && "-scale-x-100"} w-[152px] lg:w-[400px] xl:w-[55%] 2xl:w-[70%] 3xl:w-[100%] h-fit object-contain vdo-shape`} />
       </div>
       <div className="container">
         <div className={`w-full lg:max-w-[70%] xl:max-w-[100%] 2xl:max-w-[74%] 3xl:max-w-[70%] ${isArabic ? "mr-auto 2xl:ml-[137px]" : "ml-auto 2xl:mr-[137px]"} relative z-10 overflow-hidden vdo-content-wrapper`}>
           <div>
-            <div className={`lg:max-w-[600px] xl:max-w-[700px] 2xl:max-w-[700px] 3xl:max-w-[795px] ${isArabic ? "mr-auto" : "ml-auto"} mb-4 xl:mb-50px 3xl:mb-17 vdo-content`}>
+            <div className={`lg:max-w-[600px] xl:max-w-[700px] 2xl:max-w-[700px] 3xl:max-w-[795px] ${isArabic ? "mr-auto" : "ml-auto"} mb-4 xl:mb-50px 3xl:mb-[70px] vdo-content`}>
               {/* <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}> */}
               <H2Title titleText={t.title} titleColor="black" marginClass="mb-3 md:mb-4 lg:mb-5 3xl:mb-10 " maxW={maxW} delay={1.2} />
               {/* </motion.div> */}
@@ -123,7 +124,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
             style={
               enableAnim
                 ? {
-                  scale,
+                  // scale,
                   y,
                   x,
                   rotateX,
@@ -135,7 +136,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
                 }
                 : {}
             }
-            className="container-scroll-effect lg:max-w-[100%] mx-auto pt-1 2xl:pt-3">
+            className="container-scroll-effect lg:max-w-[100%] mx-auto ">
             <VideoPlayer src={data.video} poster={data.poster} />
           </motion.div>
         </div>
