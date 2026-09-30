@@ -43,8 +43,8 @@ html {
   --spacing-50px: clamp(1.2rem, 4vw + 0.1em, 50px);
   --spacing-60px: clamp(1.3rem, 4.5vw + 0.1em, 60px);
   --spacing-80px: clamp(1.4rem, 5vw + 0.1em, 80px);
-  --spacing-100px: clamp(1.5rem, 5.5vw + 0.1em, 100px);
-  --spacing-120px: clamp(1.6rem, 6vw + 0.1em, 120px);
+  --spacing-100px: clamp(2rem, 5.5vw + 0.1em, 100px);
+  --spacing-120px: clamp(2.1rem, 6vw + 0.1em, 120px);
 }
 
 @theme {
