@@ -125,13 +125,13 @@ const Banner = ({ firstSection, secondSection }) => {
                     className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr] border-t border-black/20 pt-3 xl:pt-[25px] pb-3 xl:pb-[35px]"
                 >
                     <div className="flex items-center pb-3 xl:pb-0">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Project:</p>
+                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">Project:</p>
                         <p className="text-19 font-light leading-[1.475] text-black">
                             {tSecondSection?.project == "" || tSecondSection?.project == undefined ? tFirstSection.title : tSecondSection?.project}
                         </p>
                     </div>
                     <div className="flex items-center">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
+                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">
                             Location:
                         </p>
                         <p className="text-19 font-light leading-[1.475] text-black">
@@ -148,7 +148,7 @@ const Banner = ({ firstSection, secondSection }) => {
                     className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr] pb-4 xl:pb-[35px]"
                 >
                     <div className="flex items-center ">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">Sector:</p>
+                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">Sector:</p>
                         {Array.isArray(tSecondSection?.sector) ? tSecondSection?.sector?.map((item, i) => (
                             <div key={i} className="flex items-center pb-3 xl:pb-0">
                                 <p className="text-19 font-light leading-[1.475] text-black">{item.name}</p>
@@ -159,7 +159,7 @@ const Banner = ({ firstSection, secondSection }) => {
                         }
                     </div>
                     <div className="flex items-center">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">Status:</p>
+                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch] lg:min-w-[15ch]">Status:</p>
                         <p className="text-19 font-light leading-[1.475] text-black">{tSecondSection?.status}</p>
                     </div>
                 </motion.div>
@@ -180,7 +180,7 @@ const Banner = ({ firstSection, secondSection }) => {
                             >
     
                                 <div className="flex items-center py-3 lg:py-6 border-black/20 lg:border-b-0 border-b">
-                                    <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">
+                                    <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">
                                         {item?.key}:
                                     </p>
                                     <p className="text-19 font-light leading-[1.475] text-black">{item?.value}</p>
@@ -188,7 +188,7 @@ const Banner = ({ firstSection, secondSection }) => {
 
                                 {secondSection.items[i + 2] && (
                                     <div className="flex items-center  py-3 lg:py-6">
-                                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
+                                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch] lg:min-w-[15ch]">
                                             {secondSection.items[i + 2]?.key}:
                                         </p>
                                         <p className="text-19 font-light leading-[1.475] text-black">
@@ -217,7 +217,7 @@ const Banner = ({ firstSection, secondSection }) => {
                         >
                             {/* Left item */}
                             <div className="flex items-center">
-                                <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch]">
+                                <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">
                                     {item?.key}:
                                 </p>
                                 <p className="text-19 font-light leading-[1.475] text-black">
@@ -228,7 +228,7 @@ const Banner = ({ firstSection, secondSection }) => {
                             {/* Right item */}
                             {itemsWithoutLocation[i + 1] && (
                                 <div className="flex items-center">
-                                    <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[11.467ch] lg:min-w-[15ch]">
+                                    <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch] lg:min-w-[15ch]">
                                         {itemsWithoutLocation[i + 1]?.key}:
                                     </p>
                                     <p className="text-19 font-light leading-[1.475] text-black">

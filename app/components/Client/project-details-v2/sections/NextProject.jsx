@@ -65,7 +65,7 @@ const NextProject = ({ slug, title, thumbnail }) => {
     return (
         <section className="py-80px">
             <div className="container">
-                <div className="grid grid-cols-1 lg:grid-cols-[auto_550px] xl:grid-cols-[auto_1fr] 3xl:grid-cols-[auto_961px] gap-8 lg:gap-20 xl:gap-[137px]">
+                <div className="grid grid-cols-1 lg:grid-cols-[auto_550px] xl:grid-cols-[auto_1fr] 3xl:grid-cols-[auto_961px] gap-4 lg:gap-20 xl:gap-[137px]">
                     <div className="mb-2 md:mb-3 lg:mb-10 xl:mb-[90px] flex flex-col justify-between items-left pt-0 2xl:pt-[45px] ">
                         <div className=" h-full">
                             <div className="text-20 2xl:text-29 font-light leading-[1.17] lg:pb-5 text-paragraph">
@@ -76,7 +76,7 @@ const NextProject = ({ slug, title, thumbnail }) => {
                                     delay={0.2}
                                 />
                             </div>
-                            <div className=" flex lg:flex-col justify-between lg:justify-start xl:justify-between items-center lg:items-start h-full  ">
+                            <div className=" flex lg:flex-col justify-between lg:justify-start xl:justify-between xl:items-center lg:items-start h-full gap-x-1 ">
                                 {/* <p className="text-60 font-light leading-[1.17] text-black lg:max-w-[12ch] md:mb-3 lg:mb-[21px]">
                 <SplitTextAnimation
                   children={nextpjt.subtitle}
@@ -122,7 +122,7 @@ const NextProject = ({ slug, title, thumbnail }) => {
                                 style={{ y: imageY }}
                                 src={thumbnail}
                                 alt=""
-                                className="img-fluid 2xl:min-h-[603px]"
+                                className="object-cover min-h-[250px] md:min-h-[300px] 2xl:min-h-[603px]"
                             />
                         </div>
                         {/* Overlay that reveals from right to left */}

@@ -6,6 +6,7 @@ import Image from "next/image";
 import LangLink from "@/lib/LangLink";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import Link from "next/link";
+import { useState } from "react";
 
 const MotionImage = motion.create(Image);
 
@@ -79,12 +80,17 @@ const FooterTwo = () => {
   const tFooterLinks = useApplyLang(footerLinks);
   const isArabic = useIsPreferredLanguageArabic();
 
+  // inside your component
+  const [openSection, setOpenSection] = useState(null); // only one open at a time
+
+  const toggle = (title) =>
+    setOpenSection((prev) => (prev === title ? null : title));
+
   return (
-    <footer className="bg-primary pt-5 md:pt-6 lg:pt-8 xl:pt-10 2xl:pt-12 3xl:pt-[74.99px] text-white">
+    <footer className="bg-primary pt-6 md:pt-8 lg:pt-9 xl:pt-10 2xl:pt-12 3xl:pt-[75.26px] text-white">
       <div className="container">
         {/* Scroll To Top */}
-        <div
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        <div onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className={`fixed ${isArabic ? "left-4 lg:left-15" : "right-4 lg:right-15"} bottom-4 flex flex-col gap-1 items-center bg-white/70 rounded-sm cursor-pointer px-2 pt-2 pb-2 lg:pb-0 z-[999]`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" className="w-[15px] h-[15px] lg:w-[23px] lg:h-[23px]" viewBox="0 0 23 23" fill="none" >
@@ -108,7 +114,7 @@ const FooterTwo = () => {
                 viewport={{ amount: 0.1, once: true }}
                 src="/assets/images/sp-logo.png"
                 alt="logo"
-                className="w-[169px] h-auto brightness-0 invert"
+                className="w-[100px] lg:w-[169px] h-auto brightness-0 invert"
               />
             </div>
 
@@ -163,7 +169,7 @@ const FooterTwo = () => {
                   >
                     <LangLink
                       href="#"
-                      className="w-[24px] h-[24px] xl:w-[34px] xl:h-[34px] rounded-full bg-[#153071] flex items-center justify-center"
+                      className="w-[24px] h-[24px] md:w-[34px] md:h-[34px] rounded-full bg-[#153071] flex items-center justify-center"
                     >
                       <Image
                         width={17}
@@ -183,54 +189,87 @@ const FooterTwo = () => {
           <div className="col-span-12 border-t border-white/30 mb-50px" />
 
           {/* Row 2: nav columns */}
-          {tFooterLinks.map((section) => (
-            <motion.div
-              key={section.title}
-              variants={moveUp(section.delay)}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ amount: 0.1, once: true }}
-              className={`col-span-12 xs:col-span-6 mb-50px ${section.span}`}
-            >
-              <h3 className="text-24 lg:text-29 leading-[1.344827586206897] font-light mb-2 lg:mb-[27px]">
-                {section.title}
-              </h3>
-              <ul>
-                {section.links.map((link) => (
-                  <li key={link.href} className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-light" >
-                    <LangLink href={link.href}>{link.label}</LangLink>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+          {tFooterLinks.map((section) => {
+            const isOpen = openSection === section.title;
+            const panelId = `footer-panel-${section.title.replace(/\s+/g, "-")}`;
 
-          {/* Bottom bar */}
-          <motion.div
-            variants={moveUp(0.7)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ amount: 0.1, once: true }}
-            className="col-span-12 border-t border-white/30 py-1 lg:pt-[12px] lg:pb-[28px]"
-          >
-            <div className="flex flex-wrap gap-x-2 xl:gap-x-[35px] items-center">
-              <div className="">
-                <p className="text-14 leading-[2.857142857142857] font-normal opacity-50"> Copyright {new Date().getFullYear()}© SP International All Rights </p>
-              </div>
-              <div className="">
-                <ul className="flex flex-wrap gap-x-2 xl:gap-x-[35px]">
-                  <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light" >
-                    <Link href={"/privacy-Policy"}>Privacy Policy</Link>
-                  </li>
-                  <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light" >
-                    <Link href={"/Cookie Policy"}>Cookie Policy</Link>
-                  </li>
-                </ul>
-              </div>
-           </div>
-          </motion.div>
+            return (
+              <motion.div
+                key={section.title}
+                variants={moveUp(section.delay)}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ amount: 0.1, once: true }}
+                className={`col-span-12 xs:col-span-6 mb-50px ${section.span}`}
+              >
+                <h3 className="text-18 2xl:text-29 leading-[1.344827586206897] font-light mb-2 lg:mb-[27px]">
+                  <button
+                    type="button"
+                    onClick={() => toggle(section.title)}
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    className="flex w-full items-center justify-between text-left md:pointer-events-none md:cursor-default"
+                  >
+                    <span>{section.title}</span>
+                    <span
+                      aria-hidden="true"
+                      className={`md:hidden text-2xl leading-none transition-transform duration-300 ${isOpen ? "rotate-45" : ""
+                        }`}
+                    >
+                      +
+                    </span>
+                  </button>
+                </h3>
+
+                <div
+                  id={panelId}
+                  className={`grid transition-[grid-template-rows] duration-300 ease-in-out md:grid-rows-[1fr] ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    }`}
+                >
+                  <ul className="overflow-hidden">
+                    {section.links.map((link) => (
+                      <li
+                        key={link.href}
+                        className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-light"
+                      >
+                        <LangLink href={link.href}>{link.label}</LangLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            );
+          })}
+
         </div>
       </div>
+          {/* Bottom bar */}
+          <div className="w-full h-px bg-white/30"></div>
+          <div className="container">
+        <motion.div
+          variants={moveUp(0.7)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ amount: 0.1, once: true }}
+          className="col-span-12 py-1 lg:pt-[12px] lg:pb-[28px]"
+        >
+          <div className="flex flex-wrap gap-x-[35px] items-center">
+            <div className="">
+              <p className="text-14 leading-[2.857142857142857] font-normal opacity-50"> Copyright {new Date().getFullYear()}© SP International All Rights </p>
+            </div>
+            <div className="">
+              <ul className="flex flex-wrap gap-x-2 xl:gap-x-[35px]">
+                <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light" >
+                  <Link href={"/privacy-Policy"}>Privacy Policy</Link>
+                </li>
+                <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light" >
+                  <Link href={"/Cookie Policy"}>Cookie Policy</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+          </div>
     </footer>
   );
 };

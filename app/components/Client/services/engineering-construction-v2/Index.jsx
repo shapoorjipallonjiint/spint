@@ -1,4 +1,4 @@
-import Banner from "@/app/components/common/Banner";
+import Banner from "./sections/Banner";
 // import MainNavbar from "../../MainLayout/MainNavbar";
 // import Footer from "../../MainLayout/Footer";
 import VdoSection from "./sections/VdoSection";

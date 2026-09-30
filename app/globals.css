@@ -1244,28 +1244,37 @@ body::-webkit-scrollbar {
   grid-auto-flow: column;
 }
 
+.our-expertise-item-desc,
+.our-expertise-item-desc ul,
+.our-expertise-item-desc li {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .our-expertise-item-desc ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  width: 100%;
+  white-space: normal;
+  display: block;
 }
 
 .our-expertise-item-desc li {
   position: relative;
-  /* padding-left: 20px; */
   padding-inline-start: 20px;
   margin-bottom: 8px;
+
   @apply text-19;
+
+  display: list-item;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: break-all;
 }
 
 .our-expertise-item-desc li::before {
   content: "";
   position: absolute;
-  /* left: 0; */
   inset-inline-start: 0;
-  /* auto left/right */
   top: 0.55em;
-  /* aligns dot with text */
   width: 6px;
   height: 6px;
   border-radius: 50%;

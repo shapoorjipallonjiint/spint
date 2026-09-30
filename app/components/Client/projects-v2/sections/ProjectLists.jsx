@@ -309,16 +309,16 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className="border-y border-cmnbdr mb-50px py-4 md:py-6 xl:py-[35px]"
+                    className="border-b border-cmnbdr mb-50px py-4 md:py-6 xl:py-[35px]"
                 >
-                    <div className="flex flex-col lg:flex-row justify-between items-center lg:gap-4 lg:gap-0">
+                    <div className="flex flex-col lg:flex-row justify-between ">
                         <div className="md:hidden mb-3">
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
                                 className="flex items-center justify-between w-full border border-white/20 text-paragraph text-[14px] uppercase"
                             >
                                 <span>Filter</span>
-                                <span>{showFilters ? "−" : "+"}</span>
+                                <span className="text-20">{showFilters ? "−" : "+"}</span>
                             </button>
                         </div>
                         <div className={` ${showFilters ? "block" : "hidden"} md:block mb-0`}>

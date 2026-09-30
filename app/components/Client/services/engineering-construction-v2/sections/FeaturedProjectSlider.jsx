@@ -104,7 +104,7 @@ const FeaturedProjectSlider = ({ data = [] }) => {
                         <Swiper
                             ref={swiperRef}
                             modules={[EffectFade, Autoplay, Navigation]}
-                            spaceBetween={0}
+                            spaceBetween={10}
                             slidesPerView={1}
                             loop={true}
                             centeredSlides={false}
