@@ -41,8 +41,8 @@ const Promoters = ({ items,title, btmBorder }) => {
         <div className="emp-slider-wr">
           <Swiper
             modules={[Thumbs, EffectFade, Autoplay]}
-            spaceBetween={30}
-            slidesPerView={2}
+            spaceBetween={10}
+            slidesPerView={1.5}
             loop
             autoplay={true}
             onSwiper={setImageSwiper}
@@ -69,7 +69,7 @@ const Promoters = ({ items,title, btmBorder }) => {
                   <SwiperSlide key={i}>
                     <div className="relative">
                       {/* <motion.div key={i} variants={moveUp(0.5 + 0.2 * i)} initial="hidden" whileInView="show" viewport={{ amount: 0.1, once: true }} className="relative" > */}
-                      <div className="relative group h-[140px]  md:h-[200px] lg:h-[240px]  xl:h-[320px] 2xl:h-[391px] flex flex-col items-center justify-end">
+                      <div className="relative group h-[180px]  md:h-[200px] lg:h-[240px]  xl:h-[320px] 2xl:h-[391px] flex flex-col items-center justify-end">
                         <Image
                           width={600}
                           height={600}

@@ -329,7 +329,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                 className={`group grid lg:grid-cols-[1.2fr_2.4fr_auto] cursor-pointer border-b border-black/20 transition-all duration-300 ${isOpen ? "items-start" : "items-center"
                   }`}
               >
-                <div className="flex justify-between items-center text-start">
+                <div className="flex justify-between items-center text-start pb-2">
                   <span
                     className={`text-22 md:text-24 xl:text-29 leading-[1.35] lg:leading-[2.43] text-paragraph group-hover:text-black 
                       transition-all ease-in-out duration-500 group-hover:font-bold ${isOpen ? "font-bold text-black" : "font-[300] "
