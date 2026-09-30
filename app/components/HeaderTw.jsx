@@ -214,6 +214,9 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
   const activeIndex = sections.findIndex((s) => s.id === activeSection);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // SP International, services, sectors and map slides use a blue-tinted header panel
+  const isTintedHeader = ["section3", "section4", "section5", "section6"].includes(activeSection);
+
   return (
     <>
       <div
@@ -418,7 +421,11 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
   `}
             >
               <div className="bg-transparent  w-full absolute z-[-2] bxone"></div>
-              <div className="shadow bg-white/10 backdrop-blur-[10px] h-[20%] w-full absolute z-[-1] bottom-0 bxtwo">
+              <div
+                className={`shadow h-[20%] w-full absolute z-[-1] bottom-0 bxtwo transition-[background-color,backdrop-filter] duration-700 ease-in-out ${
+                  isTintedHeader ? "bg-[#1E45A221] backdrop-blur-[15px]" : "bg-white/10 backdrop-blur-[10px]"
+                }`}
+              >
                 <span className="absolute top-0 left-0 w-px h-full bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0)_100%)]"></span>
                 <span className="absolute top-0 right-0 w-px h-full bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0)_100%)]"></span>
               </div>
@@ -428,13 +435,29 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                   onClick={() => handleScroll("section1")}
                 >
                   {!menuOpen ? (
-                    <Image
-                      className="logsc"
-                      src="/assets/logos/home-header-logo.svg"
-                      alt="Logo"
-                      width={90}
-                      height={50}
-                    />
+                    // both logos stacked and cross-faded; .logsc sits on the wrapper because the intro gsap
+                    // animation sets inline opacity on it, which would override the fade on the images
+                    <div className="logsc relative w-[90px] h-[51px]">
+                      <Image
+                        className={`absolute inset-0 m-auto transition-opacity duration-700 ease-in-out ${
+                          isTintedHeader ? "opacity-0" : "opacity-100"
+                        }`}
+                        src="/assets/logos/home-header-logo.svg"
+                        alt="Logo"
+                        width={90}
+                        height={50}
+                      />
+                      <Image
+                        className={`absolute inset-0 m-auto transition-opacity duration-700 ease-in-out ${
+                          isTintedHeader ? "opacity-100" : "opacity-0"
+                        }`}
+                        src="/assets/images/sp-logo.png"
+                        alt=""
+                        aria-hidden="true"
+                        width={90}
+                        height={51}
+                      />
+                    </div>
                   ) : (
                     <Image
                       className="logsc"
@@ -489,7 +512,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                       viewBox="0 0 31 24"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      className={`menu-icon ${menuOpen ? "open" : ""} logsc-btn`}
+                      className={`menu-icon ${menuOpen ? "open" : ""} ${isTintedHeader ? "tinted" : ""} logsc-btn`}
                     >
                       <line
                         x1="0"
@@ -537,8 +560,8 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.35 }}
                       className={`${
-                        menuOpen ? "text-[#626262]" : "text-white"
-                      } font-[300] text-[13px] leading-[25px] pt-3 uppercase`}
+                        menuOpen ? "text-[#626262]" : isTintedHeader ? "text-black" : "text-white"
+                      } transition-colors duration-700 ease-in-out font-[300] text-[13px] leading-[25px] pt-3 uppercase`}
                     >
                       {activeSection === "section7"
                         ? isArabic
@@ -561,7 +584,20 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                       alt="Arrow"
                       width={87}
                       height={87}
-                      className={`${isArabic ? "-scale-x-100" : ""}`}
+                      className={`transition-opacity duration-700 ease-in-out ${isArabic ? "-scale-x-100" : ""} ${
+                        isTintedHeader && !menuOpen ? "opacity-0" : "opacity-100"
+                      }`}
+                    />
+                    {/* primary-stroke copy of the animated circle, faded in on blue-tinted slides */}
+                    <Image
+                      src="/assets/images/round-circle-primary.svg"
+                      alt=""
+                      aria-hidden="true"
+                      width={87}
+                      height={87}
+                      className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isArabic ? "-scale-x-100" : ""} ${
+                        isTintedHeader && !menuOpen ? "opacity-100" : "opacity-0"
+                      }`}
                     />
                     <Image
                       src="/assets/images/arrow-down.svg"

@@ -1171,6 +1171,12 @@ body::-webkit-scrollbar {
   stroke: #30B6F9;
 }
 
+/* header on blue-tinted slides: outer lines switch to primary (kept above .open so the close X stays cyan) */
+.menu-icon.tinted .line1,
+.menu-icon.tinted .line3 {
+  stroke: var(--color-primary);
+}
+
 .menu-icon.open .line1 {
   transform: translateY(10px) rotate(45deg);
   stroke: #30B6F9;
