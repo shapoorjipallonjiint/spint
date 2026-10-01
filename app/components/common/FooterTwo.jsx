@@ -10,6 +10,7 @@ import { useState } from "react";
 
 const MotionImage = motion.create(Image);
 
+// links without a page yet point to "#" (Legacy, Media Coverage, Thought Leadership, Privacy/Cookie Policy)
 const footerLinks = [
   {
     title: "About",
@@ -17,7 +18,7 @@ const footerLinks = [
     delay: 0.2,
     links: [
       { label: "Overview", label_ar: "", href: "/about-us" },
-      { label: "Legacy", label_ar: "", href: "/legacy" },
+      { label: "Legacy", label_ar: "", href: "#" },
       { label: "Leadership", label_ar: "", href: "/leadership" },
     ],
   },
@@ -50,8 +51,8 @@ const footerLinks = [
     delay: 0.5,
     links: [
       { label: "Press Releases", label_ar: "", href: "/press-releases" },
-      { label: "Media Coverage", label_ar: "", href: "/media-coverage" },
-      { label: "Thought Leadership", label_ar: "", href: "/thought-leadership" },
+      { label: "Media Coverage", label_ar: "", href: "#" },
+      { label: "Thought Leadership", label_ar: "", href: "#" },
     ],
   },
   {
@@ -224,7 +225,7 @@ const FooterTwo = () => {
                   <ul className="overflow-hidden">
                     {section.links.map((link) => (
                       <li
-                        key={link.href}
+                        key={link.label}
                         className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-light"
                       >
                         <LangLink href={link.href}>{link.label}</LangLink>
@@ -255,10 +256,10 @@ const FooterTwo = () => {
             <div className="">
               <ul className="flex flex-wrap gap-x-2 xl:gap-x-[35px]">
                 <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light" >
-                  <Link href={"/privacy-Policy"}>Privacy Policy</Link>
+                  <Link href="#">Privacy Policy</Link>
                 </li>
                 <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light" >
-                  <Link href={"/Cookie Policy"}>Cookie Policy</Link>
+                  <Link href="#">Cookie Policy</Link>
                 </li>
               </ul>
             </div>
