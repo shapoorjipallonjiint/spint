@@ -1853,7 +1853,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             className={`lftblc relative ${isArabic ? "left-0" : "right-0"} h-[52.6dvh] lg:h-auto lg:overflow-hidden`}
                             ref={splftimng}
                         >
-                            <div className="bg-white absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
+                            <div className="bg-f5f5 absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
                             {/* credentials cubes on all screens. Fixed to the full column width (the screen on mobile) so the
                                 entry width-reveal wipes it in instead of squeezing/re-scaling the cubes */}
                             <div className="absolute top-0 start-0 h-full w-screen lg:w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)]">
