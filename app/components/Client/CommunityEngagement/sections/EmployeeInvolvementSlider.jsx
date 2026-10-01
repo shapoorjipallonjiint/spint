@@ -65,7 +65,7 @@ const EmployeeInvolvementSlider = ({ data }) => {
                                         variants={moveUp(0.6)}
                                         initial="hidden"
                                         whileInView={"show"}
-                                        viewport={{ amount: 0.2, once: false }}
+                                        viewport={{ amount: 0.2, once: true }}
                                         className="flex justify-end items-center gap-4   border-b border-white/20  "
                                     >
                                         <button

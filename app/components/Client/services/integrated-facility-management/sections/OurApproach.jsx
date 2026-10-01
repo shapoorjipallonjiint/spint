@@ -18,7 +18,7 @@ const OurApproach = ({ data }) => {
                             variants={moveUp(0.4 + 0.2 * index)}
                             initial="hidden"
                             whileInView="show"
-                            viewport={{ amount: 0.6, once: true }}
+                            viewport={{ amount: 0.2, once: true }}
                             key={index}
                         >
                             <div className="border-b border-cmnbdr pb-5 md:pb-8">

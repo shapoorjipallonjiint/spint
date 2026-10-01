@@ -93,7 +93,7 @@ const InsideCounter = ({ nozero, value, duration = 2, delay = 0, suffix = "" }) 
 
                 setTimeout(() => requestAnimationFrame(animate), delay);
             },
-            { threshold: 0.3 }
+            { threshold: 0.2 }
         );
 
         observer.observe(element);

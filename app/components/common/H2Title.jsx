@@ -10,7 +10,7 @@ const H2Title = ({
   delay = 0.2 // Add delay prop with default 0
 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   // Split text into words
   const words = titleText?.split(" ");

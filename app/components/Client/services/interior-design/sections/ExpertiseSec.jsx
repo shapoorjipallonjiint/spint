@@ -40,7 +40,7 @@ const ExpertiseSec = ({ data }) => {
                                     variants={moveUp(0.2 * index)}
                                     initial="hidden"
                                     whileInView="show"
-                                    viewport={{ amount: 0.6, once: true }}
+                                    viewport={{ amount: 0.2, once: true }}
                                     src={item.image}
                                     alt={item.imageAlt}
                                     className="w-full h-[200px] lg:h-[250px] 2xl:h-[300px] 3xl:h-[333px] object-cover "
@@ -55,7 +55,7 @@ const ExpertiseSec = ({ data }) => {
                                         variants={moveDown(0.2 * index)}
                                         initial="hidden"
                                         whileInView="show"
-                                        viewport={{ amount: 0.6, once: true }}
+                                        viewport={{ amount: 0.2, once: true }}
                                         className="text-24 2xl:text-29 leading-tight 3xl:leading-[1.724137931034483] font-light mb-2 2xl:mb-3"
                                     >
                                         {item.title}
@@ -64,7 +64,7 @@ const ExpertiseSec = ({ data }) => {
                                         variants={moveDown(0.2 * index)}
                                         initial="hidden"
                                         whileInView="show"
-                                        viewport={{ amount: 0.6, once: true }}
+                                        viewport={{ amount: 0.2, once: true }}
                                         className="text-paragraph text-19 leading-[1.526315789473684] font-light"
                                     >
                                         {item.description}
