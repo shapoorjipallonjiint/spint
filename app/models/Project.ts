@@ -67,6 +67,17 @@ const projectSchema = new mongoose.Schema({
       coverImageAlt: { type: String },
       coverImageAlt_ar: { type: String },
 
+      // optional extra banner images shown next to coverImage (coverImage stays the first one).
+      // default: undefined so existing projects are never touched until images are actually added
+      additionalCoverImages: {
+        type: [{
+          image: { type: String },
+          imageAlt: { type: String },
+          imageAlt_ar: { type: String },
+        }],
+        default: undefined,
+      },
+
       status: { type: String },
     },
 

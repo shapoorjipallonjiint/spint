@@ -1,7 +1,6 @@
 import LeadersBox from "./sections/LeadersBox";
 import MembersSlider from "./sections/MembersSlider";
 import PageHeader from "./sections/PageHeader";
-import LogoSlider from "./sections/LogoSlider";
 import {leaderData} from "./data";
 const Leadership = ({ data }) => {
   return (
@@ -13,7 +12,6 @@ const Leadership = ({ data }) => {
       <LeadersBox data={leaderData.seniorViceData} big={false} />
       <MembersSlider title={leaderData.coreLeadershipTeam.title} items={leaderData.coreLeadershipTeam.items} />
       <div className="mb-80px"></div>
-      <LogoSlider/>
     </>
   );
 }

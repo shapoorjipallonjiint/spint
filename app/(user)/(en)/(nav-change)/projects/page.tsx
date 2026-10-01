@@ -1,4 +1,4 @@
-import Index from '@/app/components/Client/projects/Index'
+import Index from '@/app/components/Client/projects-v2/Index'
 
 const page = async() => {
     const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project`, { next: { revalidate: 60 } });

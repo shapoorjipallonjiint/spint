@@ -309,13 +309,13 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className="border-b border-cmnbdr mb-50px py-4 md:py-6 xl:py-[35px]"
+                    className="border-b border-t mt-80px border-cmnbdr mb-50px py-4 md:py-6 xl:py-[35px]"
                 >
                     <div className="flex flex-col lg:flex-row justify-between ">
                         <div className="md:hidden mb-3">
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
-                                className="flex items-center justify-between w-full border border-white/20 text-paragraph text-[14px] uppercase"
+                                className="flex items-center justify-between w-fit gap-2 border border-white/20 text-paragraph text-[14px] uppercase"
                             >
                                 <span>Filter</span>
                                 <span className="text-20">{showFilters ? "−" : "+"}</span>
@@ -327,7 +327,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     {/* Sector */}
                                     <div className="w-full lg:w-fit relative">
                                         <Listbox value={selectedSector} onChange={handleSectorChange}>
-                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
                                                 <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
                                                     {/* {selectedSector?.name === "All" ? "Sector" : selectedSector?.name} */}
                                                     {selectedSector?.name === "All"
@@ -344,7 +344,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                     height="7"
                                                     viewBox="0 0 16 9"
                                                     fill="none"
-                                                    className="w-[14px] h-[7px]"
+                                                    className="w-[16px] h-[10px]"
                                                 >
                                                     <path
                                                         d="M15 1L7.9992 8L1 1.00159"
@@ -388,7 +388,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     {/* Status */}
                                     <div className="w-full lg:w-fit relative">
                                         <Listbox value={selectedStatus} onChange={handleStatusChange}>
-                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
                                                 <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
                                                     {/* {selectedStatus?.name === "All" ? "Status" : selectedStatus?.name} */}
                                                     {selectedStatus?.name === "All"
@@ -405,6 +405,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                     height="7"
                                                     viewBox="0 0 16 9"
                                                     fill="none"
+                                                    className="w-[16px] h-[10px]"
                                                 >
                                                     <path
                                                         d="M15 1L7.9992 8L1 1.00159"
@@ -442,7 +443,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     {/* Country */}
                                     <div className="w-full lg:w-fit relative">
                                         <Listbox value={selectedCountry} onChange={handleCountryChange}>
-                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
                                                 <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
                                                     {/* {selectedCountry?.name === "All" ? "Country" : selectedCountry?.name} */}
                                                     {selectedCountry?.name === "All"
@@ -459,6 +460,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                     height="7"
                                                     viewBox="0 0 16 9"
                                                     fill="none"
+                                                    className="w-[16px] h-[10px]"
                                                 >
                                                     <path
                                                         d="M15 1L7.9992 8L1 1.00159"
@@ -509,7 +511,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     {/* Service */}
                                     <div className="w-full lg:w-fit relative">
                                         <Listbox value={selectedService} onChange={handleServiceChange}>
-                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[16px] outline-0 border-0 justify-between md:justify-start">
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
                                                 <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
                                                     {/* {selectedService?.title === "All" ? "Service" : selectedService?.title} */}
                                                     {selectedService?.title === "All"
@@ -526,6 +528,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                     height="7"
                                                     viewBox="0 0 16 9"
                                                     fill="none"
+                                                    className="w-[16px] h-[10px]"
                                                 >
                                                     <path
                                                         d="M15 1L7.9992 8L1 1.00159"
@@ -635,7 +638,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                             </div>
                         </div>
                         {/* View toggles */}
-                        <div className="flex items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-end">
+                        <div className="flex items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-start">
                             <div className="flex group items-center gap-[6px] cursor-pointer" onClick={handleGrid}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -677,7 +680,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 </motion.div>
 
                 {/* GRID VIEW */}
-                <div className={`gap-5 3xl:gap-x-30px  gap-y-50px pb-10 xl:pb-[80px] transition-all duration-300 
+                <div className={`gap-5 3xl:gap-x-30px  gap-y-50px pb-10 xl:pb-[70px] transition-all duration-300 
                 ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${view === "grid" ? "grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3" : "hidden"
                         }`}
                     style={{
@@ -736,7 +739,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="-translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] w-[25px] h-[25px]"
+                                                className="-translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] w-6 h-6 3xl:w-[34px] 3xl:h-[34px]"
                                                 width="35"
                                                 height="35"
                                                 viewBox="0 0 35 35"
@@ -766,7 +769,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
 
                 {/* LIST VIEW */}
                 <div
-                    className={`   pb-10 xl:pb-[80px] transition-all duration-300 
+                    className={`   pb-10 xl:pb-[70px] transition-all duration-300 
           ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"} ${view === "list" ? "flex flex-col " : "hidden"
                         }`}
                     style={{
@@ -859,7 +862,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 </div>
 
                 {/* Pagination */}
-                <div className="flex items-center justify-center gap-2 w-full pb-10 xl:pb-15 2xl:pb-[120px]">
+                <div className="flex items-center justify-center gap-2 w-full pb-80px">
                     <div className="pagination flex items-center gap-5 justify-center ">
                         <button
                             className={`prev cursor-pointer transition-all duration-200 hover:scale-110 ${isArabic ? "rotate-180" : ""

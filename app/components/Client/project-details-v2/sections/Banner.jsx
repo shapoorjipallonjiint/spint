@@ -35,6 +35,15 @@ const Banner = ({ firstSection, secondSection }) => {
 
     const itemsWithoutLocation = tSecondSection.items.filter((item) => item.key !== "Location");
 
+    // cover image first, then any additional cover images that actually have an image
+    const bannerImages = [
+        { src: tFirstSection?.coverImage, alt: tFirstSection?.coverImageAlt || tFirstSection?.title || "" },
+        ...(tFirstSection?.additionalCoverImages || []).map((img) => ({
+            src: img?.image,
+            alt: img?.imageAlt || tFirstSection?.title || "",
+        })),
+    ].filter((img) => img.src);
+
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
             <div className="bg-f5f5 absolute top-0 left-0 w-full h-[250px] 3xl:h-[485px]"> </div>
@@ -90,7 +99,22 @@ const Banner = ({ firstSection, secondSection }) => {
             </div>
 
             <div className="container relative z-[2] overflow-hidden" ref={imageContainerRefTwo} >
-                {tFirstSection?.coverImage ? (
+                {bannerImages.length > 1 ? (
+                    // several images: equal columns split by a 4px white line (the white background shows through the gap)
+                    <motion.div
+                        style={{ y: imageY }}
+                        variants={fadeIn(0.6)}
+                        initial="hidden"
+                        animate="show"
+                        className={`flex gap-[4px] bg-white w-full h-[250px] lg:h-[400px] xl:h-[500px] 2xl:h-[600px] 3xl:h-[750px] ${activeImage ? "pointer-events-none" : ""}`}
+                    >
+                        {bannerImages.map((img, i) => (
+                            <div key={i} className="relative flex-1 min-w-0 h-full cursor-pointer" onClick={() => setActiveImage(img.src)}>
+                                <Image src={img.src} alt={img.alt} fill sizes="(min-width: 1680px) 540px, 33vw" className="object-cover" />
+                            </div>
+                        ))}
+                    </motion.div>
+                ) : tFirstSection?.coverImage ? (
                     <MotionImage
                         onClick={() => setActiveImage(tFirstSection.coverImage)}
                         style={{ y: imageY }}

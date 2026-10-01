@@ -1277,8 +1277,9 @@ body::-webkit-scrollbar {
 
   display: list-item;
   white-space: normal;
-  overflow-wrap: normal;
-  word-break: break-all;
+  /* wrap between words; only split a word if it alone is wider than the line (was break-all: split any word anywhere) */
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .our-expertise-item-desc li::before {
@@ -1314,7 +1315,8 @@ body::-webkit-scrollbar {
   max-width: 100%;
   min-width: 0;
 
-  word-break: break-all;
+  /* wrap between words; only split a word if it alone is wider than the line (was break-all: split any word anywhere) */
+  word-break: normal;
   overflow-wrap: break-word;
   hyphens: none;
 }
@@ -1694,13 +1696,19 @@ body::-webkit-scrollbar {
   @apply text-19 text-paragraph font-light 2xl:leading-[1.2] flex md:items-center mb-3 xl:mb-4
 }
 
+/* bullet sits on the first line of text (it used to be a block above the text) */
+.project-services-secondsection-description li {
+  @apply ps-[19px];
+}
+
 .project-services-secondsection-description li strong {
-  @apply font-bold pl-3
+  @apply font-bold
 }
 
 .project-services-secondsection-description li::before {
   content: "";
-  @apply w-[7px] h-[7px] bg-secondary block shrink-0 ;
+  /* inline dot pulled back into the 19px padding (7px dot + 12px gap), centred on the first line */
+  @apply inline-block align-middle w-[7px] h-[7px] -ms-[19px] me-[12px] bg-secondary;
 }
 
 .mep-tab-description-project-details ul{

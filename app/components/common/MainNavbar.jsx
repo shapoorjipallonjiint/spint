@@ -768,7 +768,8 @@ const MainNavbar = () => {
                                                         {hasSubmenu && (
                                                             <button
                                                                
-                                                                className={`p-2 ${isArabic ? "mr-2" : "ml-2"}`}
+                                                                // -my-2 keeps the bigger tap area without making these rows taller than the plain-link rows
+                                                                className={`p-2 -my-2 ${isArabic ? "mr-2" : "ml-2"}`}
                                                                 type="button"
                                                             >
                                                                 <motion.svg

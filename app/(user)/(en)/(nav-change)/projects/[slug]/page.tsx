@@ -1,4 +1,4 @@
-import Index from "@/app/components/Client/project-details/Index";
+import Index from "@/app/components/Client/project-details-v2/Index";
 
 const page = async({params}: {params: Promise<{slug: string}>}) => {
     const slug = (await params).slug;

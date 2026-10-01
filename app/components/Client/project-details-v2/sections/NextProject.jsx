@@ -76,7 +76,7 @@ const NextProject = ({ slug, title, thumbnail }) => {
                                     delay={0.2}
                                 />
                             </div>
-                            <div className=" flex lg:flex-col justify-between lg:justify-start xl:justify-between xl:items-center lg:items-start h-full gap-x-1 ">
+                            <div className=" flex lg:flex-col justify-between lg:justify-start xl:justify-between lg:items-start h-full gap-x-1 ">
                                 {/* <p className="text-60 font-light leading-[1.17] text-black lg:max-w-[12ch] md:mb-3 lg:mb-[21px]">
                 <SplitTextAnimation
                   children={nextpjt.subtitle}
