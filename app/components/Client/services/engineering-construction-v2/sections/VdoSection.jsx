@@ -86,7 +86,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
 
 
   return (
-    <section className="relative sectm-100 pb-150px" ref={sectionRef}>
+    <section className="relative pt-80px pb-150px" ref={sectionRef}>
       {showProfile && (
         <div className="absolute inset-0 z-10 hidden lg:block">
           <div className="container">
@@ -111,7 +111,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
           <div>
             <div className={`lg:max-w-[600px] xl:max-w-[700px] 2xl:max-w-[700px] 3xl:max-w-[795px] ${isArabic ? "mr-auto" : "ml-auto"} mb-4 xl:mb-50px 3xl:mb-[70px] vdo-content`}>
               {/* <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}> */}
-              <H2Title titleText={t.title} titleColor="black" marginClass="mb-3 md:mb-4 lg:mb-5 3xl:mb-10 " maxW={maxW} delay={1.2} />
+              <H2Title titleText={t.title} titleColor="black" marginClass="mb-40px" maxW={maxW} delay={1.2} />
               {/* </motion.div> */}
               {
                 t.description.split("\n").map((item, i) => (
