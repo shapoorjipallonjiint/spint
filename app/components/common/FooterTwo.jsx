@@ -15,7 +15,6 @@ const footerLinks = [
     title: "About",
     title_ar: "",
     delay: 0.2,
-    span: "lg:col-span-2",
     links: [
       { label: "Overview", label_ar: "", href: "/about-us" },
       { label: "Legacy", label_ar: "", href: "/legacy" },
@@ -26,7 +25,6 @@ const footerLinks = [
     title: "Services",
     title_ar: "",
     delay: 0.3,
-    span: "lg:col-span-3",
     links: [
       { label: "Engineering & Construction", label_ar: "", href: "/services/engineering-construction" },
       { label: "MEP", label_ar: "", href: "/services/mep" },
@@ -40,7 +38,6 @@ const footerLinks = [
     title: "Commitments",
     title_ar: "",
     delay: 0.4,
-    span: "lg:col-span-3",
     links: [
       { label: "Sustainability", label_ar: "", href: "/sustainability" },
       { label: "Community Engagement", label_ar: "", href: "/community-engagement" },
@@ -51,7 +48,6 @@ const footerLinks = [
     title: "Media",
     title_ar: "",
     delay: 0.5,
-    span: "lg:col-span-2",
     links: [
       { label: "Press Releases", label_ar: "", href: "/press-releases" },
       { label: "Media Coverage", label_ar: "", href: "/media-coverage" },
@@ -62,7 +58,6 @@ const footerLinks = [
     title: "Quick Links",
     title_ar: "",
     delay: 0.6,
-    span: "lg:col-span-2",
     links: [
       { label: "Careers", label_ar: "", href: "/careers" },
       { label: "Projects", label_ar: "", href: "/projects" },
@@ -99,12 +94,12 @@ const FooterTwo = () => {
           <p className="hidden lg:block font-size[13px] font-light leading-[1.6] text-paragraph"> TOP </p>
         </div>
 
-        {/* ONE GRID FOR THE WHOLE FOOTER */}
-        <div className="grid grid-cols-12 gap-x-6 xl:gap-x-0">
+        {/* ONE GRID FOR THE WHOLE FOOTER: 5 columns from lg (row 1: 2-2-1, divider: 5, nav: 1 each) */}
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-5 gap-x-6 xl:gap-x-0">
 
-          <div className="col-span-12 grid grid-cols-12 gap-y-4 mb-60px">
-            {/* Row 1: logo */}
-            <div className="col-span-12 lg:col-span-5 ">
+          <div className="col-span-full grid grid-cols-1 lg:grid-cols-5 gap-x-6 xl:gap-x-0 gap-y-4 mb-60px">
+            {/* Row 1: logo (2 of 5) */}
+            <div className="lg:col-span-2">
               <MotionImage
                 width={0}
                 height={0}
@@ -118,8 +113,8 @@ const FooterTwo = () => {
               />
             </div>
 
-            {/* Row 1: address, phone, email */}
-            <div className="col-span-12 lg:col-span-5 ">
+            {/* Row 1: address, phone, email (2 of 5) */}
+            <div className="lg:col-span-2">
               <motion.p
                 variants={moveUp(0.2)}
                 initial="hidden"
@@ -153,8 +148,8 @@ const FooterTwo = () => {
               </motion.div>
             </div>
 
-            {/* Row 1: social icons */}
-            <div className="col-span-12 lg:col-span-2">
+            {/* Row 1: social icons (1 of 5) */}
+            <div className="lg:col-span-1">
               <motion.ul
                 variants={paragraphItem}
                 initial="hidden"
@@ -186,9 +181,9 @@ const FooterTwo = () => {
         </div>
 
           {/* Divider */}
-          <div className="col-span-12 border-t border-white/30 mb-50px" />
+          <div className="col-span-full border-t border-white/30 mb-50px" />
 
-          {/* Row 2: nav columns */}
+          {/* Row 2: nav columns, 1 of 5 each */}
           {tFooterLinks.map((section) => {
             const isOpen = openSection === section.title;
             const panelId = `footer-panel-${section.title.replace(/\s+/g, "-")}`;
@@ -200,7 +195,7 @@ const FooterTwo = () => {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ amount: 0.1, once: true }}
-                className={`col-span-12 xs:col-span-6 mb-50px ${section.span}`}
+                className="mb-50px"
               >
                 <h3 className="text-18 2xl:text-29 leading-[1.344827586206897] font-light mb-2 lg:mb-[27px]">
                   <button

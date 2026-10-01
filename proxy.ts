@@ -47,10 +47,13 @@ function generateNonce() {
   return btoa(String.fromCharCode(...array));
 }
 
+// dev only: Turbopack applies hot updates with eval(); without this every client edit falls back to a full page reload
+const isDev = process.env.NODE_ENV === "development";
+
 function applySecurityHeaders(response: NextResponse, nonce: string) {
   const csp = `
 default-src 'self';
-script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://www.google.com https://www.gstatic.com https://cdn.tiny.cloud;
+script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""} https://www.google.com https://www.gstatic.com https://cdn.tiny.cloud;
 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tiny.cloud;
 style-src-attr 'unsafe-inline';
 img-src 'self' data: blob: https:;

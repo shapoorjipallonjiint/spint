@@ -176,6 +176,13 @@ const aboutSchema = new mongoose.Schema({
                 title_ar: {
                     type: String,
                 },
+                // optional, shown under the title on the image (frontend hides it when empty)
+                subtitle: {
+                    type: String,
+                },
+                subtitle_ar: {
+                    type: String,
+                },
             }]
         }],
     },

@@ -109,20 +109,22 @@ export function ImageUploader({ value, onChange, className, deleteAfterUpload = 
   const removeImage = async () => {
     if (!displayUrl) return;
 
-    const response = await fetch("/api/admin/delete-image", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ url: displayUrl }),
-    });
+    // Dropbox delete disabled for now: it rebuilt the path from the URL (409s) and deleted before the page was saved.
+    // Removing only clears the field; the file stays in Dropbox.
+    // const response = await fetch("/api/admin/delete-image", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ url: displayUrl }),
+    // });
 
-    if (response.ok) {
+    // if (response.ok) {
       setLocalImageUrl(null);
       setIsUploadComplete(false);
       onChange("", undefined);
-      toast.success("Image deleted successfully")
-    }
+      toast.success("Image removed")
+    // }
 
 
   };

@@ -32,6 +32,8 @@ const MainNavbarTwo = () => {
         function updateNavHeight() {
             if (navRef.current) {
                 setNavHeight(navRef.current.offsetHeight);
+                // exposed so a page banner can slide up under the fixed nav (see common/Banner)
+                document.documentElement.style.setProperty("--nav-h", `${navRef.current.offsetHeight}px`);
             }
         }
 
@@ -51,6 +53,8 @@ const MainNavbarTwo = () => {
             setIsSticky(window.scrollY > 100);
         };
 
+        // the page can load mid-scroll now (refresh keeps the position), so check once up front
+        handleScroll();
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
@@ -115,6 +119,10 @@ const MainNavbarTwo = () => {
     useEffect(() => {
         if (searchActive) {
             const scrollY = window.scrollY;
+            // keep the overflow from before the first lock, so closing puts it back
+            if (document.body.dataset.scrollY === undefined) {
+                document.body.dataset.prevOverflow = document.body.style.overflow;
+            }
             document.body.dataset.scrollY = String(scrollY);
             // document.body.style.position = 'fixed';
             document.body.style.overflow = "hidden";
@@ -122,11 +130,17 @@ const MainNavbarTwo = () => {
             document.body.style.width = "100%";
             globalSetSearchActive(true);
         } else {
+            // only undo the lock if search actually set it: this also runs on mount, where it used to scrollTo(0, 0)
             const scrollY = document.body.dataset.scrollY;
-            document.body.style.position = "";
-            document.body.style.top = "";
-            document.body.style.width = "";
-            window.scrollTo(0, scrollY ? parseInt(scrollY) : 0);
+            if (scrollY !== undefined) {
+                document.body.style.overflow = document.body.dataset.prevOverflow || "";
+                document.body.style.position = "";
+                document.body.style.top = "";
+                document.body.style.width = "";
+                delete document.body.dataset.scrollY;
+                delete document.body.dataset.prevOverflow;
+                window.scrollTo(0, parseInt(scrollY));
+            }
             globalSetSearchActive(false);
         }
     }, [searchActive]);
@@ -660,7 +674,7 @@ const MainNavbarTwo = () => {
                 </div>
             </>
 
-            <div style={{ height: isSticky ? navHeight : navHeight }} className="transition-[height] duration-300" />
+            <div style={{ height: navHeight }} />
             {/* Mobile Menu Overlay */}
             <AnimatePresence>
                 {isMenuOpen && (

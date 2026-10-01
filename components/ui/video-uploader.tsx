@@ -82,20 +82,22 @@ export function VideoUploader({ value, onChange, className, deleteAfterUpload = 
 
     if (!displayUrl) return;
 
-    const response = await fetch("/api/admin/delete-video", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ url: displayUrl }),
-    });
+    // Dropbox delete disabled for now: it rebuilt the path from the URL (409s) and deleted before the page was saved.
+    // Removing only clears the field; the file stays in Dropbox.
+    // const response = await fetch("/api/admin/delete-video", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ url: displayUrl }),
+    // });
 
-    if (response.ok) {
+    // if (response.ok) {
       setLocalVideoUrl(null);
       setIsUploadComplete(false);
       onChange("", undefined);
-      toast.success("Video deleted successfully")
-    }
+      toast.success("Video removed")
+    // }
   };
 
   const displayUrl = localVideoUrl || value;

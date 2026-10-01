@@ -42,7 +42,7 @@ html {
   --spacing-40px: clamp(20px, 2.5vw + 2px, 40px);
   --spacing-50px: clamp(1.2rem, 4vw + 0.1em, 50px);
   --spacing-60px: clamp(1.3rem, 4.5vw + 0.1em, 60px);
-  --spacing-80px: clamp(1.4rem, 5vw + 0.1em, 80px);
+  --spacing-80px: clamp(28px, calc(8.3813px + 3.9568vw), 80px); /* 25px at 420px wide -> 80px at 1810px wide, linear in between */
   --spacing-100px: clamp(2rem, 5.5vw + 0.1em, 100px);
   --spacing-120px: clamp(2.1rem, 6vw + 0.1em, 120px);
   --spacing-150px: clamp(2.5rem, 10vw + 5px, 150px)
@@ -59,6 +59,11 @@ html {
   --breakpoint-3xl: 1680px;
 }
 
+
+/* vertical section padding: 25px (<=420px wide) growing linearly to 80px (>=1810px wide), see --spacing-80px */
+@utility section-spacing {
+  @apply py-80px;
+}
 
 @utility container {
   @apply mx-auto px-[15px];
@@ -1602,32 +1607,6 @@ body::-webkit-scrollbar {
 }
 
 
-h2,
-h1 {
-  letter-spacing: -1.5px;
-}
-
-@media (max-width:1600px) {
-
-  h2,
-  h1 {
-    letter-spacing: -1px;
-  }
-}
-
-@media (max-width:1200px) {
-
-  h2,
-  h1 {
-    letter-spacing: -0.75px;
-  }
-}
-
-h2.text-19,
-h1.text-19 {
-  letter-spacing: -1px;
-}
-
 .st00 {
   fill: #fff;
   stroke: #fff;
@@ -1640,16 +1619,6 @@ h1.text-19 {
 .iosswipe {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-}
-
-.letterspacing-2-5 {
-  letter-spacing: -2.5px;
-}
-
-@media (max-width:992px) {
-  .letterspacing-2-5 {
-    letter-spacing: -.5px;
-  }
 }
 
 @keyframes carouselLoop {

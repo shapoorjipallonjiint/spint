@@ -56,7 +56,7 @@ const ExpertiseSec = ({ data }) => {
                                         initial="hidden"
                                         whileInView="show"
                                         viewport={{ amount: 0.6, once: true }}
-                                        className="text-24 2xl:text-29 leading-tight 3xl:leading-[1.724137931034483] font-light mb-2 2xl:mb-3 tracking-[-.5px]"
+                                        className="text-24 2xl:text-29 leading-tight 3xl:leading-[1.724137931034483] font-light mb-2 2xl:mb-3"
                                     >
                                         {item.title}
                                     </motion.h3>
