@@ -109,7 +109,7 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
 );
 
 const CredentialsPanel = ({ cubesRef }) => (
-  <div className="relative h-full flex flex-col bg-white pt-[92px] pb-5 px-5 lg:pt-[12dvh] lg:pb-[8dvh] 3xl:pb-[87px] lg:ps-[calc(4vw+125px+32px)] xl:ps-[calc(5vw+125px+40px)] 2xl:ps-[calc(5vw+125px+50px)] 3xl:ps-[calc(7.814vw+133px+50px)] lg:pe-8 xl:pe-10 2xl:pe-[50px]">
+  <div className="relative h-full flex flex-col bg-f5f5 pt-[92px] pb-5 px-5 lg:pt-[12dvh] lg:pb-[8dvh] 3xl:pb-[87px] lg:ps-[calc(4vw+125px+32px)] xl:ps-[calc(5vw+125px+40px)] 2xl:ps-[calc(5vw+125px+50px)] 3xl:ps-[calc(7.814vw+133px+50px)] lg:pe-8 xl:pe-10 2xl:pe-[50px]">
     <h2 data-cred-intro className="text-primary font-light leading-[1.0833333] text-[26px] lg:text-34 xl:text-48 3xl:text-60 mb-2 lg:mb-3 xl:mb-4">
       Our Credentials
     </h2>
@@ -177,7 +177,7 @@ const CredentialsPanel = ({ cubesRef }) => (
                     row={rowFromBottom}
                     showTop={i === 0}
                     // only draw side faces that stick out above the next column,
-                    // so the gaps between cubes stay clean white
+                    // so the gaps between cubes stay clean (panel background)
                     showSide={rowFromBottom >= nextHeight}
                     meetsSideFace={
                       (columns[colIndex - 1]?.length ?? 0) > cubes.length
