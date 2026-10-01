@@ -141,7 +141,7 @@ const CredentialsPanel = ({ cubesRef }) => (
       {/* blur sits on the wrapper: clip-path is applied after filter, so on one element it would cut the blur off */}
       <span
         data-cred-glow="1"
-        className="absolute top-[calc(100%-10px)] -end-5 lg:-end-8 xl:-end-10 2xl:-end-[50px] w-[83%] lg:w-[374px] xl:w-[448px] 2xl:w-[calc((5vw+754px)*0.747)] 3xl:w-[calc((7.814vw+877px)*0.747)] aspect-[763/39] pointer-events-none rtl:-scale-x-100"
+        className="absolute top-[calc(100%-10px)] -end-5 lg:-end-8 xl:-end-10 2xl:-end-[50px] w-[83%] lg:w-[374px] xl:w-[448px] 2xl:w-[calc((5vw+754px)*0.747)] 3xl:w-[calc((7.814vw+877px)*0.747)] min-[1900px]:w-[calc((100vw-900px)*0.747)] aspect-[763/39] pointer-events-none rtl:-scale-x-100"
         style={{ filter: "blur(30px)" }} // Figma layer blur 60.1
       >
         <span
