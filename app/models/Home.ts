@@ -187,8 +187,12 @@ const homeSchema = new mongoose.Schema({
             id: { type: String },
             name: { type: String },
             name_ar: { type: String },
+            // legacy position, typed by hand (kept as-is; used until the point is re-picked on the map)
             left: { type: String },
             top: { type: String },
+            // exact point picked on the map image in admin: % of the full world_map.png width / height
+            x: { type: Number },
+            y: { type: Number },
             completedProjects: { type: String },
             employees: { type: String },
             showInProjectFilter: { type: Boolean}

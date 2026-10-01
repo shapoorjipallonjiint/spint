@@ -16,6 +16,8 @@ gsap.registerPlugin(DrawSVGPlugin);
 import { motion, AnimatePresence } from "framer-motion";
 import { moveUp } from "../../motionVarients.ts";
 import CountUp from "../../CountUp.jsx";
+import AboutHighlights from "./AboutHighlights";
+import CredentialsPanel from "./CredentialsPanel";
 import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
 import { mapBackendCitiesToMapCities } from "../../../../lib/mapDataHelper";
 import Image from "next/image";
@@ -65,6 +67,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const dsrnRef = useRef(null);
     const dsrnBxRef = useRef(null);
     const brdrsRef = useRef(null);
+    const highlightsRef = useRef(null);
+    const credCubesRef = useRef(null);
+    const [highlightsStarted, setHighlightsStarted] = useState(false);
     const leftSecRef = useRef(null);
     const rightSecRef = useRef(null);
     const title2Ref = useRef(null);
@@ -146,6 +151,28 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const [showBlueBox, setShowBlueBox] = useState(false);
 
     const { setToNavigateCountry } = useToNavigateCountryContext();
+
+    // Snap the hero divider line to the header's "scroll down" border so both read as one line
+    useEffect(() => {
+        const alignLine = () => {
+            const line = brdrRef.current;
+            const headerLine = document.querySelector("header .scrlldwn");
+            if (!line) return;
+            line.style.marginBottom = "";
+            if (!headerLine || window.innerWidth < 1024) return;
+
+            // ignore the header's intro gsap y-offset so we align to its final position
+            const headerTop = headerLine.getBoundingClientRect().top - (Number(gsap.getProperty(headerLine, "y")) || 0);
+            const lineTop = line.getBoundingClientRect().top;
+            const baseMargin = parseFloat(getComputedStyle(line).marginBottom) || 0;
+            line.style.marginBottom = `${baseMargin - (headerTop - lineTop)}px`;
+        };
+
+        alignLine();
+        document.fonts?.ready.then(alignLine);
+        window.addEventListener("resize", alignLine);
+        return () => window.removeEventListener("resize", alignLine);
+    }, []);
 
 
     // Add this useEffect to detect screen size
@@ -427,22 +454,24 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         { x: X(50), opacity: 0 },
                         { x: 0, opacity: 1, duration: 1, delay: -0.8, ease: "power3.out" },
                     )
-                    .fromTo(
-                        dsrnRef.current,
-                        { width: "0%", opacity: 0 },
-                        {
-                            width: "100%",
-                            opacity: 1,
-                            duration: 1,
-                            delay: -0.5,
-                            ease: "power3.out",
-                        },
-                    )
-                    .fromTo(
-                        descriptionRef.current,
-                        { x: X(50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 1, delay: -0.5, ease: "power3.out" },
-                    )
+                    // blue description box is hidden on frontend for now, so its animation is skipped
+                    // to avoid a dead gap before the stats; restore these two tweens if the box comes back
+                    // .fromTo(
+                    //     dsrnRef.current,
+                    //     { width: "0%", opacity: 0 },
+                    //     {
+                    //         width: "100%",
+                    //         opacity: 1,
+                    //         duration: 1,
+                    //         delay: -0.5,
+                    //         ease: "power3.out",
+                    //     },
+                    // )
+                    // .fromTo(
+                    //     descriptionRef.current,
+                    //     { x: X(50), opacity: 0 },
+                    //     { x: 0, opacity: 1, duration: 1, delay: -0.5, ease: "power3.out" },
+                    // )
                     .fromTo(
                         brdrsRef.current,
                         { x: X(-50), width: "0%", opacity: 0 },
@@ -451,9 +480,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             width: "100%",
                             opacity: 1,
                             duration: 1,
-                            delay: -0.5,
+                            delay: -0.8,
                             ease: "power1.inOut",
                         },
+                    )
+                    .fromTo(
+                        highlightsRef.current,
+                        { x: X(-50), opacity: 0 },
+                        { x: 0, opacity: 1, duration: 1, delay: -0.7, ease: "power3.out" },
                     )
                     .fromTo(
                         statItems,
@@ -462,9 +496,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             x: 0,
                             opacity: 1,
                             duration: 1,
-                            delay: -0.5,
+                            delay: -0.7,
                             ease: "power3.out",
                             stagger: 0.2,
+                            // start the highlight fill/rotation once everything has landed
+                            onComplete: () => setHighlightsStarted(true),
                         },
                     )
                     .fromTo(
@@ -483,7 +519,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     );
                 break;
 
-            case 2:
+            case 2: {
+                // sequence: left panel wipe -> credentials title/description + right side together -> cubes
+                const credIntro = splftimng.current?.querySelectorAll("[data-cred-intro]");
+                const cubesStart = 1.3;
+                const cubeRowGap = 0.4;
+                const introStart = 0.7;
+                const rightStart = introStart;
+
                 c1.set(splftimng.current, { opacity: 0, width: "0%", x: 0 })
                     .set(sptitle.current, { opacity: 0 })
                     .set(spdscrpt.current, { opacity: 0 })
@@ -495,66 +538,98 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     .fromTo(
                         splftimng.current,
                         { x: X(-50), opacity: 0, width: "0%" },
-                        { x: 0, opacity: 1, width: "100%", duration: 1, delay: 0, ease: "power1.out" },
-                    )
-                    .fromTo(
-                        sprghtBx.current,
-                        { x: X(50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.5",
+                        { x: 0, opacity: 1, width: "100%", duration: 1, ease: "power1.out" },
+                        0,
                     )
                     .fromTo(
                         splftbg.current,
                         { x: X(-50), opacity: 0, width: "0%" },
-                        { x: 0, opacity: 1, width: "100%", duration: 0.8, delay: -0.5, ease: "power1.out" },
-                        "-=0",
+                        { x: 0, opacity: 1, width: "100%", duration: 0.8, ease: "power1.out" },
+                        0.5,
+                    );
+
+                // credentials title, description and divider ease in once the wipe has mostly opened
+                if (credIntro?.length) {
+                    c1.fromTo(
+                        credIntro,
+                        { y: 25, opacity: 0 },
+                        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.15 },
+                        introStart,
+                    );
+                }
+
+                // credentials cubes build up row by row, bottom row first, after the title/description
+                [0, 1, 2, 3].forEach((row) => {
+                    const rowCubes = credCubesRef.current?.querySelectorAll(`[data-cube-row="${row}"]`);
+                    if (!rowCubes?.length) return;
+                    c1.fromTo(
+                        rowCubes,
+                        { y: 40, opacity: 0 },
+                        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.08 },
+                        cubesStart + row * cubeRowGap,
+                    );
+                });
+
+                // the two gradients under the cubes fade in once the bottom row has landed
+                const credGlows = splftimng.current?.querySelectorAll("[data-cred-glow]");
+                const firstRowCount = credCubesRef.current?.querySelectorAll('[data-cube-row="0"]').length ?? 0;
+                if (credGlows?.length) {
+                    c1.fromTo(
+                        credGlows,
+                        { opacity: 0 },
+                        { opacity: (i, el) => Number(el.dataset.credGlow), duration: 0.8, ease: "power2.out" },
+                        // bottom row: starts at cubesStart with a 0.08 stagger; with power3.out each cube has
+                        // visually settled ~0.35s into its 0.8s tween, so start as the last bottom cube lands
+                        cubesStart + Math.max(firstRowCount - 1, 0) * 0.08 + 0.35,
+                    );
+                }
+
+                // right side (video panel + content) comes in together with the credentials title
+                c1.fromTo(
+                    sprghtBx.current,
+                    { x: X(50), opacity: 0 },
+                    { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                    rightStart,
+                )
+                    .fromTo(
+                        sprIcnim.current,
+                        { x: X(50), opacity: 0 },
+                        { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                        rightStart + 0.3,
                     )
                     .fromTo(
                         sptitle.current,
                         { x: X(-50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3",
+                        { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                        rightStart + 0.5,
                     )
                     .fromTo(
                         spdscrpt.current,
                         { x: X(-50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3",
+                        { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                        rightStart + 0.75,
                     )
                     .fromTo(
                         spbtn.current,
                         { x: X(-50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3",
-                    )
-
-                    .fromTo(
-                        sprIcnim.current,
-                        { x: X(50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=1.5",
+                        { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                        rightStart + 1,
                     )
                     .fromTo(
                         spBrdOne.current,
                         { x: X(-100), opacity: 0 },
-                        { x: 0, opacity: 0.2, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3",
+                        { x: 0, opacity: 0.2, duration: 0.8, ease: "power1.out" },
+                        rightStart + 1.25,
                     )
                     .fromTo(
                         spStatsItems,
                         { x: X(-50), opacity: 0 },
-                        {
-                            x: 0,
-                            opacity: 1,
-                            duration: 1,
-                            delay: -0.5,
-                            ease: "power3.out",
-                            stagger: 0.2,
-                        },
-                        "-=0.6",
+                        { x: 0, opacity: 1, duration: 1, ease: "power3.out", stagger: 0.2 },
+                        rightStart + 1.25,
                     );
 
                 break;
+            }
 
             case 3:
                 d1.set(bgdivRef.current, { opacity: 0, x: 0 })
@@ -866,6 +941,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 break;
 
             case 1:
+                setHighlightsStarted(false);
                 b2.to(rightSecRef.current, { x: X(800), opacity: 0, duration: 1.1, ease: "power1.inOut" }, 0)
                     .to(leftSecRef.current, { x: X(-800), opacity: 0, duration: 1.1, ease: "power1.inOut" }, 0)
                     .to(
@@ -1585,10 +1661,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             >
                                 {/* <div className="absolute top-0 left-0 z-[22] w-full h-full bg-gradient-to-r from-black/85 from-0% via-black/65 via-75% to-black/60 to-100% "></div> */}
                                 <div
-                                    className={`absolute top-0 z-[22] w-full h-full ${isArabic
-                                        ? "right-0 bg-gradient-to-l from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
-                                        : "left-0 bg-gradient-to-r from-black/70 from-0% via-black/50 via-75% to-black/45 to-100%"
-                                        }`}
+                                    className={`absolute top-0 z-[22] w-full h-full bg-black/65 ${isArabic ? "right-0" : "left-0"}`}
                                 ></div>
 
                                 <video
@@ -1654,9 +1727,10 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             </div>
 
                             <div className={`relative z-40 mt-auto ${isArabic ? "mr-auto" : "ml-auto"}`}>
+                                {/* blue description box hidden on frontend for now (was `hidden lg:block`); data still comes from CMS */}
                                 <div
                                     ref={dsrnBxRef}
-                                    className="p-10 w-fit xl:w-[550px] px-15 py-10 text-white relative  hidden lg:block"
+                                    className="p-10 w-fit xl:w-[550px] px-15 py-10 text-white relative hidden"
                                 >
                                     <div
                                         ref={dsrnRef}
@@ -1670,6 +1744,12 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </p>
                                 </div>
                             </div>
+
+                            <AboutHighlights
+                                containerRef={highlightsRef}
+                                active={highlightsStarted && currentVisibleSlide === "section2"}
+                                isArabic={isArabic}
+                            />
 
                             <div
                                 className="relative hidden lg:flex z-40  pt-6 xl:pt-[30px] gap-6 xl:gap-[75px] text-white"
@@ -1765,27 +1845,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
                 <section id="section3" className="h-screen overflow-hidden relative scroll-area">
-                    <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[600px_auto] 2xl:grid-cols-[800px_auto] 3xl:grid-cols-[1021px_auto] h-full bg-transparent">
+                    {/* from 2xl the left column is sized around the credentials cubes:
+                        header edge + 50px + staircase + 50px, where the staircase is 529px at 2xl (100px cubes)
+                        and 644px at 3xl (full 122px cubes) - see CredentialsPanel */}
+                    <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[600px_auto] 2xl:grid-cols-[calc(5vw+754px)_auto] 3xl:grid-cols-[calc(7.814vw+877px)_auto] h-full bg-transparent">
                         <div
-                            className={`lftblc relative ${isArabic ? "left-0" : "right-0"} h-[52.6dvh] lg:h-auto`}
+                            className={`lftblc relative ${isArabic ? "left-0" : "right-0"} h-[52.6dvh] lg:h-auto lg:overflow-hidden`}
                             ref={splftimng}
                         >
-                            <div className="bg-primary absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
-                            <Image
-                                src={tData.thirdSection.image}
-                                alt={tData.thirdSection.imageAlt}
-                                width={2000}
-                                height={1500}
-                                className={`w-full h-full object-cover absolute object-right" ${isArabic ? "-scale-x-100" : ""
-                                    } hidden lg:block`}
-                            />
-                            <Image
-                                src={tData.thirdSection.image}
-                                alt={tData.thirdSection.imageAlt}
-                                width={2000}
-                                height={1500}
-                                className="w-full h-full object-cover absolute object-center lg:hidden"
-                            />
+                            <div className="bg-white absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
+                            {/* credentials cubes on all screens. Fixed to the full column width (the screen on mobile) so the
+                                entry width-reveal wipes it in instead of squeezing/re-scaling the cubes */}
+                            <div className="absolute top-0 start-0 h-full w-screen lg:w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)]">
+                                <CredentialsPanel cubesRef={credCubesRef} />
+                            </div>
                         </div>
                         <div className="block lg:hidden   ">
                             <img
@@ -1802,21 +1875,31 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             className=" flex flex-col h-full px-5 lg:px-[70px] 3xl:px-[100px] pb-[120px] 3xl:pb-[150px] pt-[7dvh] lg:pt-[120px] 3xl:pt-[150px] overflow-hidden relative"
                             ref={sprghtBx}
                         >
-                            <div
-                                className={`lg:bg-primary absolute w-full ${isArabic ? "right-0" : "left-0"
-                                    } h-full top-0 z-[-1]`}
-                                ref={sprgtbg}
-                            ></div>
+                            {/* desktop background: video + black/65 overlay (replaces the old blue panel) */}
+                            <div className="hidden lg:block absolute inset-0 z-0" ref={sprgtbg}>
+                                <video
+                                    src="/assets/videos/about-sp.mp4"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    webkit-playsinline="true"
+                                    className="w-full h-full object-cover absolute inset-0"
+                                ></video>
+                                <div className="absolute inset-0 bg-black/65"></div>
+                            </div>
+                            {/* 353x496 at 3xl, where the column is 899px wide -> 39.3% keeps it proportional on smaller screens */}
                             <Image
                                 ref={sprIcnim}
-                                src="/assets/images/svg/sv-02.svg"
-                                width={600}
-                                height={600}
-                                alt="logo"
-                                className={`hidden lg:block absolute ${isArabic ? "-scale-x-100 left-0" : "right-0"
-                                    } w-[250px] 3xl:w-[353px]`}
+                                src="/assets/images/home/icons/about-sp-vector.svg"
+                                width={352}
+                                height={496}
+                                alt=""
+                                className={`hidden lg:block absolute top-0 z-[1] w-[39.3%] h-auto ${isArabic ? "-scale-x-100 left-0" : "right-0"
+                                    }`}
                             />
-                            <div className="relative z-[99]">
+                            {/* desktop: pinned bottom-left, 150px / 90px at 3xl expressed as % of the column */}
+                            <div className="relative z-[99] lg:absolute lg:bottom-[14%] lg:inset-x-[10%]">
                                 <h1
                                     ref={sptitle}
                                     className="text-[32px] sm:text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] lg:max-w-[8ch] font-light mb-[15px] lg:mb-8 xl:mb-[25px] text-black lg:text-white"
@@ -1865,7 +1948,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     </svg>
                                 </LangLink>
                             </div>
-                            <div className="mt-auto relative">
+                            {/* stats hidden for now (not in the new design); kept in the DOM because the entry animation reads these refs */}
+                            <div className="mt-auto relative hidden">
                                 <hr
                                     ref={spBrdOne}
                                     className={`border-white opacity-20 absolute top-[57px] ${isArabic ? "right-[-30%] left-0" : "left-[-30%] right-0"
@@ -2845,9 +2929,15 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 // className={` absolute   transition-all duration-300 flex items-center justify-center    w-[480px] h-[480px] ${
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
-                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${activeDot === city.id ? "z-[999]" : "z-[1]"
+                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${city.hasPoint ? "map-point" : ""} ${activeDot === city.id ? "z-[999]" : "z-[1]"
                                                     }`}
-                                                style={{ left: `calc(${city.left} - 4.8%)`, top: city.top }}
+                                                // picked points: exact spot on the image via .map-point (globals.css);
+                                                // older cities keep their hand-typed left/top exactly as before
+                                                style={
+                                                    city.hasPoint
+                                                        ? { "--map-x": city.x, "--map-y": city.y }
+                                                        : { left: `calc(${city.left} - 4.8%)`, top: city.top }
+                                                }
                                             >
                                                 <div
                                                     //     onClick={() => {
@@ -3203,11 +3293,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
       "
                     >
                         {/* LEFT SIDE */}
+                        {/* lg:pb-[207px] puts the tab underline exactly on the header's "scroll" border line, which sits
+                            207px from the screen bottom: 50px py + 21px pb + 87px circle + 12px gap + 37px text (HeaderTw) */}
                         <div
                             className={`w-full pt-33 px-5 lg:pe-0 ${isArabic
                                 ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[280px]"
                                 : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[280px]"
-                                } lg:pb-[120px] 3xl:pb-[212px] h-full lg:h-auto`}
+                                } lg:pb-[207px] h-full lg:h-auto`}
                         >
                             <div
                                 className={`${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
@@ -3420,7 +3512,9 @@ transition-all duration-300 cursor-pointer ${activeItem.id === item.id
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.4, ease: "easeInOut" }}
-                                className="pt-[37px] pb-[60px] 3xl:pb-[151px] px-5 lg:px-7   3xl:px-15 "
+                                // fixed 207px (same as the left column's pb and the header's scroll line) so the blue box
+                                // above ends exactly on the long horizontal line
+                                className="h-[207px] pt-[37px] px-5 lg:px-7 3xl:px-15"
                             >
                                 <LangLink href="/careers">
                                     <div className="flex items-center gap-[6px]">
