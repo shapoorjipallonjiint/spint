@@ -20,10 +20,10 @@ const columns = [
   [{ value: "Presence in", key: "18 Countries" }],
 ];
 
-// Cube size at 3xl is 122 (front width) x 115 (front height), with a 28px-wide side face and a 37px-tall top face.
+// Cube size at 3xl is 122 (front width) x 115 (front height), with a ~24px-wide side face and a ~24px-tall top face, so the receding edges run at 45deg.
 // Everything is derived from --w so the whole staircase scales together: it's capped at 122px,
 // by the available width (5 fronts + 4 gaps + the last column's side face, so nothing spills into the end padding)
-// and by the height left for the staircase (--cubes-h), shared by 4 fronts + 1 top depth (4 x 0.9426 + 0.3 = ~4.12 widths).
+// and by the height left for the staircase (--cubes-h), shared by 4 fronts + 1 top depth (4 x 0.9426 + 0.1983 = ~3.97 widths).
 // --cubes-h: desktop = 100dvh minus the panel's 20dvh vertical padding and ~180px of title/description/divider.
 // On mobile the width alone sets --w (so the text has room) and instead the fronts get shorter when needed:
 // --h-max = (height of the cubes area - top face depth) / 4 rows (the area is a size container there, see below).
@@ -33,26 +33,26 @@ const sizeVars = {
   "--gap": "1.52px",
   "--diag": "1.92px",
   "--w":
-    "min(122px, calc((100cqw - 4 * var(--gap)) / 5.2295), calc(var(--cubes-h) / 4.12))", // 5 fronts + 0.2295 side
+    "min(122px, calc((100cqw - 4 * var(--gap)) / 5.1983), calc(var(--cubes-h) / 3.97))", // 5 fronts + 0.1983 side
   "--h": "min(calc(var(--w) * 0.9426), var(--h-max))", // 115 / 122
-  "--dx": "calc(var(--w) * 0.2295)", // side face width / top face lean: 28 / 122
-  "--dy": "calc(var(--w) * 0.3)", // top face height / side face rise: 37 / 122
+  "--dx": "calc(var(--w) * 0.1983)", // side face width / top face lean: 24.2 / 122
+  "--dy": "calc(var(--w) * 0.1983)", // top face height / side face rise: 24.2 / 122
 };
 
 // skew angles that make the top face lean --dx over its --dy height, and the side face rise --dy over its --dx width
-const topSkew = "skewX(-37.42deg)"; // atan(0.2295 / 0.3)
-const sideSkew = "skewY(-52.58deg)"; // atan(0.3 / 0.2295)
+const topSkew = "skewX(-45deg)"; // atan(dx / dy), dx = dy
+const sideSkew = "skewY(-45deg)"; // atan(dy / dx), dx = dy
 
-const frontBg = "linear-gradient(0deg, #1E45A2 0%, #30B6F9 100%)";
-const topBg = "linear-gradient(90deg, #97DCFF 0%, #30B6F9 100%)";
+const frontBg = "linear-gradient(360deg, #1E45A2 0%, #30B6F9 100%)";
+const topBg = "linear-gradient(180deg, #97DCFF 0%, #30B6F9 100%)";
 const sideBg = "linear-gradient(180deg, #97DCFF 0%, #30B6F9 100%)";
 // Figma "inside" stroke: inset shadow draws within the face and doesn't add to its size
 const innerStroke = "inset 0 0 0 0.77px rgba(255, 255, 255, 0.4)";
 
 // The column gap and row gap separate a side face's lower edge from the next column's top face.
 // Nudging that top face left by this much makes the perpendicular distance between the two
-// parallel inclined edges exactly --diag (solved for the dx:dy = 0.2295:0.3 slope: gap * (1 + dx/dy) - diag * hypot(dx, dy)/dy).
-const topFaceShift = "calc(var(--gap) * 1.765 - var(--diag) * 1.2591)";
+// parallel inclined edges exactly --diag (solved for the dx:dy = 1:1 slope: gap * (1 + dx/dy) - diag * hypot(dx, dy)/dy).
+const topFaceShift = "calc(var(--gap) * 2 - var(--diag) * 1.4142)";
 
 // Outer div is animated by the slide's entry timeline (targets [data-cube-row]); the inner div
 // handles the hover lift, so the two transforms never fight each other.
@@ -133,7 +133,7 @@ const CredentialsPanel = ({ cubesRef }) => (
     {/* container so the cube size can follow the available width (cqw). On mobile it fills the space left under the
         text and is a size container, so the staircase also fits its height (cqh); on desktop it keeps the dvh formula */}
     <div
-      className="@container mt-4 lg:mt-auto relative flex-1 min-h-0 flex flex-col justify-end lg:flex-none lg:block [container-type:size] lg:[container-type:inline-size] [--cubes-h:9999px] lg:[--cubes-h:calc(80dvh-180px)] [--h-max:calc((100cqh-var(--w)*0.3)/4-var(--gap))] lg:[--h-max:9999px]"
+      className="@container mt-4 lg:mt-auto relative flex-1 min-h-0 flex flex-col justify-end lg:flex-none lg:block [container-type:size] lg:[container-type:inline-size] [--cubes-h:9999px] lg:[--cubes-h:calc(80dvh-180px)] [--h-max:calc((100cqh-var(--w)*0.1983)/4-var(--gap))] lg:[--h-max:9999px]"
       style={sizeVars}
     >
       {/* blurred shadow under the cubes: 763x39 at 3xl (74.7% of the column), pinned to the column's
