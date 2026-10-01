@@ -9,15 +9,20 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Trash2, Pencil, Move, Briefcase, Users } from "lucide-react";
+import MapPointPicker, { cityMapPoint } from "./MapPointPicker";
+import { hasMapPoint } from "@/lib/mapDataHelper";
 
 /* ---------------- TYPES ---------------- */
 
 type City = {
+    _id?: string;
     id?: "sp-group" | "sp-international" | "";
     name?: string;
     name_ar?: string;
     left?: string;
     top?: string;
+    x?: number;
+    y?: number;
     completedProjects?: string;
     employees?: string;
     showInProjectFilter?: boolean;
@@ -30,20 +35,19 @@ export default function MapSectionPage() {
     const [open, setOpen] = useState(false);
     const [saving, setSaving] = useState(false);
     const [editIndex, setEditIndex] = useState<number | null>(null);
-    const [sixthSectionMeta, setSixthSectionMeta] = useState<{
-        title?: string;
-        title_ar?: string;
-    }>({});
 
     const [spGroupSearch, setSpGroupSearch] = useState("");
     const [spInternationalSearch, setSpInternationalSearch] = useState("");
 
-    const { register, handleSubmit, control, watch, reset } = useForm<City>({
+    const { register, handleSubmit, control, watch, reset, setValue } = useForm<City>({
         defaultValues: { id: "" },
         shouldUnregister: false,
     });
 
     const selectedId = watch("id");
+    const pickedX = watch("x");
+    const pickedY = watch("y");
+    const [pointError, setPointError] = useState(false);
 
     /* ---------------- FETCH ---------------- */
 
@@ -52,12 +56,7 @@ export default function MapSectionPage() {
             const res = await fetch("/api/admin/home");
             const json = await res.json();
 
-            setLocations(json.data?.sixthSection?.cities || []);            
-
-            setSixthSectionMeta({
-                title: json.data?.sixthSection?.title,
-                title_ar: json.data?.sixthSection?.title_ar,
-            });
+            setLocations(json.data?.sixthSection?.cities || []);
         } catch {
             toast.error("Failed to load map data");
         }
@@ -76,12 +75,8 @@ export default function MapSectionPage() {
             const res = await fetch("/api/admin/home", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    sixthSection: {
-                        ...sixthSectionMeta, // 👈 preserves title
-                        cities: updatedCities,
-                    },
-                }),
+                // only the cities path is written, so the section title (edited on the Home page) is never touched
+                body: JSON.stringify({ "sixthSection.cities": updatedCities }),
             });
 
             if (!res.ok) throw new Error();
@@ -101,7 +96,18 @@ export default function MapSectionPage() {
     /* ---------------- ADD / EDIT ---------------- */
 
     const onSubmit = (data: City) => {
-        const updated = editIndex !== null ? locations.map((l, i) => (i === editIndex ? data : l)) : [...locations, data];
+        // new countries must be placed on the map; existing ones keep their current position unless re-picked
+        const existing = editIndex !== null ? locations[editIndex] : undefined;
+        if (!hasMapPoint(data) && !(existing && cityMapPoint(existing))) {
+            setPointError(true);
+            return;
+        }
+
+        // merge onto the saved record so nothing the form doesn't show (_id, legacy left/top, ...) is ever dropped
+        const updated =
+            editIndex !== null
+                ? locations.map((l, i) => (i === editIndex ? { ...l, ...data } : l))
+                : [...locations, data];
 
         saveLocationsToHome(updated);
     };
@@ -138,6 +144,7 @@ export default function MapSectionPage() {
                         });
 
                         setEditIndex(null);
+                        setPointError(false);
                         setOpen(true);
                     }}
                 >
@@ -158,6 +165,7 @@ export default function MapSectionPage() {
                     reset={reset}
                     setEditIndex={setEditIndex}
                     setOpen={setOpen}
+                    setPointError={setPointError}
                     handleDelete={handleDelete}
                     showStats={false}
                 />
@@ -173,6 +181,7 @@ export default function MapSectionPage() {
                     reset={reset}
                     setEditIndex={setEditIndex}
                     setOpen={setOpen}
+                    setPointError={setPointError}
                     handleDelete={handleDelete}
                     showStats
                 />
@@ -180,7 +189,7 @@ export default function MapSectionPage() {
 
             {/* -------- ADD / EDIT DIALOG -------- */}
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="max-w-lg">
+                <DialogContent className="sm:max-w-4xl max-h-[95vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>{editIndex !== null ? "Edit Country" : "Add Country"}</DialogTitle>
                     </DialogHeader>
@@ -218,14 +227,25 @@ export default function MapSectionPage() {
                             <Input {...register("name_ar", { required: true })} placeholder="Name (Arabic)" />
                         </div>
 
-                        <div>
-                            <Label>X (%)</Label>
-                            <Input {...register("left", { required: true })} placeholder="X (%)" />
-                        </div>
-
-                        <div>
-                            <Label>Y (%)</Label>
-                            <Input {...register("top", { required: true })} placeholder="Y (%)" />
+                        <div className="col-span-2">
+                            <Label>Position on map</Label>
+                            <MapPointPicker
+                                cities={locations}
+                                editingCity={editIndex !== null ? locations[editIndex] : undefined}
+                                picked={
+                                    typeof pickedX === "number" && typeof pickedY === "number"
+                                        ? { x: pickedX, y: pickedY }
+                                        : undefined
+                                }
+                                onPick={({ x, y }) => {
+                                    setValue("x", x, { shouldDirty: true });
+                                    setValue("y", y, { shouldDirty: true });
+                                    setPointError(false);
+                                }}
+                            />
+                            {pointError && (
+                                <p className="text-sm text-red-600 mt-1">Click on the map to place this country.</p>
+                            )}
                         </div>
 
                         {selectedId === "sp-international" && (
@@ -295,6 +315,7 @@ type ColumnProps = {
     reset: (values?: City) => void;
     setEditIndex: React.Dispatch<React.SetStateAction<number | null>>;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setPointError: React.Dispatch<React.SetStateAction<boolean>>;
     handleDelete: (index: number) => void;
 
     showStats: boolean;
@@ -310,6 +331,7 @@ function Column({
     reset,
     setEditIndex,
     setOpen,
+    setPointError,
     handleDelete,
     showStats,
 }: ColumnProps) {
@@ -342,7 +364,7 @@ function Column({
                                 <div className="mt-1 flex flex-wrap gap-4 text-sm text-muted-foreground">
                                     <div className="flex items-center gap-1">
                                         <Move className="w-3.5 h-3.5" />
-                                        X:{loc.left} Y:{loc.top}
+                                        {hasMapPoint(loc) ? `Map: ${loc.x}, ${loc.y}` : `X:${loc.left} Y:${loc.top} (typed)`}
                                     </div>
 
                                     {showStats && loc.completedProjects && (
@@ -368,6 +390,7 @@ function Column({
                                     onClick={() => {
                                         reset(loc);
                                         setEditIndex(index);
+                                        setPointError(false);
                                         setOpen(true);
                                     }}
                                 >

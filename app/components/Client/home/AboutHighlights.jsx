@@ -94,10 +94,10 @@ const AboutHighlights = ({ active, isArabic, containerRef }) => {
   return (
     <div
       ref={containerRef}
-      className="relative z-[41] hidden lg:block pb-8 xl:pb-10 text-white"
+      className="relative z-[41] hidden lg:block pb-6 xl:pb-[30px] text-white"
     >
       {/* circle stays put; only the icon inside it swaps */}
-      <div className="relative flex items-center justify-center w-14 h-14 xl:w-[60px] xl:h-[60px] 3xl:w-[67px] 3xl:h-[67px] rounded-full bg-white/12 backdrop-blur-[15px] mb-4 xl:mb-5">
+      <div className="relative flex items-center justify-center w-14 h-14 xl:w-[60px] xl:h-[60px] 3xl:w-[67px] 3xl:h-[67px] rounded-full bg-white/12 backdrop-blur-[15px] mb-[13px]">
         {/* 1px gradient border: gradient bg masked down to a ring (border-image doesn't work with border-radius), spinning forever */}
         <span
           className="absolute inset-0 rounded-full p-px pointer-events-none animate-[spin_6s_linear_infinite] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0)_100%)]"

@@ -1547,6 +1547,23 @@ body::-webkit-scrollbar {
   animation-delay: -0.1s;
 }
 
+/* Home map dot picked in admin: --map-x / --map-y are % of the full world_map.png (1158x637).
+   The dot sits in the centre of its 480x480 box, hence the -240px.
+   Below lg the dots layer is 733x436 at (-69px, -121px) while the image is 733px wide (drawn 403.21px tall,
+   object-cover crops 26.61px top/bottom) at ml-20px, so the image starts 89px right / 94.39px below the layer.
+   From lg the layer and the image are the same 1156px box. Keep in sync with the map markup in SlideScrollThree. */
+.map-point {
+  left: calc(var(--map-x) * 7.33px + 89px - 240px);
+  top: calc(var(--map-y) * 4.03213px + 94.39px - 240px);
+}
+
+@media (min-width:1024px) {
+  .map-point {
+    left: calc(var(--map-x) * 1% - 240px);
+    top: calc(var(--map-y) * 1% - 240px);
+  }
+}
+
 @media (max-width:1023px) and (min-height:740px) {
   .responsive-map-position {
     position: relative;

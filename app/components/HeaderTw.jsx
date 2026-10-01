@@ -151,6 +151,8 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
   }, []);
 
   const [logostatus, setLogostatus] = useState(false);
+  // mobile-only logo + menu icon: also dark on slide 3, whose top half is the white credentials panel on phones
+  const [mobileDarkHeader, setMobileDarkHeader] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileMenuOpenSearch, setMobileMenuOpenSearch] = useState(false);
 
@@ -165,6 +167,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
     } else {
       setLogostatus(false);
     }
+    setMobileDarkHeader(lastValue == 6 || lastValue == 3);
   }, [activeSection]);
 
   console.log(logostatus);
@@ -233,7 +236,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
               src="/assets/images/main-logo.png"
               width={90}
               height={55}
-              className={`logsc ${logostatus === true ? "block" : "hidden"}`}
+              className={`logsc ${mobileDarkHeader ? "block" : "hidden"}`}
               alt="main-logo"
             />
 
@@ -241,7 +244,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
               src="/assets/images/main-logo.png"
               width={90}
               height={55}
-              className={`logsc invert brightness-0 ${logostatus === true ? "hidden" : "block"}`}
+              className={`logsc invert brightness-0 ${mobileDarkHeader ? "hidden" : "block"}`}
               alt="logo"
             />
           </div>
@@ -277,7 +280,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
               >
                 <path
                   d="M32 1L1 0.999997"
-                  stroke={logostatus ? "#1E45A2" : "#ffffff"}
+                  stroke={mobileDarkHeader ? "#1E45A2" : "#ffffff"}
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
@@ -289,7 +292,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                 />
                 <path
                   d="M32 25L1 25"
-                  stroke={logostatus ? "#1E45A2" : "#ffffff"}
+                  stroke={mobileDarkHeader ? "#1E45A2" : "#ffffff"}
                   strokeWidth="2"
                   strokeLinecap="round"
                 />

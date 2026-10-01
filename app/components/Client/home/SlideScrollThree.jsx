@@ -519,7 +519,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     );
                 break;
 
-            case 2:
+            case 2: {
+                // sequence: left panel wipe -> credentials title/description + right side together -> cubes
+                const credIntro = splftimng.current?.querySelectorAll("[data-cred-intro]");
+                const cubesStart = 1.3;
+                const cubeRowGap = 0.4;
+                const introStart = 0.7;
+                const rightStart = introStart;
+
                 c1.set(splftimng.current, { opacity: 0, width: "0%", x: 0 })
                     .set(sptitle.current, { opacity: 0 })
                     .set(spdscrpt.current, { opacity: 0 })
@@ -531,66 +538,27 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     .fromTo(
                         splftimng.current,
                         { x: X(-50), opacity: 0, width: "0%" },
-                        { x: 0, opacity: 1, width: "100%", duration: 1, delay: 0, ease: "power1.out" },
-                    )
-                    .fromTo(
-                        sprghtBx.current,
-                        { x: X(50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.5",
+                        { x: 0, opacity: 1, width: "100%", duration: 1, ease: "power1.out" },
+                        0,
                     )
                     .fromTo(
                         splftbg.current,
                         { x: X(-50), opacity: 0, width: "0%" },
-                        { x: 0, opacity: 1, width: "100%", duration: 0.8, delay: -0.5, ease: "power1.out" },
-                        "-=0",
-                    )
-                    .fromTo(
-                        sptitle.current,
-                        { x: X(-50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3",
-                    )
-                    .fromTo(
-                        spdscrpt.current,
-                        { x: X(-50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3",
-                    )
-                    .fromTo(
-                        spbtn.current,
-                        { x: X(-50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3",
-                    )
-
-                    .fromTo(
-                        sprIcnim.current,
-                        { x: X(50), opacity: 0 },
-                        { x: 0, opacity: 1, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=1.5",
-                    )
-                    .fromTo(
-                        spBrdOne.current,
-                        { x: X(-100), opacity: 0 },
-                        { x: 0, opacity: 0.2, duration: 0.8, delay: 0, ease: "power1.out" },
-                        "-=0.3",
-                    )
-                    .fromTo(
-                        spStatsItems,
-                        { x: X(-50), opacity: 0 },
-                        {
-                            x: 0,
-                            opacity: 1,
-                            duration: 1,
-                            delay: -0.5,
-                            ease: "power3.out",
-                            stagger: 0.2,
-                        },
-                        "-=0.6",
+                        { x: 0, opacity: 1, width: "100%", duration: 0.8, ease: "power1.out" },
+                        0.5,
                     );
 
-                // credentials cubes build up row by row, bottom row first, once the left panel wipe is underway
+                // credentials title, description and divider ease in once the wipe has mostly opened
+                if (credIntro?.length) {
+                    c1.fromTo(
+                        credIntro,
+                        { y: 25, opacity: 0 },
+                        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.15 },
+                        introStart,
+                    );
+                }
+
+                // credentials cubes build up row by row, bottom row first, after the title/description
                 [0, 1, 2, 3].forEach((row) => {
                     const rowCubes = credCubesRef.current?.querySelectorAll(`[data-cube-row="${row}"]`);
                     if (!rowCubes?.length) return;
@@ -598,11 +566,70 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         rowCubes,
                         { y: 40, opacity: 0 },
                         { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.08 },
-                        0.6 + row * 0.45,
+                        cubesStart + row * cubeRowGap,
                     );
                 });
 
+                // the two gradients under the cubes fade in once the bottom row has landed
+                const credGlows = splftimng.current?.querySelectorAll("[data-cred-glow]");
+                const firstRowCount = credCubesRef.current?.querySelectorAll('[data-cube-row="0"]').length ?? 0;
+                if (credGlows?.length) {
+                    c1.fromTo(
+                        credGlows,
+                        { opacity: 0 },
+                        { opacity: (i, el) => Number(el.dataset.credGlow), duration: 0.8, ease: "power2.out" },
+                        // bottom row: starts at cubesStart with a 0.08 stagger; with power3.out each cube has
+                        // visually settled ~0.35s into its 0.8s tween, so start as the last bottom cube lands
+                        cubesStart + Math.max(firstRowCount - 1, 0) * 0.08 + 0.35,
+                    );
+                }
+
+                // right side (video panel + content) comes in together with the credentials title
+                c1.fromTo(
+                    sprghtBx.current,
+                    { x: X(50), opacity: 0 },
+                    { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                    rightStart,
+                )
+                    .fromTo(
+                        sprIcnim.current,
+                        { x: X(50), opacity: 0 },
+                        { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                        rightStart + 0.3,
+                    )
+                    .fromTo(
+                        sptitle.current,
+                        { x: X(-50), opacity: 0 },
+                        { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                        rightStart + 0.5,
+                    )
+                    .fromTo(
+                        spdscrpt.current,
+                        { x: X(-50), opacity: 0 },
+                        { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                        rightStart + 0.75,
+                    )
+                    .fromTo(
+                        spbtn.current,
+                        { x: X(-50), opacity: 0 },
+                        { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                        rightStart + 1,
+                    )
+                    .fromTo(
+                        spBrdOne.current,
+                        { x: X(-100), opacity: 0 },
+                        { x: 0, opacity: 0.2, duration: 0.8, ease: "power1.out" },
+                        rightStart + 1.25,
+                    )
+                    .fromTo(
+                        spStatsItems,
+                        { x: X(-50), opacity: 0 },
+                        { x: 0, opacity: 1, duration: 1, ease: "power3.out", stagger: 0.2 },
+                        rightStart + 1.25,
+                    );
+
                 break;
+            }
 
             case 3:
                 d1.set(bgdivRef.current, { opacity: 0, x: 0 })
@@ -1826,19 +1853,12 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             className={`lftblc relative ${isArabic ? "left-0" : "right-0"} h-[52.6dvh] lg:h-auto lg:overflow-hidden`}
                             ref={splftimng}
                         >
-                            <div className="bg-primary lg:bg-white absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
-                            {/* desktop: credentials cubes (replaces the image). Fixed to the column width so the
+                            <div className="bg-white absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
+                            {/* credentials cubes on all screens. Fixed to the full column width (the screen on mobile) so the
                                 entry width-reveal wipes it in instead of squeezing/re-scaling the cubes */}
-                            <div className="hidden lg:block absolute top-0 start-0 h-full w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)]">
+                            <div className="absolute top-0 start-0 h-full w-screen lg:w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)]">
                                 <CredentialsPanel cubesRef={credCubesRef} />
                             </div>
-                            <Image
-                                src={tData.thirdSection.image}
-                                alt={tData.thirdSection.imageAlt}
-                                width={2000}
-                                height={1500}
-                                className="w-full h-full object-cover absolute object-center lg:hidden"
-                            />
                         </div>
                         <div className="block lg:hidden   ">
                             <img
@@ -2909,9 +2929,15 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 // className={` absolute   transition-all duration-300 flex items-center justify-center    w-[480px] h-[480px] ${
                                                 //   activeDot === city.id ? "z-[999]   " : ""
                                                 // }`}
-                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${activeDot === city.id ? "z-[999]" : "z-[1]"
+                                                className={`absolute transition-all duration-300 flex items-center justify-center w-[480px] h-[480px] pointer-events-none ${city.hasPoint ? "map-point" : ""} ${activeDot === city.id ? "z-[999]" : "z-[1]"
                                                     }`}
-                                                style={{ left: `calc(${city.left} - 4.8%)`, top: city.top }}
+                                                // picked points: exact spot on the image via .map-point (globals.css);
+                                                // older cities keep their hand-typed left/top exactly as before
+                                                style={
+                                                    city.hasPoint
+                                                        ? { "--map-x": city.x, "--map-y": city.y }
+                                                        : { left: `calc(${city.left} - 4.8%)`, top: city.top }
+                                                }
                                             >
                                                 <div
                                                     //     onClick={() => {

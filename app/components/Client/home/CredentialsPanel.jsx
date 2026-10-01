@@ -23,16 +23,18 @@ const columns = [
 // Cube size at 3xl is 122 (front width) x 115 (front height), with a 28px-wide side face and a 37px-tall top face.
 // Everything is derived from --w so the whole staircase scales together: it's capped at 122px,
 // by the available width (5 fronts + 4 gaps + the last column's side face, so nothing spills into the end padding)
-// and by the height left for the staircase: 100dvh minus the panel's 20dvh vertical padding and ~180px
-// of title/description/divider, shared by 4 fronts + 1 top depth (4 x 0.9426 + 0.3 = ~4.12 widths).
+// and by the height left for the staircase (--cubes-h), shared by 4 fronts + 1 top depth (4 x 0.9426 + 0.3 = ~4.12 widths).
+// --cubes-h: desktop = 100dvh minus the panel's 20dvh vertical padding and ~180px of title/description/divider.
+// On mobile the width alone sets --w (so the text has room) and instead the fronts get shorter when needed:
+// --h-max = (height of the cubes area - top face depth) / 4 rows (the area is a size container there, see below).
 // --gap: space between neighbouring cubes (up/down and left/right).
 // --diag: space along the incline where a column's side face meets the next column's top face.
 const sizeVars = {
   "--gap": "1.52px",
   "--diag": "1.92px",
   "--w":
-    "min(122px, calc((100cqw - 4 * var(--gap)) / 5.2295), calc((80dvh - 180px) / 4.12))", // 5 fronts + 0.2295 side
-  "--h": "calc(var(--w) * 0.9426)", // 115 / 122
+    "min(122px, calc((100cqw - 4 * var(--gap)) / 5.2295), calc(var(--cubes-h) / 4.12))", // 5 fronts + 0.2295 side
+  "--h": "min(calc(var(--w) * 0.9426), var(--h-max))", // 115 / 122
   "--dx": "calc(var(--w) * 0.2295)", // side face width / top face lean: 28 / 122
   "--dy": "calc(var(--w) * 0.3)", // top face height / side face rise: 37 / 122
 };
@@ -88,16 +90,16 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
         />
       )}
       <div
-        className="relative h-full flex flex-col items-center justify-center text-center text-white px-[6%]"
+        className="relative h-full flex flex-col items-center justify-center text-center text-white px-[3%] lg:px-[6%]"
         style={{ background: frontBg, boxShadow: innerStroke }}
       >
         <p
-          className="font-semibold text-16 leading-[1.34] mb-[3px]"
+          className="whitespace-nowrap lg:whitespace-normal font-semibold text-[length:clamp(9px,calc(var(--w)*0.131),16px)] lg:text-16 leading-[1.25] lg:leading-[1.34] mb-px lg:mb-[3px]"
         >
           {value}
         </p>
         <p
-          className="font-light text-[11px] leading-[1.39]"
+          className="font-light text-[length:clamp(7px,calc(var(--w)*0.09),11px)] lg:text-[11px] leading-[1.3] lg:leading-[1.39]"
         >
           {label}
         </p>
@@ -107,17 +109,19 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
 );
 
 const CredentialsPanel = ({ cubesRef }) => (
-  <div className="relative h-full flex flex-col bg-white pt-[12dvh] pb-[8dvh] 3xl:pb-[87px] ps-[calc(4vw+125px+32px)] xl:ps-[calc(5vw+125px+40px)] 2xl:ps-[calc(5vw+125px+50px)] 3xl:ps-[calc(7.814vw+133px+50px)] pe-8 xl:pe-10 2xl:pe-[50px]">
-    <h2 className="text-primary font-light leading-[1.0833333] text-34 xl:text-48 3xl:text-60 mb-3 xl:mb-4">
+  <div className="relative h-full flex flex-col bg-white pt-[92px] pb-5 px-5 lg:pt-[12dvh] lg:pb-[8dvh] 3xl:pb-[87px] lg:ps-[calc(4vw+125px+32px)] xl:ps-[calc(5vw+125px+40px)] 2xl:ps-[calc(5vw+125px+50px)] 3xl:ps-[calc(7.814vw+133px+50px)] lg:pe-8 xl:pe-10 2xl:pe-[50px]">
+    <h2 data-cred-intro className="text-primary font-light leading-[1.0833333] text-[26px] lg:text-34 xl:text-48 3xl:text-60 mb-2 lg:mb-3 xl:mb-4">
       Our Credentials
     </h2>
-    <p className="font-light text-16 xl:text-18 3xl:text-19 leading-[1.5]">
+    <p data-cred-intro className="font-light text-[13px] lg:text-16 xl:text-18 3xl:text-19 leading-[1.5]">
       300 million sq. ft. delivered with proven expertise, quality, and safety.
     </p>
-    <hr className="border-black/20 mt-5 xl:mt-8 3xl:mt-[30px]" />
+    <hr data-cred-intro className="border-black/20 mt-3 lg:mt-5 xl:mt-8 3xl:mt-[30px]" />
 
     {/* background shape behind the cubes: 1021x228 at 3xl (full column width), top edge starts 34.4% in */}
+    {/* data-cred-glow = resting opacity; the slide's entry timeline fades both glows in after the first cube row */}
     <span
+      data-cred-glow="0.4"
       className="absolute bottom-0 end-0 w-full aspect-[1021/228] opacity-40 pointer-events-none rtl:-scale-x-100"
       style={{
         background:
@@ -126,13 +130,18 @@ const CredentialsPanel = ({ cubesRef }) => (
       }}
     />
 
-    {/* container so the cube size can follow the available width (cqw) */}
-    <div className="@container mt-auto relative" style={sizeVars}>
+    {/* container so the cube size can follow the available width (cqw). On mobile it fills the space left under the
+        text and is a size container, so the staircase also fits its height (cqh); on desktop it keeps the dvh formula */}
+    <div
+      className="@container mt-4 lg:mt-auto relative flex-1 min-h-0 flex flex-col justify-end lg:flex-none lg:block [container-type:size] lg:[container-type:inline-size] [--cubes-h:9999px] lg:[--cubes-h:calc(80dvh-180px)] [--h-max:calc((100cqh-var(--w)*0.3)/4-var(--gap))] lg:[--h-max:9999px]"
+      style={sizeVars}
+    >
       {/* blurred shadow under the cubes: 763x39 at 3xl (74.7% of the column), pinned to the column's
                 end edge (pulled out through the panel's end padding) and overlapping the cube bottoms by 10px */}
       {/* blur sits on the wrapper: clip-path is applied after filter, so on one element it would cut the blur off */}
       <span
-        className="absolute top-[calc(100%-10px)] -end-8 xl:-end-10 2xl:-end-[50px] w-[374px] xl:w-[448px] 2xl:w-[calc((5vw+754px)*0.747)] 3xl:w-[calc((7.814vw+877px)*0.747)] aspect-[763/39] pointer-events-none rtl:-scale-x-100"
+        data-cred-glow="1"
+        className="absolute top-[calc(100%-10px)] -end-5 lg:-end-8 xl:-end-10 2xl:-end-[50px] w-[83%] lg:w-[374px] xl:w-[448px] 2xl:w-[calc((5vw+754px)*0.747)] 3xl:w-[calc((7.814vw+877px)*0.747)] aspect-[763/39] pointer-events-none rtl:-scale-x-100"
         style={{ filter: "blur(30px)" }} // Figma layer blur 60.1
       >
         <span

@@ -212,9 +212,16 @@ const Home = () => {
 
     const handleAddHome = async (data: HomeFormProps) => {
         try {
+            // map countries are managed on the Map Locations page: only send the section titles here, so a save
+            // from this page can never overwrite the cities with the copy loaded when the page was opened
+            const { sixthSection, ...rest } = data;
+            const payload: Record<string, unknown> = { ...rest };
+            if (sixthSection?.title !== undefined) payload["sixthSection.title"] = sixthSection.title;
+            if (sixthSection?.title_ar !== undefined) payload["sixthSection.title_ar"] = sixthSection.title_ar;
+
             const response = await fetch(`/api/admin/home`, {
                 method: "PATCH",
-                body: JSON.stringify(data),
+                body: JSON.stringify(payload),
             });
             if (response.ok) {
                 const data = await response.json();
