@@ -132,7 +132,7 @@ const ExpertiseSec = ({ data }) => {
                                         delay: i * 0.15, // stagger effect
                                         ease: "easeOut",
                                     }}
-                                    viewport={{ once: true, amount: 0.6 }} // triggers when card is 30% visible
+                                    viewport={{ once: true, amount: 0.2 }} // triggers when card is 30% visible
                                     style={{ transformStyle: "preserve-3d" }}
                                 >
                                     <Image

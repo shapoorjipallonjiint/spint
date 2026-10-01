@@ -66,7 +66,7 @@ const ExpertiseSec = ({ data }) => {
                             variants={moveUp(0.1 * index)}
                             initial="hidden"
                             whileInView="show"
-                            viewport={{ amount: 0.6, once: true }}
+                            viewport={{ amount: 0.2, once: true }}
                         >
                             <div className="border-b border-[#CCCCCC] pb-30px">
                                 <Image

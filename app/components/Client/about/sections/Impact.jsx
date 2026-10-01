@@ -262,7 +262,7 @@ const CultureDrivers = ({ CultureData }) => {
                   key={activeIndex}
                   ref={boxRef}
                   initial="hidden"
-                  whileInView="show"
+                  whileInView="show" viewport={{ once: true }}
                   exit="exit"
                   className="
             bg-primary text-white

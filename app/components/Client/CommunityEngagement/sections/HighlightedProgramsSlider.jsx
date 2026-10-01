@@ -104,7 +104,7 @@ const HighlightedProgramsSlider = ({ data }) => {
                                 variants={moveUp(0.6)}
                                 initial="hidden"
                                 whileInView={"show"}
-                                viewport={{ amount: 0.2, once: false }}
+                                viewport={{ amount: 0.2, once: true }}
                                 className="flex items-center gap-4   border-b border-white/20 pb-4 2xl:pb-[30px] lg:pb-6 mb-4 xl:mb-50px 3xl:mb-17"
                             >
                                 <button
@@ -160,7 +160,7 @@ const HighlightedProgramsSlider = ({ data }) => {
                                             variants={moveUp(0.7 + 0.1 * index)}
                                             initial="hidden"
                                             whileInView={"show"}
-                                            viewport={{ amount: 0.2, once: false }}
+                                            viewport={{ amount: 0.2, once: true }}
                                         >
                                             <h3 className="text-29 leading-[1.344827586206897] font-light mb-3 md:mb-6">
                                                 {item.title}

@@ -64,7 +64,7 @@ const ExpertiseSec = ({ data }) => {
                         variants={moveUp(0.4)}
                         initial="hidden"
                         whileInView="show"
-                        viewport={{ amount: 0.6, once: true }}
+                        viewport={{ amount: 0.2, once: true }}
                         className="text-19 leading-[1.473684210526316] opacity-90 font-light max-w-5xl"
                     >
                         {t.description}

@@ -15,7 +15,7 @@ const InnovationSustainability = ({ data }) => {
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     const [activeIndex, setActiveIndex] = useState(1);
-    const imageRef = (useRef < HTMLDivElement) | (null > null);
+    const imageRef = useRef(null);
     const MotionImage = motion.create(Image);
     const prevIndexRef = useRef(activeIndex);
 
@@ -90,7 +90,7 @@ const InnovationSustainability = ({ data }) => {
                     variants={moveUp(0.2)}
                     initial="hidden"
                     whileInView="show"
-                    viewport={{ amount: 0.6, once: true }}
+                    viewport={{ amount: 0.2, once: true }}
                 >
                     <H2Title titleText={t.title} titleColor="black" marginClass="mb-5 lg:mb-10 xl:mb-50px 3xl:mb-18" />
                 </motion.div>
@@ -124,7 +124,7 @@ const InnovationSustainability = ({ data }) => {
                                         variants={moveUp(0.2 * index)}
                                         initial="hidden"
                                         whileInView="show"
-                                        viewport={{ amount: 0.6, once: true }}
+                                        viewport={{ amount: 0.2, once: true }}
                                         className="w-8 flex items-start justify-center"
                                     >
                                         <motion.button
@@ -166,7 +166,7 @@ const InnovationSustainability = ({ data }) => {
                                         variants={moveUp(0.2 * index)}
                                         initial="hidden"
                                         whileInView="show"
-                                        viewport={{ amount: 0.6, once: true }}
+                                        viewport={{ amount: 0.2, once: true }}
                                         className={`flex-1 ${
                                             isArabic ? "pr-8 md:pr-10 2xl:pr-12" : "pl-8 md:pl-10 2xl:pl-12"
                                         }`}
@@ -236,7 +236,7 @@ const InnovationSustainability = ({ data }) => {
                         variants={isArabic ? moveLeft(-0.2) : moveLeft(0.2)}
                         initial="hidden"
                         whileInView="show"
-                        viewport={{ amount: 0.6, once: true }}
+                        viewport={{ amount: 0.2, once: true }}
                         className="relative"
                     >
                         <motion.div ref={imageRef} className="relative overflow-hidden xl:aspect-[4/3]">

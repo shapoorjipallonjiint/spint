@@ -29,7 +29,7 @@ const WorldMap = ({ cities = [], projectsData }) => {
     const outsideRef = useRef(null);
     const sectionRef = useRef(null);
     // homepage triggers the count-up when its map slide is visible; here: when the map is on screen
-    const inView = useInView(sectionRef, { amount: 0.2 });
+    const inView = useInView(sectionRef, { amount: 0.2, once: true });
 
     // cities that have at least one project (same rule as the homepage)
     const projectCities = useMemo(() => {

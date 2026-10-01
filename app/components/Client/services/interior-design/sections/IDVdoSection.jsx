@@ -28,10 +28,11 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
     }, []);
 
     // Inside your component:
-    const containerRef = useRef < HTMLDivElement > (null);
+    const containerRef = useRef(null);
     const sectionRef = useRef(null);
     const { scrollYProgress } = useScroll({
-        target: containerRef,
+        // no target, same as live: the old `useRef < HTMLDivElement > (null)` evaluated to false, so the
+        // animation has always followed the page scroll (a real target makes the video tilt/blur differently)
         offset: ["start end", "end 80%"]
     });
     const blurValue = useTransform(scrollYProgress,

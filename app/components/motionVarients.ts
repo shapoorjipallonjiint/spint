@@ -15,13 +15,13 @@ export const containerStagger = {
 };
 
 export const moveUp = (delay: number = 0) => ({
-  hidden: { opacity: 0, y: 60 },
+  hidden: { opacity: 0, y: 40 },
   show: {
     opacity: 1,
     y: 0,
     transition: {
       delay: delay,
-      duration: 0.8, // Slightly faster
+      duration: 0.7, // Slightly faster
       ease: silkyEase,
     },
   },
