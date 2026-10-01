@@ -140,6 +140,8 @@ const FeaturedProjectSlider = ({ data = [] }) => {
 
                             {t.map((item, i) => (
                                 <SwiperSlide key={i}>
+                                    {/* card links to the project page when the item has a slug */}
+                                    <LangLink href={item.slug ? `/projects/${item.slug}` : "#"} className={item.slug ? "block" : "block pointer-events-none"}>
                                     {/* Outer card: clips the animation */}
                                     <div className="relative overflow-hidden">
 
@@ -157,7 +159,7 @@ const FeaturedProjectSlider = ({ data = [] }) => {
                                                     width={700}
                                                     height={500}
                                                     src={item.image}
-                                                    alt={item.title || "Project image"}
+                                                    alt={item.imageAlt || item.title || "Project image"}
                                                     className="w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] object-cover"
                                                 />
                                             ) : (
@@ -197,6 +199,7 @@ const FeaturedProjectSlider = ({ data = [] }) => {
                                             </div>
                                         </div>
                                     </div>
+                                    </LangLink>
                                 </SwiperSlide>
                             ))}
 

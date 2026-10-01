@@ -50,6 +50,8 @@ export interface ProjectFormProps {
         coverImage?: string;
         coverImageAlt?: string;
         coverImageAlt_ar?: string;
+        // optional extra banner images shown next to coverImage on the project page
+        additionalCoverImages?: { image: string; imageAlt?: string; imageAlt_ar?: string }[];
         status: string;
     };
     secondSection: {
@@ -177,6 +179,19 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
         name: "thirdSection.items",
     });
 
+
+    // extra banner images (firstSection.additionalCoverImages) - kept in the form like any other firstSection field
+    const additionalCoverImages = watch("firstSection.additionalCoverImages") || [];
+    const addAdditionalCoverImage = () =>
+        setValue("firstSection.additionalCoverImages", [
+            ...additionalCoverImages,
+            { image: "", imageAlt: "", imageAlt_ar: "" },
+        ]);
+    const removeAdditionalCoverImage = (index: number) =>
+        setValue(
+            "firstSection.additionalCoverImages",
+            additionalCoverImages.filter((_, i) => i !== index)
+        );
 
     const handleAddProject = async (data: ProjectFormProps) => {
         try {
@@ -420,6 +435,35 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                     )} */}
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Additional cover images: shown next to the cover image on the project page (split with a 4px white line) */}
+                        <div className="grid grid-cols-1 gap-2">
+                            <div className="flex items-center justify-between">
+                                <Label className="font-bold">Additional Cover Images (optional)</Label>
+                                <Button type="button" addItem onClick={addAdditionalCoverImage}>
+                                    Add Image
+                                </Button>
+                            </div>
+                            {additionalCoverImages.map((img, index) => (
+                                <div key={index} className="relative grid grid-cols-1 gap-2 border border-black/10 rounded-md p-3">
+                                    <RiDeleteBinLine
+                                        onClick={() => removeAdditionalCoverImage(index)}
+                                        className="absolute top-3 right-3 cursor-pointer text-red-600 z-10"
+                                    />
+                                    <Label className="">Image {index + 2}</Label>
+                                    <ImageUploader
+                                        onChange={(url) => setValue(`firstSection.additionalCoverImages.${index}.image`, url)}
+                                        value={img?.image}
+                                    />
+                                    <Label className="">Image {index + 2} Alt</Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="Alt Tag"
+                                        {...register(`firstSection.additionalCoverImages.${index}.imageAlt`)}
+                                    />
+                                </div>
+                            ))}
                         </div>
 
                         <div className="grid grid-cols-1 gap-2">
@@ -1225,6 +1269,28 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Arabic alt text for the additional cover images (images are added in the English column) */}
+                        {additionalCoverImages.length > 0 && (
+                            <div className="grid grid-cols-1 gap-2">
+                                <Label className="font-bold">Additional Cover Images</Label>
+                                {additionalCoverImages.map((img, index) => (
+                                    <div key={index} className="grid grid-cols-1 gap-2 border border-black/10 rounded-md p-3">
+                                        {img?.image ? (
+                                            <Image src={img.image} alt="" width={160} height={90} className="w-[160px] h-[90px] object-cover rounded" />
+                                        ) : (
+                                            <p className="text-sm text-black/50">Image {index + 2}: upload it in the English column</p>
+                                        )}
+                                        <Label className="">Image {index + 2} Alt</Label>
+                                        <Input
+                                            type="text"
+                                            placeholder="Alt Tag"
+                                            {...register(`firstSection.additionalCoverImages.${index}.imageAlt_ar`)}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
 
                         <div className="grid grid-cols-1 gap-2">
                             <div>

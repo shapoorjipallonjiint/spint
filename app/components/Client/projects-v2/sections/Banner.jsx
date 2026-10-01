@@ -92,7 +92,8 @@ const Banner = ({ banner, bannerAlt, pageTitle, data }) => {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full h-[280px] lg:h-[350px] xl:h-[440px] 3xl:h-[560px] bg-secondary/20 overflow-hidden"
+            // same height setup as common/Banner: pulled up under the fixed nav (--nav-h), so the heights include the header
+            className="relative w-full mt-[calc(-1*var(--nav-h,0px))] h-[200px] md:h-[280px] lg:h-[350px] 2xl:h-[480px] 3xl:h-[550px] bg-secondary/20 overflow-hidden"
         >
             <Image
                 width={1500}
@@ -102,7 +103,7 @@ const Banner = ({ banner, bannerAlt, pageTitle, data }) => {
                 alt={bannerAlt}
                 className="absolute top-0 left-0 w-full h-full object-cover object-top z-0"
             />
-            <div ref={overlayRef} className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,0.75)_18.92%,rgba(0,0,0,0)_72.69%)]" ></div>
+            <div ref={overlayRef} className="absolute inset-0 bg-[linear-gradient(360deg,rgba(0,0,0,0.75)_17.15%,rgba(0,0,0,0)_66.31%)]" ></div>
             <div className="container" ref={containerRef}></div>
             <div className="relative z-2 h-full pb-100px" ref={targetRef}>
                 <div className="flex flex-col justify-end h-full  ">
@@ -126,7 +127,7 @@ const Banner = ({ banner, bannerAlt, pageTitle, data }) => {
                     height={1000}
                     src="../assets/images/svg/sv-02.svg"
                     alt=""
-                    className={`w-[200px] h-[230px] sm:w-[240px] sm:h-[352px] md:w-[272px] md:h-[417px] lg:w-[340px] lg:h-[430px] 3xl:w-[449px] 3xl:h-[630px] object-cover object-center ${
+                    className={`w-[138px] h-[193px] md:w-[193px] md:h-[270px] lg:w-[241px] lg:h-[337px] 2xl:w-[330px] 2xl:h-[463px] 3xl:w-[378px] 3xl:h-[530px] object-cover object-center ${
                         isArabic ? "-scale-x-100" : ""
                     }`}
                 />

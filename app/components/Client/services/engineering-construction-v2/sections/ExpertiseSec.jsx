@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
+import { withNormalSpaces } from "@/lib/withNormalSpaces";
 gsap.registerPlugin(ScrollTrigger);
 
 // Created once, outside the component (creating it inside re-creates the component every render)
@@ -201,7 +202,7 @@ const ExpertiseSec = ({ data }) => {
                                                         Key Services
                                                     </p>
                                                     <div
-                                                        dangerouslySetInnerHTML={{ __html: item.description }}
+                                                        dangerouslySetInnerHTML={{ __html: withNormalSpaces(item.description) }}
                                                         className="our-expertise-item-desc text-white"
                                                         dir={isArabic ? "rtl" : "ltr"}
                                                     />
@@ -309,7 +310,7 @@ const ExpertiseSec = ({ data }) => {
                                                     Key Services
                                                 </p>
                                                 <div
-                                                    dangerouslySetInnerHTML={{ __html: item.description }}
+                                                    dangerouslySetInnerHTML={{ __html: withNormalSpaces(item.description) }}
                                                     className="our-expertise-item-desc text-white "
                                                     dir={isArabic ? "rtl" : "ltr"}
                                                 />

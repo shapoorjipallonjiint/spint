@@ -39,21 +39,20 @@ const ExpandingHorizons = ({ data }) => {
         return () => window.removeEventListener("resize", updateSpace);
     }, []);
     return (
-        <section className="relative overflow-hidden pt-text25  " ref={sectionRef}>
+        <section className="relative overflow-hidden section-spacing" ref={sectionRef}>
             <div className="">
                 <div>
                     <div className="flex gap-10 lg:gap-18 2xl:gap-25">
-                        <div
-                            className={`hidden md:block bottom-[-10px] lg:bottom-0 w-fit ${isArabic ? "left-0 lg:right-0" : "right-0 lg:left-0"
-                                }`}
-                        >
+                        {/* pattern column: fixed width keeps the text to its right; the image is absolute so the
+                            section height comes from the text + padding (the section's overflow-hidden clips the pattern) */}
+                        <div className="hidden md:block relative shrink-0 w-[150px] lg:w-[260px] 3xl:w-[453px]">
                             <MotionImage
                                 height={1200}
                                 width={563}
                                 style={{ y: shapeY }}
                                 src={assets.mainShape2}
                                 alt=""
-                                className={`w-[150px] lg:w-[350px] 3xl:w-full h-auto   object-contain relative `}
+                                className="absolute top-0 start-0 w-full h-auto object-contain"
                             />
                         </div>
                         <div
@@ -71,7 +70,8 @@ const ExpandingHorizons = ({ data }) => {
                                     initial="hidden"
                                     whileInView={"show"}
                                     viewport={{ amount: 0.2, once: false }}
-                                    className="pb25 mb-4 xl:mb-8 last:mb-0 text-19 lg:text-20 3xl:text-29 font-light leading-[1.35] text-paragraph xl:max-w-[60ch] 3xl:max-w-[48ch]"
+                                    // same text style as the other pages' overview sections (Quality / HSE CoreValues)
+                                    className="mb-4 xl:mb-8 last:mb-0 text-19 font-light leading-[1.474] xl:max-w-[59ch] text-paragraph"
                                 >
                                     {t.description}
                                 </motion.p>

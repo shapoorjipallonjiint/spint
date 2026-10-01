@@ -9,6 +9,8 @@ import H2Title from "../../../common/H2Title";
 import { detailsTabsData } from "../data";
 import { moveUp } from "../../../motionVarients";
 
+
+import { withNormalSpaces } from "@/lib/withNormalSpaces";
 const MotionImage = motion.create(Image);
 const MOBILE_ACCORDION_DURATION = 450;
 
@@ -167,7 +169,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const renderAccordionContent = (section: WorkSection) => {
     // if (!section.items.length) return null;
     return (
-      <div className="grid md:grid-cols-2 gap-x-12 gap-y-2 pb-5 xl:pt-[11px] xl:pb-[15px] mep-tab-description-project-details" dangerouslySetInnerHTML={{ __html: section.description }}>
+      <div className="grid md:grid-cols-2 gap-x-12 gap-y-2 pb-5 xl:pt-[11px] xl:pb-[15px] mep-tab-description-project-details" dangerouslySetInnerHTML={{ __html: withNormalSpaces(section.description) }}>
         {/* <div dangerouslySetInnerHTML={{ __html: section.description }}></div> */}
         {/* {section.items.map((item) => (
           <div
@@ -290,7 +292,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
           </motion.div>
         ))}
       </div> */}
-      <motion.div variants={moveUp(0.35 + 1 * 0.08)} dangerouslySetInnerHTML={{ __html: tab.scopeDescription || "" }} className="project-services-secondsection-description">
+      <motion.div variants={moveUp(0.35 + 1 * 0.08)} dangerouslySetInnerHTML={{ __html: withNormalSpaces(tab.scopeDescription) }} className="project-services-secondsection-description">
 
       </motion.div>
       {/* <ul>
