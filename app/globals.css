@@ -1303,7 +1303,7 @@ body::-webkit-scrollbar {
   max-width: 100%;
   min-width: 0;
 
-  word-break: normal;
+  word-break: break-all;
   overflow-wrap: break-word;
   hyphens: none;
 }
@@ -1316,26 +1316,30 @@ body::-webkit-scrollbar {
 
 .tab-style1-description ul {
   margin: 0;
-  padding-left: 0;
+  padding: 0;
   list-style: none;
 }
 
 .tab-style1-description li {
+  --lh: 1.6;
+  /* line-height multiplier, change if needed */
   position: relative;
-  padding-left: 22px;
+  padding-inline-start: 22px;
   margin-bottom: 7px;
   font-weight: 300;
+  line-height: var(--lh);
 }
 
-/* Custom dot (LTR default) */
+/* Custom square bullet, centered on the first line */
 .tab-style1-description li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0.5em;
+  inset-inline-start: 0;
+  top: calc((var(--lh) * 1em - 7px) / 2);
   width: 7px;
   height: 7px;
-  background-color: #30B6F9;
+  /* background-color: #30B6F9; */
+  background-color: #000000;
 }
 
 /* ================= RTL (Arabic) ================= */
@@ -1694,7 +1698,7 @@ h1.text-19 {
 }
 
 
-.project-services-secondsection-description li {
+.project-services-second.section-description li {
   @apply text-19 text-paragraph font-light 2xl:leading-[1.2] flex md:items-center mb-3 xl:mb-4
 }
 

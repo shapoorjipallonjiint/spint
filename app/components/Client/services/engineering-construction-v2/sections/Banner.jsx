@@ -132,20 +132,11 @@ const Banner = ({ title, image, imageAlt, data }) => {
         >
             {/* Background Image */}
             <div ref={imgRef} className="absolute inset-0 w-full h-full z-0">
-                <Image
-                    src={t?.banner ? t.banner : image}
-                    alt={t?.bannerAlt ? t.bannerAlt : imageAlt ? imageAlt : title}
-                    fill
-                    className="object-cover object-top"
-                    priority
-                />
+                <Image src={t?.banner ? t.banner : image} alt={t?.bannerAlt ? t.bannerAlt : imageAlt ? imageAlt : title} fill className="object-cover object-top" priority />
             </div>
 
             {/* Single Gradient Overlay (dark bottom → transparent top) */}
-            <div
-                ref={overlayRef}
-                className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,0.75)_20%,rgba(0,0,0,0)_80%)] z-10"
-            ></div>
+            <div ref={overlayRef} className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,0.75)_20%,rgba(0,0,0,0)_80%)] z-10" ></div>
 
             {/* White mask that slides away to reveal the gradient */}
             <div ref={maskRef} className="absolute inset-0 bg-primary z-20"></div>
@@ -153,12 +144,7 @@ const Banner = ({ title, image, imageAlt, data }) => {
             {/* Content */}
             <div className="container relative z-30 h-full">
                 <div className="flex flex-col justify-end h-full pb-5 sm:pb-8  md:pb-8 lg:pb-10 2xl:pb-16 3xl:pb-26">
-                    <h1
-                        ref={titleRef}
-                        className={`text-white text-60 xl:text-70 font-light leading-[1.08] ${
-                            isArabic ? "text-right normal-case" : "capitalize"
-                        }`}
-                    >
+                    <h1 ref={titleRef} className={`text-white text-60 xl:text-70 font-light leading-[1.08] ${ isArabic ? "text-right normal-case" : "capitalize" }`} >
                         {t?.pageTitle ? t.pageTitle : title}
                     </h1>
                 </div>

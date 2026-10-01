@@ -290,7 +290,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
           </motion.div>
         ))}
       </div> */}
-      <motion.div variants={moveUp(0.35 + 1 * 0.08)} dangerouslySetInnerHTML={{ __html: tab.scopeDescription || "" }} className="project-services-second section-description">
+      <motion.div variants={moveUp(0.35 + 1 * 0.08)} dangerouslySetInnerHTML={{ __html: tab.scopeDescription || "" }} className="project-services-secondsection-description">
 
       </motion.div>
       {/* <ul>
