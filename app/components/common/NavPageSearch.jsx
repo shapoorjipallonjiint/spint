@@ -89,6 +89,10 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
     useEffect(() => {
         if (searchActive) {
             const scrollY = window.scrollY;
+            // keep the overflow from before the first lock, so closing puts it back
+            if (document.body.dataset.scrollY === undefined) {
+                document.body.dataset.prevOverflow = document.body.style.overflow;
+            }
             document.body.dataset.scrollY = String(scrollY);
             // document.body.style.position = 'fixed';
             document.body.style.overflow = 'hidden';
@@ -97,11 +101,17 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
             globalSetSearchActive(true);
             setResult(null)
         } else {
+            // only undo the lock if search actually set it: this also runs on mount, where it used to scrollTo(0, 0)
             const scrollY = document.body.dataset.scrollY;
-            document.body.style.position = '';
-            document.body.style.top = '';
-            document.body.style.width = '';
-            window.scrollTo(0, scrollY ? parseInt(scrollY) : 0);
+            if (scrollY !== undefined) {
+                document.body.style.overflow = document.body.dataset.prevOverflow || '';
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                delete document.body.dataset.scrollY;
+                delete document.body.dataset.prevOverflow;
+                window.scrollTo(0, parseInt(scrollY));
+            }
             globalSetSearchActive(false);
         }
     }, [searchActive]);

@@ -119,19 +119,21 @@ export function FileUploader({
   const removeFile = async () => {
     if (!value) return;
 
-    const response = await fetch("/api/admin/delete-file", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ url: value }),
-    });
+    // Dropbox delete disabled for now: it rebuilt the path from the URL (409s) and deleted before the page was saved.
+    // Removing only clears the field; the file stays in Dropbox.
+    // const response = await fetch("/api/admin/delete-file", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ url: value }),
+    // });
 
-    if (response.ok) {
+    // if (response.ok) {
       setFileName("");
       onChange("", "", "0");
-      toast.success("File deleted successfully")
-    }
+      toast.success("File removed")
+    // }
 
   };
 

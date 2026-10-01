@@ -88,6 +88,8 @@ interface AboutFormProps {
                 imageAlt_ar: string;
                 title: string;
                 title_ar: string;
+                subtitle?: string;
+                subtitle_ar?: string;
             }[]
         }[];
     };
@@ -204,6 +206,8 @@ const AboutPage = () => {
                 imageAlt_ar: "",
                 title: "",
                 title_ar: "",
+                subtitle: "",
+                subtitle_ar: "",
             },
         ]);
     };
@@ -735,6 +739,15 @@ const AboutPage = () => {
                                                         />
                                                     </div>
 
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Subtitle (optional)</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Subtitle"
+                                                            {...register(`fourthSection.items.${index}.images.${fileIndex}.subtitle`)}
+                                                        />
+                                                    </div>
+
                                                     {!img.image && <RiDeleteBinLine
                                                         onClick={() => handleRemoveImage(index, fileIndex)}
                                                         className="absolute top-3 right-3 cursor-pointer text-red-600"
@@ -1228,6 +1241,15 @@ const AboutPage = () => {
                                                             type="text"
                                                             placeholder="Title"
                                                             {...register(`fourthSection.items.${index}.images.${fileIndex}.title_ar`)}
+                                                        />
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Subtitle (optional)</Label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Subtitle"
+                                                            {...register(`fourthSection.items.${index}.images.${fileIndex}.subtitle_ar`)}
                                                         />
                                                     </div>
 

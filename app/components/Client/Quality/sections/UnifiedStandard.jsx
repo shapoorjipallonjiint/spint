@@ -102,7 +102,7 @@ border-b border-white/20 last:border-b-0`}
                                             className="w-[45px] h-[45px] lg:w-[65px] lg:h-[65px]"
                                         />
 
-                                        <h3 className="text-24 lg:text-60 3xl:text-60 leading-[1.166666666666667] font-normal letterspacing-2-5">
+                                        <h3 className="text-24 lg:text-60 3xl:text-60 leading-[1.166666666666667] font-normal">
                                             {item.title}
                                         </h3>
                                     </div>
