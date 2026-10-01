@@ -140,58 +140,63 @@ const FeaturedProjectSlider = ({ data = [] }) => {
 
                             {t.map((item, i) => (
                                 <SwiperSlide key={i}>
-
-                                    {/* Card: image + gradient overlay + title on top */}
+                                    {/* Outer card: clips the animation */}
                                     <div className="relative overflow-hidden">
-                                        {hasValidImage(item.image) ? (
-                                            <Image
-                                                width={700}
-                                                height={500}
-                                                src={item.image}
-                                                alt={item.title || "Project image"}
-                                                className={`w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] object-cover ${!hasScrolledIntoView
+
+                                        {/* Animated wrapper: image + overlay move together */}
+                                        <div
+                                            className={`relative ${!hasScrolledIntoView
                                                     ? "initial-hidden-img"
                                                     : animatingSlide === i || initialAnimating
                                                         ? "animate-slide-img"
                                                         : "initial-visible"
-                                                    }`}
-                                            />
-                                        ) : (
+                                                }`}
+                                        >
+                                            {hasValidImage(item.image) ? (
+                                                <Image
+                                                    width={700}
+                                                    height={500}
+                                                    src={item.image}
+                                                    alt={item.title || "Project image"}
+                                                    className="w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] object-cover"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] bg-primary flex items-center justify-center text-white">
+                                                    <span className="text-29 font-medium"> 700 × 500 </span>
+                                                </div>
+                                            )}
+
+                                            {/* Gradient overlay now moves with the image */}
                                             <div
-                                                className={`w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] bg-primary flex items-center justify-center text-white`}
-                                            >
-                                                <span className="text-29 font-medium">
-                                                    700 × 500
-                                                </span>
-                                            </div>
-                                        )}
+                                                className="absolute inset-0 pointer-events-none"
+                                                style={{
+                                                    background:
+                                                        "linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 100%)",
+                                                }}
+                                            />
+                                        </div>
 
-                                        {/* Gradient overlay */}
-                                        <div
-                                            className="absolute inset-0 pointer-events-none"
-                                            style={{
-                                                background:
-                                                    "linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 100%)",
-                                            }}
-                                        />
-
-                                        {/* Title (bottom-left, over the image) */}
+                                        {/* Title: keeps its own text animation, sits above the wrapper */}
                                         <div className="absolute bottom-0 start-0 w-full p-40px">
                                             <div className="overflow-hidden">
                                                 <h3
                                                     className={`text-white text-29 leading-[1.344827586206897] font-light ${!hasScrolledIntoView
-                                                        ? "initial-hidden-text"
-                                                        : animatingSlide === i || initialAnimating
-                                                            ? "animate-slide-text-1"
-                                                            : "initial-visible"
+                                                            ? "initial-hidden-text"
+                                                            : animatingSlide === i || initialAnimating
+                                                                ? "animate-slide-text-1"
+                                                                : "initial-visible"
                                                         }`}
+                                                    style={
+                                                        animatingSlide === i || initialAnimating
+                                                            ? { animationDelay: "0.6s", animationFillMode: "both" }
+                                                            : undefined
+                                                    }
                                                 >
                                                     {item.title}
                                                 </h3>
                                             </div>
                                         </div>
                                     </div>
-
                                 </SwiperSlide>
                             ))}
 

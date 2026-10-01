@@ -115,7 +115,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
               {/* </motion.div> */}
               {
                 t.description.split("\n").map((item, i) => (
-                  <motion.p key={i} variants={moveUp(1.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
+                  <motion.p key={i} variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
                 ))
               }
             </div>
