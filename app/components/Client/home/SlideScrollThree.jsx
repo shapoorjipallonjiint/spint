@@ -1847,8 +1847,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 <section id="section3" className="h-screen overflow-hidden relative scroll-area">
                     {/* from 2xl the left column is sized around the credentials cubes:
                         header edge + 50px + staircase + 50px, where the staircase is 529px at 2xl (100px cubes)
-                        and 644px at 3xl (full 122px cubes) - see CredentialsPanel */}
-                    <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[600px_auto] 2xl:grid-cols-[calc(5vw+754px)_auto] 3xl:grid-cols-[calc(7.814vw+877px)_auto] h-full bg-transparent">
+                        and 644px at 3xl (full 122px cubes) - see CredentialsPanel. From 1900px the right column is fixed at 900px instead */}
+                    <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[600px_auto] 2xl:grid-cols-[calc(5vw+754px)_auto] 3xl:grid-cols-[calc(7.814vw+877px)_auto] min-[1900px]:grid-cols-[1fr_900px] h-full bg-transparent">
                         <div
                             className={`lftblc relative ${isArabic ? "left-0" : "right-0"} h-[52.6dvh] lg:h-auto lg:overflow-hidden`}
                             ref={splftimng}
@@ -1856,7 +1856,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             <div className="bg-f5f5 absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
                             {/* credentials cubes on all screens. Fixed to the full column width (the screen on mobile) so the
                                 entry width-reveal wipes it in instead of squeezing/re-scaling the cubes */}
-                            <div className="absolute top-0 start-0 h-full w-screen lg:w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)]">
+                            <div className="absolute top-0 start-0 h-full w-screen lg:w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)] min-[1900px]:w-[calc(100vw-900px)]">
                                 <CredentialsPanel cubesRef={credCubesRef} />
                             </div>
                         </div>
