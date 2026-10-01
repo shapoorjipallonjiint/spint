@@ -260,36 +260,23 @@ const ExpertiseSec = ({ data }) => {
                                 viewport={{ amount: 0.2, once: true }}
                             >
                                 {/* Navigation - Fixed */}
-                                <div className="flex items-center gap-4 xl:gap-[51px] mb-5 xl:mb-[50px] border-b border-white/30 pt-5 lg:pt-5 xl:pt-10 pb-4 xl:pb-[30px]">
+                                <div className="flex items-center gap-4 xl:gap-[50px] mb-5 xl:mb-[50px] border-b border-white/30 pt-5 lg:pt-5 xl:pt-10 3xl:pt-[64px] pb-4 xl:pb-[30px]">
                                     <div className="flex items-center gap-[12px]">
-                                        <button
-                                            onClick={() => imageSwiper?.slidePrev()}
+                                        <button onClick={() => imageSwiper?.slidePrev()}
                                             className="w-10 h-10 xl:w-50px xl:h-50px  rounded-full border border-white/20 flex items-center justify-center transition-colors"
                                             aria-label="Previous slide"
                                         >
-                                            <Image
-                                                width={20}
-                                                height={20}
-                                                src={assets.arrowLeft2}
-                                                alt=""
-                                                className="w-[14px] h-[14px]"
-                                            />
+                                            <Image width={20} height={20} src={assets.arrowLeft2} alt="" className="w-[14px] h-[14px]" />
                                         </button>
                                         <button
                                             onClick={() => imageSwiper?.slideNext()}
                                             className="w-10 h-10 xl:w-50px xl:h-50px rounded-full border border-white/20 flex items-center justify-center transition-colors"
                                             aria-label="Next slide"
                                         >
-                                            <Image
-                                                width={20}
-                                                height={20}
-                                                src={assets.arrowRight2}
-                                                alt=""
-                                                className="w-[14px] h-[14px]"
-                                            />
+                                            <Image width={20} height={20} src={assets.arrowRight2} alt="" className="w-[14px] h-[14px]" />
                                         </button>
                                     </div>
-                                    <span className="text-19 leading-[1.473684210526316] ml-2">
+                                    <span className="text-19 leading-[1.473684210526316]">
                                         <span className="font-bold "> {String(currentSlide + 1).padStart(2, "0")}</span>/
                                         {String(expertiseData.items.length).padStart(2, "0")}
                                     </span>
