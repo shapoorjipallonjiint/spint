@@ -63,13 +63,13 @@ const ExpandingHorizons = ({ data }) => {
                             }
                         >
                             {/* <h2 className="text-60 font-light leading-[1.166666666666667] mb-50px max-w-[22ch]">{data.title}</h2> */}
-                            <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-50px" maxW="xl:max-w-[32ch] 3xl:max-w-[22ch]" delay={1.3} />
+                            <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 md:mb-6 2xl:mb-40px" maxW="xl:max-w-[32ch] 3xl:max-w-[22ch]" delay={1.3} />
                             {
                                 <motion.p
                                     variants={moveUp(1.5)}
                                     initial="hidden"
                                     whileInView={"show"}
-                                    viewport={{ amount: 0.2, once: false }}
+                                    viewport={{ amount: 0.2, once: true }}
                                     // same text style as the other pages' overview sections (Quality / HSE CoreValues)
                                     className="mb-4 xl:mb-8 last:mb-0 text-19 font-light leading-[1.474] xl:max-w-[59ch] text-paragraph"
                                 >

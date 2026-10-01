@@ -22,6 +22,7 @@ const WorldMap = ({ cities = [], projectsData }) => {
 
     const [activeDot, setActiveDot] = useState(null);
     const [selectedCity, setSelectedCity] = useState(null);
+    const [adjustY, setAdjustY] = useState(0);
 
     const bubbleRef = useRef(null);
     const containersRef = useRef(null);
@@ -38,22 +39,22 @@ const WorldMap = ({ cities = [], projectsData }) => {
 
     const mapCities = useMemo(() => mapBackendCitiesToMapCities(tCities || [], projectCities), [tCities, projectCities]);
 
-    // keep the desktop bubble inside the map area (set on the element directly, no extra render)
+    // keep the desktop bubble inside the map area
     useEffect(() => {
-        if (window.innerWidth < 1024 || !activeDot || !bubbleRef.current || !containersRef.current) return;
+        if (window.innerWidth >= 1024) {
+            if (!activeDot || !bubbleRef.current || !containersRef.current) return;
 
-        const el = bubbleRef.current;
-        el.style.transform = "translateY(0px)";
-        const bubble = el.getBoundingClientRect();
-        const container = containersRef.current.getBoundingClientRect();
+            const bubble = bubbleRef.current.getBoundingClientRect();
+            const container = containersRef.current.getBoundingClientRect();
 
-        let offsetY = 0;
-        if (bubble.top < container.top) {
-            offsetY = container.top - bubble.top; // push down
-        } else if (bubble.bottom > container.bottom) {
-            offsetY = container.bottom - bubble.bottom; // push up
+            let offsetY = 0;
+            if (bubble.top < container.top) {
+                offsetY = container.top - bubble.top; // push down
+            } else if (bubble.bottom > container.bottom) {
+                offsetY = container.bottom - bubble.bottom; // push up
+            }
+            setAdjustY(offsetY);
         }
-        el.style.transform = `translateY(${offsetY}px)`;
     }, [activeDot]);
 
     // click outside the active bubble closes it
@@ -153,6 +154,7 @@ const WorldMap = ({ cities = [], projectsData }) => {
                                         <div
                                             className="hidden lg:block translate-x-[60%] -left-1/2 top-0 rounded-full transition-all duration-500 absolute w-full h-full pointer-events-none"
                                             ref={activeDot === city.id ? bubbleRef : undefined}
+                                            style={{ transform: `translateY(${adjustY}px)` }}
                                         >
                                             <div ref={activeDot === city.id ? outsideRef : null} className="transition-all duration-500 outside pointer-events-none">
                                                 <div>
