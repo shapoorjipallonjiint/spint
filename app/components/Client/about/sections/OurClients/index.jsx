@@ -2,22 +2,26 @@
 import Image from "next/image";
 import H2Title from "../../../../../components/common/H2Title";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
-import { ourClients } from "./data";
 
-const OurClients = () => {
+// data: admin > About > Our Clients Section (title + logos). Hidden while no logos are added.
+const OurClients = ({ data }) => {
   const isArabic = useIsPreferredLanguageArabic();
-  const title = isArabic && ourClients.title_ar ? ourClients.title_ar : ourClients.title;
+  const logos = (data?.logos || [])
+    .filter((item) => item?.logo)
+    .map((item) => ({ logo: item.logo, name: (isArabic && item.name_ar) || item.name || "" }));
+  if (!logos.length) return null;
+  const title = (isArabic && data?.title_ar) || data?.title;
 
   // one half of the track = the logos repeated twice, so a half is always wider than the screen;
   // the track holds two identical halves and slides left by exactly one half (carouselLoop: 0 -> -50%) for a seamless loop
-  const half = [...ourClients.logos, ...ourClients.logos];
+  const half = [...logos, ...logos];
   const track = [...half, ...half];
 
   return (
     <section className="section-spacing bg-white relative overflow-hidden">
       <div className="">
         <div className="container">
-          <H2Title titleText={title} titleColor="black" marginClass="mb-50px" />
+          {title && <H2Title titleText={title} titleColor="black" marginClass="mb-50px" />}
         </div>
 
         {/* ltr on purpose: the loop math assumes the track grows to the right, in Arabic too */}
@@ -31,11 +35,11 @@ const OurClients = () => {
                 key={`${client.name}-${i}`}
                 // margin instead of gap so both halves are exactly the same width
                 className="mr-[15px] shrink-0 w-[180px] md:w-[220px] 3xl:w-[273.85px] aspect-[273.85/142.26] border border-black/20 flex items-center justify-center"
-                aria-hidden={i >= ourClients.logos.length ? true : undefined}
+                aria-hidden={i >= logos.length ? true : undefined}
               >
                 <Image
                   src={client.logo}
-                  alt={i < ourClients.logos.length ? client.name : ""}
+                  alt={i < logos.length ? client.name : ""}
                   width={274}
                   height={60}
                   className="h-auto 3xl:h-[117px] w-auto object-contain"

@@ -13,6 +13,7 @@ import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
 import { toast } from "sonner";
 import Link from "next/link";
+import CredentialsCubesEditor from "@/app/components/common/CredentialsCubesEditor";
 
 interface HomeFormProps {
     metaTitle: string;
@@ -100,6 +101,23 @@ interface HomeFormProps {
             value?: string;
             value_ar?: string;
         }[];
+
+        // right side background video (desktop)
+        video?: string;
+
+        // left side of the slide ("Our Credentials"); cubes order: lib/credentialsCubes.ts
+        credentials?: {
+            title?: string;
+            title_ar?: string;
+            description?: string;
+            description_ar?: string;
+            cubes?: {
+                value?: string;
+                value_ar?: string;
+                key?: string;
+                key_ar?: string;
+            }[];
+        };
     };
 
     fourthSection: {
@@ -171,8 +189,12 @@ const Home = () => {
         handleSubmit,
         setValue,
         control,
+        watch,
         formState: { errors },
     } = useForm<HomeFormProps>();
+
+    // live cube values for the admin preview
+    const credentialCubes = watch("thirdSection.credentials.cubes");
 
     const {
         fields: secondSectionItems,
@@ -190,15 +212,6 @@ const Home = () => {
     } = useFieldArray({
         control,
         name: "secondSection.highlights",
-    });
-
-    const {
-        fields: thirdSectionItems,
-        append: thirdSectionAppend,
-        remove: thirdSectionRemove,
-    } = useFieldArray({
-        control,
-        name: "thirdSection.items",
     });
 
     const {
@@ -583,116 +596,74 @@ const Home = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
+                    {/* Third Section = homepage slide 3: "Our Credentials" (left) + "About SP International" (right).
+                    The old image and items are no longer shown on the site; they are not edited here but are kept
+                    as they are (loaded with the section and saved back unchanged). */}
                     <Label className="" main>
                         Third Section
                     </Label>
-                    <div className="p-5 flex flex-col gap-2">
-                        <div className="flex flex-col gap-1">
-                            <Label className=" font-bold">Title</Label>
-                            <Input
-                                type="text"
-                                placeholder="Main Title"
-                                {...register("thirdSection.title", {
-                                    required: "Title is required",
-                                })}
-                            />
-                            <FormError error={errors.secondSection?.title?.message} />
-                        </div>
-                        <div className="flex gap-4">
-                            <div className="flex flex-col gap-2 w-1/2">
-                                <Label className=" font-bold">Image</Label>
-                                <Controller
-                                    name={`thirdSection.image`}
-                                    control={control}
-                                    rules={{ required: "Image is required" }}
-                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                    <div className="p-5 flex flex-col gap-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold text-base">Our Credentials (left side)</Label>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Title</Label>
+                                <Input type="text" placeholder="e.g. Our Credentials" {...register("thirdSection.credentials.title")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Description</Label>
+                                <Textarea placeholder="Description" {...register("thirdSection.credentials.description")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Cubes</Label>
+                                <CredentialsCubesEditor
+                                    setValue={setValue}
+                                    cubes={credentialCubes}
+                                    name="thirdSection.credentials.cubes"
                                 />
-                                <FormError error={errors.thirdSection?.image?.message} />
-                            </div>
-                            <div className="flex flex-col gap-2 w-1/2">
-                                <Label className=" font-bold">Image Alt Tag</Label>
-                                <Input type="text" placeholder="Image Alt Tag" {...register(`thirdSection.imageAlt`)} />
-                                <FormError error={errors.thirdSection?.imageAlt?.message} />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
-                            <Label className=" font-bold">Link</Label>
-                            <Input
-                                type="text"
-                                placeholder="Link"
-                                {...register("thirdSection.link", {
-                                    required: "Link is required",
-                                })}
-                            />
-                            <FormError error={errors.thirdSection?.link?.message} />
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <Label className=" font-bold">Description</Label>
-                            <Textarea
-                                placeholder="Description"
-                                {...register("thirdSection.description", {
-                                    required: "Description is required",
-                                })}
-                            />
-                            <FormError error={errors.thirdSection?.description?.message} />
-                        </div>
-                        <div>
-                            <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
-                                {thirdSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => thirdSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Key</Label>
-                                                <Textarea
 
-                                                    placeholder="Key"
-                                                    {...register(`thirdSection.items.${index}.key`, {
-                                                        required: "Key is required",
-                                                    })}
-                                                />
-                                                <FormError error={errors.thirdSection?.items?.[index]?.key?.message} />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Value</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Value"
-                                                    {...register(`thirdSection.items.${index}.value`, {
-                                                        required: "Value is required",
-                                                    })}
-                                                />
-                                                <FormError error={errors.thirdSection?.items?.[index]?.value?.message} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-
-                                <div className="flex justify-end">
-                                    <Button
-                                        type="button"
-                                        className=""
-                                        addItem
-                                        onClick={() =>
-                                            thirdSectionAppend({
-                                                key: "",
-                                                key_ar: "",
-                                                value: "",
-                                                value_ar: "",
-                                            })
-                                        }
-                                    >
-                                        Add Item
-                                    </Button>
-                                </div>
+                        <div className="flex flex-col gap-2 border-t border-black/20 pt-4">
+                            <Label className="font-bold text-base">About SP International (right side)</Label>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Title</Label>
+                                <Input
+                                    type="text"
+                                    placeholder="Main Title"
+                                    {...register("thirdSection.title", {
+                                        required: "Title is required",
+                                    })}
+                                />
+                                <FormError error={errors.thirdSection?.title?.message} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Description</Label>
+                                <Textarea
+                                    placeholder="Description"
+                                    {...register("thirdSection.description", {
+                                        required: "Description is required",
+                                    })}
+                                />
+                                <FormError error={errors.thirdSection?.description?.message} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Link (Read More)</Label>
+                                <Input
+                                    type="text"
+                                    placeholder="Link"
+                                    {...register("thirdSection.link", {
+                                        required: "Link is required",
+                                    })}
+                                />
+                                <FormError error={errors.thirdSection?.link?.message} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Background Video (desktop, used for both languages)</Label>
+                                <Controller
+                                    name="thirdSection.video"
+                                    control={control}
+                                    render={({ field }) => <VideoUploader value={field.value} onChange={field.onChange} />}
+                                />
                             </div>
                         </div>
                     </div>
@@ -1405,86 +1376,41 @@ const Home = () => {
                     <Label className="" main>
                         Third Section
                     </Label>
-                    <div className="p-5 flex flex-col gap-2">
-                        <div className="flex flex-col gap-1">
-                            <Label className=" font-bold">Title</Label>
-                            <Input type="text" placeholder="Main Title" {...register("thirdSection.title_ar")} />
-                        </div>
-                        <div className="flex gap-4">
-                            <div className="flex flex-col gap-2 w-1/2">
-                                <Label className=" font-bold">Image</Label>
-                                <Controller
-                                    name={`thirdSection.image`}
-                                    control={control}
-                                    rules={{ required: "Image is required" }}
-                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                    <div className="p-5 flex flex-col gap-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold text-base">Our Credentials (left side)</Label>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Title</Label>
+                                <Input type="text" placeholder="Title" {...register("thirdSection.credentials.title_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Description</Label>
+                                <Textarea placeholder="Description" {...register("thirdSection.credentials.description_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Cubes</Label>
+                                <CredentialsCubesEditor
+                                    setValue={setValue}
+                                    cubes={credentialCubes}
+                                    name="thirdSection.credentials.cubes"
+                                    lang="ar"
                                 />
-                                <FormError error={errors.thirdSection?.image?.message} />
-                            </div>
-                            <div className="flex flex-col gap-2 w-1/2">
-                                <Label className=" font-bold">Image Alt Tag</Label>
-                                <Input type="text" placeholder="Image Alt Tag" {...register(`thirdSection.imageAlt_ar`)} />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
-                            <Label className=" font-bold">Link</Label>
-                            <Input type="text" placeholder="Link" {...register("thirdSection.link_ar")} />
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <Label className=" font-bold">Description</Label>
-                            <Textarea placeholder="Description" {...register("thirdSection.description_ar")} />
-                        </div>
-                        <div>
-                            <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
-                                {thirdSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => thirdSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Key</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Key"
-                                                    {...register(`thirdSection.items.${index}.key_ar`)}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Value</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Value"
-                                                    {...register(`thirdSection.items.${index}.value_ar`)}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
 
-                                <div className="flex justify-end">
-                                    <Button
-                                        type="button"
-                                        className=""
-                                        addItem
-                                        onClick={() =>
-                                            thirdSectionAppend({
-                                                key: "",
-                                                key_ar: "",
-                                                value: "",
-                                                value_ar: "",
-                                            })
-                                        }
-                                    >
-                                        Add Item
-                                    </Button>
-                                </div>
+                        <div className="flex flex-col gap-2 border-t border-black/20 pt-4">
+                            <Label className="font-bold text-base">About SP International (right side)</Label>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Title</Label>
+                                <Input type="text" placeholder="Main Title" {...register("thirdSection.title_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Description</Label>
+                                <Textarea placeholder="Description" {...register("thirdSection.description_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Link (Read More)</Label>
+                                <Input type="text" placeholder="Link" {...register("thirdSection.link_ar")} />
                             </div>
                         </div>
                     </div>

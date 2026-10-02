@@ -207,6 +207,60 @@ const leadershipSchema = new mongoose.Schema({
             },
         ],
     },
+
+    // Current Leadership page (LeadershipV2): everything the page shows. New and optional, added beside the old fields
+    // above (firstSection..fourthSection, pageTitle, ...), which belong to the previous design and are kept untouched.
+    leadershipPage: {
+        title: { type: String },
+        title_ar: { type: String },
+        // leader boxes: the first one is shown large, above "Promoters"; the others after it
+        leaders: {
+            type: [{
+                image: { type: String },
+                imageAlt: { type: String },
+                imageAlt_ar: { type: String },
+                name: { type: String },
+                name_ar: { type: String },
+                designation: { type: String },
+                designation_ar: { type: String },
+                description: { type: String }, // HTML
+                description_ar: { type: String },
+            }],
+            default: undefined,
+        },
+        promoters: {
+            title: { type: String },
+            title_ar: { type: String },
+            items: {
+                type: [{
+                image: { type: String },
+                imageAlt: { type: String },
+                imageAlt_ar: { type: String },
+                name: { type: String },
+                name_ar: { type: String },
+                designation: { type: String },
+                designation_ar: { type: String },
+            }],
+                default: undefined,
+            },
+        },
+        coreTeam: {
+            title: { type: String },
+            title_ar: { type: String },
+            items: {
+                type: [{
+                image: { type: String },
+                imageAlt: { type: String },
+                imageAlt_ar: { type: String },
+                name: { type: String },
+                name_ar: { type: String },
+                designation: { type: String },
+                designation_ar: { type: String },
+            }],
+                default: undefined,
+            },
+        },
+    },
 });
 
 export default mongoose.models.Leadership || mongoose.model("Leadership", leadershipSchema);

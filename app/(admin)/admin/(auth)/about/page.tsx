@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { ImageUploader } from "@/components/ui/image-uploader";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { RiDeleteBinLine, RiArrowUpLine, RiArrowDownLine } from "react-icons/ri";
 import { Textarea } from "@/components/ui/textarea";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
@@ -101,6 +101,16 @@ interface AboutFormProps {
         buttonLink: string;
         buttonLink_ar: string;
     };
+    // "Our Clients" logo slider
+    clientsSection?: {
+        title?: string;
+        title_ar?: string;
+        logos?: {
+            logo: string;
+            name?: string;
+            name_ar?: string;
+        }[];
+    };
 }
 
 const AboutPage = () => {
@@ -152,6 +162,88 @@ const AboutPage = () => {
         name: "fourthSection.items",
     });
 
+    const {
+        fields: clientLogos,
+        append: clientLogoAppend,
+        remove: clientLogoRemove,
+        move: clientLogoMove,
+    } = useFieldArray({
+        control,
+        name: "clientsSection.logos",
+    });
+
+    // "Our Clients" block for one language column; logos (order, add, delete) are shared by both columns
+    const renderClientsSection = (lang: "en" | "ar") => {
+        const ar = lang === "ar";
+        return (
+            <AdminItemContainer>
+                <Label main>Our Clients Section</Label>
+                <div className="p-5 flex flex-col gap-4">
+                    <div className="flex flex-col gap-1">
+                        <Label className="font-bold">Title</Label>
+                        <Input type="text" placeholder="e.g. Our Clients" {...register(ar ? "clientsSection.title_ar" : "clientsSection.title")} />
+                    </div>
+                    <div>
+                        <Label className="font-bold">Logos</Label>
+                        <p className="text-xs text-black/60 mb-2">Shown in this order in the slider. The section is hidden on the website while there are no logos.</p>
+                        <div className="border border-black/20 p-2 rounded-md flex flex-col gap-4">
+                            {clientLogos.map((field, index) => (
+                                <div key={field.id} className="border-b border-black/20 pb-4 flex flex-col gap-2">
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-bold">Logo {index + 1}</span>
+                                        <div className="flex items-center gap-3">
+                                            <button type="button" title="Move up" disabled={index === 0} onClick={() => clientLogoMove(index, index - 1)} className="disabled:opacity-30 cursor-pointer">
+                                                <RiArrowUpLine />
+                                            </button>
+                                            <button type="button" title="Move down" disabled={index === clientLogos.length - 1} onClick={() => clientLogoMove(index, index + 1)} className="disabled:opacity-30 cursor-pointer">
+                                                <RiArrowDownLine />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                title="Delete"
+                                                onClick={() => {
+                                                    if (window.confirm(`Delete logo ${index + 1}? (It is removed from the website after you click Submit.)`)) clientLogoRemove(index);
+                                                }}
+                                                className="text-red-600 cursor-pointer"
+                                            >
+                                                <RiDeleteBinLine />
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div className="flex flex-col gap-1">
+                                            <Label className="font-bold">Logo</Label>
+                                            <Controller
+                                                name={`clientsSection.logos.${index}.logo`}
+                                                control={control}
+                                                rules={{ required: "Logo is required" }}
+                                                render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} isLogo />}
+                                            />
+                                            <FormError error={errors.clientsSection?.logos?.[index]?.logo?.message} />
+                                        </div>
+                                        <div className="flex flex-col gap-1">
+                                            <Label className="font-bold">Client Name (alt text)</Label>
+                                            <Input
+                                                type="text"
+                                                placeholder="e.g. Emaar"
+                                                {...register(ar ? `clientsSection.logos.${index}.name_ar` : `clientsSection.logos.${index}.name`)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            <div className="flex justify-end">
+                                <Button type="button" addItem onClick={() => clientLogoAppend({ logo: "", name: "", name_ar: "" })}>
+                                    Add Logo
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </AdminItemContainer>
+        );
+    };
+
     const handleAddAbout = async (data: AboutFormProps) => {
         try {
             const response = await fetch(`/api/admin/about`, {
@@ -176,6 +268,9 @@ const AboutPage = () => {
                 setValue("banner", data.data.banner);
                 setValue("bannerAlt", data.data.bannerAlt);
                 setValue("pageTitle", data.data.pageTitle);
+                // Arabic top-level fields: loaded too, otherwise a save would send them empty
+                setValue("pageTitle_ar", data.data.pageTitle_ar);
+                setValue("bannerAlt_ar", data.data.bannerAlt_ar);
                 setValue("metaTitle", data.data.metaTitle);
                 setValue("metaDescription", data.data.metaDescription);
                 setValue("firstSection", data.data.firstSection);
@@ -187,6 +282,11 @@ const AboutPage = () => {
                 setValue("fourthSection", data.data.fourthSection);
                 setValue("fourthSection.items", data.data.fourthSection.items);
                 setValue("fifthSection", data.data.fifthSection);
+                setValue("clientsSection", {
+                    title: data.data.clientsSection?.title ?? "",
+                    title_ar: data.data.clientsSection?.title_ar ?? "",
+                    logos: data.data.clientsSection?.logos ?? [],
+                });
             } else {
                 const data = await response.json();
                 alert(data.message);
@@ -781,6 +881,8 @@ const AboutPage = () => {
                     </div>
                 </AdminItemContainer>
 
+                {renderClientsSection("en")}
+
                 <AdminItemContainer>
                     <Label main>Fifth Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-2">
@@ -1286,6 +1388,8 @@ const AboutPage = () => {
                         </div>
                     </div>
                 </AdminItemContainer>
+
+                {renderClientsSection("ar")}
 
                 <AdminItemContainer>
                     <Label main>Fifth Section</Label>

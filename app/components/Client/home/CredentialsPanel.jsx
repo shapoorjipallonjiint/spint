@@ -1,45 +1,15 @@
 "use client";
 
-const columns = [
-  [
-    { value: "56 Years", key: "of Excellence" },
-    { value: "1,500+", key: "PMV Assets" },
-    { value: "11,000+", key: "Villas" },
-    { value: "100+", key: "Iconic Landmarks" },
-  ],
-  [
-    { value: "2,500+", key: "Hospital Beds" },
-    { value: "6+", key: "million sq. ft. of Theme Parks" },
-    { value: "20+", key: "Nationalities" },
-  ],
-  [
-    { value: "200+", key: "million sq. ft. of Structures" },
-    { value: "25,000+", key: "Strong Workforce" },
-  ],
-  [{ value: "150+", key: "Clients" }],
-  [{ value: "Presence", key: "in 18 Countries" }],
-];
+import { toCubeColumns } from "@/lib/credentialsCubes";
 
-// Cube sizes live in globals.css (.cred-cubes): --w front width, --h front height, --dx side face width,
-// --dy top face height, --top-skew / --side-skew to lean the faces, --top-shift (see below).
-// Mobile follows Figma (68.29 x 64.1 front, 20.45 side, 18.21 top at 390px wide); desktop is 122 x 115 at 3xl with
-// 45deg faces, scaled by the available width and height (--cubes-h).
-// --gap: space between neighbouring cubes (up/down and left/right); also in globals.css (0.8px mobile, 1.52px desktop).
-// --diag: space along the incline where a column's side face meets the next column's top face (1px mobile, 1.92px desktop).
 
 const frontBg = "linear-gradient(360deg, #1E45A2 0%, #30B6F9 100%)";
 const topBg = "linear-gradient(180deg, #97DCFF 0%, #30B6F9 100%)";
 const sideBg = "linear-gradient(180deg, #97DCFF 0%, #30B6F9 100%)";
-// Figma "inside" stroke: inset shadow draws within the face and doesn't add to its size
 const innerStroke = "inset 0 0 0 0.77px rgba(255, 255, 255, 0.4)";
 
-// The column gap and row gap separate a side face's lower edge from the next column's top face.
-// The top face is nudged left by --top-shift so the perpendicular distance between the two parallel
-// inclined edges is exactly --diag (formula in globals.css next to .cred-cubes).
 const topFaceShift = "var(--top-shift)";
 
-// Outer div is animated by the slide's entry timeline (targets [data-cube-row]); the inner div
-// handles the hover lift, so the two transforms never fight each other.
 const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
   <div
     data-cube-row={row}
@@ -74,7 +44,7 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
         />
       )}
       <div
-        className="relative h-full flex flex-col items-center justify-center text-center text-white px-[5px] lg:px-[6%]"
+        className="relative h-full flex flex-col items-center justify-center text-center text-white px-[5px] lg:px-[6%] rtl:-scale-x-100"
         style={{ background: frontBg, boxShadow: innerStroke }}
       >
         <p
@@ -92,18 +62,18 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
   </div>
 );
 
-const CredentialsPanel = ({ cubesRef }) => (
+const CredentialsPanel = ({ cubesRef, data }) => {
+  const columns = toCubeColumns(data?.cubes);
+  return (
   <div className="relative lg:h-full flex flex-col bg-f5f5 pt-[92px] px-4 lg:pt-[12dvh] lg:pb-[8dvh] 3xl:pb-[87px] lg:ps-[calc(4vw+125px+32px)] xl:ps-[calc(5vw+125px+40px)] 2xl:ps-[calc(5vw+125px+50px)] 3xl:ps-[calc(7.814vw+133px+50px)] lg:pe-8 xl:pe-10 2xl:pe-[50px]">
     <h2 data-cred-intro className="text-primary font-light leading-[36px] lg:leading-[1.0833333] text-[26px] lg:text-34 xl:text-48 3xl:text-60 mb-[10px] lg:mb-3 xl:mb-4">
-      Our Credentials
+      {data?.title}
     </h2>
     <p data-cred-intro className="font-light text-[13px] lg:text-16 xl:text-18 3xl:text-19 leading-[1.5]">
-      300 million sq. ft. delivered with proven expertise, quality, and safety.
+      {data?.description}
     </p>
     <hr data-cred-intro className="hidden lg:block border-black/20 mt-3 lg:mt-5 xl:mt-8 3xl:mt-[30px]" />
 
-    {/* desktop only: background shape behind the cubes: 1021x228 at 3xl (full column width), top edge starts 34.4% in */}
-    {/* data-cred-glow = resting opacity; the slide's entry timeline fades both glows in after the first cube row */}
     <span
       data-cred-glow="0.4"
       className="hidden lg:block absolute bottom-0 end-0 w-full aspect-[1021/228] opacity-40 pointer-events-none rtl:-scale-x-100"
@@ -114,9 +84,6 @@ const CredentialsPanel = ({ cubesRef }) => (
       }}
     />
 
-    {/* container so the cube size can follow the available width (cqw); desktop also caps it by height (--cubes-h).
-        Mobile: 25px from the description to the top faces (they stick out --dy above this box; written out
-        because on this element --dy would be measured against the screen, not this container) */}
     <div
       className="cred-cubes @container mt-[calc(25px_+_min(122px,_(100vw_-_35.2px)_/_5.2401)_*_0.2667)] lg:mt-auto relative [container-type:inline-size] [--cubes-h:9999px] lg:[--cubes-h:calc(80dvh-180px)]"
     >
@@ -146,7 +113,9 @@ const CredentialsPanel = ({ cubesRef }) => (
       <div
         ref={cubesRef}
         dir="ltr"
-        className="relative flex items-end"
+        // Arabic: the whole staircase is mirrored (tallest column on the right, faces leaning left); the cube texts are
+        // mirrored back below so they stay readable. (The geometry is built left-to-right, hence dir="ltr" + mirror.)
+        className="relative flex items-end rtl:-scale-x-100"
         style={{ gap: "var(--gap)" }}
       >
         {columns.map((cubes, colIndex) => {
@@ -161,7 +130,7 @@ const CredentialsPanel = ({ cubesRef }) => (
                 const rowFromBottom = cubes.length - 1 - i;
                 return (
                   <Cube
-                    key={cube.value}
+                    key={i}
                     value={cube.value}
                     label={cube.key}
                     row={rowFromBottom}
@@ -184,6 +153,7 @@ const CredentialsPanel = ({ cubesRef }) => (
     {/* mobile: divider under the cubes (desktop keeps it under the description) */}
     <hr data-cred-intro className="lg:hidden relative border-black/20 mt-[35px]" />
   </div>
-);
+  );
+};
 
 export default CredentialsPanel;

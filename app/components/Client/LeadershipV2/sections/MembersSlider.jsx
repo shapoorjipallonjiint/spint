@@ -74,7 +74,7 @@ const Promoters = ({ items,title, btmBorder }) => {
                           width={600}
                           height={600}
                           src={item.image}
-                          alt={item.name}
+                          alt={item.imageAlt || item.name}
                           className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0 px-2"
                         />
                         <div className="bg-f5f5  w-full h-[70%] md:h-[70%] lg:h-[78%] 2xl:h-[79%] max-h-[303.94px] z-[-1]"></div>

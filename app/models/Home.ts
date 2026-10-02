@@ -153,7 +153,28 @@ const homeSchema = new mongoose.Schema({
             key_ar: { type: String },
             value: { type: String },
             value_ar: { type: String }
-        }]
+        }],
+        // right side background video (desktop); optional, one video for both languages
+        video: { type: String },
+        // left side of the slide: "Our Credentials" title, description and the 11 cubes (order: lib/credentialsCubes.ts).
+        // New and optional (cubes default undefined), so existing documents are not touched until saved.
+        // title / description / link above are the right side ("About SP International"); image and items are no
+        // longer shown on the site but are kept as they are.
+        credentials: {
+            title: { type: String },
+            title_ar: { type: String },
+            description: { type: String },
+            description_ar: { type: String },
+            cubes: {
+                type: [{
+                    value: { type: String },
+                    value_ar: { type: String },
+                    key: { type: String },
+                    key_ar: { type: String },
+                }],
+                default: undefined,
+            },
+        },
     },
     fourthSection: {
         title: {

@@ -208,7 +208,21 @@ const aboutSchema = new mongoose.Schema({
         buttonLink_ar: {
             type: String,
         }
-    }
+    },
+    // "Our Clients" logo slider (frontend: about/sections/OurClients). New and optional (logos default undefined),
+    // so existing documents are not touched until it is saved from the admin; the slider is hidden while empty.
+    clientsSection: {
+        title: { type: String },
+        title_ar: { type: String },
+        logos: {
+            type: [{
+                logo: { type: String },
+                name: { type: String }, // client name, used as the logo's alt text
+                name_ar: { type: String },
+            }],
+            default: undefined,
+        },
+    },
 })
 
 export default mongoose.models.About || mongoose.model("About", aboutSchema);

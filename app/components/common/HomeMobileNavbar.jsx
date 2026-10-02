@@ -6,10 +6,12 @@ import LangLink from "@/lib/LangLink"
 import { navData as allNavData } from "../data";
 import { useVisibleNavData } from "@/contexts/serviceVisibility";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
-    // services hidden in admin (Services > Main) are removed from the menus
-    const navData = useVisibleNavData(allNavData);
+    // services hidden in admin (Services > Main) are removed from the menus; labels in the current language
+    // (used on the homepage and on the inner pages: MainNavbar / MainNavbarTwo)
+    const navData = useApplyLang(useVisibleNavData(allNavData));
   const isArabic = useIsPreferredLanguageArabic();
   const [openSubmenu, setOpenSubmenu] = useState(null);
 
@@ -54,7 +56,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
             exit="closed"
             variants={overlayVariants}
             onClick={onClose}
-            className="fixed inset-0 bg-black/30 z-50 lg:hidden"
+            className="fixed inset-0 bg-black/45 z-50 lg:hidden"
           />
 
           {/* SLIDE PANEL */}
@@ -80,13 +82,14 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
 
             {/* LOGO */}
             <div className="flex items-center p-3 absolute">
-              <img src="./assets/images/main-logo.png" alt="logo" className="w-25" />
+              {/* same size as the header logo on small screens (50px tall) */}
+              <img src="/assets/images/main-logo.png" alt="logo" className="h-[50px] w-auto" />
             </div>
 
             {/* CONTENT */}
             <div className="p-8 pt-28 flex flex-col justify-between h-full">
               {/* MENU */}
-              <ul className="space-y-3">
+              <ul className="space-y-[9px]">
                 {navData.mainMenu.map((item, index) => {
                   const hasSubmenu =
                     Array.isArray(item.submenu) &&
@@ -101,8 +104,8 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                       variants={itemVariants}
                     >
                       <div>
-                        {/* min-h-8: same height as the rows with the 32px arrow button, so the spacing between items is even */}
-                        <div className="flex items-center justify-between min-h-8"
+                        {/* min-h: same height as the rows with the arrow button (8px padding + 17px arrow), so the spacing between items is even */}
+                        <div className="flex items-center justify-between min-h-[33px]"
                         onClick={(e) => {
                               if (!hasSubmenu) {
                                 onClose();
@@ -129,7 +132,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                                     openSubmenu === item.title ? 180 : 0,
                                 }}
                                 transition={{ duration: 0.3 }}
-                                className="w-4 h-4"
+                                className="w-[17px] h-[17px]"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
