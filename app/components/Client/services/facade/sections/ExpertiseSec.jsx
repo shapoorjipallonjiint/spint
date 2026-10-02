@@ -44,7 +44,7 @@ const ExpertiseSec = ({ data }) => {
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
 
     return (
-        <section className="relative pt-text90 pb25 bg-primary text-white overflow-hidden" ref={sectionRef}>
+        <section className="relative section-spacing bg-primary text-white overflow-hidden" ref={sectionRef}>
             <div className="reveal-overlay4 absolute bottom-0 md:inset-0 bg-black/20 z-20"></div>
             <div className={`absolute bottom-0 ${isArabic ? "left-0 -scale-x-100" : "right-0"}`}>
                 <MotionImage
