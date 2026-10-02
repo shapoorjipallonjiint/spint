@@ -9,7 +9,7 @@ import { ImageUploader } from "@/components/ui/image-uploader";
 import { Textarea } from "@/components/ui/textarea";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
-import SecondSectionItem from "@/app/components/GlobalPresence/SecondSectionItems";
+// import SecondSectionItem from "@/app/components/GlobalPresence/SecondSectionItems";
 import { toast } from "sonner";
 
 interface GlobalPresenceFormProps {
@@ -192,7 +192,7 @@ const GlobalPresencePage = () => {
                     </AdminItemContainer>
 
                     {/* SECOND SECTION */}
-                    <AdminItemContainer>
+                    {/* <AdminItemContainer>
                         <Label main>Second Section</Label>
 
                         <div className="flex flex-col gap-4 p-5">
@@ -235,7 +235,7 @@ const GlobalPresencePage = () => {
                                 </div>
                             </div>
                         </div>
-                    </AdminItemContainer>
+                    </AdminItemContainer> */}
 
                     {/* META */}
                     <AdminItemContainer>
@@ -299,7 +299,7 @@ const GlobalPresencePage = () => {
                     </AdminItemContainer>
 
                     {/* SECOND SECTION */}
-                    <AdminItemContainer>
+                    {/* <AdminItemContainer>
                         <Label main>Second Section</Label>
 
                         <div className="flex flex-col gap-4 p-5">
@@ -338,7 +338,7 @@ const GlobalPresencePage = () => {
                                 </div>
                             </div>
                         </div>
-                    </AdminItemContainer>
+                    </AdminItemContainer> */}
 
                     {/* META */}
                     <AdminItemContainer>

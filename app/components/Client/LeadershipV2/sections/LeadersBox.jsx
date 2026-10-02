@@ -11,7 +11,6 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 
 const LeaderBox = ({data,big}) => {
-    console.log(`data check ${data}`)
     const MotionImage = motion.create(Image);
 
     /* ---------------- MEDIA QUERIES ---------------- */
@@ -84,7 +83,7 @@ const LeaderBox = ({data,big}) => {
                                 whileInView="show"
                                 viewport={{ amount: 0.1, once: true }}
                                 src={data.image}
-                                alt={data.name}
+                                alt={data.imageAlt || data.name}
                                 className="relative w-fit object-contain z-20 ms-auto lg:me-auto 3xl:me-auto px-2 pb-4 max-h-[571px]"
                             />
                             {
@@ -120,7 +119,7 @@ const LeaderBox = ({data,big}) => {
                                 whileInView="show"
                                 viewport={{ amount: 0.1, once: true }}
                                 src={data.image}
-                                alt={data.name}
+                                alt={data.imageAlt || data.name}
                                 className={`relative z-20 mx-auto block h-auto w-auto max-w-full object-contain object-bottom 
                                     ${big
                                         ? "max-h-[571.67px] 3xl:h-[571.67px]"

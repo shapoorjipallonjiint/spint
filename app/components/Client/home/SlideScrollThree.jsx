@@ -13,7 +13,7 @@ import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 
 gsap.registerPlugin(DrawSVGPlugin);
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, animate } from "framer-motion";
 import { moveUp } from "../../motionVarients.ts";
 import CountUp from "../../CountUp.jsx";
 import AboutHighlights from "./AboutHighlights";
@@ -152,6 +152,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const [showBlueBox, setShowBlueBox] = useState(false);
     // sectors slide timings are shorter on phones (no desktop rotation to wait for)
     const [isMobileView, setIsMobileView] = useState(false);
+    // desktop: true once a sector was clicked, so its counters use the short "after click" delay
+    const [sectorPicked, setSectorPicked] = useState(false);
     useEffect(() => {
         const mq = window.matchMedia("(max-width:1023px)");
         const update = () => setIsMobileView(mq.matches);
@@ -1228,6 +1230,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const [displayedIndex, setDisplayedIndex] = useState(activeIndex);
     const animationRef = useRef(null);
     const [clickedIndex, setClickedIndex] = useState(null);
+    const sectorStepRef = useRef({ step: 0, steps: 1 }); // which step of the current rotation is showing
 
     const handleSlideClick = (targetIndex) => {
         const isMobile = window.matchMedia("(max-width:1023px)").matches;
@@ -1245,6 +1248,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
         // ========= DESKTOP (your original rotation logic) =========
         if (isAnimating || targetIndex === activeIndex) return;
+        setSectorPicked(true);
 
         setClickedIndex(targetIndex);
 
@@ -1275,7 +1279,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         }
 
         let stepIndex = 0;
-        animationRef.current = setInterval(() => {
+        const advance = () => {
+            sectorStepRef.current = { step: stepIndex, steps: path.length }; // for the wheel's easing
             setActiveIndex(path[stepIndex]);
             stepIndex++;
 
@@ -1287,7 +1292,10 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 setDisplayedIndex(path[path.length - 1]);
                 setClickedIndex(null);
             }
-        }, 400);
+        };
+        // first step right away (the list reacts on click), then one step every 400ms
+        advance();
+        if (stepIndex < path.length) animationRef.current = setInterval(advance, 400);
     };
 
     const getVisibleSectors = () => {
@@ -1312,13 +1320,144 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
         const timer = setTimeout(() => {
             setShowBlueBox(true);
-        }, isMobileView ? 200 : 1500); // delay after image change (phones swap the image instantly)
+        }, isMobileView ? 200 : 400); // after the sector changes: phones swap the image instantly, desktop shows the box mid image crossfade (0.8s)
 
 
         return () => clearTimeout(timer);
     }, [displayedIndex]);
 
     const visibleSectors = getVisibleSectors();
+
+    // Desktop sectors wheel: the 8 rows stay in place (no layout shift, nothing crosses the icon circle); on every
+    // step of the rotation only the names roll: the old one slides out and the next one slides in. `virtual` is an
+    // unwrapped index (+1 / -1 per step) used as the name's key, `dir` is the direction of the last step.
+    const sectorWheelRef = useRef({ virtual: activeIndex, active: activeIndex, dir: 1 });
+    if (sectorWheelRef.current.active !== activeIndex && sectors.length) {
+        const total = sectors.length;
+        let step = activeIndex - sectorWheelRef.current.active;
+        while (step > total / 2) step -= total;
+        while (step < -total / 2) step += total;
+        sectorWheelRef.current = {
+            virtual: sectorWheelRef.current.virtual + step,
+            active: activeIndex,
+            dir: step < 0 ? -1 : 1,
+        };
+    }
+    const sectorRollDir = sectorWheelRef.current.dir;
+    const sectorWheel = Array.from({ length: sectors.length ? 8 : 0 }, (_, i) => {
+        const position = i - 3; // 3 above, center, 4 below (same window as getVisibleSectors)
+        const virtual = sectorWheelRef.current.virtual + position;
+        const index = ((virtual % sectors.length) + sectors.length) % sectors.length;
+        return { ...sectors[index], originalIndex: index, position, virtual };
+    });
+    // row opacity by distance from the center (same values the list had: -3..4)
+    const SECTOR_ROW_OPACITY = { "-3": 0.4, "-2": 0.5, "-1": 0.75, 0: 1, 1: 0.8, 2: 0.6, 3: 0.4, 4: 0.2 };
+    // Wheel motion: on each step every name travels to its neighbour row (position + size), so the name leaving row k
+    // and the same name arriving in row k-1 follow the exact same path and read as one name moving; only the names
+    // leaving / entering at the two ends fade. Row geometry (text start, vertical centre, font size) is measured.
+    // Desktop wheel, drawn as an overlay: one element per name (keyed by its unwrapped index) glides to the row it
+    // belongs to - position, font size, weight and opacity - so a multi-step rotation is one continuous motion with no
+    // duplicate names. The 8 rows underneath stay fixed: they keep the layout / click targets and are measured for the
+    // overlay (their own names are invisible).
+    const sectorSlotRefs = useRef([]);
+    const sectorListRef = useRef(null);
+    const [sectorSlotGeo, setSectorSlotGeo] = useState(null);
+    const [sectorHover, setSectorHover] = useState(null);
+    useLayoutEffect(() => {
+        if (!isLargeScreen) return;
+        const measure = () => {
+            const list = sectorListRef.current;
+            if (!list) return;
+            const lr = list.getBoundingClientRect();
+            const geo = sectorSlotRefs.current.slice(0, 8).map((slot, k) => {
+                const name = slot?.querySelector("[data-slot-name]");
+                if (!name) return null;
+                const r = name.getBoundingClientRect();
+                const cs = getComputedStyle(name);
+                return {
+                    // text start relative to the list (left edge, or right edge in Arabic) and vertical centre
+                    x: isArabic ? r.right - lr.right : r.left - lr.left,
+                    y: r.top - lr.top + r.height / 2,
+                    fs: (parseFloat(cs.fontSize) || 16) * SECTOR_ROW_SCALE(k - 3),
+                    fw: parseFloat(cs.fontWeight) || 400,
+                };
+            });
+            if (geo.length === 8 && geo.every(Boolean)) setSectorSlotGeo(geo);
+        };
+        measure();
+        window.addEventListener("resize", measure);
+        document.fonts?.ready?.then(measure);
+        return () => window.removeEventListener("resize", measure);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLargeScreen, isArabic, sectors.length]);
+
+    const SECTOR_ROW_SCALE = (position) => (position === 0 ? 1 : 0.95); // the rows' own scale (style below)
+    // where a name sits for wheel position -4..5 (-3..4 are the rows; -4 / 5 are just outside, used to fade in / out)
+    const sectorPlace = (position) => {
+        const g = sectorSlotGeo;
+        const k = position + 3;
+        // centre row during a multi-step rotation: names only pass through, so they keep the normal (inactive) size and
+        // weight - only the selected one (last step) gets the active style. They still sit on the centre row's spot.
+        const { step, steps } = sectorStepRef.current;
+        if (position === 0 && isAnimating && steps > 1 && step < steps - 1) {
+            return { ...g[k], fs: g[k + 1].fs, fw: g[k + 1].fw, opacity: 1 };
+        }
+        if (k >= 0 && k < 8) return { ...g[k], opacity: SECTOR_ROW_OPACITY[position] ?? 0 };
+        const edge = k < 0 ? g[0] : g[7];
+        const inner = k < 0 ? g[1] : g[6];
+        return { x: edge.x, y: edge.y + (edge.y - inner.y), fs: edge.fs, fw: edge.fw, opacity: 0 };
+    };
+    // names around the current one: unwrapped index -> sector
+    const sectorOverlay = sectors.length
+        ? Array.from({ length: 10 }, (_, i) => {
+              const position = i - 4;
+              const virtual = sectorWheelRef.current.virtual + position;
+              const index = ((virtual % sectors.length) + sectors.length) % sectors.length;
+              return { ...sectors[index], originalIndex: index, position, virtual };
+          })
+        : [];
+    // the previous position of every overlay name, to route moves to / from the centre row around the icon circle
+    const sectorLastPos = useRef(new Map());
+    const sectorMoveTransition = (virtual, position) => {
+        const prev = sectorLastPos.current.get(virtual);
+        // One rotation = one continuous motion: single step -> gentle ease-in-out; multi-step -> the first step eases
+        // in and ends at the cruising speed, the middle steps cruise (one row per 400ms), the last step starts at that
+        // speed and glides to a stop (curves chosen so the speed matches where the steps meet).
+        const { step, steps } = sectorStepRef.current;
+        const base =
+            steps <= 1
+                ? { duration: 0.7, ease: [0.65, 0, 0.35, 1] }
+                : step === 0
+                  ? { duration: 0.4, ease: [0.5, 0, 0.75, 0.75] }
+                  : step < steps - 1
+                    ? { duration: 0.4, ease: "linear" }
+                    : { duration: 0.6, ease: [0.2, 0.3, 0.35, 1] };
+        const d = base.duration;
+        if (prev === undefined || prev === position) return base;
+        // becoming active / inactive: one smooth curve around the icon circle - the sideways move runs for the whole
+        // step but leads when arriving at the centre (eases out) and trails when leaving it (eases in)
+        // selected name (single / last step): a true arc - sideways eases out-sine while vertical eases in-sine (a quarter
+        // circle that bows away from the icon); the name leaving the centre takes the mirrored arc. Names that only pass
+        // through the centre mid-rotation keep their constant vertical speed and just lead / trail sideways.
+        const settling = steps <= 1 || step === steps - 1;
+        const easeOutSine = [0.61, 1, 0.88, 1];
+        const easeInSine = [0.12, 0, 0.39, 0];
+        if (position === 0) {
+            return settling
+                ? { ...base, x: { duration: d, ease: easeOutSine }, y: { duration: d, ease: easeInSine } }
+                : { ...base, x: { duration: d, ease: [0.1, 0.8, 0.3, 1] } };
+        }
+        if (prev === 0) {
+            return settling
+                ? { ...base, x: { duration: d, ease: easeInSine }, y: { duration: d, ease: easeOutSine } }
+                : { ...base, x: { duration: d, ease: [0.7, 0, 0.9, 0.2] } };
+        }
+        return base;
+    };
+    useEffect(() => {
+        sectorOverlay.forEach((item) => sectorLastPos.current.set(item.virtual, item.position));
+    });
+
     const activeSector = sectors[displayedIndex];
     const [prevImage, setPrevImage] = useState(null);
     useEffect(() => {
@@ -1334,11 +1473,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     // timeline), so start right after; tapping a sector -> right after the box shows (0.2s).
     // Kept stable so re-renders don't restart the counter's timer.
     const delayProjects = !isMobileView
-        ? delayProjectsDesktop
+        ? sectorPicked
+            ? 500 // desktop click: right after the box shows (0.4s)
+            : delayProjectsDesktop
         : currentVisibleSlide !== "section5"
           ? null
           : 300;
-    const sectorTextDelay = isMobileView ? "0.25s" : "2s";
+    const sectorTextDelay = isMobileView ? "0.25s" : "0.45s";
 
     // // sectors autoplay
     // const sectorsAutoplayRef = useRef(null);
@@ -1896,17 +2037,18 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             {/* credentials cubes on all screens. Fixed to the full column width (the screen on mobile) so the
                                 entry width-reveal wipes it in instead of squeezing/re-scaling the cubes */}
                             <div className="relative lg:absolute top-0 start-0 lg:h-full w-screen lg:w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)] min-[1900px]:w-[calc(100vw-900px)]">
-                                <CredentialsPanel cubesRef={credCubesRef} />
+                                <CredentialsPanel cubesRef={credCubesRef} data={tData.thirdSection?.credentials} />
                             </div>
                         </div>
                         <div
                             className=" flex flex-col h-full bg-white lg:bg-transparent px-4 lg:px-[70px] 3xl:px-[100px] pb-[120px] 3xl:pb-[150px] pt-[30px] lg:pt-[120px] 3xl:pt-[150px] overflow-hidden relative"
                             ref={sprghtBx}
                         >
-                            {/* desktop background: video + black/65 overlay (replaces the old blue panel) */}
+                            {/* desktop background: video (admin: Home > Third Section) + black/65 overlay (replaces the old blue panel) */}
                             <div className="hidden lg:block absolute inset-0 z-0" ref={sprgtbg}>
+                                {tData.thirdSection?.video && (
                                 <video
-                                    src="/assets/videos/about-sp.mp4"
+                                    src={tData.thirdSection.video}
                                     autoPlay
                                     loop
                                     muted
@@ -1914,6 +2056,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     webkit-playsinline="true"
                                     className="w-full h-full object-cover absolute inset-0"
                                 ></video>
+                                )}
                                 <div className="absolute inset-0 bg-black/65"></div>
                             </div>
                             {/* 353x496 at 3xl, where the column is 899px wide -> 39.3% keeps it proportional on smaller screens */}
@@ -2556,88 +2699,83 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             {isLargeScreen ? (
                                                 /* Desktop (>= 1024px): Original vertical list */
                                                 <div
-                                                    className={`flex flex-row lg:flex-col 3xl:gap-1 sectors-list lg:pt-5 gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0 ${isArabic ? "lg:pr-4" : "lg:pl-4"
+                                                    ref={sectorListRef}
+                                                    className={`relative flex flex-row lg:flex-col 3xl:gap-1 lg:pt-5 gap-5 lg:gap-0 border-b border-white/20 lg:border-b-0 mb-5 lg:mb-0 ${isArabic ? "lg:pr-4" : "lg:pl-4"
                                                         }`}
                                                 >
-                                                    {visibleSectors.map((sector) => {
+                                                    {/* fixed rows (keyed by place): layout, click / hover targets and the measured spots for
+                                                        the names; their own names are invisible once the overlay is ready */}
+                                                    {sectorWheel.map((sector) => {
                                                         const isActive = sector.position === 0;
-                                                        const opacity =
-                                                            Math.abs(sector.position) > 4
-                                                                ? 0
-                                                                : 1 - Math.abs(sector.position) * 0.2;
-                                                        const scale = isActive ? 1 : 0.95;
-
-                                                        // Only render 7 items (3 above, 1 center, 3 below)
-                                                        if (Math.abs(sector.position) > 4) return null;
-
-                                                        // Determine animation based on direction
-                                                        const getAnimation = () => {
-                                                            if (!isActive || animationDirection === 0) return "none";
-
-                                                            if (animationDirection === 1) {
-                                                                // Clicked item below center - slide up
-                                                                return "slideUpToCenter 0.5s ease-out";
-                                                            } else {
-                                                                // Clicked item above center - slide down
-                                                                return "slideDownToCenter 0.5s ease-out";
-                                                            }
-                                                        };
-
                                                         return (
                                                             <div
-                                                                key={`${sector.originalIndex}-${sector.position}`}
-                                                                className={`flex items-center gap-5 cursor-pointer ${isActive
+                                                                key={sector.position}
+                                                                ref={(el) => (sectorSlotRefs.current[sector.position + 3] = el)}
+                                                                className={`relative flex items-center gap-5 cursor-pointer ${isActive
                                                                     ? isArabic
                                                                         ? "lg:mr-[-27px] lg:py-5"
                                                                         : "lg:ml-[-27px] lg:py-5"
                                                                     : "lg:py-1"
-                                                                    }`}
+                                                                    } ${sector.position === -3 ? "pointer-events-none" : ""}`}
                                                                 style={{
-                                                                    opacity: opacity,
-                                                                    transform: `scale(${scale})`,
-                                                                    transformOrigin: "left center",
-                                                                    transition: "all 0.5s ease-out",
-                                                                    willChange: "transform, opacity",
-                                                                    animation: getAnimation(),
+                                                                    opacity: SECTOR_ROW_OPACITY[sector.position] ?? 0,
+                                                                    transform: `scale(${SECTOR_ROW_SCALE(sector.position)})`,
+                                                                    transformOrigin: isArabic ? "right center" : "left center",
                                                                 }}
                                                                 onClick={() => handleSlideClick(sector.originalIndex)}
+                                                                onMouseEnter={() => setSectorHover(sector.position)}
+                                                                onMouseLeave={() => setSectorHover(null)}
                                                             >
-                                                                {/* Show icon ONLY when at center */}
+                                                                {/* space for the icon circle (the visible circle is drawn once, below the list) */}
                                                                 {isActive && (
-                                                                    <div className="hidden lg:flex bg-[#30B6F94D] rounded-full w-[83px] h-[83px] items-center justify-center relative opacity-0">
-                                                                        <Image
-                                                                            width={200}
-                                                                            height={200}
-                                                                            src={sector.icon}
-                                                                            alt={`${sector.name} icon`}
-                                                                            className="h-[40px]"
-                                                                            style={{
-                                                                                animation:
-                                                                                    animationDirection !== 0
-                                                                                        ? "iconFadeInScale 0.4s ease-out 0.2s both"
-                                                                                        : "none",
-                                                                            }}
-                                                                        />
-                                                                    </div>
+                                                                    <div className="hidden lg:flex bg-[#30B6F94D] rounded-full w-[83px] h-[83px] items-center justify-center relative opacity-0" />
                                                                 )}
-
                                                                 <h3
-                                                                    className={`whitespace-nowrap hover:opacity-100 hover:text-[#30B6F9] transition-opacity duration-500 text-white lg:text-black ${isActive
+                                                                    data-slot-name
+                                                                    className={`whitespace-nowrap text-white lg:text-black ${isActive
                                                                         ? "text-[14px] lg:text-29 leading-[1.842105263157895] lg:font-semibold border-b border-white lg:border-b-0"
                                                                         : "text-[14px] lg:text-19 leading-[1.842105263157895]"
-                                                                        }`}
-                                                                    style={{
-                                                                        transition: "all 0.5s ease-out",
-                                                                        willChange: "font-size, font-weight",
-                                                                    }}
+                                                                        } ${sectorSlotGeo ? "opacity-0" : ""}`}
                                                                 >
-                                                                    {sector.name?.toLowerCase() === "industrial"
-                                                                        ? "Entertainment and Leisure"
-                                                                        : sector.name}
+                                                                    {(sector.name?.toLowerCase() === "industrial" ? "Entertainment and Leisure" : sector.name)}
                                                                 </h3>
                                                             </div>
                                                         );
                                                     })}
+
+                                                    {/* the names: one element each, gliding between the rows */}
+                                                    {sectorSlotGeo && (
+                                                        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+                                                            {sectorOverlay.map((sector) => {
+                                                                const place = sectorPlace(sector.position);
+                                                                const transition = sectorMoveTransition(sector.virtual, sector.position);
+                                                                return (
+                                                                    <motion.div
+                                                                        key={sector.virtual}
+                                                                        className={`absolute top-0 ${isArabic ? "right-0" : "left-0"}`}
+                                                                        initial={{ x: place.x, y: place.y, opacity: place.opacity }}
+                                                                        animate={{ x: place.x, y: place.y, opacity: place.opacity }}
+                                                                        transition={{ ...transition, opacity: { duration: transition.duration ?? 0.4, ease: "linear" } }}
+                                                                    >
+                                                                        <motion.span
+                                                                            className="block whitespace-nowrap leading-none text-black"
+                                                                            style={{ transform: "translateY(-50%)" }}
+                                                                            initial={{ fontSize: `${place.fs}px`, fontWeight: place.fw }}
+                                                                            animate={{
+                                                                                fontSize: `${place.fs}px`,
+                                                                                fontWeight: place.fw,
+                                                                                color: sectorHover === sector.position ? "#30B6F9" : "#000000",
+                                                                            }}
+                                                                            // size / weight follow the vertical part of the move (on the arc they grow / shrink as the name curves in / out)
+                                                                            transition={{ ...(transition.y ?? { duration: transition.duration ?? 0.4, ease: transition.ease ?? "linear" }), color: { duration: 0.3 } }}
+                                                                        >
+                                                                            {(sector.name?.toLowerCase() === "industrial" ? "Entertainment and Leisure" : sector.name)}
+                                                                        </motion.span>
+                                                                    </motion.div>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             ) : (
                                                 /* Mobile (< 1024px): Swiper for horizontal scroll */
@@ -2699,20 +2837,25 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                     } top-1/2 -translate-y-[75%] z-10`}
                                             >
                                                 <div className="bg-[#30B6F94D] rounded-full w-[83px] h-[83px] flex items-center justify-center relative">
-                                                    <Image
-                                                        width={200}
-                                                        height={200}
-                                                        key={activeSector.icon}
-                                                        src={activeSector.icon}
-                                                        alt={`${activeSector.name} icon`}
-                                                        className="h-[40px]"
-                                                        style={{
-                                                            animation:
-                                                                animationDirection !== 0
-                                                                    ? "iconFadeInScale 0.4s ease-out 0.2s both"
-                                                                    : "none",
-                                                        }}
-                                                    />
+                                                    {/* icon cross-fade: the old icon fades / shrinks out while the new one fades / grows in, in the
+                                                        same spot (both absolutely centred), timed with the selected name's arc into the centre */}
+                                                    <AnimatePresence initial={false}>
+                                                        <motion.div
+                                                            key={activeSector.icon}
+                                                            className="absolute inset-0 flex items-center justify-center"
+                                                            initial={{ opacity: 0, scale: 0.6 }}
+                                                            animate={{ opacity: 1, scale: 1, transition: { duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] } }}
+                                                            exit={{ opacity: 0, scale: 0.6, transition: { duration: 0.35, ease: [0.55, 0, 1, 0.45] } }}
+                                                        >
+                                                            <Image
+                                                                width={200}
+                                                                height={200}
+                                                                src={activeSector.icon}
+                                                                alt={`${activeSector.name} icon`}
+                                                                className="h-[40px]"
+                                                            />
+                                                        </motion.div>
+                                                    </AnimatePresence>
                                                 </div>
                                             </div>
                                         </div>

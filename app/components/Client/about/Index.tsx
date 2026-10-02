@@ -18,7 +18,7 @@ const Index = ({ data }: { data: any }) => {
         />
         <About data={data.firstSection} />
         <Legacy data={data.fourthSection} />
-        <OurClients />
+        <OurClients data={data.clientsSection} />
         {/* <VisionMission data={data.secondSection}/> */}
         <Impact CultureData={data.secondSection} />
         <ValuesCta valuesData={data.thirdSection} ctaData={data.fifthSection} />

@@ -6,10 +6,12 @@ import LangLink from "@/lib/LangLink"
 import { navData as allNavData } from "../data";
 import { useVisibleNavData } from "@/contexts/serviceVisibility";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useApplyLang } from "@/lib/applyLang";
 
 const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
-    // services hidden in admin (Services > Main) are removed from the menus
-    const navData = useVisibleNavData(allNavData);
+    // services hidden in admin (Services > Main) are removed from the menus; labels in the current language
+    // (used on the homepage and on the inner pages: MainNavbar / MainNavbarTwo)
+    const navData = useApplyLang(useVisibleNavData(allNavData));
   const isArabic = useIsPreferredLanguageArabic();
   const [openSubmenu, setOpenSubmenu] = useState(null);
 
@@ -80,7 +82,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
 
             {/* LOGO */}
             <div className="flex items-center p-3 absolute">
-              <img src="./assets/images/main-logo.png" alt="logo" className="w-25" />
+              <img src="/assets/images/main-logo.png" alt="logo" className="w-25" />
             </div>
 
             {/* CONTENT */}

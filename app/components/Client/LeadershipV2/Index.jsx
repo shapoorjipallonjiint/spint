@@ -1,22 +1,33 @@
+"use client";
+
 import LeadersBox from "./sections/LeadersBox";
 import MembersSlider from "./sections/MembersSlider";
 import PageHeader from "./sections/PageHeader";
-import { leaderData } from "./data";
+import { useApplyLang } from "@/lib/applyLang";
+
+// Content from admin: Leadership > leadershipPage (title, leaders, promoters, core team).
+// The first leader is shown large above "Promoters", the other leaders after it.
 const Leadership = ({ data }) => {
+  const page = useApplyLang(data?.leadershipPage || {});
+  if (!data?.leadershipPage) return null;
+
+  const [firstLeader, ...otherLeaders] = page.leaders || [];
+
   return (
     <>
-      <PageHeader text={leaderData.title} />
-      <LeadersBox data={leaderData.chairmanData} big={true} />
+      <PageHeader text={page.title} />
+      {firstLeader && <LeadersBox data={firstLeader} big={true} />}
       <MembersSlider
-        title={leaderData.dataPromoters.title}
-        items={leaderData.dataPromoters.items}
+        title={page.promoters?.title}
+        items={page.promoters?.items || []}
         btmBorder={true}
       />
-      <LeadersBox data={leaderData.chiefExData} big={false} />
-      <LeadersBox data={leaderData.seniorViceData} big={false} />
+      {otherLeaders.map((leader, index) => (
+        <LeadersBox key={leader._id || index} data={leader} big={false} />
+      ))}
       <MembersSlider
-        title={leaderData.coreLeadershipTeam.title}
-        items={leaderData.coreLeadershipTeam.items}
+        title={page.coreTeam?.title}
+        items={page.coreTeam?.items || []}
       />
       <div className="mb-80px"></div>
     </>
