@@ -11,6 +11,7 @@ import { moveUp } from "../../../motionVarients";
 
 
 import { withNormalSpaces } from "@/lib/withNormalSpaces";
+import { hasServiceContent } from "../serviceContent";
 const MotionImage = motion.create(Image);
 const MOBILE_ACCORDION_DURATION = 450;
 
@@ -76,7 +77,9 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const mobileTabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const mobilePanelRefs = useRef<Array<HTMLDivElement | null>>([]);
   const mobileScrollFrame = useRef<number | null>(null);
-  const tabs: DetailsTabItem[] = data.service.map((s) => {
+  // only services with some content get a tab (an empty service would show an empty tab)
+  const visibleServices = data.service.filter(hasServiceContent);
+  const tabs: DetailsTabItem[] = visibleServices.map((s) => {
     const isMEP = s.serviceName === "MEP";
 
     return {
@@ -108,7 +111,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     };
   });
   const [activeTab, setActiveTab] = useState(
-    data.service?.[0]?.serviceName || ""
+    visibleServices?.[0]?.serviceName || ""
   );
   const [direction, setDirection] = useState(1);
   const [openMobileTab, setOpenMobileTab] = useState(() => {
@@ -431,12 +434,12 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
 
   return (
     <section className="relative overflow-hidden " ref={sectionRef}>
-      <div className="py-80px relative bg-f5f5 xl:min-h-screen">
+      <div className="py-80px relative bg-f5f5">
         <div className="container relative">
           <div className={`2xl:max-w-[1008px] 3xl:max-w-[1208px] ${isArabic ? "mr-auto" : "ml-auto"}`} >
             <div className="relative z-20">
               <div className="hidden lg:block [&_li]:text-paragraph [&_li]:text-18 [&_li]:opacity-85 [&_li]:mb-4">
-                <div className={`grid grid-cols-${data.service.length} border border-black/10 mb-2 xl:mb-[27px]`}>
+                <div className="grid border border-black/10 mb-2 xl:mb-[27px]" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
                   {tabs.map((tab) => {
                     const isActive = activeTab === tab.serviceName;
 

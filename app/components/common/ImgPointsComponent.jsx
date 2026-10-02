@@ -107,7 +107,7 @@ useEffect(() => {
             <div className="container">
                 {/* ================= TITLE ================= */}
                 <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ once: true }}>
-                    <H2Title titleText={heading} titleColor="black" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-17" />
+                    <H2Title titleText={heading} titleColor="black" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-16" />
                 </motion.div>
 
                 <div className="grid items-center md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
@@ -124,7 +124,7 @@ useEffect(() => {
                             // initial={{ opacity: 0 }}
                             // animate={{ opacity: 1 }}
                             // transition={{ duration: 0.4 }}
-                            className="w-full h-full object-cover scale-110 md:scale-150 lg:scale-110"
+                            className="w-full h-full object-cover"
                              style={{ height: height }}
                         />
                     </div>

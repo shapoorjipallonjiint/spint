@@ -83,7 +83,7 @@ const Certificates = ({ data }) => {
                                             alt={singleItem.fileImageAlt}
                                             width={276}
                                             height={400}
-                                            className="w-[276px] h-[400px] object-cover cursor-pointer"
+                                            className="w-[276px] h-[400px] object-contain cursor-pointer"
                                             onClick={() => {
                                                 setItemIndex(i);
                                                 setPdfIndex(0);

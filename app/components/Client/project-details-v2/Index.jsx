@@ -5,6 +5,7 @@ import ProjectSlider from "./sections/ProjectSlider";
 import InquireToday from "./sections/InquireToday";
 import NextProject from "./sections/NextProject";
 import DetailsTab from "./sections/DetailsTab";
+import { hasServiceContent } from "./serviceContent";
 const Index = ({ data, nextProject }) => {
     return (
         <>
@@ -14,7 +15,8 @@ const Index = ({ data, nextProject }) => {
             <main>
                 <Banner firstSection={data.firstSection} secondSection={data.secondSection} />
                 {data.thirdSection.items?.length > 0 && <KeyFacts data={data.thirdSection} />}
-                { data?.secondSection?.service?.some( (item) => item?.firstSection && item.firstSection.title !== "" ) && <DetailsTab data={data.secondSection} /> }
+                {/* show the services section when any service has content (not only a first-section title) */}
+                {data?.secondSection?.service?.some(hasServiceContent) && <DetailsTab data={data.secondSection} />}
                 {/* <MoreDetrails data={data.fourthSection} /> */}
                 {/* {data.images?.length > 0 && <ProjectSlider data={data.images} />} */}
                 <InquireToday data={data.sixthSection} />

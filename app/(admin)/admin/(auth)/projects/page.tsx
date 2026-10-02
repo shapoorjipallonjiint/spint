@@ -3,7 +3,7 @@
 import { useMemo, useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete, MdEdit, MdOpenInNew } from "react-icons/md";
 import {
     Dialog,
     DialogContent,
@@ -66,6 +66,7 @@ export default function Projects() {
     const [projectList, setProjectList] = useState<
         {
             _id: string;
+            slug?: string;
             firstSection: {
                 title: string;
                 description: string;
@@ -860,7 +861,21 @@ export default function Projects() {
                                     className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md"
                                 >
                                     <div>{item.firstSection.title}</div>
-                                    <div className="flex gap-5">
+                                    <div className="flex gap-5 items-center">
+                                        {/* view the live project page in a new tab (read-only link, the admin page stays open) */}
+                                        {item.slug ? (
+                                            <a
+                                                href={`/projects/${item.slug}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                title="View on website"
+                                                aria-label={`View ${item.firstSection.title} on website`}
+                                            >
+                                                <MdOpenInNew />
+                                            </a>
+                                        ) : (
+                                            <MdOpenInNew className="opacity-30" title="No slug yet" />
+                                        )}
                                         <MdEdit onClick={() => router.push(`/admin/projects/edit/${item._id}`)} />
                                         <MdDelete onClick={() => handleDeleteProject(item._id)} />
                                     </div>
