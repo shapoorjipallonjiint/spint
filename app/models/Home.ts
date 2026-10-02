@@ -102,7 +102,19 @@ const homeSchema = new mongoose.Schema({
             key_ar: { type: String },
             value: { type: String },
             value_ar: { type: String }
-        }]
+        }],
+        // highlights that cycle above the stats (icon + title). New and optional: default undefined so the
+        // existing document is not touched until they are saved; the homepage falls back to its defaults until then
+        highlights: {
+            type: [{
+                title: { type: String },
+                title_ar: { type: String },
+                icon: { type: String },
+                iconAlt: { type: String },
+                iconAlt_ar: { type: String },
+            }],
+            default: undefined,
+        },
     },
     thirdSection: {
         title: {
