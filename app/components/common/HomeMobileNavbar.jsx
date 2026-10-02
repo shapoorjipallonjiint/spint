@@ -3,10 +3,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import LangLink from "@/lib/LangLink"
-import { navData } from "../data";
+import { navData as allNavData } from "../data";
+import { useVisibleNavData } from "@/contexts/serviceVisibility";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
+    // services hidden in admin (Services > Main) are removed from the menus
+    const navData = useVisibleNavData(allNavData);
   const isArabic = useIsPreferredLanguageArabic();
   const [openSubmenu, setOpenSubmenu] = useState(null);
 

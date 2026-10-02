@@ -210,7 +210,25 @@ const facadeSchema = new mongoose.Schema({
         imageAlt_ar:{
             type:String
         },
-    }
+    },
+    // "Our Façade, Glazing & Metalwork" accordion (title + items with a bullet list each).
+    // New and optional: items default to undefined so existing data is never touched until items are added.
+    systemsSection:{
+        title:{ type:String },
+        title_ar:{ type:String },
+        subTitle:{ type:String },
+        subTitle_ar:{ type:String },
+        items:{
+            type:[{
+                title:{ type:String },
+                title_ar:{ type:String },
+                // rich text (bullet list) from the admin editor
+                description:{ type:String },
+                description_ar:{ type:String },
+            }],
+            default: undefined,
+        },
+    },
 })
 
 export default mongoose.models.Facade || mongoose.model("Facade", facadeSchema);

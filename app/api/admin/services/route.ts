@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
+import { readHiddenServiceSlugs } from "@/lib/serviceVisibility";
 
 import DesignStudio from "@/app/models/DesignStudio";
 import Engineering from "@/app/models/Engineering";
@@ -23,15 +24,19 @@ export async function GET() {
       DesignStudio.find({}, { _id: 1, pageTitle: 1, pageTitle_ar:1,title: 1, title_ar:1,description: 1, description_ar:1,homeImage:1,homeImageAlt:1,link:1 }).lean(),
     ]);
 
+    // same order as the queries above (it used to be alphabetical, which gave every service the wrong type)
     const types = [
-      "DesignStudio",
       "Engineering",
+      "Mep",
+      "InteriorDesign",
       "Facade",
       "IntegratedFacilityManagement",
-      "InteriorDesign",
-      "Mep",
       "Water",
+      "DesignStudio",
     ];
+
+    // services hidden in admin (Services > Main); returned with a flag, never removed here, so the admin keeps them
+    const hiddenSlugs = await readHiddenServiceSlugs();
 
     const unifiedData = collections.flatMap((items, index) =>
       items.map((item) => ({
@@ -44,6 +49,8 @@ export async function GET() {
         homeImageAlt:item.homeImageAlt,
         link:item.link,
         type: types[index],
+        slug: item.link,
+        hidden: hiddenSlugs.includes(String(item.link)),
       }))
     );
 

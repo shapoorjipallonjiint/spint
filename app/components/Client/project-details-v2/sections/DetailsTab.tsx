@@ -12,6 +12,7 @@ import { moveUp } from "../../../motionVarients";
 
 import { withNormalSpaces } from "@/lib/withNormalSpaces";
 import { hasServiceContent } from "../serviceContent";
+import { useServiceVisibility } from "@/contexts/serviceVisibility";
 const MotionImage = motion.create(Image);
 const MOBILE_ACCORDION_DURATION = 450;
 
@@ -78,7 +79,9 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const mobilePanelRefs = useRef<Array<HTMLDivElement | null>>([]);
   const mobileScrollFrame = useRef<number | null>(null);
   // only services with some content get a tab (an empty service would show an empty tab)
-  const visibleServices = data.service.filter(hasServiceContent);
+  // services hidden in admin (Services > Main) don't get a tab
+  const { isHiddenServiceId } = useServiceVisibility();
+  const visibleServices = data.service.filter((s) => hasServiceContent(s) && !isHiddenServiceId(s?.serviceId));
   const tabs: DetailsTabItem[] = visibleServices.map((s) => {
     const isMEP = s.serviceName === "MEP";
 
@@ -431,6 +434,8 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
       </div>
     ) : null;
   };
+
+  if (!tabs.length) return null;
 
   return (
     <section className="relative overflow-hidden " ref={sectionRef}>

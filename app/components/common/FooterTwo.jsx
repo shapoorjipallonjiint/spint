@@ -8,6 +8,7 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import Link from "next/link";
 import { useState } from "react";
 
+import { useServiceVisibility } from "@/contexts/serviceVisibility";
 const MotionImage = motion.create(Image);
 
 // links without a page yet point to "#" (Legacy, Media Coverage, Thought Leadership, Privacy/Cookie Policy)
@@ -74,6 +75,12 @@ const socials = [
 
 const FooterTwo = () => {
   const tFooterLinks = useApplyLang(footerLinks);
+  // services hidden in admin (Services > Main) are left out of the footer
+  const { isHiddenHref } = useServiceVisibility();
+  const visibleFooterLinks = tFooterLinks.map((section) => ({
+    ...section,
+    links: section.links.filter((link) => !isHiddenHref(link.href)),
+  }));
   const isArabic = useIsPreferredLanguageArabic();
 
   // inside your component
@@ -185,7 +192,7 @@ const FooterTwo = () => {
           <div className="col-span-full border-t border-white/30 mb-50px" />
 
           {/* Row 2: nav columns, 1 of 5 each */}
-          {tFooterLinks.map((section) => {
+          {visibleFooterLinks.map((section) => {
             const isOpen = openSection === section.title;
             const panelId = `footer-panel-${section.title.replace(/\s+/g, "-")}`;
 

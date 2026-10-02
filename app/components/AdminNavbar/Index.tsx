@@ -14,9 +14,26 @@ import {
 } from "@heroicons/react/24/outline";
 import { FileText, GalleryThumbnails, HeartHandshake, LeafIcon, Settings, ThumbsUp, Workflow } from "lucide-react";
 import { GiPaperBagFolded } from "react-icons/gi";
+import { SERVICE_REGISTRY } from "@/lib/serviceRegistry";
+
+// fired by the Services > Main page after a show/hide so the sidebar labels update
+export const SERVICE_VISIBILITY_EVENT = "service-visibility-changed";
 
 const AdminNavbar = () => {
     const [openLink, setOpenLink] = useState<string | null>(null);
+    const [hiddenServices, setHiddenServices] = useState<string[]>([]);
+
+    // which services are hidden on the website (refreshed when Services > Main changes something)
+    useEffect(() => {
+        const load = () =>
+            fetch("/api/admin/services/visibility", { cache: "no-store" })
+                .then((res) => (res.ok ? res.json() : null))
+                .then((json) => setHiddenServices(json?.data?.hiddenServices || []))
+                .catch(() => {});
+        load();
+        window.addEventListener(SERVICE_VISIBILITY_EVENT, load);
+        return () => window.removeEventListener(SERVICE_VISIBILITY_EVENT, load);
+    }, []);
 
 
     const navItems = [
@@ -44,13 +61,13 @@ const AdminNavbar = () => {
             icon: BriefcaseIcon,
             hasChild: true,
             children: [
-                { name: "Engineering & Construction", href: "/admin/services/engineering-and-construction" },
-                { name: "MEP", href: "/admin/services/mep" },
-                { name: "Design Studio", href: "/admin/services/design-studio" },
-                { name: "Interior Design", href: "/admin/services/interior-design" },
-                { name: "Facade", href: "/admin/services/facade" },
-                { name: "Integrated Facility Management", href: "/admin/services/integrated-facility-management" },
-                { name: "Water", href: "/admin/services/water" },
+                // show / hide services on the website
+                { name: "Main", href: "/admin/services/main" },
+                // hidden services stay editable here, just marked
+                ...SERVICE_REGISTRY.map((service) => ({
+                    name: hiddenServices.includes(service.slug) ? `${service.name} (Hidden)` : service.name,
+                    href: service.adminHref,
+                })),
             ],
         },
         { name: "Gallery", href: "/admin/gallery", icon: GalleryThumbnails },

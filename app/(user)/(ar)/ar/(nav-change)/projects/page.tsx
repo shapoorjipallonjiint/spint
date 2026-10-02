@@ -1,4 +1,4 @@
-import Index from '@/app/components/Client/projects/Index'
+import Index from '@/app/components/Client/projects-v2/Index'
 
 const page = async() => {
     const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project`, { next: { revalidate: 60 } });
@@ -14,7 +14,7 @@ const page = async() => {
     const serviceData = await serviceResponse.json();
 
   return (
-    <Index data={projectData.data} sectorData={sectorData.data} countryData={countryData.data} serviceData={serviceData.data}/>
+    <Index data={projectData.data} sectorData={sectorData.data} countryData={countryData.data} serviceData={(serviceData.data || []).filter((s: { hidden?: boolean }) => !s.hidden)}/>
   )
 }
 

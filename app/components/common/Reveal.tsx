@@ -8,6 +8,11 @@ type Props = {
   variants: any;
   className?: string;
   delayRange?: number;
+  // optional overrides for when the reveal starts (defaults come from useRevealInView)
+  amount?: number;
+  margin?: `${number}px` | `${number}px ${number}px`;
+  // extra delay (s) added to the "show" animation, e.g. to wait for something above to animate first
+  delay?: number;
 };
 
 export default function Reveal({
@@ -15,13 +20,24 @@ export default function Reveal({
   variants,
   className,
   delayRange = 0.22,
+  amount,
+  margin,
+  delay = 0,
 }: Props) {
-  const { ref, controls } = useRevealInView({ delayRange });
+  const { ref, controls } = useRevealInView({
+    delayRange,
+    ...(amount !== undefined && { amount }),
+    ...(margin !== undefined && { margin }),
+  });
 
   return (
     <motion.div
       ref={ref}
-      variants={variants}
+      variants={
+        delay
+          ? { ...variants, show: { ...variants?.show, transition: { ...variants?.show?.transition, delay } } }
+          : variants
+      }
       initial="hidden"
       animate={controls}
       className={className}

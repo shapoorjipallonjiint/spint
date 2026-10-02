@@ -6,6 +6,7 @@ import Image from "next/image";
 import LangLink from "@/lib/LangLink"
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
+import { useServiceVisibility } from "@/contexts/serviceVisibility";
 const Footer = () => {
 
 
@@ -66,6 +67,12 @@ const Footer = () => {
   ];
 
   const tFooterLinks = useApplyLang(footerLinks);
+  // services hidden in admin (Services > Main) are left out of the footer
+  const { isHiddenHref } = useServiceVisibility();
+  const visibleFooterLinks = tFooterLinks.map((section) => ({
+    ...section,
+    links: section.links.filter((link) => !isHiddenHref(link.href)),
+  }));
   const isArabic = useIsPreferredLanguageArabic();
 
   const MotionImage = motion.create(Image)
@@ -184,7 +191,7 @@ const Footer = () => {
 
         {/* Footer Links */}
         <div className="grid gap-y-6 md:gap-y-8 lg:gap-10 sm:grid-cols-2 lg:grid-cols-[1fr_1.5fr_1.3fr_1fr] 2xl:grid-cols-[auto_250px_280px_auto_auto] 3xl:grid-cols-[260px_373px_350px_1fr_1fr] pt-5 md:pt-8 lg:pt-12 xl:pt-[53px] pb-5 md:pb-8 lg:pb-12 xl:pb-[45px]">
-          {tFooterLinks.map((section) => (
+          {visibleFooterLinks.map((section) => (
             <motion.div
               key={section.title}
               variants={moveUp(section.delay)}

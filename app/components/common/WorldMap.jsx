@@ -11,14 +11,13 @@ import CountUp from "../CountUp.jsx";
 import { mapBackendCitiesToMapCities } from "@/lib/mapDataHelper";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
-import { useToNavigateCountryContext } from "@/contexts/toNavigateCountry";
+import { slugify } from "@/lib/slugify";
 
 const WorldMap = ({ cities = [], projectsData }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const tCities = useApplyLang(cities);
     const tProjectsData = useApplyLang(projectsData || {});
     const router = useRouter();
-    const { setToNavigateCountry } = useToNavigateCountryContext();
 
     const [activeDot, setActiveDot] = useState(null);
     const [selectedCity, setSelectedCity] = useState(null);
@@ -68,9 +67,11 @@ const WorldMap = ({ cities = [], projectsData }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    // opens the projects list filtered to this country (URL based); slug from the English name so it also works in Arabic
     const goToProjects = (city) => {
         if (!city?.isClickable) return;
-        router.push(isArabic ? "/ar/projects" : "/projects");
+        const englishName = (cities || []).find((c) => String(c?._id) === String(city.id))?.name || city.name;
+        router.push(`${isArabic ? "/ar/projects" : "/projects"}?country=${slugify(englishName)}`);
     };
 
     return (
@@ -163,7 +164,6 @@ const WorldMap = ({ cities = [], projectsData }) => {
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                             goToProjects(city);
-                                                            setToNavigateCountry(city.name);
                                                         }}
                                                     >
                                                         <p className="text-[24px] font-normal leading-tight">
@@ -205,12 +205,10 @@ const WorldMap = ({ cities = [], projectsData }) => {
                                     e.preventDefault();
                                     e.stopPropagation();
                                     goToProjects(selectedCity);
-                                    setToNavigateCountry(selectedCity.name);
                                 }}
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     goToProjects(selectedCity);
-                                    setToNavigateCountry(selectedCity.name);
                                 }}
                                 className={`me-2 bubble cursor-pointer transition-all duration-500 delay-100 backdrop-blur-sm bg-[#02aeddc2] border border-[#00C8FF26] text-white text-center p-3 rounded-full ${activeDot === selectedCity.id ? "opacity-100 scale-100 float-bubble1" : "opacity-0 scale-80"}`}
                             >
