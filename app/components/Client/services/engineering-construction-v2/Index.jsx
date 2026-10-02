@@ -14,8 +14,10 @@ const EngineeringConstruction = ({ data, projectData }) => {
   const featuredProjects = (projectData?.projects || [])
     .filter((project) =>
       (project?.secondSection?.service || []).some(
-        (service) => String(service?.serviceId?._id ?? service?.serviceId ?? "") === String(data?._id)
-      )
+        (service) =>
+          String(service?.serviceId?._id ?? service?.serviceId ?? "") ===
+          String(data?._id),
+      ),
     )
     .filter((project) => project?.thumbnail)
     .slice(0, FEATURED_PROJECTS_LIMIT)
@@ -48,7 +50,9 @@ const EngineeringConstruction = ({ data, projectData }) => {
       <ExpertiseSec data={data.secondSection} />
       <OurApproach data={data.thirdSection} />
       {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
-      {featuredProjects.length > 0 && <FeaturedProjectSlider data={featuredProjects} />}
+      {featuredProjects.length > 0 && (
+        <FeaturedProjectSlider data={featuredProjects} />
+      )}
       {/* {filteredProjects.length > 0 && (
                 <FeaturedProjectSlider
                     data={filteredProjects}
