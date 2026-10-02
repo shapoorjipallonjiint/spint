@@ -223,10 +223,10 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
   return (
     <>
       <div
-        className={`fixed top-7 lg:top-13 ${isArabic ? "left-0 lg:left-10 3xl:left-38" : "right-0 lg:right-10 3xl:right-38"} z-50 w-full`}
+        className={`fixed top-4 lg:top-13 ${isArabic ? "left-0 lg:left-10 3xl:left-38" : "right-0 lg:right-10 3xl:right-38"} z-50 w-full`}
       >
         <div
-          className={`flex gap-8 items-center justify-between lg:justify-end ps-5 lg:ps-0`}
+          className={`flex gap-8 items-center justify-between lg:justify-end px-4 lg:px-0`}
         >
           <div
             className="flex justify-center items-center lg:hidden"
@@ -236,7 +236,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
               src="/assets/images/main-logo.png"
               width={90}
               height={55}
-              className={`logsc ${mobileDarkHeader ? "block" : "hidden"}`}
+              className={`logsc w-auto max-h-[50px] ${mobileDarkHeader ? "block" : "hidden"}`}
               alt="main-logo"
             />
 
@@ -244,14 +244,14 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
               src="/assets/images/main-logo.png"
               width={90}
               height={55}
-              className={`logsc invert brightness-0 ${mobileDarkHeader ? "hidden" : "block"}`}
+              className={`logsc w-auto max-h-[50px] invert brightness-0 ${mobileDarkHeader ? "hidden" : "block"}`}
               alt="logo"
             />
           </div>
           <div className="flex gap-6 lg:gap-2">
             <a href="#">
               <div
-                className={`flex items-center justify-center z-[1]  cursor-pointer relative  h-[31px]  ${logostatus === true ? "bg-[#00000040] lg:bg-[#ffffff]" : "bg-[#00000040]"} rounded-[15px]`}
+                className={`flex items-center justify-center z-[1]  cursor-pointer relative  h-[24px] lg:h-[31px]  ${logostatus === true ? "bg-[#00000040] lg:bg-[#ffffff]" : "bg-[#00000040]"} rounded-[15px]`}
               >
                 <Image
                   src="../assets/images/grbdr.svg"
@@ -261,7 +261,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                   height={31}
                 />
                 <p
-                  className={`mb-0 font-[300] text-[16px] px-5 ${logostatus === true ? "text-[#ffffff] lg:text-[#000]" : "text-[#ffffff]"}`}
+                  className={`mb-0 font-[300] text-[11px] lg:text-[16px] px-5 ${logostatus === true ? "text-[#ffffff] lg:text-[#000]" : "text-[#ffffff]"}`}
                 >
                   {isArabic ? "العربية" : "العربية"}
                 </p>
@@ -273,8 +273,8 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="31"
-                height="24"
+                width="27"
+                height="22"
                 viewBox="0 0 33 26"
                 fill="none"
               >
@@ -298,9 +298,11 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                 />
               </svg>
             </div>
+            {/* desktop only (its button is hidden on mobile; an empty link here added a 24px flex gap after the menu icon) */}
             <a
               href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji"
               target="_blank"
+              className="hidden lg:block"
             >
               <div
                 className={`hidden lg:flex items-center justify-center z-[1]  cursor-pointer relative  h-[31px] ${logostatus === true ? "bg-[#00000040] lg:bg-[#ffffff]" : "bg-[#00000040]"} rounded-[15px]`}

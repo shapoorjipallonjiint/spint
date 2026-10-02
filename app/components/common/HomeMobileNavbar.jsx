@@ -101,7 +101,8 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                       variants={itemVariants}
                     >
                       <div>
-                        <div className="flex items-center justify-between"
+                        {/* min-h-8: same height as the rows with the 32px arrow button, so the spacing between items is even */}
+                        <div className="flex items-center justify-between min-h-8"
                         onClick={(e) => {
                               if (!hasSubmenu) {
                                 onClose();

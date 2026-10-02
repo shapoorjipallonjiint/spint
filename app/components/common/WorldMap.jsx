@@ -93,7 +93,7 @@ const WorldMap = ({ cities = [], projectsData }) => {
             </div>
 
             <div className="flex justify-center">
-                <div className="[position:initial] lg:relative overflow-x-scroll lg:overflow-x-visible scrollbar-hide responsive-map-position">
+                <div className="[position:initial] lg:relative overflow-x-scroll lg:overflow-x-visible scrollbar-hide">
                     <div className="relative lg:[position:initial] overflow-hide" ref={containersRef}>
                         <Image
                             src="/assets/images/world_map.png"
@@ -102,7 +102,7 @@ const WorldMap = ({ cities = [], projectsData }) => {
                             height={679}
                             className="object-cover img-f select-none min-w-[733px] w-[733px] h-[350px] lg:h-full lg:min-w-[1156px] lg:w-[1156px] ml-[20px] lg:ml-0"
                         />
-                        <div className="absolute top-[-121px] lg:top-0 left-[-69px] lg:left-0 min-w-[733px] w-[733px] h-[436px] lg:h-full lg:w-[1156px] overflow-hidden lg:overflow-visible">
+                        <div className="absolute top-[-121px] lg:top-0 left-[-69px] lg:left-0 min-w-[733px] w-[733px] h-[471px] lg:h-full lg:w-[1156px] overflow-hidden lg:overflow-visible">
                             {/* Dots */}
                             {mapCities.map((city) => (
                                 <div
