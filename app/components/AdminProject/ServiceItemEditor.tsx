@@ -54,12 +54,7 @@ export const ServiceItemsEditor = ({
                         <div className="flex flex-col gap-2">
                             <Label>Title</Label>
                             <Input
-                                {...register(`secondSection.service.${serviceIndex}.items.${idx}.title`, {
-                                    validate: (value) => {
-                                        if (!selected) return true;
-                                        return value?.trim() !== "" || "Title is required";
-                                    }
-                                })}
+                                {...register(`secondSection.service.${serviceIndex}.items.${idx}.title`)}
                             />
                         </div>
 
@@ -68,7 +63,6 @@ export const ServiceItemsEditor = ({
                             <Controller
                                 name={`secondSection.service.${serviceIndex}.items.${idx}.description`}
                                 control={control}
-                                rules={{ required: "Description is required" }}
                                 render={({ field }) => {
                                     return <TinyEditor setNewsContent={field.onChange} newsContent={field.value} />;
                                 }}
