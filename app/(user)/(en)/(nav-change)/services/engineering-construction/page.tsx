@@ -1,4 +1,4 @@
-import Index from '@/app/components/Client/services/engineering-construction/Index'
+import Index from '@/app/components/Client/services/engineering-construction-v2/Index'
 
 const page = async() => {
     const response = await fetch(`${process.env.BASE_URL}/api/admin/services/engineering-and-construction`, { next: { revalidate: 60 } });

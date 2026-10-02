@@ -115,7 +115,7 @@ const ExpertiseSec = ({ data }) => {
     };
 
     return (
-        <section className="relative pt-text90 pb25 bg-primary text-white overflow-hidden" ref={sectionRef}>
+        <section className="relative section-spacing bg-primary text-white overflow-hidden" ref={sectionRef}>
             <div className="reveal-overlay4 absolute inset-0 bg-black/20 z-20"></div>
             <div
                 className={`hidden md:block absolute bottom-0 ${isArabic ? "left-0 -scale-x-100" : "right-0"

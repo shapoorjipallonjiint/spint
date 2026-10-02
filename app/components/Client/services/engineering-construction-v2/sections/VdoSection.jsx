@@ -72,7 +72,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
     target: sectionRef,
     offset: ["start end", "end start"]
   });
-  const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
+  const shapeY = useTransform(shapeProgress, [0, 1], [-120, 120]);
 
   const pathname = usePathname();
 
@@ -87,7 +87,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
 
 
   return (
-    <section className="relative pt-80px pb-150px" ref={sectionRef}>
+    <section className="relative section-spacing" ref={sectionRef}>
       {showProfile && (
         <div className="absolute inset-0 z-10 hidden lg:block">
           <div className="container">
