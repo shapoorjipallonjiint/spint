@@ -114,6 +114,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
     const section6Ref = useRef(null);
     const maptitle = useRef([]);
+    const maplegend = useRef(null);
     const mapimage = useRef([]);
     const mapactive = useRef([]);
 
@@ -149,6 +150,15 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const [isLargeScreen, setIsLargeScreen] = useState(false);
     const swiperRef = useRef(null); // Add this ref for Swiper
     const [showBlueBox, setShowBlueBox] = useState(false);
+    // sectors slide timings are shorter on phones (no desktop rotation to wait for)
+    const [isMobileView, setIsMobileView] = useState(false);
+    useEffect(() => {
+        const mq = window.matchMedia("(max-width:1023px)");
+        const update = () => setIsMobileView(mq.matches);
+        update();
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, []);
 
 
     // Snap the hero divider line to the header's "scroll down" border so both read as one line
@@ -775,7 +785,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         talentdtls.current,
                         { x: X(-30), opacity: 0 },
                         { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
-                        "-=1",
+                        // phones: together with the image (desktop: after it)
+                        window.matchMedia("(max-width:1023px)").matches ? "<" : "-=1",
                     )
                     .fromTo(
                         sectorLeft.current,
@@ -793,6 +804,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
             case 5:
                 f1.set(maptitle.current, { opacity: 0 })
+                    .set(maplegend.current, { opacity: 0 })
                     .set(mapimage.current, { opacity: 0 })
 
                     .set(mapactive.current, { opacity: 0 })
@@ -824,8 +836,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             ease: "power3.out",
                         },
                         "-=0.8",
+                    )
+                    // legend (SP Group / SP International) slides in from the end side just after the title starts
+                    .fromTo(
+                        maplegend.current,
+                        { x: X(30), opacity: 0 },
+                        { x: 0, opacity: 1, duration: 0.8, ease: "power1.out" },
+                        1.6,
                     );
-
                 break;
 
             case 6:
@@ -978,11 +996,13 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 break;
 
             case 5:
-                f2.to(maptitle.current, { x: X(-30), opacity: 0, duration: 1, ease: "power1.in" }, 0).to(
-                    mapimage.current,
-                    { opacity: 0, scale: 0.9, duration: 1.3, ease: "power1.in" },
-                    "-=0.5",
-                );
+                f2.to(maptitle.current, { x: X(-30), opacity: 0, duration: 1, ease: "power1.in" }, 0)
+                    .to(
+                        mapimage.current,
+                        { opacity: 0, scale: 0.9, duration: 1.3, ease: "power1.in" },
+                        "-=0.5",
+                    )
+                    .to(maplegend.current, { x: X(30), opacity: 0, duration: 0.8, ease: "power1.in" }, 0);
                 break;
 
             case 6:
@@ -1292,7 +1312,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
         const timer = setTimeout(() => {
             setShowBlueBox(true);
-        }, 1500); // delay after image change
+        }, isMobileView ? 200 : 1500); // delay after image change (phones swap the image instantly)
 
 
         return () => clearTimeout(timer);
@@ -1305,11 +1325,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         setPrevImage(activeService?.image);
     }, [activeService]);
 
-    const delayProjects = useFirstTimeDelay(
+    const delayProjectsDesktop = useFirstTimeDelay(
         currentVisibleSlide === "section5",
         1000, // FIRST TIME delay
         2100, // LATER delay when clicking items
     );
+    // mobile: entering the slide -> the slide becomes "current" about when the bottom box fades in (see the slide's
+    // timeline), so start right after; tapping a sector -> right after the box shows (0.2s).
+    // Kept stable so re-renders don't restart the counter's timer.
+    const delayProjects = !isMobileView
+        ? delayProjectsDesktop
+        : currentVisibleSlide !== "section5"
+          ? null
+          : 300;
+    const sectorTextDelay = isMobileView ? "0.25s" : "2s";
 
     // // sectors autoplay
     // const sectorsAutoplayRef = useRef(null);
@@ -1550,7 +1579,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                     <div className="relative z-[1] h-full">
                         <div className="flex flex-col justify-end h-full">
-                            <div className={`w-full px-5 lg:p-0 lg:w-[79%] ${isArabic ? "mr-auto" : "ml-auto"} text-white`}>
+                            <div className={`w-full px-4 lg:p-0 lg:w-[79%] ${isArabic ? "mr-auto" : "ml-auto"} text-white`}>
                                 <div
                                     className="border-b border-white/30 pb-[33px] mb-1 lg:border-b-0 lg:pb-0 lg:mb-0"
                                     ref={titleOneRef}
@@ -1567,7 +1596,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             <div ref={brdrRef} className="hidden lg:block my-10 w-full border-t border-white/30"></div>
 
                             <div
-                                className={`w-full lg:w-[50%] xl:w-[45%] px-5 lg:px-0 text-white mb-[22dvh] lg:mb-19 flex justify-between items-center ${isArabic ? "ml-38 mr-auto" : "mr-38 ml-auto"
+                                className={`w-full lg:w-[50%] xl:w-[45%] px-4 lg:px-0 text-white mb-[22dvh] lg:mb-19 flex justify-between items-center ${isArabic ? "ml-38 mr-auto" : "mr-38 ml-auto"
                                     } gap-7`}
                             >
                                 <div
@@ -1655,7 +1684,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                         <div
                             ref={rightSecRef}
-                            className="relative flex flex-col  px-10 xl:px-[90px] pb-20 xl:pb-[93px] pt-20 xl:pt-[50px] overflow-hidden h-[52.15dvh] lg:h-full"
+                            className="relative flex flex-col  px-10 xl:px-[90px] pb-20 xl:pb-[93px] pt-20 xl:pt-[50px] overflow-hidden h-[62dvh] lg:h-full"
                         >
                             <div
                                 className={`absolute top-0 w-full z-10 h-full ${isArabic ? "left-0" : "right-0"} opacity-0`}
@@ -1679,13 +1708,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                             <div
                                 className={`mb-[33px] lg:mb-0 z-40 pt-6 xl:pt-[35px] text-white absolute bottom-0 lg:relative ${isArabic ? "right-0 lg:right-auto" : "left-0 lg:left-auto"
-                                    } px-5 lg:px-0`}
+                                    } px-4 lg:px-0`}
                                 ref={title2Ref}
                             >
-                                <h1 className="text-[36px] lg:text-48 3xl:text-60 font-light leading-[1.166666666666667] mb-[15px] lg:mb-3 3xl:mb-[25px]">
+                                <h1 className="text-[26px] leading-[36px] lg:text-48 3xl:text-60 font-light lg:leading-[1.166666666666667] mb-[15px] lg:mb-3 3xl:mb-[25px]">
                                     {tData.secondSection.title}
                                 </h1>
-                                <div dangerouslySetInnerHTML={{ __html: tData.secondSection.subTitle }}></div>
+                                {/* subtitle HTML comes from the CMS with its own 20px class; 16px on mobile */}
+                                <div className="max-lg:[&_*]:text-[16px]" dangerouslySetInnerHTML={{ __html: tData.secondSection.subTitle }}></div>
+                                <AboutHighlights
+                                    mobile
+                                    items={tData.secondSection?.highlights}
+                                    active={highlightsStarted && currentVisibleSlide === "section2"}
+                                    isArabic={isArabic}
+                                />
                                 <LangLink
                                     ref={spbtn}
                                     href={tData.thirdSection.link}
@@ -1791,7 +1827,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             </div>
                         </div>
                         <div
-                            className=" grid grid-cols-2  relative  pt-[33px] xl:pt-[30px]  text-black lg:hidden px-5 bg-white"
+                            className=" grid grid-cols-2  relative  pt-[33px] xl:pt-[30px]  text-black lg:hidden px-4 bg-white"
                             ref={mobileStatsRef}
                         >
                             {tData.secondSection.items.map((item, index) => (
@@ -1853,29 +1889,18 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         and 644px at 3xl (full 122px cubes) - see CredentialsPanel. From 1900px the right column is fixed at 900px instead */}
                     <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[600px_auto] 2xl:grid-cols-[calc(5vw+754px)_auto] 3xl:grid-cols-[calc(7.814vw+877px)_auto] min-[1900px]:grid-cols-[1fr_900px] h-full bg-transparent">
                         <div
-                            className={`lftblc relative ${isArabic ? "left-0" : "right-0"} h-[52.6dvh] lg:h-auto lg:overflow-hidden`}
+                            className={`lftblc relative ${isArabic ? "left-0" : "right-0"} lg:h-auto lg:overflow-hidden`}
                             ref={splftimng}
                         >
                             <div className="bg-f5f5 absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
                             {/* credentials cubes on all screens. Fixed to the full column width (the screen on mobile) so the
                                 entry width-reveal wipes it in instead of squeezing/re-scaling the cubes */}
-                            <div className="absolute top-0 start-0 h-full w-screen lg:w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)] min-[1900px]:w-[calc(100vw-900px)]">
+                            <div className="relative lg:absolute top-0 start-0 lg:h-full w-screen lg:w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)] min-[1900px]:w-[calc(100vw-900px)]">
                                 <CredentialsPanel cubesRef={credCubesRef} />
                             </div>
                         </div>
-                        <div className="block lg:hidden   ">
-                            <img
-                                alt="logo"
-                                ref={sprIcnim}
-                                src="/assets/images/svg/sv-02.svg"
-                                width={600}
-                                height={600}
-                                className={`absolute ${isArabic ? "left-0" : "right-0"
-                                    } bottom-0 z-[0] w-[394px] h-[554px] opacity-50`}
-                            />
-                        </div>
                         <div
-                            className=" flex flex-col h-full px-5 lg:px-[70px] 3xl:px-[100px] pb-[120px] 3xl:pb-[150px] pt-[7dvh] lg:pt-[120px] 3xl:pt-[150px] overflow-hidden relative"
+                            className=" flex flex-col h-full bg-white lg:bg-transparent px-4 lg:px-[70px] 3xl:px-[100px] pb-[120px] 3xl:pb-[150px] pt-[30px] lg:pt-[120px] 3xl:pt-[150px] overflow-hidden relative"
                             ref={sprghtBx}
                         >
                             {/* desktop background: video + black/65 overlay (replaces the old blue panel) */}
@@ -1905,7 +1930,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             <div className="relative z-[99] lg:absolute lg:bottom-[14%] lg:inset-x-[10%]">
                                 <h1
                                     ref={sptitle}
-                                    className="text-[32px] sm:text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] lg:max-w-[8ch] font-light mb-[15px] lg:mb-8 xl:mb-[25px] text-black lg:text-white"
+                                    className="text-[26px] leading-[36px] lg:text-34 xl:text-48 3xl:text-60 lg:leading-[1.083333333333333] lg:max-w-[8ch] font-light mb-[15px] lg:mb-8 xl:mb-[25px] text-black lg:text-white"
                                 >
                                     {tData.thirdSection.title}
                                 </h1>
@@ -2151,8 +2176,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             {/*      <div className="w-1/3"></div> */}
                             <div
                                 className={`w-full pt-[16.3dvh] lg:pt-33 ${isArabic
-                                    ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[283px]"
-                                    : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px]"
+                                    ? "pr-4 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[283px]"
+                                    : "pl-4 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[283px]"
                                     } bg-primary lg:bg-transparent`}
                                 ref={srvLftBx}
                             >
@@ -2169,7 +2194,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 <div className={`${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"} flex flex-col h-full`}>
                                     <h1
                                         ref={srvttlRef}
-                                        className="text-[36px] lg:text-34 xl:text-48 3xl:text-60 font-light gradient-text lg:leading-[70px]"
+                                        className="text-[26px] leading-[36px] mb-[6px] lg:mb-0 lg:text-34 xl:text-48 3xl:text-60 font-light gradient-text lg:leading-[70px]"
                                     >
                                         {/* Our Services */}
                                         {tData.fourthSection.title}
@@ -2378,7 +2403,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             </AnimatePresence>
                             <div
                                 className={`lg:absolute xs-ptop-15 top-[77px] lg:top-auto lg:bottom-[245px] 3xl:bottom-[300px] ${isArabic ? "right-[40px] 3xl:right-[58px]" : "left-[40px] 3xl:left-[58px]"
-                                    } z-10 px-5 lg:px-0 pt-7 lg:pt-0`}
+                                    } z-10 px-4 lg:px-0 pt-7 lg:pt-0`}
                                 ref={srvsCntb}
                             >
                                 <hr
@@ -2489,8 +2514,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         <div ref={sectorLeft} className="flex lg:h-full bg-primary lg:bg-transparent">
                             <div
                                 className={`w-full pt-[16.5dvh] lg:pt-25 xl:pt-25 3xl:pt-33 ${isArabic
-                                    ? "pr-5 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
-                                    : "pl-5 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
+                                    ? "pr-4 lg:pr-[205px] xl:pr-[245px] 3xl:pr-[310px]"
+                                    : "pl-4 lg:pl-[205px] xl:pl-[245px] 3xl:pl-[310px]"
                                     }`}
                             >
                                 <div className={`absolute top-[-195px] ${isArabic ? "left-0" : "right-0"}`} ref={srvsVct}>
@@ -2505,7 +2530,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 <div className={`${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"} flex flex-col h-full`}>
                                     <h1
                                         ref={talenttitle}
-                                        className="text-[36px] lg:text-34 xl:text-48 3xl:text-60 font-light gradient-text leading-[1.166666666666667] max-w-[13ch]"
+                                        className="text-[26px] leading-[36px] lg:text-34 xl:text-48 3xl:text-60 font-light gradient-text lg:leading-[1.166666666666667] max-w-[13ch]"
                                     >
                                         {tData.fifthSection.title}
                                     </h1>
@@ -2765,7 +2790,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     }}
                                 >
                                     <div ref={talentdtls}>
-                                        <div className="flex gap-[56px] lg:gap-5 xl:gap-[77px] pb-6   lg:px-15 pt-7 lg:py-6 xl:pt-[28px] xl:pb-[33px] border-b  border-black/20 lg:border-white/20 mx-5 lg:mx-0" >
+                                        <div className="flex gap-[56px] lg:gap-5 xl:gap-[77px] pb-6   lg:px-15 pt-7 lg:py-6 xl:pt-[28px] xl:pb-[33px] border-b  border-black/20 lg:border-white/20 mx-4 lg:mx-0" >
                                             <div className="tlnits">
                                                 <div style={{ position: "relative", overflow: "hidden" }}>
                                                     <h3
@@ -2774,7 +2799,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         style={{
                                                             animation: "slideUpFadeIn 0.6s ease-out",
                                                             animationFillMode: "both",
-                                                            animationDelay: "2s",
+                                                            animationDelay: sectorTextDelay,
                                                         }}
                                                     >
                                                         {/* <CountUp value={activeSector.projectsCompleted} trigger={currentVisibleSlide === "section5"} delay={10} />+ */}
@@ -2791,7 +2816,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                     style={{
                                                         animation: "slideUpFadeIn 0.6s ease-out",
                                                         animationFillMode: "both",
-                                                        animationDelay: "2s",
+                                                        animationDelay: sectorTextDelay,
                                                     }}>
                                                     {
                                                         activeSector.projectsCompleted === 1 ? "Project Completed" : "Projects Completed"
@@ -2808,7 +2833,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                 style={{
                                                                     animation: "slideUpFadeIn 0.6s ease-out 0.1s",
                                                                     animationFillMode: "both",
-                                                                    animationDelay: "2s",
+                                                                    animationDelay: sectorTextDelay,
                                                                 }}
                                                             >
                                                                 {/* <CountUp value={activeSector.ongoingProjects} trigger={currentVisibleSlide === "section5"} delay={100} />+ */}
@@ -2825,7 +2850,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                 style={{
                                                                     animation: "slideUpFadeIn 0.6s ease-out",
                                                                     animationFillMode: "both",
-                                                                    animationDelay: "2s",
+                                                                    animationDelay: sectorTextDelay,
                                                                 }}>
                                                                 {
                                                                     activeSector.ongoingProjects === 1 ? "Ongoing Project" : "Ongoing Projects"
@@ -2877,20 +2902,20 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     >
                         <div
                             dir={isArabic ? "rtl" : "ltr"}
-                            className={`absolute-maptitle px-5 lg:px-0 pt-[4.7dvh] lg:pt-0 pb-6 lg:pb-0 ${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
+                            className={`absolute-maptitle px-4 lg:px-0 pt-[4.7dvh] lg:pt-0 pb-6 lg:pb-0 ${isArabic ? "3xl:mr-[110px]" : "3xl:ml-[110px]"
                                 } flex flex-col h-full`}
                         >
                             <h1
                                 ref={maptitle}
-                                className="text-[36px] lg:text-34 xl:text-48 3xl:text-60  font-light gradient-text text-bl leading-[1.2] 3xl:leading-[1.18] max-w-[15ch]"
+                                className="text-[26px] leading-[36px] lg:text-34 xl:text-48 3xl:text-60  font-light gradient-text text-bl lg:leading-[1.2] 3xl:leading-[1.18] max-w-[15ch]"
                             >
                                 {tData.sixthSection?.title}
                             </h1>
                         </div>
 
                         <div className="relative">
-                            <div className=" absolute container right-0 lg:right-10 3xl:right-36 bottom-[-5px] sm:bottom-auto">
-                                <div className="flex justify-end items-center  ">
+                            <div className=" absolute container right-0 lg:right-10 3xl:right-36 bottom-[-13px] sm:bottom-auto">
+                                <div ref={maplegend} className="flex justify-end items-center  ">
                                     <div className="flex items-center gap-[5px] md:gap-2 me-3">
                                         <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-[#30B6F9] border border-[#97DCFF] scale-85"></div>
                                         <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP Group</p>
@@ -2923,7 +2948,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                         height={679}
                                         className="object-cover img-f select-none min-w-[733px] w-[733px] h-[350px] lg:h-full lg:min-w-[1156px] lg:w-[1156px] ml-[20px] lg:ml-0"
                                     />
-                                    <div className="absolute top-[-121px] lg:top-0 left-[-69px] lg:left-0 min-w-[733px] w-[733px] h-[436px] lg:h-full lg:w-[1156px]  overflow-hidden  lg:overflow-visible    ">
+                                    <div className="absolute top-[-121px] lg:top-0 left-[-69px] lg:left-0 min-w-[733px] w-[733px] h-[471px] lg:h-full lg:w-[1156px]  overflow-hidden  lg:overflow-visible    ">
                                         {/* Dots */}
                                         {mapCities.map((city) => (
                                             <div
@@ -3190,7 +3215,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         </div>
                         {selectedCity ? (
                             <div
-                                className={`bubble-margin lg:hidden px-5 top-0 pt-[5px] transition-all duration-500    w-full h-full overflow-x-auto scrollbar-hide
+                                className={`bubble-margin lg:hidden px-4 top-0 pt-[5px] transition-all duration-500    w-full h-full overflow-x-auto scrollbar-hide
                        `}
                             >
                                 <div className={` transition-all duration-500  outside `}>
@@ -3298,7 +3323,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         {/* lg:pb-[207px] puts the tab underline exactly on the header's "scroll" border line, which sits
                             207px from the screen bottom: 50px py + 21px pb + 87px circle + 12px gap + 37px text (HeaderTw) */}
                         <div
-                            className={`w-full pt-33 px-5 lg:pe-0 ${isArabic
+                            className={`w-full pt-33 px-4 lg:pe-0 ${isArabic
                                 ? "lg:pr-[205px] xl:pr-[245px] 3xl:pr-[280px]"
                                 : "lg:pl-[205px] xl:pl-[245px] 3xl:pl-[280px]"
                                 } lg:pb-[207px] h-full lg:h-auto`}
@@ -3309,7 +3334,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             >
                                 <h1
                                     ref={cutltttl}
-                                    className="max-w-[14ch] text-[36px] lg:text-34 xl:text-48 3xl:text-60 leading-[1.083333333333333] font-light mb-8 xl:mb-[25px] text-white"
+                                    className="max-w-[14ch] text-[26px] leading-[36px] lg:text-34 xl:text-48 3xl:text-60 lg:leading-[1.083333333333333] font-light mb-8 xl:mb-[25px] text-white"
                                 >
                                     {/* Driven by Talent. <br /> Defined by Culture. */}
                                     {tData.seventhSection.title.split("/n").map((item) => item)}
@@ -3342,7 +3367,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                     <div
                                         ref={talentDescMob}
-                                        className={`max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0 ${isArabic ? "-right-5 md:right-0" : "-left-5 md:left-0"
+                                        className={`max-w-[34ch] flex lg:hidden flex-col lg:justify-end lg:h-full mb-4  relative gap-2 lg:gap-0 ${isArabic ? "-right-4 md:right-0" : "-left-4 md:left-0"
                                             }`}
                                     >
                                         <div className="p-5 md:p-10 lg:p-7 3xl:py-12 3xl:px-15 bg-primary w-fit 2xl:w-[400px] 3xl:w-[550px] text-white relative ">
@@ -3516,7 +3541,7 @@ transition-all duration-300 cursor-pointer ${activeItem.id === item.id
                                 transition={{ duration: 0.4, ease: "easeInOut" }}
                                 // fixed 207px (same as the left column's pb and the header's scroll line) so the blue box
                                 // above ends exactly on the long horizontal line
-                                className="h-[207px] pt-[37px] px-5 lg:px-7 3xl:px-15"
+                                className="h-[207px] pt-[37px] px-4 lg:px-7 3xl:px-15"
                             >
                                 <LangLink href="/careers">
                                     <div className="flex items-center gap-[6px]">

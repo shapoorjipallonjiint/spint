@@ -1724,3 +1724,32 @@ body::-webkit-scrollbar {
   content: "";
   @apply w-[5px] h-[5px] bg-[#39aef0] block shrink-0 mt-[8px];
 }
+/* Home > Our Credentials cubes (CredentialsPanel.jsx). --gap: space between cubes, --diag: space along the incline.
+   --top-shift: gap * (1 + dx/dy) - diag * hypot(dx, dy) / dy, so the gap along the incline is exactly --diag */
+.cred-cubes {
+  /* mobile (Figma at 390px): 5 fronts + the last side face fill the width (16px side padding) */
+  --gap: 0.8px;
+  --diag: 1px;
+  --w: min(122px, calc((100cqw - 4 * var(--gap)) / 5.2401)); /* 5 fronts + 0.2401 side */
+  --h: calc(var(--w) * 0.9386); /* 64.1 / 68.29 */
+  --dx: calc(var(--w) * 0.2401); /* dy x tan(42deg): top face leans 42deg (Figma side 20.45 leaned ~48deg) */
+  --dy: calc(var(--w) * 0.2667); /* 18.21 / 68.29 */
+  --top-skew: skewX(-42deg); /* atan(dx / dy) */
+  --side-skew: skewY(-48deg); /* atan(dy / dx) */
+  --top-shift: calc(var(--gap) * 1.9004 - var(--diag) * 1.3456);
+}
+
+@media (min-width: 1024px) {
+  .cred-cubes {
+    --gap: 1.52px;
+    --diag: 1.92px;
+    /* 5 fronts + 0.1983 side; height share: 4 fronts + 1 top depth = ~3.97 widths */
+    --w: min(122px, calc((100cqw - 4 * var(--gap)) / 5.1983), calc(var(--cubes-h) / 3.97));
+    --h: calc(var(--w) * 0.9426); /* 115 / 122 */
+    --dx: calc(var(--w) * 0.1983);
+    --dy: calc(var(--w) * 0.1983);
+    --top-skew: skewX(-45deg);
+    --side-skew: skewY(-45deg);
+    --top-shift: calc(var(--gap) * 2 - var(--diag) * 1.4142);
+  }
+}
