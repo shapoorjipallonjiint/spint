@@ -734,12 +734,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                                             <Input
                                                                                 type="text"
                                                                                 placeholder="Title"
-                                                                                {...register(`secondSection.service.${serviceIndex}.firstSection.title`, {
-                                                                                    validate: (value) => {
-                                                                                        if (!selected) return true; // skip validation
-                                                                                        return value?.trim() !== "" || "Title is required";
-                                                                                    }
-                                                                                })}
+                                                                                {...register(`secondSection.service.${serviceIndex}.firstSection.title`)}
                                                                             />
                                                                             {errors?.secondSection?.service?.[serviceIndex]?.firstSection?.title && (
                                                                                 <p className="text-red-500">{errors.secondSection?.service?.[serviceIndex]?.firstSection?.title.message}</p>
@@ -751,12 +746,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                                             <Textarea
 
                                                                                 placeholder="Description"
-                                                                                {...register(`secondSection.service.${serviceIndex}.firstSection.description`, {
-                                                                                    validate: (value) => {
-                                                                                        if (!selected) return true; // skip validation
-                                                                                        return value?.trim() !== "" || "Description is required";
-                                                                                    }
-                                                                                })}
+                                                                                {...register(`secondSection.service.${serviceIndex}.firstSection.description`)}
                                                                             />
                                                                             {errors?.secondSection?.service?.[serviceIndex]?.firstSection?.description && (
                                                                                 <p className="text-red-500">{errors.secondSection?.service?.[serviceIndex]?.firstSection?.description.message}</p>
@@ -776,12 +766,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                                             <Input
                                                                                 type="text"
                                                                                 placeholder="Title"
-                                                                                {...register(`secondSection.service.${serviceIndex}.secondSection.title`, {
-                                                                                    validate: (value) => {
-                                                                                        if (!selected) return true; // skip validation
-                                                                                        return value?.trim() !== "" || "Title is required";
-                                                                                    }
-                                                                                })}
+                                                                                {...register(`secondSection.service.${serviceIndex}.secondSection.title`)}
                                                                             />
                                                                             {errors.secondSection?.service?.[serviceIndex]?.secondSection?.title && (
                                                                                 <p className="text-red-500">{errors.secondSection?.service?.[serviceIndex]?.secondSection?.title.message}</p>
@@ -793,12 +778,6 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                                             <Controller
                                                                                 name={`secondSection.service.${serviceIndex}.secondSection.description`}
                                                                                 control={control}
-                                                                                rules={{
-                                                                                    validate: (value) => {
-                                                                                        if (!selected) return true; // skip validation if not selected
-                                                                                        return value?.trim() !== "" || "Description is required";
-                                                                                    }
-                                                                                }}
                                                                                 render={({ field }) => {
                                                                                     return (
                                                                                         <ReactQuill

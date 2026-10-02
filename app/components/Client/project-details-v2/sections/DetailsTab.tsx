@@ -261,7 +261,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
       </motion.h2> */}
 
       {tab.subtitle && (
-        <motion.p variants={moveUp(0.1)} className="text-40 font-light leading-[1.25] text-black mb-3 md:mb-6 xl:mb-[30px]">
+        <motion.p variants={moveUp(0.1)} className="text-40 font-light leading-[1.25] text-black mb-3 md:mb-6 3xl:mb-[30px]">
           {tab.subtitle}
         </motion.p>
       )}
@@ -275,7 +275,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
       )}
 
       {tab.scopeTitle && (
-        <motion.h3 variants={moveUp(0.3)} className="text-40 font-light leading-[1.25] text-black mb-3 md:mb-6 xl:mb-[30px]" >
+        <motion.h3 variants={moveUp(0.3)} className="text-40 font-light leading-[1.25] text-black mb-3 md:mb-6 3xl:mb-[30px]" >
           {tab.scopeTitle}
         </motion.h3>
       )}
@@ -292,7 +292,9 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
           </motion.div>
         ))}
       </div> */}
-      <motion.div variants={moveUp(0.35 + 1 * 0.08)} dangerouslySetInnerHTML={{ __html: withNormalSpaces(tab.scopeDescription) }} className="project-services-secondsection-description">
+      <motion.div variants={moveUp(0.35 + 1 * 0.08)} dangerouslySetInnerHTML={{ __html: withNormalSpaces(tab.scopeDescription) }}
+        // same text style as the first paragraph (tab.description) above
+        className="project-services-secondsection-description text-16 xl:text-19 text-paragraph font-light leading-[1.55] max-w-[110ch]">
 
       </motion.div>
       {/* <ul>

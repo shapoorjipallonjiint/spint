@@ -1,4 +1,4 @@
-import Index from '@/app/components/Client/LeadershipV2/Index'
+import Index from '@/app/components/Client/Leadership/Index'
  
 const page = async() => {
   const response = await fetch(`${process.env.BASE_URL}/api/admin/leadership`, { next: { revalidate: 60 } });

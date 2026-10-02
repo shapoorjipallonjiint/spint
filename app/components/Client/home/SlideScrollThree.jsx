@@ -1608,7 +1608,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     </div>
 
                     {/* Changed class to ref, and initial opacity to match your current code (.mswd's opacity:0 means this overlay is active) */}
-                    {<div ref={overlayRef} className="absolute inset-0 bg-black/55 lg:bg-black/35 h-[100dvh]"></div>}
+                    {<div ref={overlayRef} className="absolute inset-0 bg-black/70 h-[100dvh]"></div>}
                 </section>
             </div>
 
