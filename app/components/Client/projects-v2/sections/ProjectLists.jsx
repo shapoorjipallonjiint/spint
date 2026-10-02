@@ -154,18 +154,28 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 >
                     {/* filters + view toggles: one row from 2xl; below that the toggles sit on their own line at the left */}
                     <div className="flex flex-col 2xl:flex-row 2xl:items-center justify-between 2xl:gap-10">
-                        <div className="lg:hidden mb-3">
+                        <div className="lg:hidden">
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
-                                className="flex items-center justify-between w-fit gap-2 border border-white/20 text-paragraph text-[14px] uppercase"
+                                className="flex items-center justify-between w-full gap-2 border border-white/20 text-paragraph text-[14px] uppercase"
                             >
                                 <span>Filter</span>
-                                <span className="text-20">{showFilters ? "−" : "+"}</span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                    className="w-[16px] h-[16px]"
+                                >
+                                    <path d="M1 8H15" stroke="#464646" strokeWidth="2" strokeLinecap="round" />
+                                    {!showFilters && (
+                                        <path d="M8 1V15" stroke="#464646" strokeWidth="2" strokeLinecap="round" />
+                                    )}
+                                </svg>
                             </button>
                         </div>
-                        <div className={` ${showFilters ? "block" : "hidden"} lg:block mb-0`}>
-                            <div className="flex flex-col md:flex-row gap-5 md:items-center md:gap-10 lg:gap-12 2xl:gap-[100px] 3xl:gap-[174px]">
-                                <div className="flex flex-col md:flex-row md:flex-wrap gap-3 md:gap-x-8 md:gap-y-3 lg:gap-x-10 2xl:gap-x-[60px] 3xl:gap-x-[90px] w-full md:w-auto">
+                        <div className={` ${showFilters ? "block" : "hidden"} lg:block mt-4 lg:mt-0`}>
+                            <div className="flex flex-col md:flex-row gap-5 md:items-center md:justify-between 2xl:justify-start md:gap-10 lg:gap-12 2xl:gap-[100px] 3xl:gap-[174px]">
+                                <div className="flex flex-col md:flex-row md:flex-wrap gap-4 md:gap-x-8 md:gap-y-3 lg:gap-x-10 2xl:gap-x-[60px] 3xl:gap-x-[90px] w-full md:w-auto">
                                     {/* Sector */}
                                     <div className="w-full md:w-fit relative">
                                         <Listbox value={selectedSector} onChange={handleSectorChange} by="slug">
@@ -453,7 +463,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                             </div>
                         </div>
                         {/* View toggles */}
-                        <div className="flex shrink-0 items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-start lg:mt-5 2xl:mt-0">
+                        <div className="flex shrink-0 items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-start mt-4 md:mt-5 2xl:mt-0">
                             <div className="flex group items-center gap-[6px] cursor-pointer" onClick={handleGrid}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
