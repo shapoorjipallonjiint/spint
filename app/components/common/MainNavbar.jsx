@@ -282,7 +282,8 @@ const MainNavbar = () => {
                                     // src="/assets/images/main-logo.svg"
                                     src="/assets/images/main-logo.png"
                                     alt="logo"
-                                    className="w-[101px] lg:w-[80px] xl:w-[101px]"
+                                    // small screens: same size as the homepage header logo (max 50px tall, HeaderTw)
+                                    className="max-lg:h-[50px] max-lg:w-auto lg:w-[80px] xl:w-[101px]"
                                 />
                             </LangLink>
                         </div>

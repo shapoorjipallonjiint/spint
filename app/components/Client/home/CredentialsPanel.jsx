@@ -44,7 +44,7 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
         />
       )}
       <div
-        className="relative h-full flex flex-col items-center justify-center text-center text-white px-[5px] lg:px-[6%]"
+        className="relative h-full flex flex-col items-center justify-center text-center text-white px-[5px] lg:px-[6%] rtl:-scale-x-100"
         style={{ background: frontBg, boxShadow: innerStroke }}
       >
         <p
@@ -113,7 +113,9 @@ const CredentialsPanel = ({ cubesRef, data }) => {
       <div
         ref={cubesRef}
         dir="ltr"
-        className="relative flex items-end"
+        // Arabic: the whole staircase is mirrored (tallest column on the right, faces leaning left); the cube texts are
+        // mirrored back below so they stay readable. (The geometry is built left-to-right, hence dir="ltr" + mirror.)
+        className="relative flex items-end rtl:-scale-x-100"
         style={{ gap: "var(--gap)" }}
       >
         {columns.map((cubes, colIndex) => {
