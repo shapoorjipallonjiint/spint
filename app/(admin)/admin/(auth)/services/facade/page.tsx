@@ -11,6 +11,10 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { Textarea } from "@/components/ui/textarea";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { VideoUploader } from "@/components/ui/video-uploader";
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
+
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface FacadeProps {
     metaTitle: string;
@@ -82,6 +86,19 @@ interface FacadeProps {
         imageAlt: string;
         imageAlt_ar: string;
     };
+    // "Our Façade, Glazing & Metalwork" accordion (optional)
+    systemsSection?: {
+        title?: string;
+        title_ar?: string;
+        subTitle?: string;
+        subTitle_ar?: string;
+        items?: {
+            title?: string;
+            title_ar?: string;
+            description?: string;
+            description_ar?: string;
+        }[];
+    };
 }
 
 const FacadePage = () => {
@@ -109,6 +126,15 @@ const FacadePage = () => {
     } = useFieldArray({
         control,
         name: "thirdSection.items",
+    });
+
+    const {
+        fields: systemsSectionItems,
+        append: systemsSectionAppend,
+        remove: systemsSectionRemove,
+    } = useFieldArray({
+        control,
+        name: "systemsSection.items",
     });
 
     const handleAddFacade = async (data: FacadeProps) => {
@@ -155,6 +181,8 @@ const FacadePage = () => {
                 setValue("thirdSection", data.data.thirdSection);
                 setValue("thirdSection.items", data.data.thirdSection.items);
                 setValue("fourthSection", data.data.fourthSection);
+                setValue("systemsSection", data.data.systemsSection);
+                setValue("systemsSection.items", data.data.systemsSection?.items || []);
             } else {
                 const data = await response.json();
                 alert(data.message);
@@ -598,6 +626,55 @@ const FacadePage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
+                    <Label main>Façade, Glazing &amp; Metalwork Section</Label>
+                    <div className="p-5 rounded-md flex flex-col gap-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Title</Label>
+                            <Input type="text" placeholder="Title" {...register(`systemsSection.title`)} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Sub Title (optional)</Label>
+                            <Textarea placeholder="Sub Title" {...register(`systemsSection.subTitle`)} />
+                        </div>
+                        <div className="flex flex-col gap-5">
+                            {systemsSectionItems.map((field, index) => (
+                                <div key={field.id} className="relative flex flex-col gap-3 border-b border-black/20 pb-5 last:border-b-0">
+                                    <RiDeleteBinLine
+                                        onClick={() => systemsSectionRemove(index)}
+                                        className="absolute top-2 right-2 cursor-pointer text-red-600"
+                                    />
+                                    <div className="flex flex-col gap-2">
+                                        <Label className="font-bold">Item {index + 1} Title</Label>
+                                        <Input type="text" placeholder="Title" {...register(`systemsSection.items.${index}.title`)} />
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <Label className="font-bold">Item {index + 1} List (use the bullet list button)</Label>
+                                        <Controller
+                                            name={`systemsSection.items.${index}.description`}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <ReactQuill theme="snow" value={field.value || ""} onChange={field.onChange} />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex justify-end">
+                            <Button
+                                type="button"
+                                addItem
+                                onClick={() =>
+                                    systemsSectionAppend({ title: "", title_ar: "", description: "", description_ar: "" })
+                                }
+                            >
+                                Add Item
+                            </Button>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+                <AdminItemContainer>
                     <Label main>SEO</Label>
                     <div className="flex flex-col gap-2 p-5">
                         <div className="flex flex-col gap-2">
@@ -1000,6 +1077,41 @@ const FacadePage = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </AdminItemContainer>
+
+                <AdminItemContainer>
+                    <Label main>Façade, Glazing &amp; Metalwork Section</Label>
+                    <div className="p-5 rounded-md flex flex-col gap-5">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Title</Label>
+                            <Input type="text" placeholder="Title" {...register(`systemsSection.title_ar`)} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Sub Title (optional)</Label>
+                            <Textarea placeholder="Sub Title" {...register(`systemsSection.subTitle_ar`)} />
+                        </div>
+                        <div className="flex flex-col gap-5">
+                            {systemsSectionItems.map((field, index) => (
+                                <div key={field.id} className="relative flex flex-col gap-3 border-b border-black/20 pb-5 last:border-b-0">
+                                    <div className="flex flex-col gap-2">
+                                        <Label className="font-bold">Item {index + 1} Title</Label>
+                                        <Input type="text" placeholder="Title" {...register(`systemsSection.items.${index}.title_ar`)} />
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <Label className="font-bold">Item {index + 1} List (use the bullet list button)</Label>
+                                        <Controller
+                                            name={`systemsSection.items.${index}.description_ar`}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <ReactQuill theme="snow" value={field.value || ""} onChange={field.onChange} />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <p className="text-sm text-black/50">Items are added and removed in the English column.</p>
                     </div>
                 </AdminItemContainer>
 

@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import LangLink from "@/lib/LangLink"
 import Image from "next/image";
-import { navData } from "../data";
+import { navData as allNavData } from "../data";
+import { useVisibleNavData } from "@/contexts/serviceVisibility";
 import { useSearchContext } from "@/contexts/searchContext";
 import HomeMobileNavbarSearch from "@/app/components/common/HomeMobileNavbarSearch";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -12,6 +13,8 @@ import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const MainNavbar = () => {
+    // services hidden in admin (Services > Main) are removed from the menus
+    const navData = useVisibleNavData(allNavData);
     const tNavData = useApplyLang(navData);
     const isArabic = useIsPreferredLanguageArabic();
     const [isSticky, setIsSticky] = useState(false);

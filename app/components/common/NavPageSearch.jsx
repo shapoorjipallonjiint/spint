@@ -1,7 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { navData } from "../data";
+import { navData as allNavData } from "../data";
+import { useVisibleNavData } from "@/contexts/serviceVisibility";
 import { moveRight, moveUp } from "../motionVarients";
 import Image from 'next/image'
 import LangLink from "@/lib/LangLink"
@@ -11,6 +12,8 @@ import { useDebounce } from '@/hooks/useDebounce'
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const NavPageSearch = ({ isOpen, searchActive }) => {
+    // services hidden in admin (Services > Main) are removed from the menus
+    const navData = useVisibleNavData(allNavData);
     const isArabic = useIsPreferredLanguageArabic();
     const [activeMenu, setActiveMenu] = useState(2);
 

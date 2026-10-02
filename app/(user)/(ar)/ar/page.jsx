@@ -10,7 +10,8 @@ const page = async () => {
     const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project`, { next: { revalidate: 60 } });
     const projectData = await projectResponse.json();
 
-    return <Index data={data.data} serviceData={serviceData.data} projectsData={projectData.data} />;
+    // services hidden in admin (Services > Main) are not listed
+    return <Index data={data.data} serviceData={(serviceData.data || []).filter((s) => !s.hidden)} projectsData={projectData.data} />;
 };
 
 export default page;

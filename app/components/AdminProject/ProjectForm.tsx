@@ -133,7 +133,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
     const [sectorList, setSectorList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
     const [locationList, setLocationList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
     const [serviceList, setServiceList] = useState<
-        { _id: string; pageTitle: string; pageTitle_ar: string; title_ar: string }[]
+        { _id: string; pageTitle: string; pageTitle_ar: string; title_ar: string; hidden?: boolean }[]
     >([]);
     const [reorderMode, setReorderMode] = useState(false);
 
@@ -635,6 +635,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                             }}
                                                         />
                                                         {item.pageTitle}
+                                                        {item.hidden && <span className="ms-2 text-xs text-red-600">(Hidden on website)</span>}
                                                     </label>
                                                     {item.pageTitle.includes("MEP") && serviceIndex !== -1 && (
                                                         <FaRegEdit
@@ -1416,6 +1417,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                         />
                                                         {item.pageTitle}{" "}
                                                         <span className="text-primary text-sm">AR:({item.title_ar})</span>
+                                                        {item.hidden && <span className="ms-2 text-xs text-red-600">(Hidden on website)</span>}
                                                     </label>
 
                                                     <Sheet>

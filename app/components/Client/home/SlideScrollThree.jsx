@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 import { getSuffix } from "@/helpers/getSuffix.ts";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
-import { useToNavigateCountryContext } from "@/contexts/toNavigateCountry";
+import { slugify } from "@/lib/slugify";
 
 const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData }) => {
     const tData = useApplyLang(data);
@@ -150,7 +150,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const swiperRef = useRef(null); // Add this ref for Swiper
     const [showBlueBox, setShowBlueBox] = useState(false);
 
-    const { setToNavigateCountry } = useToNavigateCountryContext();
 
     // Snap the hero divider line to the header's "scroll down" border so both read as one line
     useEffect(() => {
@@ -1370,12 +1369,15 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         }
     }, [activeIndex, isLargeScreen]); // Re-run when activeIndex changes
 
+    // opens the projects list filtered to the city's country (URL based, see projects-v2 ProjectLists);
+    // the slug is made from the English name so it works from the Arabic site too
     const goToProjects = (city) => {
         if (!city?.isClickable) return;
 
         const basePath = isArabic ? "/ar/projects" : "/projects";
+        const englishName = (data?.sixthSection?.cities || []).find((c) => String(c?._id) === String(city.id))?.name || city.name;
 
-        router.push(`${basePath}`);
+        router.push(`${basePath}?country=${slugify(englishName)}`);
     };
 
     return (
@@ -3101,7 +3103,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
                                                                         goToProjects(city);
-                                                                        setToNavigateCountry(city.name);
                                                                     }}
                                                                 >
                                                                     <p className="text-[24px] font-normal leading-tight">

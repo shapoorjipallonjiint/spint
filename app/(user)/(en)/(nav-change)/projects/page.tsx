@@ -14,7 +14,7 @@ const page = async() => {
     const serviceData = await serviceResponse.json();
 
   return (
-    <Index data={projectData.data} sectorData={sectorData.data} countryData={countryData.data} serviceData={serviceData.data}/>
+    <Index data={projectData.data} sectorData={sectorData.data} countryData={countryData.data} serviceData={(serviceData.data || []).filter((s: { hidden?: boolean }) => !s.hidden)}/>
   )
 }
 

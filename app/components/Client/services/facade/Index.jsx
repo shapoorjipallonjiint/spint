@@ -5,6 +5,7 @@ import VdoSection from "@/app/components/common/VdoSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
 import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
+import SystemsSec from "./sections/SystemsSec";
 // import LastSection from "./sections/LastSection";
 const Facade = ({ data, projectData }) => {
   const filteredProjects = projectData.projects.filter((item) =>
@@ -25,6 +26,8 @@ const Facade = ({ data, projectData }) => {
         />
         <VdoSection data={data.firstSection} />
         <ExpertiseSec data={data.secondSection} />
+        {/* "Our Façade, Glazing & Metalwork" accordion - renders only when items are added in the admin */}
+        <SystemsSec data={data.systemsSection} />
         <ImgPointsComponent
           data={data.thirdSection}
           bgColor="white"

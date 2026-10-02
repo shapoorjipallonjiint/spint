@@ -3,6 +3,8 @@ import { dmSans } from "@/app/fonts";
 import "@/app/globals.css";
 import ScrollToTop from "@/app/components/common/ScrollToTop";
 import { SearchProvider } from "@/contexts/searchContext";
+import { ServiceVisibilityProvider } from "@/contexts/serviceVisibility";
+import { fetchServiceVisibility } from "@/lib/serviceVisibility";
 
 export const metadata: Metadata = {
   title: "Shapoorji Pallonji",
@@ -14,16 +16,21 @@ export const dynamic = "force-dynamic";
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // services hidden in admin (Services > Main) are removed from menus, footers, project tabs, etc.
+  const visibility = await fetchServiceVisibility();
+
   return (
     <div lang="ar" dir="rtl">
       <div>
         <div>
           <div className={`${dmSans.variable} font-sans antialiased`}>
             {/* <SmoothScroll/> */}
+            <ServiceVisibilityProvider hiddenSlugs={visibility.hiddenServices} hiddenIds={visibility.hiddenServiceIds}>
             <SearchProvider>
               <ScrollToTop />
               {children}
             </SearchProvider>
+            </ServiceVisibilityProvider>
           </div>
         </div>
       </div>

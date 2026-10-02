@@ -1,6 +1,11 @@
+import { notFound } from "next/navigation";
+import { isServiceHidden } from "@/lib/serviceVisibility";
 import Index from '@/app/components/Client/services/interior-design/Index'
 
 const page = async() => {
+    // hidden in admin (Services > Main) -> this service page is not available
+    if (await isServiceHidden("interior-design")) notFound();
+
     const response = await fetch(`${process.env.BASE_URL}/api/admin/services/interior-design`, { next: { revalidate: 60 } });
   const data = await response.json();
 

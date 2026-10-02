@@ -1,304 +1,143 @@
 "use client";
 
 import { Listbox } from "@headlessui/react";
-// import { pjtList } from "../data";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { dropdownItemVariants, dropdownListVariants, moveUp, moveUpV2 } from "../../../motionVarients";
-import LangLink from "@/lib/LangLink"
+import { dropdownItemVariants, dropdownListVariants, moveUp } from "../../../motionVarients";
 import { statusData, UI_LABELS } from "@/app/components/AdminProject/statusData";
 import Image from "next/image";
-import { useRouter, usePathname } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
-import Reveal from "@/app/components/common/Reveal";
-import { useToNavigateCountryContext } from "@/contexts/toNavigateCountry";
-
-
+import { slugify } from "@/lib/slugify";
+import ProjectCard from "./ProjectCard";
+import Pagination from "./Pagination";
 
 const ITEMS_PER_PAGE = 12;
-const PROJECT_FILTER_STORAGE_KEY = "project-list-filters";
-const normalizeFilterValue = (value) => value?.toString().trim().toLowerCase() ?? "";
+const MotionImage = motion.create(Image);
+
+const ALL = { slug: "", ids: new Set(), label: UI_LABELS.ALL_OPTION.name, label_ar: UI_LABELS.ALL_OPTION.name_ar };
+
+// one option per slug (two sectors with the same name become one option that matches both)
+const toOptions = (list = [], labelKey = "name") => {
+    const bySlug = new Map();
+    (list || []).forEach((entry) => {
+        const slug = slugify(entry?.[labelKey]);
+        if (!slug) return;
+        if (!bySlug.has(slug)) {
+            bySlug.set(slug, {
+                slug,
+                ids: new Set(),
+                label: entry?.[labelKey],
+                label_ar: entry?.[`${labelKey}_ar`],
+            });
+        }
+        if (entry?._id) bySlug.get(slug).ids.add(String(entry._id));
+    });
+    return [ALL, ...bySlug.values()];
+};
 
 const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
-    const tSectorData = useApplyLang(sectorData);
-    const tCountryData = useApplyLang(countryData);
-    const tServiceData = useApplyLang(serviceData);
     const tData = useApplyLang(data);
     const router = useRouter();
     const pathname = usePathname();
-    const isArabic = useIsPreferredLanguageArabic();
     const searchParams = useSearchParams();
-    const isInitialized = useRef(false);
-    const hasHydratedFilters = useRef(false);
-    const MotionImage = motion.create(Image);
-    const [currentPage, setCurrentPage] = useState(1);
+    const isArabic = useIsPreferredLanguageArabic();
     const [isAnimating, setIsAnimating] = useState(false);
+    // first load: cards wait for the filter bar (moveUp(0.5), 0.7s) so the filters appear first;
+    // once the bar has animated in, cards revealed while scrolling get no extra delay
+    const [filterBarShown, setFilterBarShown] = useState(false);
+    const cardRevealDelay = filterBarShown ? 0 : 0.8;
     const sectionRef = useRef(null);
+    const listTopRef = useRef(null);
     const { scrollYProgress: shapeProgress } = useScroll({
         target: sectionRef,
         offset: ["start end", "end start"],
     });
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
 
-    const [view, setView] = useState("grid");
-
-    // Project with Countries
-    const projectCountries = useMemo(() => {
-        if (!tData?.length) return new Set();
-
-        return new Set(
-            tData
-                .map((item) => item?.secondSection?.location?.name)
-                .filter(Boolean)
-                .map((name) => name.toLowerCase()),
-        );
-    }, [tData]);
-
-    const { ALL_OPTION } = UI_LABELS;
-
-    const sector = useMemo(() => [ALL_OPTION, ...tSectorData], [ALL_OPTION, tSectorData]);
-
-    const status = useMemo(
-        () => [
-            ALL_OPTION,
-            ...statusData
-                .filter((item) => item.name && item.name.toLowerCase() !== "nill")
-                .map((item, index) => ({
-                    id: index + 2,
-                    ...item,
-                })),
-        ],
-        [ALL_OPTION],
+    // ---------- filter options (built from the untranslated data, so slugs are always English) ----------
+    const sectorOptions = useMemo(() => toOptions(sectorData), [sectorData]);
+    const countryOptions = useMemo(() => toOptions((countryData || []).filter((c) => c?.showInProjectFilter)), [countryData]);
+    const serviceOptions = useMemo(() => toOptions(serviceData, "title"), [serviceData]);
+    const statusOptions = useMemo(
+        () => toOptions(statusData.filter((item) => item.name && item.name.toLowerCase() !== "nill")),
+        [],
     );
 
-    const filteredCountryData = useMemo(() => {
-        return tCountryData.filter((c) => c.showInProjectFilter);
-    }, [tCountryData]);
+    const optionLabel = (opt) => (isArabic ? opt?.label_ar || opt?.label : opt?.label);
+    const pick = (options, slug) => options.find((opt) => opt.slug === slug) ?? ALL;
 
-    const country = useMemo(() => [ALL_OPTION, ...filteredCountryData], [ALL_OPTION, filteredCountryData]);
+    // ---------- current state, read from the URL ----------
+    const selectedSector = pick(sectorOptions, searchParams.get("sector") || "");
+    const selectedStatus = pick(statusOptions, searchParams.get("status") || "");
+    const selectedCountry = pick(countryOptions, searchParams.get("country") || "");
+    const selectedService = pick(serviceOptions, searchParams.get("service") || "");
+    const view = searchParams.get("view") === "list" ? "list" : "grid";
+    const requestedPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
 
-    const service = useMemo(() => [ALL_OPTION, ...tServiceData], [ALL_OPTION, tServiceData]);
-
-    // 🔹 Filter states
-    const [selectedSector, setSelectedSector] = useState(sector[0]);
-    const [selectedStatus, setSelectedStatus] = useState(status[0]);
-    const [selectedCountry, setSelectedCountry] = useState(country[0]);
-    const [selectedService, setSelectedService] = useState(service[0]);
-    const { toNavigateCountry, setToNavigateCountry } = useToNavigateCountryContext();
-
-    useEffect(() => {
-        const urlView = searchParams.get("view");
-        setView(urlView === "list" ? "list" : "grid");
-    }, [searchParams]);
-
-    useEffect(() => {
-        if (hasHydratedFilters.current) return;
-        if (typeof window === "undefined") return;
-
-        const savedFilters = sessionStorage.getItem(PROJECT_FILTER_STORAGE_KEY);
-        if (!savedFilters) {
-            hasHydratedFilters.current = true;
-            return;
-        }
-
-        try {
-            const parsed = JSON.parse(savedFilters);
-
-            const matchedSector =
-                sector.find((opt) => normalizeFilterValue(opt?.name) === normalizeFilterValue(parsed.selectedSectorName)) ??
-                sector[0];
-            const matchedStatus =
-                status.find((opt) => normalizeFilterValue(opt?.name) === normalizeFilterValue(parsed.selectedStatusName)) ??
-                status[0];
-            const matchedCountry =
-                country.find((opt) => normalizeFilterValue(opt?.name) === normalizeFilterValue(parsed.selectedCountryName)) ??
-                country[0];
-            const matchedService =
-                service.find((opt) => normalizeFilterValue(opt?.title) === normalizeFilterValue(parsed.selectedServiceTitle)) ??
-                service[0];
-
-            setSelectedSector(matchedSector);
-            setSelectedStatus(matchedStatus);
-            setSelectedCountry(matchedCountry);
-            setSelectedService(matchedService);
-            setCurrentPage(parsed.currentPage > 0 ? parsed.currentPage : 1);
-        } catch {
-            sessionStorage.removeItem(PROJECT_FILTER_STORAGE_KEY);
-        }
-        hasHydratedFilters.current = true;
-    }, [sector, status, country, service]);
-
-    useEffect(() => {
-        if (!hasHydratedFilters.current) return;
-        if (typeof window === "undefined") return;
-
-        sessionStorage.setItem(
-            PROJECT_FILTER_STORAGE_KEY,
-            JSON.stringify({
-                selectedSectorName: selectedSector?.name,
-                selectedStatusName: selectedStatus?.name,
-                selectedCountryName: selectedCountry?.name,
-                selectedServiceTitle: selectedService?.title,
-                currentPage,
-            }),
-        );
-    }, [currentPage, selectedCountry, selectedSector, selectedService, selectedStatus]);
-
-    // 🔹 Filter items based on all dropdowns
+    // ---------- filtering (by ids / English status, independent of the page language) ----------
     const filteredItems = useMemo(() => {
-        let items = [...tData];
-        console.log(items);
-        if (selectedSector.id !== 1) {
-            items = items.filter((item) =>
-                item.secondSection?.sector?.some(
-                    (sector) => sector.name.toLowerCase() === selectedSector?.name.toLowerCase(),
-                ),
-            );
-        }
+        const translatedById = new Map((tData || []).map((item) => [String(item?._id), item]));
 
-        if (selectedStatus.id !== 1) {
-            // assuming your data has item.status
-            items = items.filter((item) => item.secondSection?.status.toLowerCase() === selectedStatus?.name.toLowerCase());
-        }
+        return (data || [])
+            .filter((item) => {
+                const second = item?.secondSection || {};
+                if (selectedSector.slug && !(second.sector || []).some((sec) => selectedSector.ids.has(String(sec?._id))))
+                    return false;
+                if (selectedStatus.slug && slugify(second.status) !== selectedStatus.slug) return false;
+                if (selectedCountry.slug && !selectedCountry.ids.has(String(second.location?._id))) return false;
+                if (selectedService.slug && !(second.service || []).some((sv) => selectedService.ids.has(String(sv?.serviceId))))
+                    return false;
+                return true;
+            })
+            .map((item) => translatedById.get(String(item?._id)) || item);
+    }, [data, tData, selectedSector, selectedStatus, selectedCountry, selectedService]);
 
-        if (selectedCountry.id !== 1) {
-            items = items.filter(
-                (item) => item.secondSection?.location?.name.toLowerCase() === selectedCountry?.name.toLowerCase(),
-            );
-        }
+    const totalPages = Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE));
+    const currentPage = Math.min(requestedPage, totalPages);
+    const currentItems = useMemo(
+        () => filteredItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE),
+        [currentPage, filteredItems],
+    );
 
-        if (selectedService.id !== 1) {
-            // assuming your data has item.service
-            items = items.filter((item) =>
-                item.secondSection?.service?.some(
-                    (service) => service.title.toLowerCase() === selectedService?.title.toLowerCase(),
-                ),
-            );
-        }
+    // ---------- URL updates ----------
+    // replace: filters / view (no history entry per click). push: page changes (Back goes to the previous page).
+    const updateUrl = (changes, { push = false } = {}) => {
+        const params = new URLSearchParams(searchParams.toString());
+        Object.entries(changes).forEach(([key, value]) => {
+            if (value === null || value === undefined || value === "") params.delete(key);
+            else params.set(key, String(value));
+        });
+        const query = params.toString();
+        const url = query ? `${pathname}?${query}` : pathname;
+        if (push) router.push(url, { scroll: false });
+        else router.replace(url, { scroll: false });
+    };
 
-        return items;
-    }, [selectedSector, selectedStatus, selectedCountry, selectedService, tData]);
+    const handleFilterChange = (key) => (opt) => updateUrl({ [key]: opt?.slug || null, page: null });
+    const handleSectorChange = handleFilterChange("sector");
+    const handleStatusChange = handleFilterChange("status");
+    const handleCountryChange = handleFilterChange("country");
+    const handleServiceChange = handleFilterChange("service");
 
-    // 🔹 Total pages based on filtered data
-    const totalPages = useMemo(() => {
-        return Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE));
-    }, [filteredItems.length]);
+    const hasActiveFilters = Boolean(selectedSector.slug || selectedStatus.slug || selectedCountry.slug || selectedService.slug);
 
-    useEffect(() => {
-        if (currentPage > totalPages) {
-            setCurrentPage(totalPages);
-        }
-    }, [currentPage, totalPages]);
-
-    // 🔹 Current page items from filtered list
-    const currentItems = useMemo(() => {
-        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
-        return filteredItems.slice(startIndex, endIndex);
-    }, [currentPage, filteredItems]);
+    const handleClearFilters = () => updateUrl({ sector: null, status: null, country: null, service: null, page: null });
 
     const handlePageChange = (newPage) => {
         if (newPage < 1 || newPage > totalPages || isAnimating) return;
-
         setIsAnimating(true);
-        setCurrentPage(newPage);
-
-        const section = document.querySelector("section");
-        if (section) {
-            section.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-
-        setTimeout(() => {
-            setIsAnimating(false);
-        }, 300);
+        updateUrl({ page: newPage === 1 ? null : newPage }, { push: true });
+        // bring the top of the project list into view (not the top of the page)
+        listTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(() => setIsAnimating(false), 300);
     };
+    const handlePrev = () => handlePageChange(currentPage - 1);
+    const handleNext = () => handlePageChange(currentPage + 1);
 
-    const handlePrev = () => {
-        handlePageChange(currentPage - 1);
-    };
-
-    const handleNext = () => {
-        handlePageChange(currentPage + 1);
-    };
-
-    // 🔹 Filter change handlers (reset page to 1)
-    const handleSectorChange = (opt) => {
-        setSelectedSector(opt);
-        setCurrentPage(1);
-    };
-
-    const handleStatusChange = (opt) => {
-        setSelectedStatus(opt);
-        setCurrentPage(1);
-    };
-    const handleCountryChange = (opt) => {
-        setSelectedCountry(opt);
-        setCurrentPage(1);
-    };
-
-    const handleServiceChange = (opt) => {
-        setSelectedService(opt);
-        setCurrentPage(1);
-    };
-
-    // Clear all filters
-    const handleClearFilters = () => {
-        setSelectedSector(sector[0]);
-        setSelectedStatus(status[0]);
-        setSelectedCountry(country[0]);
-        setSelectedService(service[0]);
-        setCurrentPage(1);
-        if (typeof window !== "undefined") {
-            sessionStorage.removeItem(PROJECT_FILTER_STORAGE_KEY);
-        }
-    };
-
-
-    useEffect(() => {
-
-
-        // 🔴 Case 1: User did NOT come from home → remove query
-        if (toNavigateCountry) {
-            // 🟢 Case 2: User came from home → apply filter
-            if (isInitialized.current) return;
-
-
-            const matchedCountry = country.find(
-                (c) => c.name.toLowerCase() === toNavigateCountry.toLowerCase()
-            );
-
-            if (matchedCountry) {
-                setSelectedCountry(matchedCountry);
-                setCurrentPage(1);
-            }
-
-            isInitialized.current = true;
-
-            // ✅ Important: delay resetting flag
-            setToNavigateCountry("");
-        } else {
-            if (toNavigateCountry) {
-                router.replace(pathname);
-            }
-            return;
-        }
-
-    }, [country, searchParams, toNavigateCountry]);
-
-    const handleView = () => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set("view", "list");
-        router.push(`${pathname}?${params.toString()}`);
-        setView("list");
-    };
-    const handleGrid = () => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete("view");
-        router.push(params.toString() ? `${pathname}?${params.toString()}` : pathname);
-        setView("grid");
-    };
+    const handleView = () => updateUrl({ view: "list" });
+    const handleGrid = () => updateUrl({ view: null });
     const [showFilters, setShowFilters] = useState(false);
 
     return (
@@ -309,10 +148,13 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
-                    className="border-b border-t mt-80px border-cmnbdr mb-50px py-4 md:py-6 xl:py-[35px]"
+                    ref={listTopRef}
+                    onAnimationComplete={() => setFilterBarShown(true)}
+                    className="border-b border-t mt-80px border-cmnbdr mb-50px py-4 md:py-6 xl:py-[35px] scroll-mt-28"
                 >
-                    <div className="flex flex-col lg:flex-row justify-between ">
-                        <div className="md:hidden mb-3">
+                    {/* filters + view toggles: one row from 2xl; below that the toggles sit on their own line at the left */}
+                    <div className="flex flex-col 2xl:flex-row 2xl:items-center justify-between 2xl:gap-10">
+                        <div className="lg:hidden mb-3">
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
                                 className="flex items-center justify-between w-fit gap-2 border border-white/20 text-paragraph text-[14px] uppercase"
@@ -321,22 +163,15 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                 <span className="text-20">{showFilters ? "−" : "+"}</span>
                             </button>
                         </div>
-                        <div className={` ${showFilters ? "block" : "hidden"} md:block mb-0`}>
-                            <div className="flex flex-col md:flex-row gap-5 md:items-center lg:gap-12  2xl:gap-25  3xl:gap-[174px] justify-between">
-                                <div className="flex flex-col md:flex-row gap-3 lg:gap-10 2xl:gap-[90px] w-full ">
+                        <div className={` ${showFilters ? "block" : "hidden"} lg:block mb-0`}>
+                            <div className="flex flex-col md:flex-row gap-5 md:items-center md:gap-10 lg:gap-12 2xl:gap-[100px] 3xl:gap-[174px]">
+                                <div className="flex flex-col md:flex-row md:flex-wrap gap-3 md:gap-x-8 md:gap-y-3 lg:gap-x-10 2xl:gap-x-[60px] 3xl:gap-x-[90px] w-full md:w-auto">
                                     {/* Sector */}
-                                    <div className="w-full lg:w-fit relative">
-                                        <Listbox value={selectedSector} onChange={handleSectorChange}>
+                                    <div className="w-full md:w-fit relative">
+                                        <Listbox value={selectedSector} onChange={handleSectorChange} by="slug">
                                             <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
-                                                <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                    {/* {selectedSector?.name === "All" ? "Sector" : selectedSector?.name} */}
-                                                    {selectedSector?.name === "All"
-                                                        ? isArabic
-                                                            ? UI_LABELS.SECTOR.ar
-                                                            : UI_LABELS.SECTOR.en
-                                                        : isArabic
-                                                            ? selectedSector?.name_ar ?? selectedSector?.name
-                                                            : selectedSector?.name}
+                                                <span className="whitespace-nowrap text-paragraph text-16 font-semibold uppercase">
+                                                    {selectedSector.slug ? optionLabel(selectedSector) : isArabic ? UI_LABELS.SECTOR.ar : UI_LABELS.SECTOR.en}
                                                 </span>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -369,15 +204,15 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                     e.preventDefault();
                                                 }}
                                                 className=" absolute w-full md:w-[290px] h-[290px] overflow-y-auto overscroll-contain  bg-white rounded-sm shadow-sm z-[50]" >
-                                                {sector.map((opt) => (
+                                                {sectorOptions.map((opt) => (
                                                     <Listbox.Option
-                                                        key={opt.id}
+                                                        key={opt.slug || "all"}
                                                         value={opt}
                                                         as={motion.div}
                                                         variants={dropdownItemVariants}
                                                         className=" py-1 px-4 cursor-pointer group hover:bg-[#f0f0f0] hover:font-bold transition-colors duration-300 w-full " >
                                                         <span className=" transition-transform duration-300 group-hover:scale-[1.03] " >
-                                                            {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
+                                                            {optionLabel(opt)}
                                                         </span>
                                                     </Listbox.Option>
                                                 ))}
@@ -386,18 +221,11 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     </div>
 
                                     {/* Status */}
-                                    <div className="w-full lg:w-fit relative">
-                                        <Listbox value={selectedStatus} onChange={handleStatusChange}>
+                                    <div className="w-full md:w-fit relative">
+                                        <Listbox value={selectedStatus} onChange={handleStatusChange} by="slug">
                                             <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
-                                                <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                    {/* {selectedStatus?.name === "All" ? "Status" : selectedStatus?.name} */}
-                                                    {selectedStatus?.name === "All"
-                                                        ? isArabic
-                                                            ? UI_LABELS.STATUS.ar
-                                                            : UI_LABELS.STATUS.en
-                                                        : isArabic
-                                                            ? selectedStatus?.name_ar
-                                                            : selectedStatus?.name}
+                                                <span className="whitespace-nowrap text-paragraph text-16 font-semibold uppercase">
+                                                    {selectedStatus.slug ? optionLabel(selectedStatus) : isArabic ? UI_LABELS.STATUS.ar : UI_LABELS.STATUS.en}
                                                 </span>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -423,16 +251,15 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                 variants={dropdownListVariants}
                                                 className="border-0 outline-0 absolute w-full md:w-[150px] bg-white rounded-sm shadow-sm z-[1]"
                                             >
-                                                {status.map((opt) => (
+                                                {statusOptions.map((opt) => (
                                                     <Listbox.Option
-                                                        key={opt.id}
+                                                        key={opt.slug || "all"}
                                                         value={opt}
                                                         as={motion.div}
                                                         variants={dropdownItemVariants}
                                                         className=" py-1 px-4 cursor-pointer group hover:bg-[#f0f0f0] hover:font-bold w-full transition-colors duration-300 " >
                                                         <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                            {/* {opt?.name} */}
-                                                            {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
+                                                            {optionLabel(opt)}
                                                         </span>
                                                     </Listbox.Option>
                                                 ))}
@@ -441,18 +268,11 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     </div>
 
                                     {/* Country */}
-                                    <div className="w-full lg:w-fit relative">
-                                        <Listbox value={selectedCountry} onChange={handleCountryChange}>
+                                    <div className="w-full md:w-fit relative">
+                                        <Listbox value={selectedCountry} onChange={handleCountryChange} by="slug">
                                             <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
-                                                <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                    {/* {selectedCountry?.name === "All" ? "Country" : selectedCountry?.name} */}
-                                                    {selectedCountry?.name === "All"
-                                                        ? isArabic
-                                                            ? UI_LABELS.COUNTRY.ar
-                                                            : UI_LABELS.COUNTRY.en
-                                                        : isArabic
-                                                            ? selectedCountry?.name_ar ?? selectedCountry?.name
-                                                            : selectedCountry?.name}
+                                                <span className="whitespace-nowrap text-paragraph text-16 font-semibold uppercase">
+                                                    {selectedCountry.slug ? optionLabel(selectedCountry) : isArabic ? UI_LABELS.COUNTRY.ar : UI_LABELS.COUNTRY.en}
                                                 </span>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -485,9 +305,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                 onWheel={(e) => e.stopPropagation()}
                                                 onTouchMove={(e) => e.stopPropagation()}
                                             >
-                                                {country.map((opt) => (
+                                                {countryOptions.map((opt) => (
                                                     <Listbox.Option
-                                                        key={opt.id}
+                                                        key={opt.slug || "all"}
                                                         value={opt}
                                                         as={motion.div}
                                                         variants={dropdownItemVariants}
@@ -500,7 +320,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
       "
                                                     >
                                                         <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                            {isArabic ? opt?.name_ar ?? opt?.name : opt?.name}
+                                                            {optionLabel(opt)}
                                                         </span>
                                                     </Listbox.Option>
                                                 ))}
@@ -509,18 +329,11 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     </div>
 
                                     {/* Service */}
-                                    <div className="w-full lg:w-fit relative">
-                                        <Listbox value={selectedService} onChange={handleServiceChange}>
+                                    <div className="w-full md:w-fit relative">
+                                        <Listbox value={selectedService} onChange={handleServiceChange} by="slug">
                                             <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
-                                                <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
-                                                    {/* {selectedService?.title === "All" ? "Service" : selectedService?.title} */}
-                                                    {selectedService?.title === "All"
-                                                        ? isArabic
-                                                            ? UI_LABELS.SERVICE.ar
-                                                            : UI_LABELS.SERVICE.en
-                                                        : isArabic
-                                                            ? selectedService?.title_ar ?? selectedService?.title
-                                                            : selectedService?.title}
+                                                <span className="whitespace-nowrap text-paragraph text-16 font-semibold uppercase">
+                                                    {selectedService.slug ? optionLabel(selectedService) : isArabic ? UI_LABELS.SERVICE.ar : UI_LABELS.SERVICE.en}
                                                 </span>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -553,9 +366,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                 }}
                                                 className="border-0 outline-0 absolute w-full md:w-[200px] 2xl:w-[270px] bg-white rounded-sm shadow-sm z-[1]"
                                             >
-                                                {service.map((opt) => (
+                                                {serviceOptions.map((opt) => (
                                                     <Listbox.Option
-                                                        key={opt.id}
+                                                        key={opt.slug || "all"}
                                                         value={opt}
                                                         as={motion.div}
                                                         variants={{
@@ -579,7 +392,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                                         className="py-1 px-4 hover:bg-[#f0f0f0] cursor-pointer group hover:font-bold transition-colors duration-300 w-full"
                                                     >
                                                         <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                            {opt?.title}
+                                                            {optionLabel(opt)}
                                                         </span>
                                                     </Listbox.Option>
                                                 ))}
@@ -588,8 +401,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     </div>
                                 </div>
 
-                                {/* Clear Filter */}
-                                <div className="">
+                                {/* Clear Filter: only when a filter is applied in the URL */}
+                                {hasActiveFilters && (
+                                <div className="shrink-0">
                                     <button
                                         type="button"
                                         onClick={handleClearFilters}
@@ -635,10 +449,11 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                         </p>
                                     </button>
                                 </div>
+                                )}
                             </div>
                         </div>
                         {/* View toggles */}
-                        <div className="flex items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-start">
+                        <div className="flex shrink-0 items-center gap-6 lg:gap-5 2xl:gap-[30px] justify-start lg:mt-5 2xl:mt-0">
                             <div className="flex group items-center gap-[6px] cursor-pointer" onClick={handleGrid}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -652,7 +467,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <rect x="11" width="8" height="8" fill="#30B6F9" />
                                     <rect x="11" y="11" width="8" height="8" fill="#30B6F9" />
                                 </svg>
-                                <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
+                                <p className="uppercase whitespace-nowrap text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
                                     {isArabic ? UI_LABELS.GRID_VIEW.ar : UI_LABELS.GRID_VIEW.en}
                                 </p>
                             </div>
@@ -671,7 +486,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                                     <line y1="0.5" x2="19" y2="0.5" stroke="#30B6F9" />
                                     <line y1="12.5" x2="19" y2="12.5" stroke="#30B6F9" />
                                 </svg>
-                                <p className="uppercase text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
+                                <p className="uppercase whitespace-nowrap text-[12px] md:text-[14px] lg:text-16 text-paragraph font-light ">
                                     {isArabic ? UI_LABELS.LIST_VIEW.ar : UI_LABELS.LIST_VIEW.en}
                                 </p>
                             </div>
@@ -688,77 +503,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         transition: "opacity 300ms ease-in-out, transform 300ms ease-in-out",
                     }}
                 >
-                    {currentItems.map((item, index) => {
-                        const title = item.firstSection.title;
-
-                        return (
-                            <Reveal key={index} variants={moveUpV2} className="group">
-                                <LangLink href={`/projects/${item.slug}`} className="block">
-                                    <div className="relative w-full aspect-[16/10] sm:aspect-[4/3] xl:aspect-[520/500]  overflow-hidden bg-primary">
-                                        {/* Image: slow zoom on hover */}
-                                        {item?.thumbnail ? (
-                                            <Image
-                                                src={item.thumbnail}
-                                                alt={item.thumbnailAlt || title}
-                                                fill
-                                                sizes="(min-width: 1280px) 520px, (min-width: 768px) 50vw, 100vw"
-                                                className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
-                                            />
-                                        ) : (
-                                            <div className="absolute inset-0 bg-primary opacity-90 flex items-center justify-center">
-                                                <span className="text-white text-29 font-medium">395×250</span>
-                                            </div>
-                                        )}
-
-                                        {/* DEFAULT overlay: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.9) 100%) — fades out on hover */}
-                                        <div
-                                            className="absolute inset-0 pointer-events-none opacity-100
-                        bg-[linear-gradient(180deg,rgba(0,0,0,0)_50%,rgba(0,0,0,0.9)_100%)]
-                        transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
-                        group-hover:opacity-0 group-focus-visible:opacity-0"
-                                        />
-
-                                        {/* HOVER overlay: linear-gradient(180deg, rgba(48,182,249,0) 50%, rgba(48,182,249,0.9) 100%) — fades in on hover */}
-                                        <div
-                                            className="absolute inset-0 pointer-events-none opacity-0 translate-y-4
-                        bg-[linear-gradient(180deg,rgba(48,182,249,0)_50%,rgba(48,182,249,0.9)_100%)]
-                        transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
-                        group-hover:opacity-100 group-hover:translate-y-0
-                        group-focus-visible:opacity-100 group-focus-visible:translate-y-0"
-                                        />
-
-                                        {/* Arrow badge (top-right, 80x80, 40px inset on desktop) */}
-                                        <div
-                                            className={`absolute top-4 end-4 md:top-6 md:end-6 xl:top-10 xl:end-10
-                        w-[50px] h-[50px] xl:w-[80px] xl:h-[80px] flex items-center justify-center bg-primary
-                        opacity-0 -translate-y-3 [clip-path:inset(0_0_100%_0)]
-                        transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
-                        group-hover:opacity-100 group-hover:translate-y-0 group-hover:[clip-path:inset(0_0_0_0)]
-                        group-focus-visible:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:[clip-path:inset(0_0_0_0)]
-                        ${isArabic ? "-scale-x-100" : ""}`}
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="-translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] w-6 h-6 3xl:w-[34px] 3xl:h-[34px]"
-                                                width="35"
-                                                height="35"
-                                                viewBox="0 0 35 35"
-                                                fill="none"
-                                            >
-                                                <path d="M1.25 1.25H33.2484V33.2411" stroke="#30B6F9" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M33.2498 1.25L1.4043 33.2411" stroke="#30B6F9" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </div>
-
-                                        {/* Title only (bottom-left, 40px inset) */}
-                                        <h2 className="absolute inset-x-0 bottom-0 p-5 md:p-6 xl:p-10 text-white truncate text-[20px] lg:text-24 2xl:text-29 leading-[1.344827586206897] font-light transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1">
-                                            {title}
-                                        </h2>
-                                    </div>
-                                </LangLink>
-                            </Reveal>
-                        );
-                    })}
+                    {currentItems.map((item) => (
+                        <ProjectCard key={item._id} item={item} variant="grid" isArabic={isArabic} revealDelay={cardRevealDelay} />
+                    ))}
 
                     {currentItems.length === 0 && (
                         <div className="col-span-full text-center py-10 text-paragraph">
@@ -777,83 +524,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                         transition: "opacity 300ms ease-in-out, transform 300ms ease-in-out",
                     }}
                 >
-                    {currentItems.map((item, index) => (
-                        <Reveal key={index} variants={moveUpV2} className="border-b border-black/20 pb-[30px] mb-[30px] group">
-                            <LangLink href={`/projects/${item.slug}`}>
-                                <div className="flex flex-col lg:grid grid-cols-[240px_244px_448px_0px] xl:grid-cols-[240px_244px_448px_32px] 2xl:grid-cols-[274px_324px_458px_32px] 3xl:grid-cols-[274px_384px_658px_32px] justify-between gap-3 md:gap-8 lg:gap-4 3xl:gap-[69px] ">
-                                    <div className="w-full xl:w-full">
-                                        {item?.thumbnail ? (
-                                            <Image
-                                                src={item.thumbnail}
-                                                alt={item.thumbnailAlt || item.firstSection.title}
-                                                width={274}
-                                                height={208}
-                                                className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full object-cover"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-[250px] md:h-[350px] lg:h-[208px] xl:min-w-full bg-primary flex items-center justify-center">
-                                                <span className="text-white text-19 font-medium">Image</span>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <div>
-                                            <h3 className="text20 text-29 leading-[1.344827586206897] font-light  ">
-                                                {item.firstSection.title}
-                                            </h3>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="bg-f5f5 p-5 xl:py-[18px] xl:px-[30px]">
-                                            <div className="flex gap-5 3xl:gap-[168px] justify-between border-b border-b-black/20 pb-[11px] mb-[7px] ">
-                                                <p className="text-paragraph text-19 font-light  leading-[1.4] md:leading-[2] ">
-                                                    {isArabic ? UI_LABELS.SECTOR.ar : UI_LABELS.SECTOR.en}: <br className="hidden lg:block 2xl:hidden"></br>
-                                                    {item?.secondSection?.sector?.name}
-                                                </p>
-                                                <p className="text-paragraph text-19 font-light leading-[1.4] md:leading-[2] xl:pe-6">
-                                                    BUA (Sq.ft): <br className="hidden lg:block 2xl:hidden" />
-                                                    {item?.secondSection?.items?.find((i) => i?.key?.includes("BUA"))
-                                                        ?.value ?? ""}
-                                                </p>
-                                            </div>
-                                            <div className="">
-                                                <p className="text-paragraph text-19 font-light leading-[2]">
-                                                    {isArabic ? UI_LABELS.ProjectCardDetails.Location.ar : UI_LABELS.ProjectCardDetails.Location.en}: {item.secondSection?.location?.name}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={` ${isArabic ? "-scale-x-100" : ""
-                                            } opacity-0 group-hover:opacity-100 transition-all duration-300 hidden lg:block`}
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="32"
-                                            height="32"
-                                            viewBox="0 0 35 35"
-                                            fill="none"
-                                        >
-                                            <path
-                                                d="M1.25 1.25H33.2484V33.2411"
-                                                stroke="#30B6F9"
-                                                strokeWidth="2.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                            <path
-                                                d="M33.2498 1.25L1.4043 33.2411"
-                                                stroke="#30B6F9"
-                                                strokeWidth="2.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </LangLink>
-                        </Reveal>
+                    {currentItems.map((item) => (
+                        <ProjectCard key={item._id} item={item} variant="list" isArabic={isArabic} revealDelay={cardRevealDelay} />
                     ))}
 
                     {currentItems.length === 0 && (
@@ -862,53 +534,14 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 </div>
 
                 {/* Pagination */}
-                <div className="flex items-center justify-center gap-2 w-full pb-80px">
-                    <div className="pagination flex items-center gap-5 justify-center ">
-                        <button
-                            className={`prev cursor-pointer transition-all duration-200 hover:scale-110 ${isArabic ? "rotate-180" : ""
-                                }  disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
-                                }`}
-                            onClick={handlePrev}
-                            disabled={currentPage === 1 || isAnimating}
-                        >
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M9.7549 1.25L1.25 9.7549M1.25 9.7549L9.75297 18.2579M1.25 9.7549L18.2169 9.79374"
-                                    stroke="#30B6F9"
-                                    strokeWidth="2.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                        </button>
-
-                        <p>
-                            <span className="current-page font-bold text-16 leading-[2.4375]">
-                                {String(currentPage).padStart(2, "0")}
-                            </span>
-                            {" / "}
-                            <span className="total-pages">{String(totalPages).padStart(2, "0")}</span>
-                        </p>
-
-                        <button
-                            className={`next cursor-pointer transition-all duration-200 hover:scale-110 ${isArabic ? "rotate-180" : ""
-                                } disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === totalPages || isAnimating ? "opacity-30" : "opacity-100"
-                                }`}
-                            onClick={handleNext}
-                            disabled={currentPage === totalPages || isAnimating}
-                        >
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M9.71189 1.25L18.2168 9.7549M18.2168 9.7549L9.71383 18.2579M18.2168 9.7549L1.24994 9.79374"
-                                    stroke="#30B6F9"
-                                    strokeWidth="2.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPrev={handlePrev}
+                    onNext={handleNext}
+                    disabled={isAnimating}
+                    isArabic={isArabic}
+                />
             </div>
 
             {view === "grid" && (

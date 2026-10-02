@@ -13,6 +13,7 @@ import Sector from "@/app/models/Sector";
 import Service from "@/app/models/Service";
 import Water from "@/app/models/Water";
 
+import { readHiddenServiceSlugs } from "@/lib/serviceVisibility";
 const MIN_MULTI_TOKEN_MATCH_COVERAGE = 0.75;
 const MIN_SCORE_SINGLE_TOKEN_SHORT = 100;
 const MIN_SCORE_SINGLE_TOKEN = 85;
@@ -251,8 +252,11 @@ export async function POST(req: NextRequest) {
         { type: "DesignStudio", items: designStudioDocs },
     ];
 
+    // services hidden in admin (Services > Main) are not searchable
+    const hiddenServiceSlugs = await readHiddenServiceSlugs();
+
     const serviceResults = serviceCollections
-        .flatMap(({ type, items }) => items.map((item: any) => {
+        .flatMap(({ type, items }) => items.filter((item: any) => !hiddenServiceSlugs.includes(String(item?.link))).map((item: any) => {
             const score = scoreWeightedEntry(normalizedQuery, [
                 { value: item?.title, weight: 1.35 },
                 { value: item?.title_ar, weight: 1.35 },
