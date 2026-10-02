@@ -1748,6 +1748,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             </div>
 
                             <AboutHighlights
+                                items={tData.secondSection?.highlights}
                                 containerRef={highlightsRef}
                                 active={highlightsStarted && currentVisibleSlide === "section2"}
                                 isArabic={isArabic}

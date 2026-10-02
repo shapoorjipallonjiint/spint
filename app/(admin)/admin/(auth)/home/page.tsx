@@ -69,6 +69,15 @@ interface HomeFormProps {
             value?: string;
             value_ar?: string;
         }[];
+
+        // highlights cycling above the stats (homepage slide 2)
+        highlights?: {
+            title?: string;
+            title_ar?: string;
+            icon?: string;
+            iconAlt?: string;
+            iconAlt_ar?: string;
+        }[];
     };
 
     thirdSection: {
@@ -175,6 +184,15 @@ const Home = () => {
     });
 
     const {
+        fields: highlightItems,
+        append: highlightAppend,
+        remove: highlightRemove,
+    } = useFieldArray({
+        control,
+        name: "secondSection.highlights",
+    });
+
+    const {
         fields: thirdSectionItems,
         append: thirdSectionAppend,
         remove: thirdSectionRemove,
@@ -245,6 +263,7 @@ const Home = () => {
                 setValue("firstSection", data.data.firstSection);
                 setValue("secondSection", data.data.secondSection);
                 setValue("secondSection.items", data.data.secondSection.items);
+                setValue("secondSection.highlights", data.data.secondSection?.highlights || []);
                 setValue("thirdSection", data.data.thirdSection);
                 setValue("thirdSection.items", data.data.thirdSection.items);
                 setValue("fourthSection", data.data.fourthSection);
@@ -523,6 +542,42 @@ const Home = () => {
                                     </Button>
                                 </div>
                             </div>
+                        </div>
+                        <div className="flex flex-col gap-4 border-t border-black/20 pt-5 mt-2">
+                            <Label className="font-bold">Highlights</Label>
+                        <p className="text-sm text-black/50">
+                            The icon + title that cycle above the stats on the homepage.
+                        </p>
+                        {highlightItems.map((field, index) => (
+                            <div key={field.id} className="relative grid grid-cols-1 gap-2 border-b border-black/20 pb-4 last:border-b-0">
+                                    <RiDeleteBinLine
+                                        onClick={() => highlightRemove(index)}
+                                        className="absolute top-2 right-2 cursor-pointer text-red-600"
+                                    />
+                                    <Controller
+                                        name={`secondSection.highlights.${index}.icon`}
+                                        control={control}
+                                        render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                    />
+                                <div className="flex flex-col gap-1">
+                                    <Label>Icon Alt</Label>
+                                    <Input type="text" placeholder="Alt Tag" {...register(`secondSection.highlights.${index}.iconAlt`)} />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <Label>Highlight {index + 1} Title</Label>
+                                    <Input type="text" placeholder="Title" {...register(`secondSection.highlights.${index}.title`)} />
+                                </div>
+                            </div>
+                        ))}
+                        <div className="flex justify-end">
+                            <Button
+                                type="button"
+                                addItem
+                                onClick={() => highlightAppend({ title: "", title_ar: "", icon: "", iconAlt: "", iconAlt_ar: "" })}
+                            >
+                                Add Highlight
+                            </Button>
+                        </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -1326,6 +1381,22 @@ const Home = () => {
                                     </Button>
                                 </div>
                             </div>
+                        </div>
+                        <div className="flex flex-col gap-4 border-t border-black/20 pt-5 mt-2">
+                            <Label className="font-bold">Highlights</Label>
+                        {highlightItems.map((field, index) => (
+                            <div key={field.id} className="relative grid grid-cols-1 gap-2 border-b border-black/20 pb-4 last:border-b-0">
+                                <div className="flex flex-col gap-1">
+                                    <Label>Icon Alt</Label>
+                                    <Input type="text" placeholder="Alt Tag" {...register(`secondSection.highlights.${index}.iconAlt_ar`)} />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <Label>Highlight {index + 1} Title</Label>
+                                    <Input type="text" placeholder="Title" {...register(`secondSection.highlights.${index}.title_ar`)} />
+                                </div>
+                            </div>
+                        ))}
+                        <p className="text-sm text-black/50">Highlights are added, removed and given icons in the English column.</p>
                         </div>
                     </div>
                 </AdminItemContainer>

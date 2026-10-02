@@ -50,25 +50,25 @@ export const leaderData = {
         id: 3,
         image: "../assets/images/leadership/promoters/pro-3.png",
         name: "Mr. Zahan. C. Mistry",
-        designation: "Designation",
+        designation: "Director",
       },
       {
         id: 4,
         image: "../assets/images/leadership/promoters/pro-4.png",
         name: "Mr. Marzin R Shroff",
-        designation: "Group Head -Transformation, People & Culture",
+        designation: "Group Head-Transformation, People & Culture",
       },
       {
         id: 5,
         image: "../assets/images/leadership/promoters/pro-5.png",
         name: "Mr. Nadeem Panchetan",
-        designation: "Executive Vice President - Business Development",
+        designation: "Executive Vice President Business Development",
       },
       {
         id: 6,
         image: "../assets/images/leadership/promoters/pro-6.png",
         name: "Mr. Vinod Bhandawat",
-        designation: "Lorem",
+        designation: "Group Finance Controller",
       },
   
 

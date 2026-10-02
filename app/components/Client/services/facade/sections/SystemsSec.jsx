@@ -25,6 +25,14 @@ const SystemsSecContent = ({ t, items }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const sectionRef = useRef(null);
     const [openIndex, setOpenIndex] = useState(0);
+    // while a row opens/closes (500ms) the rows move under a still mouse pointer; ignore hovers until it settles,
+    // otherwise the row that slides under the pointer would open too
+    const hoverLockUntil = useRef(0);
+    const openOnHover = (index, eventTime) => {
+        if (eventTime < hoverLockUntil.current || index === openIndex) return;
+        hoverLockUntil.current = eventTime + 600;
+        setOpenIndex(index);
+    };
 
     const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
     const shapeY = useTransform(scrollYProgress, [0, 1], [-200, 200]);
@@ -83,8 +91,9 @@ const SystemsSecContent = ({ t, items }) => {
                                     className={`group grid lg:grid-cols-[1fr_2fr_auto] min-[1810px]:grid-cols-[minmax(521px,1fr)_2fr_auto] gap-x-6 py-3 md:py-4 2xl:py-[16px] cursor-pointer ${
                                         isOpen ? "items-start" : "items-center"
                                     }`}
-                                    onMouseEnter={() => setOpenIndex(index)}
-                                    onClick={() => setOpenIndex(isOpen ? -1 : index)}
+                                    onMouseEnter={(e) => openOnHover(index, e.timeStamp)}
+                                    // one item is always open: the first by default, then whichever was last hovered / clicked (stays open)
+                                    onClick={() => setOpenIndex(index)}
                                 >
                                     {/* title (+ arrow on mobile) */}
                                     <div className="flex justify-between items-center gap-4">

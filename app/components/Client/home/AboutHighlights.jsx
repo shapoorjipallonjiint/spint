@@ -5,34 +5,6 @@ import gsap from "gsap";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
-const highlights = [
-  { title: "A Legacy of Trust", icon: "/assets/images/home/icons/legacy.svg" },
-  {
-    title: "Global Diversification",
-    icon: "/assets/images/home/icons/legacy.svg",
-  },
-  {
-    title: "Integrated Excellence",
-    icon: "/assets/images/home/icons/legacy.svg",
-  },
-  {
-    title: "Engineering the Future",
-    icon: "/assets/images/home/icons/legacy.svg",
-  },
-  {
-    title:
-      "Across Every Frontier: Construction | Infrastructure | Water | Real Estate | Energy | Renewables",
-    icon: "/assets/images/home/icons/legacy.svg",
-  },
-  {
-    title: "Committed to Timely Delivery",
-    icon: "/assets/images/home/icons/legacy.svg",
-  },
-  {
-    title: "Building Global Partnerships",
-    icon: "/assets/images/home/icons/legacy.svg",
-  },
-];
 
 const SECONDS_PER_ITEM = 4;
 
@@ -46,7 +18,9 @@ const ringMask = {
 
 // Icon + title that cycle over time, with a white bar filling the stats line underneath.
 // The bar's progress drives which highlight is shown, so both always stay in sync.
-const AboutHighlights = ({ active, isArabic, containerRef }) => {
+// items: highlights from admin (Home > Second Section > Highlights)
+const AboutHighlights = ({ active, isArabic, containerRef, items }) => {
+  const highlights = (items || []).filter((item) => item?.title);
   const barRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -56,9 +30,9 @@ const AboutHighlights = ({ active, isArabic, containerRef }) => {
 
     gsap.set(bar, { scaleX: 0 });
     setActiveIndex(0);
-    if (!active) return;
-
     const count = highlights.length;
+    if (!active || !count) return;
+
     const tween = gsap.to(bar, {
       scaleX: 1,
       duration: count * SECONDS_PER_ITEM,
@@ -71,7 +45,7 @@ const AboutHighlights = ({ active, isArabic, containerRef }) => {
     });
 
     return () => tween.kill();
-  }, [active]);
+  }, [active, highlights.length]);
 
   // track the rendered title height (changes when a title wraps to more lines, or on resize)
   const titleRef = useRef(null);
@@ -89,7 +63,10 @@ const AboutHighlights = ({ active, isArabic, containerRef }) => {
     return () => observer.disconnect();
   }, []);
 
-  const current = highlights[activeIndex];
+  // nothing added in admin yet -> no highlights block
+  if (!highlights.length) return null;
+
+  const current = highlights[activeIndex] ?? highlights[0];
 
   return (
     <div
@@ -113,7 +90,7 @@ const AboutHighlights = ({ active, isArabic, containerRef }) => {
           >
             <Image
               src={current.icon}
-              alt=""
+              alt={current.iconAlt || ""}
               width={37}
               height={34}
               className="h-6 xl:h-7 3xl:h-8 w-auto"
