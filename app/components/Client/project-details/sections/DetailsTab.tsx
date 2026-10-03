@@ -38,6 +38,8 @@ type Service = {
       description: string;
       description_ar: string;
     },
+    mepDisplayType?: "accordion" | "list";
+    accordionTitle?: string;
     items: {
       title: string;
       description: string;
@@ -54,6 +56,7 @@ type DetailsTabItem = {
   subtitle?: string;
   description?: string;
   scopeTitle?: string;
+  accordionTitle?: string;
   scopeDescription?:string;
   scopeItems?: ScopeItem[];
   workSections?: WorkSection[];
@@ -75,7 +78,9 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const mobilePanelRefs = useRef<Array<HTMLDivElement | null>>([]);
   const mobileScrollFrame = useRef<number | null>(null);
   const tabs: DetailsTabItem[] = data.service.map((s) => {
-    const isMEP = s.serviceName === "MEP";
+    // MEP shows the accordion unless admin switched it to the "list" (title + description) layout;
+    // projects saved before the toggle existed have no value and stay on the accordion.
+    const isMEP = s.serviceName === "MEP" && s.mepDisplayType !== "list";
 
     return {
       title: s.serviceName,
@@ -88,6 +93,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
 
       // 👉 NON-MEP (normal scope UI)
       scopeTitle: s.secondSection.title,
+      accordionTitle: isMEP ? s.accordionTitle?.trim() || undefined : undefined,
       scopeDescription: !isMEP
         ? s.secondSection.description
         : undefined,
@@ -114,6 +120,19 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
 
     return defaultIndex >= 0 ? defaultIndex : 0;
   });
+  // desktop hover opens a row after a short delay, so passing the cursor over rows
+  // (which shift while one expands) doesn't open each of them in turn
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearHoverTimer = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = null;
+  };
+  const openSectionOnHover = (index: number) => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    clearHoverTimer();
+    hoverTimer.current = setTimeout(() => setOpenSection(index), 150);
+  };
+  useEffect(() => clearHoverTimer, []);
   const [openSection, setOpenSection] = useState(() => {
     const mepTab = tabs.find((tab) => tab.serviceName === "MEP")
     const defaultIndex = (mepTab?.workSections ?? []).findIndex(
@@ -167,7 +186,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const renderAccordionContent = (section: WorkSection) => {
     // if (!section.items.length) return null;
     return (
-      <div className="grid md:grid-cols-2 gap-x-12 gap-y-2 pb-5 xl:pt-[11px] xl:pb-[15px] mep-tab-description-project-details" dangerouslySetInnerHTML={{ __html: section.description }}>
+      <div className="grid md:grid-cols-2 gap-x-12 gap-y-2 pb-1 lg:pt-2 mep-tab-description-project-details" dangerouslySetInnerHTML={{ __html: section.description }}>
         {/* <div dangerouslySetInnerHTML={{ __html: section.description }}></div> */}
         {/* {section.items.map((item) => (
           <div
@@ -309,8 +328,14 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     tab.type === "accordion" ? (
       <>
         {/* <H2Title titleText={`${tab.title} Work`} titleColor="" marginClass="mb-4 lg:mb-5" maxW="" /> */}
+        {tab.accordionTitle && (
+          <motion.h3 variants={moveUp(0.05)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}
+            className="text-40 font-light leading-[1.25] text-black mb-3 md:mb-6 3xl:mb-[30px]">
+            {tab.accordionTitle}
+          </motion.h3>
+        )}
 
-        <motion.div variants={moveUp(0.1)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className=" border-black/20" >
+        <motion.div variants={moveUp(0.1)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`border-black/20 ${tab.accordionTitle ? "border-t" : ""}`} >
           {(tab.workSections ?? []).map((section, index) => {
             const isOpen = openSection === index;
 
@@ -320,18 +345,20 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                 role="button"
                 tabIndex={0}
                 onClick={() => setOpenSection(index)}
+                onMouseEnter={() => openSectionOnHover(index)}
+                onMouseLeave={clearHoverTimer}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
                     setOpenSection(index);
                   }
                 }}
-                className={`group grid lg:grid-cols-[1.2fr_2.4fr_auto] py-2 2xl:py-[16px] cursor-pointer border-b border-black/20 transition-all duration-300 ${isOpen ? "items-start" : "items-center"
+                className={`group grid lg:grid-cols-[1.2fr_2.4fr_auto] gap-x-8 xl:gap-x-12 py-4 lg:py-6 xl:py-7 cursor-pointer border-b border-black/20 transition-all duration-300 ${isOpen ? "items-start" : "items-center"
                   }`}
               >
                 <div className="flex justify-between items-center text-start">
                   <span
-                    className={`text-22 md:text-24 xl:text-29 leading-[1.35] lg:leading-[2.43] text-paragraph group-hover:text-black 
+                    className={`text-22 md:text-24 xl:text-29 text-paragraph group-hover:text-black 
                       transition-all ease-in-out duration-500 group-hover:font-bold ${isOpen ? "font-bold text-black" : "font-[300] "
                       } ${isOpen ? "mb-3 lg:mb-0" : ""}`}
                   >

@@ -118,6 +118,12 @@ const projectSchema = new mongoose.Schema({
             description_ar: { type: String },
           },
 
+          // MEP only: "accordion" (items) or "list" (secondSection title + description).
+          // Missing/empty means "accordion" so existing projects render as before.
+          mepDisplayType: { type: String, enum: ["accordion", "list"] },
+          // MEP accordion only: optional heading shown above the accordion rows
+          accordionTitle: { type: String },
+
           items:[{
             title:{type:String},
             description:{type:String},

@@ -99,6 +99,9 @@ const services =
             description_ar: "",
           },
 
+          mepDisplayType: s.mepDisplayType === "list" ? "list" : "accordion",
+          accordionTitle: s.accordionTitle || "",
+
           items: Array.isArray(s.items)
             ? s.items.map((item: any) => ({
                 title: item.title || "",
