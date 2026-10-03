@@ -73,6 +73,8 @@ export interface ProjectFormProps {
                 description: string;
                 description_ar: string;
             },
+            mepDisplayType?: "accordion" | "list";
+            accordionTitle?: string;
             items?: {
                 title: string;
                 description: string;
@@ -674,13 +676,85 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
 
                                                                 {/* Body */}
                                                                 <div className="flex-1 overflow-y-auto">
-                                                                    <ServiceItemsEditor
+                                                                    {/* Layout toggle: only switches which content the website shows.
+                                                                        Accordion items and list content are stored separately, so nothing is cleared. */}
+                                                                    <Controller
+                                                                        name={`secondSection.service.${serviceIndex}.mepDisplayType`}
                                                                         control={control}
-                                                                        register={register}
-                                                                        serviceIndex={serviceIndex}
-                                                                        selected={selected}
-                                                                        errors={errors}
+                                                                        render={({ field: layoutField }) => {
+                                                                            const isList = layoutField.value === "list";
+                                                                            return (
+                                                                                <div className="px-5 pt-2 flex flex-col gap-2">
+                                                                                    <Label className="font-bold">Layout</Label>
+                                                                                    <div className="inline-flex w-fit rounded-md border overflow-hidden">
+                                                                                        <button
+                                                                                            type="button"
+                                                                                            onClick={() => layoutField.onChange("accordion")}
+                                                                                            className={`px-4 py-2 text-sm ${!isList ? "bg-primary text-white" : "bg-white"}`}
+                                                                                        >
+                                                                                            Accordion
+                                                                                        </button>
+                                                                                        <button
+                                                                                            type="button"
+                                                                                            onClick={() => layoutField.onChange("list")}
+                                                                                            className={`px-4 py-2 text-sm border-l ${isList ? "bg-primary text-white" : "bg-white"}`}
+                                                                                        >
+                                                                                            Title &amp; Description
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <p className="text-xs text-gray-500">
+                                                                                        Switching layout does not delete content. The other layout&apos;s content is kept and can be switched back anytime.
+                                                                                    </p>
+
+                                                                                    {isList && (
+                                                                                        <div className="flex flex-col gap-4 pt-3">
+                                                                                            <div>
+                                                                                                <Label className="">Title</Label>
+                                                                                                <Input
+                                                                                                    type="text"
+                                                                                                    placeholder="Title"
+                                                                                                    {...register(`secondSection.service.${serviceIndex}.secondSection.title`)}
+                                                                                                />
+                                                                                            </div>
+                                                                                            <div>
+                                                                                                <Label className="">Description</Label>
+                                                                                                <Controller
+                                                                                                    name={`secondSection.service.${serviceIndex}.secondSection.description`}
+                                                                                                    control={control}
+                                                                                                    render={({ field }) => (
+                                                                                                        <ReactQuill
+                                                                                                            theme="snow"
+                                                                                                            value={field.value}
+                                                                                                            onChange={field.onChange}
+                                                                                                        />
+                                                                                                    )}
+                                                                                                />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+                                                                            );
+                                                                        }}
                                                                     />
+
+                                                                    {/* kept mounted (only hidden) in list mode so accordion items stay untouched */}
+                                                                    <div className={watch(`secondSection.service.${serviceIndex}.mepDisplayType`) === "list" ? "hidden" : ""}>
+                                                                        <div className="px-5 pt-5 flex flex-col gap-2">
+                                                                            <Label className="font-bold">Title <span className="font-normal text-gray-500">(optional)</span></Label>
+                                                                            <Input
+                                                                                type="text"
+                                                                                placeholder="e.g. MEP Work"
+                                                                                {...register(`secondSection.service.${serviceIndex}.accordionTitle`)}
+                                                                            />
+                                                                        </div>
+                                                                        <ServiceItemsEditor
+                                                                            control={control}
+                                                                            register={register}
+                                                                            serviceIndex={serviceIndex}
+                                                                            selected={selected}
+                                                                            errors={errors}
+                                                                        />
+                                                                    </div>
 
                                                                     <div className="p-5">
                                                                         <div className="flex justify-between items-center">
