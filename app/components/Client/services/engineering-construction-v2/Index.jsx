@@ -1,11 +1,9 @@
-import Banner from "./sections/Banner";
-// import MainNavbar from "../../MainLayout/MainNavbar";
-// import Footer from "../../MainLayout/Footer";
+import Banner from "@/app/components/common/Banner";
 import VdoSection from "./sections/VdoSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
 import OurApproach from "./sections/OurApproach";
 import FeaturedProjectSlider from "./sections/FeaturedProjectSlider";
-import WhyChooseSec from "./sections/WhyChooseSec";
+// import WhyChooseSec from "./sections/WhyChooseSec";
 // how many linked projects the Featured Projects slider shows (in the admin's project order)
 const FEATURED_PROJECTS_LIMIT = 10;
 

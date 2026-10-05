@@ -87,7 +87,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
 
 
   return (
-    <section className="relative sectm-100 pb-80px" ref={sectionRef}>
+    <section className="relative section-spacing-margin" ref={sectionRef}>
       {showProfile && (
         <div className="absolute inset-0 z-10 hidden lg:block">
           <div className="container">

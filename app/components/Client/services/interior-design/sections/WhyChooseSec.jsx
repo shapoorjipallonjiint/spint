@@ -9,7 +9,7 @@ import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 
-const WhyChooseSec = ({ data }) => {
+const WhyChooseSec = ({ data, noTopSpacing = false }) => {
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
     const sectionRef = useRef(null);
@@ -23,7 +23,7 @@ const WhyChooseSec = ({ data }) => {
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
 
     return (
-        <section className="pt-text30 pb30 relative overflow-hidden" ref={sectionRef}>
+        <section className={`section-spacing relative overflow-hidden ${noTopSpacing ? "pt-0!" : ""}`} ref={sectionRef}>
             <div
                 className={`absolute bottom-[-250px] lg:bottom-0 w-fit h-fit pb-20 lg:pb-25 xl:pb-30
         ${isArabic ? "left-0 lg:-right-40 xl:right-0 -scale-x-100" : "right-0 lg:-left-40 xl:left-0"}

@@ -336,9 +336,7 @@ const EngineeringAndConstructionPage = () => {
 
                             <div className='flex flex-col gap-1'>
                                 <Label className='font-bold'>Sub Title</Label>
-                                <Input type='text' placeholder='SubTitle' {...register("secondSection.subTitle", {
-                                    required: "Title is required"
-                                })} />
+                                <Input type='text' placeholder='SubTitle' {...register("secondSection.subTitle")} />
                                 {errors.secondSection?.subTitle && <p className='text-red-500'>{errors.secondSection?.subTitle.message}</p>}
                             </div>
 
@@ -397,9 +395,7 @@ const EngineeringAndConstructionPage = () => {
 
                                                 <div className='flex flex-col gap-2'>
                                                     <Label className='font-bold'>Sub Title</Label>
-                                                    <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.subTitle`, {
-                                                        required: "Sub Title is required"
-                                                    })} />
+                                                    <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.subTitle`)} />
                                                     {errors.secondSection?.items?.[index]?.subTitle && <p className='text-red-500'>{errors.secondSection?.items?.[index]?.subTitle.message}</p>}
                                                 </div>
 

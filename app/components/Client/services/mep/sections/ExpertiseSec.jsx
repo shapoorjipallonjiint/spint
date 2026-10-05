@@ -42,7 +42,7 @@ const ExpertiseSec = ({ data }) => {
     }, [isArabic]);
 
     return (
-        <section className="relative pt-text90 pb95 bg-primary text-white overflow-hidden" ref={sectionRef}>
+        <section className="relative section-spacing bg-primary text-white overflow-hidden" ref={sectionRef}>
             <div className="reveal-overlay4 absolute inset-0 bg-black/20 z-20"></div>
             {/* <div className="absolute -top-3 right-0 w-[354px] h-[504px] lg:w-[454px] lg:h-[304px] 3xl:w-[624px] 3xl:h-[874px] z-0">
                 <img src={assets.mainShape} alt="" />

@@ -33,6 +33,7 @@ const ParallaxShape = memo(({ y }) => (
 
 const CultureDrivers = ({ CultureData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [autoplayKey, setAutoplayKey] = useState(0);
   const [letterPositions, setLetterPositions] = useState([]);
   const [halfBoxWidth, setHalfBoxWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -120,6 +121,21 @@ const CultureDrivers = ({ CultureData }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Auto-advance every 5s; restarts whenever the active item changes or a letter/dot is clicked
+  const itemCount = t.items.length;
+  useEffect(() => {
+    if (itemCount < 2) return;
+    const timer = setTimeout(() => {
+      setActiveIndex((prev) => (prev + 1) % itemCount);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [activeIndex, autoplayKey, itemCount]);
+
+  const goTo = (index) => {
+    setActiveIndex(index);
+    setAutoplayKey((k) => k + 1);
+  };
+
   const { scrollYProgress: shapeProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -179,7 +195,7 @@ const CultureDrivers = ({ CultureData }) => {
               <button
                 key={index}
                 ref={(el) => (letterRefs.current[index] = el)}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => goTo(index)}
                 className="flex flex-col items-center cursor-pointer transition-all duration-300 group"
               >
                 <span
@@ -208,7 +224,7 @@ const CultureDrivers = ({ CultureData }) => {
               {letterPositions.map((position, index) => (
                 <button
                   key={index}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => goTo(index)}
                   className="absolute -translate-y-1/2 -translate-x-1/2 cursor-pointer group"
                   style={{ left: `${position}px` }}
                 >

@@ -91,7 +91,7 @@ const ExpertiseSec = ({ data }) => {
     const normalizeHtml = (html = "") => html.replace(/&nbsp;/g, " ");
 
     return (
-        <section className="relative pt-text90 pb25 bg-primary text-white overflow-hidden" ref={sectionRef}>
+        <section className="relative section-spacing bg-primary text-white overflow-hidden" ref={sectionRef}>
             <div
                 className={`absolute bottom-[-358px] lg:bottom-[-150px] 3xl:bottom-0 w-[200px] lg:w-[400px] 3xl:w-[573px] h-[803px]
     ${isArabic ? "left-0 -scale-x-100" : "right-0"}`}
