@@ -471,7 +471,8 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
           <div className={`2xl:max-w-[1008px] 3xl:max-w-[1208px] ${isArabic ? "mr-auto" : "ml-auto"}`} >
             <div className="relative z-20">
               <div className="hidden lg:block [&_li]:text-paragraph [&_li]:text-18 [&_li]:opacity-85 [&_li]:mb-4">
-                <div className="grid border border-black/10 mb-2 xl:mb-[27px]" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
+                {/* each tab is as wide as its label (+ padding), at least 242px; the bar fits its tabs and wraps if they don't fit one line */}
+                <div className="flex flex-wrap w-fit max-w-full border border-black/10 mb-2 xl:mb-[27px]">
                   {tabs.map((tab) => {
                     const isActive = activeTab === tab.serviceName;
 
@@ -480,7 +481,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                         key={tab.serviceName}
                         type="button"
                         onClick={() => handleTabChange(tab)}
-                        className={`relative overflow-hidden min-h-[42px] py-3 xl:py-6 text-19 leading-[1.473684210526316] cursor-pointer border-black/10 transition-colors duration-300 
+                        className={`relative overflow-hidden min-h-[42px] min-w-[242px] px-6 xl:px-10 py-3 xl:py-6 whitespace-nowrap text-19 leading-[1.473684210526316] cursor-pointer border-black/10 transition-colors duration-300 
                           ${isArabic
                           ? "border-l last:border-l-0"
                           : "border-r last:border-r-0"
