@@ -40,7 +40,7 @@ const SectorsSec = ({ data }) => {
     }, [isArabic]);
 
     return (
-        <section className="pt-text30 pb30 overflow-hidden">
+        <section className="section-spacing overflow-hidden">
             <div ref={containerRef} className="container"></div>
             <div ref={dynamicRef} className="ml-dynamic">
                 <div>

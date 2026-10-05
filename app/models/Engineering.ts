@@ -92,7 +92,6 @@ const engineeringSchema = new mongoose.Schema({
         },
         subTitle:{
             type:String,
-            required:true
         },
         subTitle_ar:{
             type:String,

@@ -56,7 +56,7 @@ const DivisionExpertise = ({ data }) => {
     }, [isArabic]);
 
     return (
-        <section className="pt-text30 pb30 relative  overflow-hidden">
+        <section className="section-spacing relative  overflow-hidden">
             <div className="xl:px-[15px] md:pe-0 relative">
                 {/* Counter + Arrows */}
                 <div className="container flex items-center justify-between mb-[50px]" ref={containerRef}>

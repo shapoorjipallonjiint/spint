@@ -65,6 +65,10 @@ html {
   @apply py-80px;
 }
 
+@utility section-spacing-margin {
+  @apply my-80px;
+}
+
 @utility container {
   @apply mx-auto px-[15px];
 

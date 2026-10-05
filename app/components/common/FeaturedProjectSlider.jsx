@@ -78,7 +78,7 @@ const FeaturedProjectSlider = ({ data }) => {
     const hasValidImage = (src) => typeof src === "string" && src?.trim().length > 0;
 
     return (
-        <section className="pt-text90 pb25 relative bg-f5f5 overflow-hidden" ref={sectionRef}>
+        <section className="section-spacing relative bg-f5f5 overflow-hidden" ref={sectionRef}>
             <div className="xl:px-[15px] md:pe-0 relative">
                 <div className="container" ref={containerRef}>
                     <div className="flex justify-between items-center mb-4 lg:mb-6 xl:mb-8 3xl:mb-16 gap-2">

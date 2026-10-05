@@ -14,9 +14,6 @@ const Water = ({ data, projectData }) => {
 
     return (
         <>
-            {/* <header className="">
-        <MainNavbar /> 
-      </header> */}
             <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
             <VdoSection data={data.firstSection} />
             <ExpertiseSec data={data.secondSection} />
@@ -25,9 +22,6 @@ const Water = ({ data, projectData }) => {
              */}
             {filteredProjects.length > 0 && <FeaturedProjectSlider data={filteredProjects} />}
             {/* <WhyChooseSec data={wtrData.WhyChooseData} /> */}
-            {/* <footer>
-        <Footer />
-      </footer> */}
         </>
     );
 };

@@ -9,7 +9,7 @@ const OurApproach = ({ data }) => {
   const t = useApplyLang(data);
 
     return (
-        <section className="pt-text30 pb30">
+        <section className="section-spacing">
             <div className="container">
                 <H2Title titleText={t.title} titleColor="black" marginClass="mb-50px" />
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-7  md:gap-30px">

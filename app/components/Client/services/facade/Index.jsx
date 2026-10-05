@@ -1,5 +1,3 @@
-// import MainNavbar from "../../MainLayout/MainNavbar";
-// import Footer from "../../MainLayout/Footer";
 import Banner from "@/app/components/common/Banner";
 import VdoSection from "@/app/components/common/VdoSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
@@ -35,7 +33,9 @@ const Facade = ({ data, projectData }) => {
         />
         {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
         {/* no placeholder with negative margin here: the section above uses section-spacing, which already sets the spacing */}
-        {filteredProjects.length > 0 && <FeaturedProjectSlider data={filteredProjects} />}
+        {filteredProjects.length > 0 && (
+          <FeaturedProjectSlider data={filteredProjects} />
+        )}
         {/* <LastSection data={data.fourthSection} /> */}
       </main>
     </>

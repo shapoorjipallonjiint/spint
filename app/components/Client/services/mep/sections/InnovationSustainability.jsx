@@ -67,7 +67,7 @@ const InnovationSustainability = ({ data }) => {
     return (
         <section
             ref={sectionRef}
-            className="relative overflow-hidden pt-text30 pb30 bg-gradient-to-br from-slate-50 to-blue-50"
+            className="relative overflow-hidden section-spacing bg-gradient-to-br from-slate-50 to-blue-50"
         >
             <MotionImage
                 width={1500}
