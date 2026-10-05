@@ -14,6 +14,7 @@ import { FormError } from "@/app/components/common/FormError";
 import { toast } from "sonner";
 import Link from "next/link";
 import CredentialsCubesEditor from "@/app/components/common/CredentialsCubesEditor";
+import { fromLegacyCubes, normalizeColumns } from "@/lib/credentialsCubes";
 
 interface HomeFormProps {
     metaTitle: string;
@@ -117,6 +118,8 @@ interface HomeFormProps {
                 key?: string;
                 key_ar?: string;
             }[];
+            // cubes per column, left to right (cubes fill each column bottom to top)
+            columns?: number[];
         };
     };
 
@@ -195,6 +198,7 @@ const Home = () => {
 
     // live cube values for the admin preview
     const credentialCubes = watch("thirdSection.credentials.cubes");
+    const credentialColumns = watch("thirdSection.credentials.columns");
 
     const {
         fields: secondSectionItems,
@@ -279,6 +283,18 @@ const Home = () => {
                 setValue("secondSection.highlights", data.data.secondSection?.highlights || []);
                 setValue("thirdSection", data.data.thirdSection);
                 setValue("thirdSection.items", data.data.thirdSection.items);
+                // credentials saved before the column layout existed: switch them to the new bottom-to-top order
+                // (default layout) keeping every cube in exactly the same spot; stored only when Submit is clicked
+                const credentials = data.data.thirdSection?.credentials;
+                if (!normalizeColumns(credentials?.columns)) {
+                    if (credentials?.cubes?.length) {
+                        const converted = fromLegacyCubes(credentials.cubes);
+                        setValue("thirdSection.credentials.cubes", converted.cubes);
+                        setValue("thirdSection.credentials.columns", converted.columns);
+                    } else {
+                        setValue("thirdSection.credentials.columns", fromLegacyCubes([]).columns);
+                    }
+                }
                 setValue("fourthSection", data.data.fourthSection);
                 setValue("fifthSection", data.data.fifthSection);
                 setValue("fifthSection.items", data.data.fifthSection.items);
@@ -619,6 +635,8 @@ const Home = () => {
                                     setValue={setValue}
                                     cubes={credentialCubes}
                                     name="thirdSection.credentials.cubes"
+                                    columns={credentialColumns}
+                                    columnsName="thirdSection.credentials.columns"
                                 />
                             </div>
                         </div>
@@ -1393,7 +1411,10 @@ const Home = () => {
                                     setValue={setValue}
                                     cubes={credentialCubes}
                                     name="thirdSection.credentials.cubes"
+                                    columns={credentialColumns}
+                                    columnsName="thirdSection.credentials.columns"
                                     lang="ar"
+                                    showLayout={false}
                                 />
                             </div>
                         </div>

@@ -1761,11 +1761,57 @@ body::-webkit-scrollbar {
 }
 /* Home > Our Credentials cubes (CredentialsPanel.jsx). --gap: space between cubes, --diag: space along the incline.
    --top-shift: gap * (1 + dx/dy) - diag * hypot(dx, dy) / dy, so the gap along the incline is exactly --diag */
+/* credentials cube hover: the value bobs up 5px (with a tiny scale) and back (CredentialsPanel) */
+@keyframes cube-value-bob {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.04);
+  }
+}
+
+/* Home slide 3: width of the "Our Credentials" column (the right "About" column takes the rest).
+   From 2xl it is sized around the cube staircase: header edge + 50px + staircase + 50px, where the staircase is
+   N columns of 100px cubes at 2xl / 122px at 3xl (+ gaps and the last side face). --cred-cols comes from the admin
+   column layout; with the original 5 columns this gives exactly 5vw + 754px / 7.814vw + 877px. */
+.cred-layout {
+  --cred-cols: 5;
+  --cred-left: 500px;
+}
+
+@media (min-width: 1200px) {
+  .cred-layout {
+    --cred-left: 600px;
+  }
+}
+
+@media (min-width: 1360px) {
+  .cred-layout {
+    --cred-left: calc(5vw + 225px + var(--cred-cols) * 101.52px + 21.4px);
+  }
+}
+
+@media (min-width: 1680px) {
+  .cred-layout {
+    --cred-left: calc(7.814vw + 233px + var(--cred-cols) * 123.52px + 26.4px);
+  }
+}
+
 .cred-cubes {
-  /* mobile (Figma at 390px): 5 fronts + the last side face fill the width (16px side padding) */
+  /* mobile (Figma at 390px): all fronts + the last side face fill the width (16px side padding).
+     --cols / --rows come from the admin column layout (set inline by CredentialsPanel); defaults = original 5 x 4 */
+  --cols: 5;
+  --rows: 4;
   --gap: 0.8px;
   --diag: 1px;
-  --w: min(122px, calc((100cqw - 4 * var(--gap)) / 5.2401)); /* 5 fronts + 0.2401 side */
+  /* fronts + 0.2401 side; never bigger than with the original 5 columns, so fewer columns don't blow the cubes up */
+  --w: min(
+    122px,
+    calc((100cqw - (var(--cols) - 1) * var(--gap)) / (var(--cols) + 0.2401)),
+    calc((100cqw - 4 * var(--gap)) / 5.2401)
+  );
   --h: calc(var(--w) * 0.9386); /* 64.1 / 68.29 */
   --dx: calc(var(--w) * 0.2401); /* dy x tan(42deg): top face leans 42deg (Figma side 20.45 leaned ~48deg) */
   --dy: calc(var(--w) * 0.2667); /* 18.21 / 68.29 */
@@ -1778,8 +1824,12 @@ body::-webkit-scrollbar {
   .cred-cubes {
     --gap: 1.52px;
     --diag: 1.92px;
-    /* 5 fronts + 0.1983 side; height share: 4 fronts + 1 top depth = ~3.97 widths */
-    --w: min(122px, calc((100cqw - 4 * var(--gap)) / 5.1983), calc(var(--cubes-h) / 3.97));
+    /* fronts + 0.1983 side; height share: tallest column's fronts (0.9426 w each) + 1 top depth (0.1983 w) */
+    --w: min(
+      122px,
+      calc((100cqw - (var(--cols) - 1) * var(--gap)) / (var(--cols) + 0.1983)),
+      calc(var(--cubes-h) / (var(--rows) * 0.9426 + 0.1983))
+    );
     --h: calc(var(--w) * 0.9426); /* 115 / 122 */
     --dx: calc(var(--w) * 0.1983);
     --dy: calc(var(--w) * 0.1983);
