@@ -16,7 +16,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import H2Title from "@/app/components/common/H2Title";
-import { engineeringData } from "../data";
 import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
@@ -68,7 +67,6 @@ const useIsDesktop = () => {
 };
 
 const ExpertiseSec = ({ data }) => {
-  const { expertiseData } = engineeringData;
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imageSwiper, setImageSwiper] = useState(null);
   const [contentSwiper, setContentSwiper] = useState(null);
@@ -323,7 +321,7 @@ const ExpertiseSec = ({ data }) => {
                       {" "}
                       {String(currentSlide + 1).padStart(2, "0")}
                     </span>
-                    /{String(expertiseData.items.length).padStart(2, "0")}
+                    /{String(t.items.length).padStart(2, "0")}
                   </span>
                 </div>
 
