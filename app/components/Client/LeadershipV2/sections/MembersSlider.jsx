@@ -1,5 +1,5 @@
 "use client"
-import { useRef, useState } from "react";
+import { useState } from "react";
 import H2Title from "../../../common/H2Title";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,19 +8,13 @@ import { motion } from "framer-motion";
 import { moveUp } from "@/app/components/motionVarients";
 import { assets } from "../../../../assets/index"
 import "swiper/css";
-import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
-import { useContainerInset } from "@/hooks/useContainerInset";
 
 
 const Promoters = ({ items,title, btmBorder }) => {
     const [imageSwiper, setImageSwiper] = useState(null);
-    const isArabic = useIsPreferredLanguageArabic();
-    const containerRef = useRef(null);
-    // container margin + padding: width of the mask that hides slides in the start-side margin
-    const containerInset = useContainerInset(containerRef);
   return (
     <section className="relative overflow-hidden pt-80px">
-      <div className="container overflow-visible" ref={containerRef}>
+      <div className="container">
         <div className="flex justify-between mb-40px 3xl:mb-[45px]">
           <H2Title titleText={title} />
 
@@ -44,24 +38,15 @@ const Promoters = ({ items,title, btmBorder }) => {
         
           </div>
         </div>
-        <div className="emp-slider-wr relative">
-          {/* slides overflow on both sides; this covers the start-side margin (up to the container's content edge) */}
-          <div
-            aria-hidden="true"
-            className={`absolute top-0 bottom-0 z-10 bg-white pointer-events-none ${
-              isArabic ? "left-full" : "right-full"
-            }`}
-            style={{ width: isArabic ? containerInset.right : containerInset.left }}
-          />
+        <div className="emp-slider-wr">
           <Swiper
             modules={[Autoplay]}
-            spaceBetween={10}
-            slidesPerView={1.5}
-            loop
+            spaceBetween={15}
+            slidesPerView={2}
             speed={800}
             autoplay={true}
             onSwiper={setImageSwiper}
-            className="w-full !overflow-visible"
+            className="w-full !overflow-hidden"
             breakpoints={{
               576: {
                 slidesPerView: 2,
@@ -73,7 +58,7 @@ const Promoters = ({ items,title, btmBorder }) => {
                 slidesPerView: 4,
               },
               1400:{
-                slidesPerView: 4.1,
+                slidesPerView: 4,
                 spaceBetween:40,
               }
             }}

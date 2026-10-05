@@ -71,7 +71,7 @@ const ExpandingHorizons = ({ data }) => {
                                     whileInView={"show"}
                                     viewport={{ amount: 0.2, once: true }}
                                     // same text style as the other pages' overview sections (Quality / HSE CoreValues)
-                                    className="mb-4 xl:mb-8 last:mb-0 text-19 font-light leading-[1.474] xl:max-w-[59ch] text-paragraph"
+                                    className="mb-4 xl:mb-8 last:mb-0 text-19 font-light leading-[1.474] text-paragraph"
                                 >
                                     {t.description}
                                 </motion.p>

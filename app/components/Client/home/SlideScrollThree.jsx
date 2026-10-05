@@ -19,6 +19,10 @@ import CountUp from "../../CountUp.jsx";
 import AboutHighlights from "./AboutHighlights";
 import CredentialsPanel from "./CredentialsPanel";
 import { cubeColumnIndexes } from "@/lib/credentialsCubes";
+import { useInitialScrollFocus } from "@/hooks/useInitialScrollFocus";
+
+// small screens scroll the map sideways: start centred on the Middle East (~61% across the map)
+const MIDDLE_EAST_FOCUS = 0.61;
 import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
 import { mapBackendCitiesToMapCities } from "../../../../lib/mapDataHelper";
 import Image from "next/image";
@@ -85,6 +89,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const sprgtbg = useRef(null);
     const splftbg = useRef(null);
     const sprghtBx = useRef(null);
+    const mapScrollRef = useRef(null);
+    useInitialScrollFocus(mapScrollRef, MIDDLE_EAST_FOCUS);
     const sprIcnim = useRef(null);
     const spBrdOne = useRef(null);
     const bgdivRef = useRef(null);
@@ -3081,7 +3087,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             </div>
                         </div>
                         <div className="  flex justify-center" ref={mapimage}>
-                            <div className="[position:initial] lg:relative  overflow-x-scroll lg:overflow-x-visible  scrollbar-hide responsive-map-position ">
+                            <div className="[position:initial] lg:relative  overflow-x-scroll lg:overflow-x-visible  scrollbar-hide responsive-map-position " ref={mapScrollRef}>
                                 <div className="relative lg:[position:initial]   overflow-hide   " ref={containersRef}>
                                     {/* <img
                   src="../assets/images/mobilebmap.png"

@@ -9,6 +9,10 @@ import { useRouter } from "next/navigation";
 import { useInView } from "framer-motion";
 import CountUp from "../CountUp.jsx";
 import { mapBackendCitiesToMapCities } from "@/lib/mapDataHelper";
+import { useInitialScrollFocus } from "@/hooks/useInitialScrollFocus";
+
+// small screens scroll the map sideways: start centred on the Middle East (~61% across the map)
+const MIDDLE_EAST_FOCUS = 0.61;
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import { slugify } from "@/lib/slugify";
@@ -27,6 +31,8 @@ const WorldMap = ({ cities = [], projectsData }) => {
     const containersRef = useRef(null);
     const outsideRef = useRef(null);
     const sectionRef = useRef(null);
+    const mapScrollRef = useRef(null);
+    useInitialScrollFocus(mapScrollRef, MIDDLE_EAST_FOCUS);
     // homepage triggers the count-up when its map slide is visible; here: when the map is on screen
     const inView = useInView(sectionRef, { amount: 0.2, once: true });
 
@@ -93,7 +99,7 @@ const WorldMap = ({ cities = [], projectsData }) => {
             </div>
 
             <div className="flex justify-center">
-                <div className="[position:initial] lg:relative overflow-x-scroll lg:overflow-x-visible scrollbar-hide">
+                <div className="[position:initial] lg:relative overflow-x-scroll lg:overflow-x-visible scrollbar-hide" ref={mapScrollRef}>
                     <div className="relative lg:[position:initial] overflow-hide" ref={containersRef}>
                         <Image
                             src="/assets/images/world_map.png"

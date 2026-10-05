@@ -33,7 +33,27 @@ const Banner = ({ firstSection, secondSection }) => {
     const imageY = useTransform(imageProgress, [0, 1], imageOffset);
     const hasAnimatedRef = useRef(false);
 
-    const itemsWithoutLocation = tSecondSection.items.filter((item) => item.key !== "Location");
+    // details grid: Location is shown separately above; BUA and Contract Model stay in the CMS but aren't shown.
+    // Matched on the English label (raw data), so it works on the Arabic site too.
+    const HIDDEN_DETAIL_KEYS = /^\s*(location|bua|contract\s*model)\b/i;
+    const itemsWithoutLocation = tSecondSection.items.filter(
+        (item, i) => !HIDDEN_DETAIL_KEYS.test(secondSection.items?.[i]?.key ?? item.key ?? ""),
+    );
+    // Location value, found by its English label so it also works on the Arabic site
+    const locationIndex = (secondSection.items || []).findIndex((item) => /^\s*location\b/i.test(item?.key ?? ""));
+    const locationValue = tSecondSection.items?.[locationIndex]?.value;
+    const sectorValue = Array.isArray(tSecondSection?.sector)
+        ? tSecondSection.sector.map((item) => item?.name).filter(Boolean).join(", ")
+        : tSecondSection?.sector?.name;
+
+    // About the Project grid, in reading order
+    const details = [
+        { label: "Project", value: tSecondSection?.project ? tSecondSection.project : tFirstSection.title },
+        { label: "Location", value: locationValue },
+        { label: "Sector", value: sectorValue },
+        { label: "Status", value: tSecondSection?.status },
+        ...itemsWithoutLocation.map((item) => ({ label: item?.key, value: item?.value })),
+    ];
 
     // cover image first, then any additional cover images that actually have an image
     const bannerImages = [
@@ -141,128 +161,25 @@ const Banner = ({ firstSection, secondSection }) => {
                 {/* <motion.h2 variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-60 font-light mb-7  xl:mb-10  2xl:mb-[58px] leading-[1.17]">About Project</motion.h2> */}
                 {/* <H2Title titleText={secondSection.title} marginClass="mb-7 xl:mb-10 2xl:mb-[58px]" /> */}
                 <H2Title titleText={"About the Project"} marginClass="mb-50px" />
-                <motion.div
-                    variants={moveUp(0.4)}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ amount: 0.2, once: true }}
-                    className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr] border-t border-black/20 pt-3 xl:pt-[25px] pb-3 xl:pb-[35px]"
-                >
-                    <div className="flex items-center pb-3 xl:pb-0">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">Project:</p>
-                        <p className="text-19 font-light leading-[1.475] text-black">
-                            {tSecondSection?.project == "" || tSecondSection?.project == undefined ? tFirstSection.title : tSecondSection?.project}
-                        </p>
-                    </div>
-                    <div className="flex items-center">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">
-                            Location:
-                        </p>
-                        <p className="text-19 font-light leading-[1.475] text-black">
-                            {tSecondSection.items.find((item) => item.key === "Location")?.value}
-                        </p>
-                    </div>
-                </motion.div>
-
-                <motion.div
-                    variants={moveUp(0.6)}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ amount: 0.2, once: true }}
-                    className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr] pb-4 xl:pb-[35px]"
-                >
-                    <div className="flex items-center ">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">Sector:</p>
-                        {Array.isArray(tSecondSection?.sector) ? tSecondSection?.sector?.map((item, i) => (
-                            <div key={i} className="flex items-center pb-3 xl:pb-0">
-                                <p className="text-19 font-light leading-[1.475] text-black">{item.name}</p>
-                                {i !== tSecondSection.sector?.length - 1 && <span>,&nbsp;</span>}
-                            </div>
-                        )) :
-                            <p className="text-19 font-light leading-[1.475] text-black">{tSecondSection?.sector.name}</p>
-                        }
-                    </div>
-                    <div className="flex items-center">
-                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch] lg:min-w-[15ch]">Status:</p>
-                        <p className="text-19 font-light leading-[1.475] text-black">{tSecondSection?.status}</p>
-                    </div>
-                </motion.div>
-
-                {/* {secondSection.items
-                    .filter((item) => item.key !== "Location")
-                    .map((item, i) => {
-                        if (i % 2 !== 0) return null;
-
-                        return (
-                            <motion.div
-                                key={item.key}
-                                variants={moveUp(0.8)}
-                                initial="hidden"
-                                whileInView="show"
-                                viewport={{ amount: 0.2, once: true }}
-                                className={`grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr] border-t border-black/20 last:border-b`}
-                            >
-    
-                                <div className="flex items-center py-3 lg:py-6 border-black/20 lg:border-b-0 border-b">
-                                    <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">
-                                        {item?.key}:
-                                    </p>
-                                    <p className="text-19 font-light leading-[1.475] text-black">{item?.value}</p>
-                                </div>
-
-                                {secondSection.items[i + 2] && (
-                                    <div className="flex items-center  py-3 lg:py-6">
-                                        <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch] lg:min-w-[15ch]">
-                                            {secondSection.items[i + 2]?.key}:
-                                        </p>
-                                        <p className="text-19 font-light leading-[1.475] text-black">
-                                            {secondSection.items[i + 2]?.value}
-                                        </p>
-                                    </div>
-                                )}
-                            </motion.div>
-                        );
-                    })} */}
-
-                {itemsWithoutLocation.map((item, i) => {
-                    if (i % 2 !== 0) return null;
-
-                    const isLastRow = i + 2 >= itemsWithoutLocation.length;
-
-                    return (
+                {/* all details in one grid: 1 col on mobile, 2 from lg, 3 from 1280px. Each column is a label track (auto =
+                    as wide as its longest label) + a value track, so values line up. Label/value gap: 30px, 50px from 1600px, 70px from 3xl (1680px) */}
+                <div className="grid grid-cols-[auto_1fr] lg:grid-cols-[auto_1fr_auto_1fr] min-[1280px]:grid-cols-[auto_1fr_auto_1fr_auto_1fr] gap-x-[30px] min-[1600px]:gap-x-[50px] 3xl:gap-x-[70px] gap-y-3 xl:gap-y-[35px] border-t border-black/20 pt-3 xl:pt-[25px]">
+                    {details.map((detail, i) => (
                         <motion.div
-                            key={item.key}
-                            variants={moveUp(0.8)}
+                            key={i}
+                            variants={moveUp(0.4 + Math.min(i, 8) * 0.05)}
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
-                            className={`grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[825px_1fr] ${isLastRow ? "pb-0" : "pb-3 xl:pb-[35px]"
-                                }`}
+                            // spans one label + one value track of the parent grid (subgrid), so labels/values align per column
+                            className="grid grid-cols-subgrid col-span-2 items-start"
                         >
-                            {/* Left item */}
-                            <div className="flex items-center">
-                                <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch]">
-                                    {item?.key}:
-                                </p>
-                                <p className="text-19 font-light leading-[1.475] text-black">
-                                    {item?.value}
-                                </p>
-                            </div>
-
-                            {/* Right item */}
-                            {itemsWithoutLocation[i + 1] && (
-                                <div className="flex items-center">
-                                    <p className="text-19 font-light text-paragraph leading-[1.475] min-w-[15ch] lg:min-w-[15ch]">
-                                        {itemsWithoutLocation[i + 1]?.key}:
-                                    </p>
-                                    <p className="text-19 font-light leading-[1.475] text-black">
-                                        {itemsWithoutLocation[i + 1]?.value}
-                                    </p>
-                                </div>
-                            )}
+                            <p className="text-19 font-light text-paragraph leading-[1.475]">{detail.label}:</p>
+                            {/* end padding keeps the next column away from long values */}
+                            <div className="text-19 font-light leading-[1.475] text-black pe-8">{detail.value}</div>
                         </motion.div>
-                    );
-                })}
+                    ))}
+                </div>
             </div>
             <div className="absolute top-[61px] lg:-top-20 right-0 z-0">
                 <MotionImage
