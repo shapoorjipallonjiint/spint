@@ -127,7 +127,7 @@ const ProjectCard = ({ item, variant = "grid", isArabic = false, revealDelay = 0
                     </div>
 
                     {/* Title only (bottom-left, 40px inset) */}
-                    <h2 className="absolute inset-x-0 bottom-0 p-5 md:p-6 xl:p-10 text-white truncate text-[20px] lg:text-24 2xl:text-29 leading-[1.344827586206897] font-light transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1">
+                    <h2 className="absolute inset-x-0 bottom-0 p-5 md:p-6 xl:p-10 text-white text-[20px] lg:text-24 2xl:text-29 leading-[1.344827586206897] font-light transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1">
                         {title}
                     </h2>
                 </div>

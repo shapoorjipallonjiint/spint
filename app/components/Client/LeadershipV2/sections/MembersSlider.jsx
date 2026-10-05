@@ -3,7 +3,7 @@ import { useState } from "react";
 import H2Title from "../../../common/H2Title";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Thumbs, EffectFade, Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
 import { moveUp } from "@/app/components/motionVarients";
 import { assets } from "../../../../assets/index"
@@ -40,10 +40,11 @@ const Promoters = ({ items,title, btmBorder }) => {
         </div>
         <div className="emp-slider-wr">
           <Swiper
-            modules={[Thumbs, EffectFade, Autoplay]}
+            modules={[Autoplay]}
             spaceBetween={10}
             slidesPerView={1.5}
             loop
+            speed={800}
             autoplay={true}
             onSwiper={setImageSwiper}
             className="w-full !overflow-visible"
@@ -75,7 +76,7 @@ const Promoters = ({ items,title, btmBorder }) => {
                           height={600}
                           src={item.image}
                           alt={item.imageAlt || item.name}
-                          className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0 px-2"
+                          className="w-full xs:w-fit max-h-full object-contain  absolute bottom-0 px-2 origin-bottom transition-transform duration-500 ease-out group-hover:scale-105"
                         />
                         <div className="bg-f5f5  w-full h-[70%] md:h-[70%] lg:h-[78%] 2xl:h-[79%] max-h-[303.94px] z-[-1]"></div>
 
