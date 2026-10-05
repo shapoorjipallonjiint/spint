@@ -122,7 +122,21 @@ const integratedFacilityManagementSchema = new mongoose.Schema({
                 },
                 description_ar:{
                     type:String,
-                }
+                },
+                // extra images for the tab slideshow; the main `image` above stays the first slide
+                additionalImages:[
+                    {
+                        image:{
+                            type:String
+                        },
+                        imageAlt:{
+                            type:String
+                        },
+                        imageAlt_ar:{
+                            type:String
+                        }
+                    }
+                ]
             }
         ]
     },

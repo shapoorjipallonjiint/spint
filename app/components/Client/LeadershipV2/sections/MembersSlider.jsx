@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useRef, useState } from "react";
 import H2Title from "../../../common/H2Title";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,13 +8,19 @@ import { motion } from "framer-motion";
 import { moveUp } from "@/app/components/motionVarients";
 import { assets } from "../../../../assets/index"
 import "swiper/css";
+import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useContainerInset } from "@/hooks/useContainerInset";
 
 
 const Promoters = ({ items,title, btmBorder }) => {
     const [imageSwiper, setImageSwiper] = useState(null);
+    const isArabic = useIsPreferredLanguageArabic();
+    const containerRef = useRef(null);
+    // container margin + padding: width of the mask that hides slides in the start-side margin
+    const containerInset = useContainerInset(containerRef);
   return (
     <section className="relative overflow-hidden pt-80px">
-      <div className="container overflow-visible">
+      <div className="container overflow-visible" ref={containerRef}>
         <div className="flex justify-between mb-40px 3xl:mb-[45px]">
           <H2Title titleText={title} />
 
@@ -38,7 +44,15 @@ const Promoters = ({ items,title, btmBorder }) => {
         
           </div>
         </div>
-        <div className="emp-slider-wr">
+        <div className="emp-slider-wr relative">
+          {/* slides overflow on both sides; this covers the start-side margin (up to the container's content edge) */}
+          <div
+            aria-hidden="true"
+            className={`absolute top-0 bottom-0 z-10 bg-white pointer-events-none ${
+              isArabic ? "left-full" : "right-full"
+            }`}
+            style={{ width: isArabic ? containerInset.right : containerInset.left }}
+          />
           <Swiper
             modules={[Autoplay]}
             spaceBetween={10}

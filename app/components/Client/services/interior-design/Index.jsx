@@ -30,7 +30,7 @@ const InteriorDesign = ({ data, projectData }) => {
         <FeaturedProjectSlider data={filteredProjects} />
       )}
 
-      <WhyChooseSec data={data.fifthSection} noTopSpacing={filteredProjects.length === 0} />
+      {/* <WhyChooseSec data={data.fifthSection} noTopSpacing={filteredProjects.length === 0} /> */}
     </>
   );
 };

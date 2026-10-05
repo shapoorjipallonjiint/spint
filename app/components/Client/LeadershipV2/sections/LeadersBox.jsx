@@ -156,7 +156,7 @@ const LeaderBox = ({data,big}) => {
 
                             <div className="description">
                                 {data.description &&
-                                    <motion.div variants={fadeIn(0.6)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-19 leading-[1.47] text-paragraph font-light [&>p]:mb-4 [&>p]:2xl:mb-7 [&>p]:last:mb-0"
+                                    <motion.div variants={fadeIn(0.6)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-justify text-19 leading-[1.47] text-paragraph font-light [&>p]:mb-4 [&>p]:2xl:mb-7 [&>p]:last:mb-0"
                                      dangerouslySetInnerHTML={{ __html: data.description }}>
                                     </motion.div>
                                 }

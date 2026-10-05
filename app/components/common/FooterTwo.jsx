@@ -63,6 +63,7 @@ const footerLinks = [
     links: [
       { label: "Careers", label_ar: "", href: "/careers" },
       { label: "Projects", label_ar: "", href: "/projects" },
+      { label: "Terms and Conditions", label_ar: "", href: "/terms-and-conditions" },
     ],
   },
 ];
@@ -258,7 +259,7 @@ const FooterTwo = () => {
         >
           <div className="flex flex-wrap gap-x-[35px] items-center">
             <div className="">
-              <p className="text-14 leading-[2.857142857142857] font-normal opacity-50"> Copyright {new Date().getFullYear()}© SP International All Rights </p>
+              <p className="text-14 leading-[2.857142857142857] font-normal opacity-50"> Copyright ©{new Date().getFullYear()} All Rights Reserved</p>
             </div>
             <div className="">
               <ul className="flex flex-wrap gap-x-2 xl:gap-x-[35px]">

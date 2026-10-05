@@ -224,9 +224,9 @@ const ExpertiseSec = ({ data }) => {
                             {item.subTitle}
                           </p>
 
-                          <p className="text-white text-[22px] md:text-[25px] leading-[1.473684210526316] font-light mb-4">
+                          {/* <p className="text-white text-[22px] md:text-[25px] leading-[1.473684210526316] font-light mb-4">
                             Key Services
-                          </p>
+                          </p> */}
                           <div
                             dangerouslySetInnerHTML={{
                               __html: withNormalSpaces(item.description),
@@ -352,9 +352,9 @@ const ExpertiseSec = ({ data }) => {
                         )}
 
                         {/* Services */}
-                        <p className="text-white text-24 font-light mb-4">
+                        {/* <p className="text-white text-24 font-light mb-4">
                           Key Services
-                        </p>
+                        </p> */}
                         <div
                           dangerouslySetInnerHTML={{
                             __html: withNormalSpaces(item.description),

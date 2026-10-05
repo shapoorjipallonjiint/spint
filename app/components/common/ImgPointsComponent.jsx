@@ -15,28 +15,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FALLBACK_IMAGE = "/assets/images/placeholder.jpg";
 
+// Created once at module level; creating it inside the component remounts the image on every render
+const MotionImage = motion.create(Image);
+
 const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
  
-  const sourceRef = useRef(null);
-  const [height, setHeight] = useState(0);
-
-useEffect(() => {
-  const updateHeight = () => {
-    if (sourceRef.current && window.innerWidth > 767) {
-      setHeight(sourceRef.current.offsetHeight);
-    } else {
-      setHeight("auto"); // or 0 if needed
-    }
-  };
-
-  updateHeight();
-  window.addEventListener("resize", updateHeight);
-
-  return () => window.removeEventListener("resize", updateHeight);
-}, []);
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
-    const MotionImage = motion.create(Image);
 
     const isMob = useMediaQuery({ maxWidth: 767 });
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
@@ -110,9 +95,10 @@ useEffect(() => {
                     <H2Title titleText={heading} titleColor="black" marginClass="mb-4 lg:mb-6 xl:mb-8 3xl:mb-16" />
                 </motion.div>
 
-                <div className="grid items-center md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
+                <div className="grid items-center md:items-stretch md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px]">
                     {/* ================= IMAGE (DESKTOP ONLY) ================= */}
-                    <div ref={imageRef} className=" relative h-[250px] md:h-full overflow-hidden">
+                    {/* md+: the image fills its grid cell, so it always matches the points list height */}
+                    <div ref={imageRef} className="relative h-[250px] md:h-auto overflow-hidden">
                         <MotionImage
                             // key={activeImage}
                             // src={activeImage} 
@@ -124,13 +110,12 @@ useEffect(() => {
                             // initial={{ opacity: 0 }}
                             // animate={{ opacity: 1 }}
                             // transition={{ duration: 0.4 }}
-                            className="w-full h-full object-cover"
-                             style={{ height: height }}
+                            className="w-full h-full object-cover md:absolute md:inset-0"
                         />
                     </div>
 
                     {/* ================= TEXT ================= */}
-                    <div className="border-t border-b border-black/20 3xl:max-w-[50ch]" ref={sourceRef}>
+                    <div className="border-t border-b border-black/20 3xl:max-w-[50ch]">
                         {points.map((item, index) => (
                             <motion.div
                                 key={index}
@@ -156,11 +141,11 @@ useEffect(() => {
                                         // updateImage(index);
                                     }
                                 }}
-                                className="border-b border-black/20 last:border-b-0 py-5 3xl:py-8 cursor-pointer"
+                                className="border-b border-black/20 last:border-b-0 py-5 3xl:py-6 cursor-pointer"
                             >
                                 {/* TITLE */}
                                 <div
-                                    className={`relative 2xl:text-24 3xl:text-29 transition-all 2xl:w-[96%] ${
+                                    className={`relative 2xl:text-19 transition-all 2xl:w-[96%] ${
                                         isActive(index) ? "text-black font-semibold" : "text-paragraph font-light"
                                     }`}
                                 >

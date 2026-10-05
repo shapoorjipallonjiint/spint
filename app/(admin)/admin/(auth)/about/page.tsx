@@ -287,6 +287,8 @@ const AboutPage = () => {
                     title_ar: data.data.clientsSection?.title_ar ?? "",
                     logos: data.data.clientsSection?.logos ?? [],
                 });
+                // the logos field array only refreshes when its own path is set (setting the parent object isn't enough)
+                setValue("clientsSection.logos", data.data.clientsSection?.logos ?? []);
             } else {
                 const data = await response.json();
                 alert(data.message);
