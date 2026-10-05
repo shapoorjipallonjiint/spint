@@ -31,7 +31,7 @@ const footerLinks = [
       { label: "Engineering & Construction", label_ar: "", href: "/services/engineering-construction" },
       { label: "MEP", label_ar: "", href: "/services/mep" },
       { label: "Interior Fit-out", label_ar: "", href: "/services/interior-design" },
-      { label: "Façade", label_ar: "", href: "/services/facade" },
+      { label: "Facade", label_ar: "", href: "/services/facade" },
       { label: "Facilities Management", label_ar: "", href: "/services/integrated-facility-management" },
       { label: "Water", label_ar: "", href: "/services/water" },
     ],
@@ -204,7 +204,7 @@ const FooterTwo = () => {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ amount: 0.1, once: true }}
-                className="mb-50px"
+                className="mb-2 md:mb-50px"
               >
                 <h3 className="text-18 2xl:text-29 leading-[1.344827586206897] font-light mb-2 lg:mb-[27px]">
                   <button
@@ -234,7 +234,7 @@ const FooterTwo = () => {
                     {section.links.map((link) => (
                       <li
                         key={link.label}
-                        className="opacity-70 hover:opacity-100 transition-all duration-200 text-[16px] xl:text-19 leading-[1.578947368421053] font-light"
+                        className="opacity-70 hover:opacity-100 transition-all duration-200 text-[14px] max-lg:mb-[2px] md:text-[16px] xl:text-19 leading-[1.578947368421053] font-light"
                       >
                         <LangLink href={link.href}>{link.label}</LangLink>
                       </li>

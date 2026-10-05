@@ -86,7 +86,7 @@ interface FacadeProps {
         imageAlt: string;
         imageAlt_ar: string;
     };
-    // "Our Façade, Glazing & Metalwork" accordion (optional)
+    // "Our Facade, Glazing & Metalwork" accordion (optional)
     systemsSection?: {
         title?: string;
         title_ar?: string;
@@ -626,7 +626,7 @@ const FacadePage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Façade, Glazing &amp; Metalwork Section</Label>
+                    <Label main>Facade, Glazing &amp; Metalwork Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
                             <Label className="font-bold">Title</Label>
@@ -1081,7 +1081,7 @@ const FacadePage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Façade, Glazing &amp; Metalwork Section</Label>
+                    <Label main>Facade, Glazing &amp; Metalwork Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
                             <Label className="font-bold">Title</Label>

@@ -39,7 +39,7 @@ const ExpandingHorizons = ({ data }) => {
         return () => window.removeEventListener("resize", updateSpace);
     }, []);
     return (
-        <section className="relative overflow-hidden section-spacing" ref={sectionRef}>
+        <section className="relative overflow-hidden pt-80px pb-50px" ref={sectionRef}>
             <div className="">
                 <div>
                     <div className="flex gap-10 lg:gap-18 2xl:gap-25">
