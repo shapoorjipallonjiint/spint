@@ -1355,8 +1355,13 @@ body::-webkit-scrollbar {
   top: calc((var(--lh) * 1em - 7px) / 2);
   width: 7px;
   height: 7px;
-  /* background-color: #30B6F9; */
-  background-color: #000000;
+  background-color: #30B6F9;
+}
+
+/* Always white text on the blue section, even if the CMS HTML carries inline colours */
+.tab-style1-description,
+.tab-style1-description * {
+  color: #fff !important;
 }
 
 /* ================= RTL (Arabic) ================= */
