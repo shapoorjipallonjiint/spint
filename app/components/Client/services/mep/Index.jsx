@@ -24,11 +24,11 @@ const MEP = ({ data, projectData }) => {
       />
       <VideoSection data={data.firstSection} maxW="max-w-[18ch]" />
       <ExpertiseSec data={data.secondSection} />
-      <WhyChooseSec
+      {/* <WhyChooseSec
         data={data.thirdSection}
         bgColor="white"
         sectionSpacing="section-spacing"
-      />
+      /> */}
       {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
       {filteredProjects.length > 0 && (
         <FeaturedProjectSlider data={filteredProjects} />

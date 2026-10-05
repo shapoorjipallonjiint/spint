@@ -5,6 +5,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Tailwind v4 gives buttons the default cursor; show the pointer on every clickable button (slider arrows etc.) */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
 /*  */
 
 :root {
@@ -1277,6 +1285,11 @@ body::-webkit-scrollbar {
 .our-expertise-item-desc li {
   min-width: 0;
   max-width: 100%;
+}
+
+/* the editor saves a blank line as an empty <p></p>, which would collapse to 0 height - keep it one line tall */
+.our-expertise-item-desc p:empty {
+  min-height: 1lh;
 }
 
 .our-expertise-item-desc ul {

@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useEffect } from 'react'
 
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm, useFieldArray, useWatch, Controller, Control, UseFormRegister } from "react-hook-form";
 import { Button } from '@/components/ui/button'
 import { ImageUploader } from '@/components/ui/image-uploader'
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -55,6 +55,11 @@ interface IntegratedFacilityManagementProps {
             title_ar: string;
             description: string;
             description_ar: string;
+            additionalImages?: {
+                image: string;
+                imageAlt: string;
+                imageAlt_ar: string;
+            }[];
         }[]
     };
     thirdSection: {
@@ -83,6 +88,66 @@ interface IntegratedFacilityManagementProps {
         }[]
     };
 }
+
+// Extra images for an "Our Expertise" tab (slideshow on the site). The item's main image stays the first slide.
+const AdditionalImages = ({ control, register, index }: { control: Control<IntegratedFacilityManagementProps>; register: UseFormRegister<IntegratedFacilityManagementProps>; index: number }) => {
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: `secondSection.items.${index}.additionalImages`
+    });
+
+    return (
+        <div className='flex flex-col gap-2'>
+            <Label className='font-bold'>Additional Images (slideshow, 3 sec)</Label>
+            <div className='border border-black/20 p-2 rounded-md flex flex-col gap-3'>
+                {fields.length === 0 && <p className='text-sm text-gray-500'>No additional images. Only the main image is shown.</p>}
+                {fields.map((field, imgIndex) => (
+                    <div key={field.id} className='flex flex-col gap-2 relative border-b border-black/20 pb-3 last:border-b-0'>
+                        <div className='absolute top-2 right-2'>
+                            <RiDeleteBinLine onClick={() => remove(imgIndex)} className='cursor-pointer text-red-600' />
+                        </div>
+                        <Controller
+                            name={`secondSection.items.${index}.additionalImages.${imgIndex}.image`}
+                            control={control}
+                            rules={{ required: "Image is required" }}
+                            render={({ field, fieldState }) => (
+                                <>
+                                    <ImageUploader value={field.value} onChange={field.onChange} />
+                                    {fieldState.error && <p className='text-red-500'>{fieldState.error.message}</p>}
+                                </>
+                            )}
+                        />
+                        <Label className='font-bold'>Alt Tag</Label>
+                        <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.additionalImages.${imgIndex}.imageAlt`)} />
+                    </div>
+                ))}
+            </div>
+            <div className='flex justify-end'>
+                <Button type='button' addItem onClick={() => append({ image: "", imageAlt: "", imageAlt_ar: "" })}>Add Image</Button>
+            </div>
+        </div>
+    );
+};
+
+// Arabic alt tags for the additional images (the images themselves are managed in the English section)
+const AdditionalImagesAr = ({ control, register, index }: { control: Control<IntegratedFacilityManagementProps>; register: UseFormRegister<IntegratedFacilityManagementProps>; index: number }) => {
+    const images = useWatch({ control, name: `secondSection.items.${index}.additionalImages` }) || [];
+    if (images.length === 0) return null;
+
+    return (
+        <div className='flex flex-col gap-2'>
+            <Label className='font-bold'>Additional Images – Alt Tags</Label>
+            <div className='border border-black/20 p-2 rounded-md flex flex-col gap-3'>
+                {images.map((img, imgIndex) => (
+                    <div key={imgIndex} className='flex gap-2 items-center'>
+                        {img?.image ? <img src={img.image} alt="" className='w-16 h-12 object-cover rounded shrink-0' /> : <div className='w-16 h-12 bg-gray-100 rounded shrink-0' />}
+                        <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.additionalImages.${imgIndex}.imageAlt_ar`)} />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
 
 const IntegratedFacilityManagementPage = () => {
 
@@ -378,6 +443,8 @@ const IntegratedFacilityManagementPage = () => {
                                                         {errors.secondSection?.items?.[index]?.imageAlt && <p className='text-red-500'>{errors.secondSection?.items?.[index]?.imageAlt.message}</p>}
                                                     </div>
                                                 </div>
+
+                                                <AdditionalImages control={control} register={register} index={index} />
 
 
                                             </div>
@@ -781,6 +848,8 @@ const IntegratedFacilityManagementPage = () => {
                                                         <Input type='text' placeholder='Alt Tag' {...register(`secondSection.items.${index}.imageAlt_ar`)} />
                                                     </div>
                                                 </div>
+
+                                                <AdditionalImagesAr control={control} register={register} index={index} />
 
 
                                             </div>

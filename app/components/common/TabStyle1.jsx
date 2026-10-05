@@ -7,6 +7,31 @@ import { moveUp } from "@/app/components/motionVarients";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import WipeSlideshow from "@/app/components/common/WipeSlideshow";
+
+// Main image first, then any additional images (admin: Our Expertise > item > Additional Images)
+const getTabImages = (tab) => [
+    { image: tab.image, imageAlt: tab.imageAlt },
+    ...(tab.additionalImages || []).filter((img) => img?.image),
+].filter((img) => img.image);
+
+// One image renders as before. Several become a slideshow: every 3s the current image is wiped away
+// right-to-left with a clip-path, revealing the next one underneath (which settles from a slight zoom).
+const TabImages = ({ tab, width, height, className, isArabic }) => (
+    <WipeSlideshow
+        items={getTabImages(tab)}
+        isArabic={isArabic}
+        renderSlide={(img, i, isLayer) => (
+            <Image
+                width={width}
+                height={height}
+                src={img.image}
+                alt={img.imageAlt || ""}
+                className={isLayer ? "w-full h-full object-cover" : className}
+            />
+        )}
+    />
+);
 
 export default function TabStyle1({ data }) {
     const isArabic = useIsPreferredLanguageArabic();
@@ -107,13 +132,15 @@ useEffect(() => {
                                                 className="px-4 py-6 border border-white/20"
                                             >
                                                 {/* Image */}
-                                                <Image
-                                                    width={300}
-                                                    height={300}
-                                                    src={tab.image}
-                                                    alt={tab.imageAlt}
-                                                    className="w-full max-h-[260px] object-cover mb-4"
-                                                />
+                                                <div className="mb-4">
+                                                    <TabImages
+                                                        isArabic={isArabic}
+                                                        tab={tab}
+                                                        width={300}
+                                                        height={300}
+                                                        className="w-full max-h-[260px] object-cover"
+                                                    />
+                                                </div>
 
                                                 {/* Text */}
                                                 <h3 className="text-22 font-bold mb-3 text-white">{tab.title}</h3>
@@ -145,7 +172,7 @@ useEffect(() => {
                             transition={{ duration: 0.45, ease: "easeOut" }}
                             className={`grid grid-cols-1 lg:grid-cols-2 ${
                                 isArabic ? "2xl:grid-cols-[auto_650px]" : "2xl:grid-cols-[650px_auto]"
-                            } gap-10 xl:gap-x-18 items-center`}
+                            } gap-10 xl:gap-x-18 items-start`}
                         >
                             {/* Left image */}
                             <motion.div
@@ -154,11 +181,12 @@ useEffect(() => {
                                 transition={{ duration: 0.4, ease: "easeOut", delay: 0.8 }}
                                 className="w-full"
                             >
-                                <Image
+                                <TabImages
+                                    isArabic={isArabic}
+                                    key={activeTab._id}
+                                    tab={activeTab}
                                     width={900}
                                     height={700}
-                                    src={activeTab.image}
-                                    alt={activeTab.imageAlt}
                                     className="w-full h-full max-h-[445px] object-cover"
                                 />
                             </motion.div>
@@ -175,7 +203,11 @@ useEffect(() => {
                                     {activeTab.title}
                                 </motion.h3>
 
-                                <div
+                                <motion.div
+                                    variants={moveUp(0.9)}
+                                    initial="hidden"
+                                    whileInView="show"
+                                    viewport={{ amount: 0.2, once: true }}
                                     className="tab-style1-description"
                                     dangerouslySetInnerHTML={{
                                         __html: normalizeHtml(activeTab.description),

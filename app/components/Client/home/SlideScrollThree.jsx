@@ -1780,7 +1780,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                     </div>
 
                     {/* Changed class to ref, and initial opacity to match your current code (.mswd's opacity:0 means this overlay is active) */}
-                    {<div ref={overlayRef} className="absolute inset-0 bg-black/70 h-[100dvh]"></div>}
+                    {/* below lg: flat 55% black; lg+: 15% on the top, blending (50%-60%) to 55% on the bottom 40% */}
+                    {<div ref={overlayRef} className="absolute inset-0 bg-black/55 lg:bg-transparent lg:bg-[linear-gradient(180deg,rgba(0,0,0,0.15)_0%,rgba(0,0,0,0.15)_50%,rgba(0,0,0,0.55)_60%,rgba(0,0,0,0.55)_100%)] h-[100dvh]"></div>}
                 </section>
             </div>
 

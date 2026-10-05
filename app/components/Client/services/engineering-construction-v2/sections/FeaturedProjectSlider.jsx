@@ -13,13 +13,15 @@ import Image from "next/image";
 import LangLink from '@/lib/LangLink'
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useContainerInset } from "@/hooks/useContainerInset";
 
 const FeaturedProjectSlider = ({ data = [] }) => {
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
     const swiperRef = useRef(null);
-    const containerRef = useRef(null);
-    const targetRef = useRef(null);
+    const sliderContainerRef = useRef(null);
+    // container margin + padding: width of the mask that hides slides in the start-side margin
+    const containerInset = useContainerInset(sliderContainerRef);
 
     const [animatingSlide, setAnimatingSlide] = useState(null);
     const [hasScrolledIntoView, setHasScrolledIntoView] = useState(false);
@@ -54,33 +56,12 @@ const FeaturedProjectSlider = ({ data = [] }) => {
         setTimeout(() => setAnimatingSlide(null), 1200);
     };
 
-    useEffect(() => {
-        const containerEl = containerRef.current;
-        const targetEl = targetRef.current;
-
-        if (!containerEl || !targetEl) return;
-
-        const updateMargin = () => {
-            if (window.innerWidth > 768) {
-                const computedStyle = window.getComputedStyle(containerEl);
-                const marginLeft = computedStyle.marginLeft;
-                targetEl.style.marginLeft = marginLeft;
-            } else {
-                targetEl.style.marginLeft = "0px";
-            }
-        };
-
-        updateMargin();
-        window.addEventListener("resize", updateMargin);
-        return () => window.removeEventListener("resize", updateMargin);
-    }, []);
-
     const hasValidImage = (src) => typeof src === "string" && src?.trim().length > 0;
 
     return (
         <section className="py-80px relative bg-f5f5 overflow-hidden" ref={sectionRef} >
             <div className="xl:px-[15px] md:pe-0 relative">
-                <div className="container" ref={containerRef}>
+                <div className="container">
 
                     <div className="flex justify-between items-center mb-50px gap-2">
                         <H2Title titleText="Featured Projects" titleColor="black" marginClass="mb-0" />
@@ -99,7 +80,15 @@ const FeaturedProjectSlider = ({ data = [] }) => {
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-3 xl:px-[15px] md:pe-0">
-                    <div className="container">
+                    <div className="container relative" ref={sliderContainerRef}>
+                        {/* slides overflow on both sides; this covers the start-side margin (up to the container's content edge) */}
+                        <div
+                            aria-hidden="true"
+                            className={`absolute top-0 bottom-0 z-10 bg-f5f5 pointer-events-none ${
+                                isArabic ? "left-[calc(100%-15px)]" : "right-[calc(100%-15px)]"
+                            }`}
+                            style={{ width: isArabic ? containerInset.right : containerInset.left }}
+                        />
 
                         <Swiper
                             ref={swiperRef}
@@ -123,7 +112,7 @@ const FeaturedProjectSlider = ({ data = [] }) => {
                             }}
                             breakpoints={{
                                 600: {
-                                    slidesPerView: 1,
+                                    slidesPerView: 1.2,
                                     spaceBetween: 20,
                                 },
                                 768: {

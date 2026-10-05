@@ -9,7 +9,6 @@ import { moveUp, moveLeft } from "@/app/components/motionVarients";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
-import { usePathname } from "next/navigation";
 
 
 // Created once at module level; creating it inside the component remounts the shape on every render
@@ -76,35 +75,8 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
   });
   const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
 
-  const pathname = usePathname();
-
-  const showProfile = [
-    "/services/mep",
-    "/services/water",
-    "/services/facade",
-    "/services/interior-design",
-  ].some((route) => pathname?.startsWith(route));
-
-  console.log(pathname);
-
-
   return (
     <section className="relative section-spacing-margin" ref={sectionRef}>
-      {showProfile && (
-        <div className="absolute inset-0 z-10 hidden lg:block">
-          <div className="container">
-            <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`flex flex-col 3xl:ml-[10%] 3xl:-mt-6 ${pathname === "/services/interior-design" ? "lg:-translate-y-[8%]" : ""}`}>
-              <div className="border-b w-fit px-3 border-black/20">
-                <Image src={t.headProfilePic} alt={t.headProfilePicAlt} width={300} height={350} 
-                className="object-cover w-[200px] h-[220px] xl:w-[200px] xl:h-[210px] 2xl:w-[240px] 2xl:h-[245px] 3xl:w-[290px] 3xl:h-[290px]" />
-              </div>
-              <motion.p variants={moveUp(0.3)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-20 3xl:text-24 font-medium mt-1">{t.headName}</motion.p>
-              <motion.p variants={moveUp(0.42)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className="text-16 3xl:text-18 font-light leading-[1.2]">{t.headDesignation}</motion.p>
-            </motion.div>
-          </div>
-        </div>
-      )}
-
       <div className={`absolute top-custom-100 h-fit w-fit z-0 ${isArabic ? "left-0 lg:right-[-4%] xl:right-0 2xl:right-[-6%] 3xl:right-0" : "right-0 lg:left-[-4%] xl:left-0 2xl:left-[-6%] 3xl:left-0"}`}>
         <MotionImage width={1500} height={1000} style={{ y: shapeY }} variants={moveLeft(0.4)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} src={assets.mainShape2} alt="" className={`${isArabic && "-scale-x-100"} w-[152px] lg:w-[400px] xl:w-[55%] 2xl:w-[70%] 3xl:w-[100%] h-fit object-contain vdo-shape`} />
       </div>
@@ -122,6 +94,9 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
               }
             </div>
           </div>
+        </div>
+        {/* video ends where the description ends (same 137px inset as the text wrapper), with the same space on the other side */}
+        <div className="relative z-10 overflow-hidden 2xl:mx-[137px]">
           <motion.div ref={containerRef}
             style={
               enableAnim
@@ -139,7 +114,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
                 : {}
             }
             className="container-scroll-effect lg:max-w-[100%] mx-auto pt-1 2xl:pt-3">
-            <VideoPlayer src={data.video} poster={data.poster} />
+            <VideoPlayer src={data.video} poster={data.poster} fullWidth />
           </motion.div>
         </div>
       </div>
