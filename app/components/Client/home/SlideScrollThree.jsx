@@ -18,6 +18,7 @@ import { moveUp } from "../../motionVarients.ts";
 import CountUp from "../../CountUp.jsx";
 import AboutHighlights from "./AboutHighlights";
 import CredentialsPanel from "./CredentialsPanel";
+import { cubeColumnIndexes } from "@/lib/credentialsCubes";
 import { useFirstTimeDelay } from "../../../../hooks/useDelayTimer.jsx";
 import { mapBackendCitiesToMapCities } from "../../../../lib/mapDataHelper";
 import Image from "next/image";
@@ -570,7 +571,12 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 }
 
                 // credentials cubes build up row by row, bottom row first, after the title/description
-                [0, 1, 2, 3].forEach((row) => {
+                // as many rows as the tallest column (admin column layout)
+                const cubeRows = Math.max(
+                    0,
+                    ...Array.from(credCubesRef.current?.querySelectorAll("[data-cube-row]") ?? [], (el) => Number(el.dataset.cubeRow) + 1),
+                );
+                Array.from({ length: cubeRows }, (_, row) => row).forEach((row) => {
                     const rowCubes = credCubesRef.current?.querySelectorAll(`[data-cube-row="${row}"]`);
                     if (!rowCubes?.length) return;
                     c1.fromTo(
@@ -2025,11 +2031,14 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 className={`absolute top-0 ${isArabic ? "right-0" : "left-0"} w-full h-full bg-transparent`}
                 style={{ visibility: "hidden", zIndex: 0 }}
             >
-                <section id="section3" className="h-screen overflow-hidden relative scroll-area">
-                    {/* from 2xl the left column is sized around the credentials cubes:
-                        header edge + 50px + staircase + 50px, where the staircase is 529px at 2xl (100px cubes)
-                        and 644px at 3xl (full 122px cubes) - see CredentialsPanel. From 1900px the right column is fixed at 900px instead */}
-                    <div className="lg:grid lg:grid-cols-[500px_auto] xl:grid-cols-[600px_auto] 2xl:grid-cols-[calc(5vw+754px)_auto] 3xl:grid-cols-[calc(7.814vw+877px)_auto] min-[1900px]:grid-cols-[1fr_900px] h-full bg-transparent">
+                <section
+                    id="section3"
+                    className="cred-layout h-screen overflow-hidden relative scroll-area"
+                    // number of cube columns (admin layout) -> width of the credentials column (--cred-left, globals.css)
+                    style={{ "--cred-cols": cubeColumnIndexes(tData.thirdSection?.credentials?.columns).length }}
+                >
+                    {/* the left column is sized around the credentials cubes (--cred-left); the right column takes the rest */}
+                    <div className="lg:grid lg:grid-cols-[var(--cred-left)_1fr] h-full bg-transparent">
                         <div
                             className={`lftblc relative ${isArabic ? "left-0" : "right-0"} lg:h-auto lg:overflow-hidden`}
                             ref={splftimng}
@@ -2037,7 +2046,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                             <div className="bg-f5f5 absolute w-full right-0 h-full top-0 z-[-1]" ref={splftbg}></div>
                             {/* credentials cubes on all screens. Fixed to the full column width (the screen on mobile) so the
                                 entry width-reveal wipes it in instead of squeezing/re-scaling the cubes */}
-                            <div className="relative lg:absolute top-0 start-0 lg:h-full w-screen lg:w-[500px] xl:w-[600px] 2xl:w-[calc(5vw+754px)] 3xl:w-[calc(7.814vw+877px)] min-[1900px]:w-[calc(100vw-900px)]">
+                            <div className="relative lg:absolute top-0 start-0 lg:h-full w-screen lg:w-[var(--cred-left)]">
                                 <CredentialsPanel cubesRef={credCubesRef} data={tData.thirdSection?.credentials} />
                             </div>
                         </div>

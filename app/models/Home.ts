@@ -156,7 +156,7 @@ const homeSchema = new mongoose.Schema({
         }],
         // right side background video (desktop); optional, one video for both languages
         video: { type: String },
-        // left side of the slide: "Our Credentials" title, description and the 11 cubes (order: lib/credentialsCubes.ts).
+        // left side of the slide: "Our Credentials" title, description and the cubes (order: lib/credentialsCubes.ts).
         // New and optional (cubes default undefined), so existing documents are not touched until saved.
         // title / description / link above are the right side ("About SP International"); image and items are no
         // longer shown on the site but are kept as they are.
@@ -172,6 +172,12 @@ const homeSchema = new mongoose.Schema({
                     key: { type: String },
                     key_ar: { type: String },
                 }],
+                default: undefined,
+            },
+            // cubes per column, left to right (cubes fill each column bottom to top). Optional: documents without it
+            // keep the original [4, 3, 2, 1, 1] top-to-bottom layout.
+            columns: {
+                type: [Number],
                 default: undefined,
             },
         },

@@ -16,7 +16,8 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
     className="relative"
     style={{ width: "var(--w)", height: "var(--h)" }}
   >
-    <div className="relative h-full transition-transform duration-300 ease-out hover:-translate-y-1.5">
+    {/* hover: the cube stays put; its value bobs up 5px and back, looping while hovered */}
+    <div className="group relative h-full">
       {showTop && (
         // top face: skewed so its back edge shifts right by --dx
         <span
@@ -47,23 +48,27 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
         className="relative h-full flex flex-col items-center justify-center text-center text-white px-[5px] lg:px-[6%] rtl:-scale-x-100"
         style={{ background: frontBg, boxShadow: innerStroke }}
       >
-        <p
-          className="font-semibold text-[13px] lg:text-16 leading-[12px] lg:leading-[1.34] mb-px lg:mb-[3px]"
-        >
-          {value}
-        </p>
-        <p
-          className="font-light text-[8px] lg:text-[11px] leading-[9px] lg:leading-[1.39]"
-        >
-          {label}
-        </p>
+        <div>
+          <p
+            className="font-semibold text-[12px] lg:text-16 leading-[12px] lg:leading-[1.34] mb-[2px] lg:mb-[3px] group-hover:animate-[cube-value-bob_0.8s_ease-in-out_infinite]"
+          >
+            {value}
+          </p>
+          <p
+            className="font-light text-[8px] lg:text-[11px] leading-[9px] lg:leading-[1.39]"
+          >
+            {label}
+          </p>
+        </div>
       </div>
     </div>
   </div>
 );
 
 const CredentialsPanel = ({ cubesRef, data }) => {
-  const columns = toCubeColumns(data?.cubes);
+  // columns from admin (cubes fill each column bottom to top); older data keeps the original layout
+  const columns = toCubeColumns(data?.cubes, data?.columns);
+  const rows = Math.max(1, ...columns.map((column) => column.length));
   return (
   <div className="relative lg:h-full flex flex-col bg-f5f5 pt-[92px] px-4 lg:pt-[12dvh] lg:pb-[8dvh] 3xl:pb-[87px] lg:ps-[calc(4vw+125px+32px)] xl:ps-[calc(5vw+125px+40px)] 2xl:ps-[calc(5vw+125px+50px)] 3xl:ps-[calc(7.814vw+133px+50px)] lg:pe-8 xl:pe-10 2xl:pe-[50px]">
     <h2 data-cred-intro className="text-primary font-light leading-[36px] lg:leading-[1.0833333] text-[26px] lg:text-34 xl:text-48 3xl:text-60 mb-[10px] lg:mb-3 xl:mb-4">
@@ -86,13 +91,15 @@ const CredentialsPanel = ({ cubesRef, data }) => {
 
     <div
       className="cred-cubes @container mt-[calc(25px_+_min(122px,_(100vw_-_35.2px)_/_5.2401)_*_0.2667)] lg:mt-auto relative [container-type:inline-size] [--cubes-h:9999px] lg:[--cubes-h:calc(80dvh-180px)]"
+      // cube size is worked out from the number of columns (width) and the tallest column (height)
+      style={{ "--cols": columns.length, "--rows": rows }}
     >
       {/* desktop only: blurred shadow under the cubes: 763x39 at 3xl (74.7% of the column), pinned to the column's
                 end edge (pulled out through the panel's end padding) and overlapping the cube bottoms by 10px */}
       {/* blur sits on the wrapper: clip-path is applied after filter, so on one element it would cut the blur off */}
       <span
         data-cred-glow="1"
-        className="hidden lg:block absolute top-[calc(100%-10px)] -end-4 lg:-end-8 xl:-end-10 2xl:-end-[50px] w-[83%] lg:w-[374px] xl:w-[448px] 2xl:w-[calc((5vw+754px)*0.747)] 3xl:w-[calc((7.814vw+877px)*0.747)] min-[1900px]:w-[calc((100vw-900px)*0.747)] aspect-[763/39] pointer-events-none rtl:-scale-x-100"
+        className="hidden lg:block absolute top-[calc(100%-10px)] -end-4 lg:-end-8 xl:-end-10 2xl:-end-[50px] w-[83%] lg:w-[374px] xl:w-[448px] 2xl:w-[calc(var(--cred-left)*0.747)] aspect-[763/39] pointer-events-none rtl:-scale-x-100"
         style={{ filter: "blur(30px)" }} // Figma layer blur 60.1
       >
         <span
