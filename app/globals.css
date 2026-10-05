@@ -99,9 +99,22 @@ html {
     max-width: 1100px;
   }
 
+  @media (width >=1280px) {
+    max-width: 1200px;
+  }
+
   @media (width >=1360px) {
     max-width: 1300px;
   }
+
+  @media (width >=1440px) {
+    max-width: 1360px;
+  }
+
+  @media (width >=1540px) {
+    max-width: 1460px;
+  }
+
 
   @media (width >=1680px) {
     max-width: 1650px;

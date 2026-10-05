@@ -112,6 +112,11 @@ const AccordionStyle1 = ({ accData }) => {
         setOpenIndex((prev) => (prev === index ? null : index));
     };
 
+    // Open on hover too, but only on devices with a real hover (a tap on touch would open then instantly toggle closed)
+    const openOnHover = (index) => {
+        if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) setOpenIndex(index);
+    };
+
     return (
         <div className="space-y-1">
             {accData.items.map((item, index) => (
@@ -121,6 +126,7 @@ const AccordionStyle1 = ({ accData }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
+                    onMouseEnter={() => openOnHover(index)}
                     className={`border-b border-cmnbdr relative transition-colors duration-500 mb-0 ${
                         openIndex === index ? (isArabic ? "pr-50px" : "pl-50px") : ""
                     }`}

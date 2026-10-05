@@ -104,7 +104,7 @@ const Certifications = ({ data }) => {
   }, [itemIndex]);
 
   return (
-    <section className="pt-text90 pb25 bg-primary">
+    <section className="section-spacing bg-primary">
       <div className="container ">
         <div>
           <H2Title titleText={t.title} titleColor="white" marginClass="mb-4 2xl:mb-50px" />

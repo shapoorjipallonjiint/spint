@@ -69,7 +69,7 @@ const DiversitySection = ({ data }) => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-white pt-text30"
+      className="relative w-full overflow-hidden bg-white pt-80px"
     >
       {/* Arrow */}
       <div

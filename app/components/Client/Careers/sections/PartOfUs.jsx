@@ -109,7 +109,7 @@ const CultureSection = ({ data }) => {
 
 
     return (
-        <section id="careers-stop-section" ref={sectionRef} className="pb30 pt-text30 overflow-hidden">
+        <section id="careers-stop-section" ref={sectionRef} className="section-spacing overflow-hidden">
             <div
                 className="relative w-full h-[350px] lg:h-[420px] xl:h-[490px] overflow-hidden flex items-center container"
                 ref={imageContainerRefTwo}

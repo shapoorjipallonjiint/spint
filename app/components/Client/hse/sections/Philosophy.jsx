@@ -94,7 +94,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
   return (
     <section
-      className={`w-full bg-primary text-white ${sectionSpacing} pt-text25 pb25 h-auto`}
+      className={`w-full bg-primary text-white ${sectionSpacing} section-spacing h-auto`}
     >
       <div className="container">
         {/* ================= TITLE ================= */}

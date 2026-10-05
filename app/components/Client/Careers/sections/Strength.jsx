@@ -49,7 +49,7 @@ const Strength = ({ data }) => {
     }, []);
 
     return (
-        <section className="py25">
+        <section className="section-spacing">
             <div
                 className="container flex flex-col lg:flex-row items-start gap-5 xl:gap-12 2xl:gap-[190px]"
                 ref={containerRef}
@@ -179,7 +179,7 @@ const Strength = ({ data }) => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ amount: 0.2, once: true }}
-                        className="border-b border-gray-200 mt-[30px] xl:mt-[50px] 2xl:mt-[70px]"
+                        className="border-b border-gray-200 mt-[30px] xl:mt-[50px]"
                     />
                 </div>
             </div>

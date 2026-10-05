@@ -53,7 +53,7 @@ const EmployeeInvolvementSlider = ({ data }) => {
     }, []);
 
     return (
-        <section className="pt-text30 pb30 relative bg-f5f5 overflow-hidden">
+        <section className="section-spacing relative bg-f5f5 overflow-hidden">
             <div className={`px-[15px] ${isArabic ? "md:ps-0" : "md:pe-0"} relative`}>
                 {/* Counter + Arrows */}
                 <div className="container" ref={containerRef}>

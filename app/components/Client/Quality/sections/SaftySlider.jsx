@@ -85,7 +85,7 @@ const SaftySlider = ({ data }) => {
 />
 
 
-                <div className="container pt-text30">
+                <div className="container pt-80px">
                     <div className={`max-w-[1206px] 2xl:max-w-[1056px] 3xl:max-w-[1206px] ${isArabic ? "mr-auto" : "ml-auto"}`}>
                         <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 2xl:mb-50px max-w-[15ch]" />
 
@@ -134,7 +134,7 @@ const SaftySlider = ({ data }) => {
                 </div>
             </div>
 
-            <div className="w-full bg-white pb30">
+            <div className="w-full bg-white pb-80px">
                 <motion.div
                     variants={moveLeft(0.3)}
                     initial="hidden"

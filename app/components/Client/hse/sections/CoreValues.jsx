@@ -35,7 +35,7 @@ const CoreValues = ({ data }) => {
     });
     const shapeY = useTransform(shapeProgress, [0, 1], shapeOffset);
     return (
-        <section className="pt25 pb30 relative overflow-hidden" ref={sectionRef}>
+        <section className="section-spacing relative overflow-hidden" ref={sectionRef}>
             <div className="container ">
                 <div className="md:grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[458px_auto] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[658px_auto] gap-5 lg:gap-12 2xl:gap-15 3xl:gap-23 items-center">
                     <div className="relative overflow-hidden" ref={imageContainerRefTwo}>

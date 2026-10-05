@@ -108,7 +108,8 @@ interface ClientSideLinkProps {
   name: string;
   icon: React.ReactNode;
   className?: string;
-  children?: { href: string; name: string }[];
+  // muted: dimmed child (e.g. a service hidden on the website)
+  children?: { href: string; name: string; muted?: boolean }[];
   isOpen?: boolean;
   setOpenLink?: (href: string | null) => void;
   hasChild?: boolean;
@@ -197,7 +198,7 @@ function ClientSideLink({
               pathname.startsWith(`${item.href}/`);
 
             return (
-              <div key={index} className="flex items-center gap-2">
+              <div key={index} className={cn("flex items-center gap-2", item.muted && "opacity-50")}>
                 <div>-</div>
                 <Link
                   href={item.href}

@@ -70,7 +70,7 @@ const EmpowerSection = ({ data }) => {
 
   return (
     <section ref={sectionRef}
-      className="w-full py-8 xl:py-15 2xl:py-22 3xl:py-23 bg-primary text-white lg:max-h-[611px] lg:overflow-hidden relative overflow-hidden " >
+      className="w-full section-spacing bg-primary text-white lg:max-h-[611px] lg:overflow-hidden relative overflow-hidden " >
       <div className="reveal-overlay4 absolute inset-0 bg-black/20 z-20"></div>
       {/* Below XL: custom padding; XL and up: container */}
       <motion.div className="shapelt50 flex-shrink-0">

@@ -51,7 +51,7 @@ const Environmental = ({ data }) => {
     };
     return (
         // <section className="py-12 xl:py-15 2xl:py-30 bg-[url('/assets/images/about-us/valuebg.svg')] bg-auto bg-right-bottom bg-no-repeat">
-        <section className="pt-text30 pb30 relative overflow-hidden" ref={sectionRef}>
+        <section className="section-spacing relative overflow-hidden" ref={sectionRef}>
             <div
                 className={`absolute -bottom-10 lg:bottom-40 ${
                     isArabic
@@ -97,7 +97,7 @@ const Environmental = ({ data }) => {
                             >
                                 <div className="flex justify-between items-center">
                                     <h3
-                                        className={`text-19 xs:text-20 xl:text-29  leading-[1.474] lg:leading-[2.43] text-paragraph group-hover:text-black transition-all ease-in-out duration-500 group-hover:font-bold ${
+                                        className={`text-19 xs:text-20 xl:text-29  leading-[1.474] lg:leading-[1.6] text-paragraph group-hover:text-black transition-all ease-in-out duration-500 group-hover:font-bold ${
                                             isHovered === index ? "font-bold text-black" : "font-light"
                                         }`}
                                     >
@@ -150,7 +150,7 @@ const Environmental = ({ data }) => {
                         </motion.div>
                     ))}
                 </div>
-                <h4 className="text-20 xl:text-29 pt-5 3xl:pt-[70px] leading-[1.35] 2xl:max-w-[75%]">{t.description_bottom}</h4>
+                <h4 className="text-20 xl:text-29 pt-50px leading-[1.35] 2xl:max-w-[75%]">{t.description_bottom}</h4>
             </div>
         </section>
     );

@@ -58,7 +58,7 @@ const ValuesSection = ({ data }) => {
 
     return (
         <section
-            className="bg-primary text-white w-full flex flex-col md:flex-row xl:h-[600px] 2xl:h-[656px] overflow-hidden pt-8 pb-10 md:py-0"
+            className="bg-primary text-white w-full flex flex-col md:flex-row xl:h-[600px] 2xl:h-[656px] overflow-hidden pt-80px pb-80px md:py-0"
             ref={sectionRef}
         >
             {/* Wrapper */}

@@ -56,7 +56,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
             exit="closed"
             variants={overlayVariants}
             onClick={onClose}
-            className="fixed inset-0 bg-black/45 z-50 lg:hidden"
+            className="fixed inset-0 bg-black/45 z-50 xl:hidden"
           />
 
           {/* SLIDE PANEL */}
@@ -65,7 +65,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
             animate="open"
             exit="closed"
             variants={menuVariants}
-            className={`fixed top-0 ${isArabic ? "left-0" : "right-0"} h-full w-full max-w-[320px] md:max-w-[450px] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto`}
+            className={`fixed top-0 ${isArabic ? "left-0" : "right-0"} h-full w-full max-w-[320px] md:max-w-[450px] bg-white shadow-2xl z-50 xl:hidden overflow-y-auto`}
           >
             {/* CLOSE */}
             <div className={`absolute ${isArabic ? "left-5" : "right-5"} top-5`}>

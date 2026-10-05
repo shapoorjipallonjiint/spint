@@ -171,27 +171,29 @@ const Index = ({ newsData, topicData }) => {
             </div>
 
             <motion.div variants={moveUp(0.8)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}
-              className="flex flex-row gap-x-6 md:gap-0 justify-between border-y border-cmnbdr py-35px mb-10 lg:mb-12  3xl:mb-20" >
-              <div className="flex flex-row gap-5 md:gap-15 xl:gap-[90px]">
+              className="flex flex-row gap-x-6 md:gap-0 justify-between border-y border-cmnbdr py-4 md:py-6 xl:py-[35px] mb-50px" >
+              <div className="flex flex-row gap-5 md:gap-x-8 lg:gap-x-10 2xl:gap-x-[60px] 3xl:gap-x-[90px]">
                 {/* Topic filter */}
                 <div className="   md:min-w-[77px] relative">
                   <Listbox value={selectedTopic} onChange={handleTopicChange}>
-                    <Listbox.Button className="relative w-fit cursor-pointer text-left flex items-center gap-3 2xl:gap-[16px] outline-0 border-0 justify-between">
+                    <Listbox.Button className="relative w-fit cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between">
                       <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase whitespace-nowrap">
                         {selectedTopic.name}
                       </span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="7"
+                        viewBox="0 0 16 9"
                         fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="size-6 w-3 md:w-full"
+                        className="w-[16px] h-[10px]"
                       >
                         <path
+                          d="M15 1L7.9992 8L1 1.00159"
+                          stroke="#464646"
+                          strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                         />
                       </svg>
                     </Listbox.Button>
@@ -217,22 +219,24 @@ const Index = ({ newsData, topicData }) => {
                 {/* Year filter */}
                 <div className=" md:min-w-[77px] relative">
                   <Listbox value={selectedYear} onChange={handleYearChange}>
-                    <Listbox.Button className="relative w-fit cursor-pointer text-left flex items-center gap-3 2xl:gap-[16px] outline-0 border-0 justify-between">
+                    <Listbox.Button className="relative w-fit cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between">
                       <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
                         {selectedYear.title}
                       </span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="7"
+                        viewBox="0 0 16 9"
                         fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="size-6   w-3 md:w-full"
+                        className="w-[16px] h-[10px]"
                       >
                         <path
+                          d="M15 1L7.9992 8L1 1.00159"
+                          stroke="#464646"
+                          strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                         />
                       </svg>
                     </Listbox.Button>
@@ -254,8 +258,8 @@ const Index = ({ newsData, topicData }) => {
               </div>
 
               {/* Clear Filter */}
-              <button type="button" onClick={handleClearFilters} className="flex items-center gap-1 md:gap-[10px] group cursor-pointer justify-end" >
-                <Image width={150} height={150} src="/assets/images/icons/arrow-tail-left.svg" alt="" className={`w-4 h-4 sm:w-auto sm:h-auto ${isArabic ? "rotate-180 group-hover:translate-x-[3px]" : "group-hover:translate-x-[-3px]"} transition-all duration-300`} />
+              <button type="button" onClick={handleClearFilters} className="flex items-center gap-[8px] lg:gap-[10px] group cursor-pointer justify-end" >
+                <Image width={150} height={150} src="/assets/images/icons/arrow-tail-left.svg" alt="" className={`w-[20px] h-[14px] lg:w-[27px] lg:h-[17px] ${isArabic ? "rotate-180 group-hover:translate-x-[3px]" : "group-hover:translate-x-[-3px]"} transition-all duration-300`} />
                 <p className="text-paragraph text-16 font-light leading-[1.75] uppercase transition-all duration-300 group-hover:font-semibold">
                   {isArabic ? "مسح الفلاتر" : "Clear Filter"}
                 </p>
@@ -264,7 +268,7 @@ const Index = ({ newsData, topicData }) => {
 
             {/* Grid */}
             <div
-              className={`relative grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-10 xl:gap-y-15 2xl:gap-y-20 3xl:gap-y-30 mb-10 xl:mb-12 2xl:mb-[100.32px] transition-all duration-300 ${isAnimating
+              className={`relative grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-10 xl:gap-y-15 2xl:gap-y-20 3xl:gap-y-30 pb-10 xl:pb-[70px] transition-all duration-300 ${isAnimating
                 ? "opacity-0 translate-y-4"
                 : "opacity-100 translate-y-0"
                 }`}
@@ -312,7 +316,7 @@ const Index = ({ newsData, topicData }) => {
             </div>
 
             {/* Pagination */}
-            <div className="pagination flex items-center  gap-5 justify-center mb-10 xl:mb-15 2xl:mb-[131.68px]">
+            <div className="pagination flex items-center  gap-5 justify-center pb-80px">
               <button
                 className={`${isArabic ? "rotate-180" : ""} prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
                   }`}

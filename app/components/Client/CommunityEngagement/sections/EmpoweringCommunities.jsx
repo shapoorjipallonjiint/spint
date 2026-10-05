@@ -71,7 +71,7 @@ const EmpoweringCommunities = ({ data }) => {
   };
 
   return (
-    <section className="pt-10 xl:pt-15 2xl:pt-25 overflow-hidden relative" ref={sectionRef}>
+    <section className="pt-80px overflow-hidden relative" ref={sectionRef}>
       <div className="w-full h-[260px] sm:h-[320px] lg:h-[600px] 3xl:h-[670px] flex justify-center gap-1 lg:gap-3 2xl:gap-[16px]">
 
         <motion.div variants={moveUp(1.1 * idx[0])} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-[120px] sm:mt-[200px] lg:mt-[280px] min-w-[15.27%]">
@@ -106,7 +106,7 @@ const EmpoweringCommunities = ({ data }) => {
       </div>
 
       <div className="container">
-        <div className="pb30">
+        <div className="pb-80px">
           <motion.h1 variants={moveUp(0.6)} initial="hidden" whileInView="show" viewport={{ once: true }}  className="text-[32px] lg:text-60 font-light leading-[1.18] max-w-[20ch] text-center mb-5 m-auto">
             <SplitTextAnimation children={t.title} staggerDelay={0.5} animationDuration={0.8} delay={0.4} />
           </motion.h1>

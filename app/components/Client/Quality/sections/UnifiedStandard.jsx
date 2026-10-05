@@ -41,7 +41,7 @@ const UnifiedStandard = ({ data }) => {
   }, []);
 
     return (
-        <section className="pt25  relative overflow-hidden bg-primary text-white">
+        <section className="pt-80px  relative overflow-hidden bg-primary text-white">
             <div className="container"></div>
            <div className="flex gap-12 md:gap-[60px] 2xl:gap-[100px] 3xl:gap-[149px] items-end">
              <div
@@ -87,7 +87,7 @@ const UnifiedStandard = ({ data }) => {
                                 viewport={{ amount: 0.2, once: true }}
                                 className={`${
                                     item.hasBorder ? "border-b border-cmnbdr  pb-[54px]" : ""
-                                } relative mb-0 flex flex-col gap-4 xl:gap-[30px] pb-7 xl:pb-9 2xl:pb-[54px] last:!pb-8 last:md:!pb-11 last:xl:!pb-15 2xl:pb-22 last:3xl:!pb-25
+                                } relative mb-0 flex flex-col gap-4 xl:gap-[30px] pb-80px
 border-b border-white/20 last:border-b-0`}
                             >
                                 <button

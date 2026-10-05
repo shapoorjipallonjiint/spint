@@ -94,7 +94,7 @@ const ExpertiseSec = (data) => {
     const activeDescription = currentItem?.description || "";
 
     return (
-        <section className="relative pt-text90 pb25 bg-f5f5 overflow-hidden" ref={sectionRef}>
+        <section className="relative section-spacing bg-f5f5 overflow-hidden" ref={sectionRef}>
             <div
                 className={`absolute bottom-0 lg:bottom-[-150px] 3xl:bottom-0
     w-[200px] md:w-[300px] lg:w-[400px] 3xl:w-[522px]

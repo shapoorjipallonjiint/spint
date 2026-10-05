@@ -44,7 +44,7 @@ const HighlightedProgramsSlider = ({ data }) => {
     const shapeY = useTransform(shapeProgress, [0, 1], shapeOffset);
 
     return (
-        <section className="relative pt-text90 pb25 bg-primary text-white overflow-hidden" ref={sectionRef}>
+        <section className="relative section-spacing bg-primary text-white overflow-hidden" ref={sectionRef}>
             <div
                 className={`hidden lg:block absolute bottom-0 right-0 w-[150px] h-[525px] lg:w-[519px] lg:h-[725px]
     ${isArabic ? "left-0 right-auto -scale-x-100" : ""}

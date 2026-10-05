@@ -240,13 +240,13 @@ const Gallery = ({ data }) => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ amount: 0.2, once: true }}
-                        className="flex flex-col md:flex-row gap-6 md:gap-0 justify-between border-y border-cmnbdr pt-[15px] md:pt-[25px] xl:pt-[35px] mb-10 lg:mb-15 3xl:mb-25"
+                        className="flex flex-col md:flex-row gap-6 md:gap-0 justify-between border-y border-cmnbdr pt-4 md:pt-6 xl:pt-[35px] mb-50px"
                     >
-                        <div className="flex flex-wrap justify-between xl:justify-start gap-3 md:gap-15 xl:gap-[75px] mb-4 md:mb-0">
+                        <div className="flex flex-wrap justify-between xl:justify-start gap-3 md:gap-x-8 lg:gap-x-10 2xl:gap-x-[60px] 3xl:gap-x-[90px] mb-4 md:mb-0">
                             {[ALL_CATEGORY, ...(t?.gallery?.map((g) => g.title) || [])].map((cat) => (
                                 <div
                                     key={cat}
-                                    className={`relative pb-0 md:pb-35px transition-all duration-300 group cursor-pointer ${selectedCategory === cat ? "text-black" : ""
+                                    className={`relative pb-0 md:pb-6 xl:pb-[35px] transition-all duration-300 group cursor-pointer ${selectedCategory === cat ? "text-black" : ""
                                         }`}
                                     onClick={() => handleCategoryChange(cat)}
                                 >
@@ -267,7 +267,7 @@ const Gallery = ({ data }) => {
                     </motion.div>
 
                     <div
-                        className={`relative grid xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-10 xl:gap-y-15 2xl:gap-y-18 3xl:gap-y-20 mb-10 xl:mb-12 2xl:mb-18 3xl:mb-[100.32px] transition-all duration-300 ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
+                        className={`relative grid xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-10 xl:gap-y-15 2xl:gap-y-18 3xl:gap-y-20 pb-10 xl:pb-[70px] transition-all duration-300 ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
                             }`}
                         style={{
                             transform: isAnimating ? "translateY(16px)" : "translateY(0)",
@@ -467,14 +467,14 @@ const Gallery = ({ data }) => {
                     </AnimatePresence>
                 </div>
 
-                <div className="pagination flex items-center gap-2 2xl:gap-5 justify-center mb-10 xl:mb-15 3xl:mb-[131.68px]">
+                <div className="pagination flex items-center gap-5 justify-center pb-80px">
                     <button
                         className={` ${isArabic ? "rotate-180" : ""} prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
                             }`}
                         onClick={handlePrev}
                         disabled={currentPage === 1 || isAnimating}
                     >
-                        <svg width="17" height="17" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M9.7549 1.25L1.25 9.7549M1.25 9.7549L9.75297 18.2579M1.25 9.7549L18.2169 9.79374"
                                 stroke="#30B6F9"
@@ -499,7 +499,7 @@ const Gallery = ({ data }) => {
                         onClick={handleNext}
                         disabled={currentPage === totalPages || isAnimating}
                     >
-                        <svg width="17" height="17" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M9.71189 1.25L18.2168 9.7549M18.2168 9.7549L9.71383 18.2579M18.2168 9.7549L1.24994 9.79374"
                                 stroke="#30B6F9"
