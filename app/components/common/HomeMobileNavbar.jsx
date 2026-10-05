@@ -161,7 +161,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                                   <LangLink
                                     href={sub.href}
                                     onClick={onClose} 
-                                    className="text-base font-light hover:font-bold transition-all duration-300 block"
+                                    className="text-14 font-light hover:font-bold transition-all duration-300 block"
                                   >
                                     {sub.label}
                                   </LangLink>

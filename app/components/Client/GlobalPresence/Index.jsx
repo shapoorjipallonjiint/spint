@@ -11,7 +11,7 @@ const Index = ({ data, mapCities, projectsData }) => {
             <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
             <ExpandingHorizons data={data.firstSection} />
             {/* <Horizons data={data.secondSection} /> */}
-            <section className="section-spacing bg-f5f5 relative overflow-hidden">
+            <section className="pt-50px pb-80px bg-f5f5 relative overflow-hidden">
                 <WorldMap cities={mapCities} projectsData={projectsData} />
             </section>
         </>

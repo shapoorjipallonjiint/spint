@@ -10,7 +10,7 @@ import { withNormalSpaces } from "@/lib/withNormalSpaces";
 
 const MotionImage = motion.create(Image);
 
-// "Our Façade, Glazing & Metalwork" accordion (same idea as the HSE Environmental section).
+// "Our Facade, Glazing & Metalwork" accordion (same idea as the HSE Environmental section).
 // Data: facade.systemsSection { title, subTitle, items: [{ title, description (bullet list HTML) }] } from the admin.
 // Renders nothing until the admin has added items. The scroll hooks live in SystemsSecContent so they
 // only run when the <section> (their ref target) is actually rendered.

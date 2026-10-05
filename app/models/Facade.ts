@@ -211,7 +211,7 @@ const facadeSchema = new mongoose.Schema({
             type:String
         },
     },
-    // "Our Façade, Glazing & Metalwork" accordion (title + items with a bullet list each).
+    // "Our Facade, Glazing & Metalwork" accordion (title + items with a bullet list each).
     // New and optional: items default to undefined so existing data is never touched until items are added.
     systemsSection:{
         title:{ type:String },

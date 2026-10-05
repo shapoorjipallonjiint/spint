@@ -7,6 +7,7 @@ import { moveUp } from "@/app/components/motionVarients";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import { withNormalSpaces } from "@/lib/withNormalSpaces";
 import WipeSlideshow from "@/app/components/common/WipeSlideshow";
 
 // Main image first, then any additional images (admin: Our Expertise > item > Additional Images)
@@ -40,10 +41,6 @@ export default function TabStyle1({ data }) {
     const tabsContainerRef = useRef(null);
     const itemRefs = useRef({});
 
-    function normalizeHtml(html) {
-        if (!html) return "";
-        return html.replace(/&nbsp;/g, " ");
-    }
     const [ismobile, setIsmobile] = useState(false);
 
 useEffect(() => {
@@ -146,7 +143,7 @@ useEffect(() => {
                                                 <h3 className="text-22 font-bold mb-3 text-white">{tab.title}</h3>
 
                                                 <div
-                                                    dangerouslySetInnerHTML={{ __html: activeTab.description }}
+                                                    dangerouslySetInnerHTML={{ __html: withNormalSpaces(activeTab.description) }}
                                                     className="tab-style1-description"
                                                 ></div>
                                             </motion.div>
@@ -210,7 +207,7 @@ useEffect(() => {
                                     viewport={{ amount: 0.2, once: true }}
                                     className="tab-style1-description"
                                     dangerouslySetInnerHTML={{
-                                        __html: normalizeHtml(activeTab.description),
+                                        __html: withNormalSpaces(activeTab.description),
                                     }}
                                 />
                             </div>

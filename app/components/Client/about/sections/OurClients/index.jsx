@@ -34,7 +34,7 @@ const OurClients = ({ data }) => {
               <div
                 key={`${client.name}-${i}`}
                 // margin instead of gap so both halves are exactly the same width
-                className="mr-[15px] shrink-0 w-[180px] md:w-[220px] 3xl:w-[273.85px] aspect-[273.85/142.26] border border-black/20 flex items-center justify-center"
+                className="mr-[10px] md:mr-[15px] shrink-0 w-[130px] sm:w-[180px] md:w-[220px] 3xl:w-[273.85px] aspect-[273.85/142.26] border border-black/20 flex items-center justify-center"
                 aria-hidden={i >= logos.length ? true : undefined}
               >
                 <Image
@@ -42,7 +42,7 @@ const OurClients = ({ data }) => {
                   alt={i < logos.length ? client.name : ""}
                   width={274}
                   height={60}
-                  className="h-auto 3xl:h-[117px] w-auto object-contain"
+                  className="h-auto 3xl:h-[117px] w-auto object-contain max-w-[80%] max-h-[60%] md:max-w-full md:max-h-full"
                 />
               </div>
             ))}

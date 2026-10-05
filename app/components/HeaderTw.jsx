@@ -253,12 +253,15 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
               <div
                 className={`flex items-center justify-center z-[1]  cursor-pointer relative  h-[24px] lg:h-[31px]  ${logostatus === true ? "bg-[#00000040] lg:bg-[#ffffff]" : "bg-[#00000040]"} rounded-[15px]`}
               >
-                <Image
-                  src="../assets/images/grbdr.svg"
-                  alt="Logo"
-                  className="absolute w-full h-full"
-                  width={18}
-                  height={31}
+                {/* gradient ring on the pill's edge (the fixed-ratio grbdr.svg shrank inside the pill) */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-[inherit] p-px bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] bg-[length:200%_200%] animate-[gradient_3s_linear_infinite]"
+                  style={{
+                    WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                  }}
                 />
                 <p
                   className={`mb-0 font-[300] text-[11px] lg:text-[16px] px-5 ${logostatus === true ? "text-[#ffffff] lg:text-[#000]" : "text-[#ffffff]"}`}

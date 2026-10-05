@@ -24,7 +24,7 @@ const Facade = ({ data, projectData }) => {
         />
         <VdoSection data={data.firstSection} />
         <ExpertiseSec data={data.secondSection} />
-        {/* "Our Façade, Glazing & Metalwork" accordion - renders only when items are added in the admin */}
+        {/* "Our Facade, Glazing & Metalwork" accordion - renders only when items are added in the admin */}
         <SystemsSec data={data.systemsSection} />
         <ImgPointsComponent
           data={data.thirdSection}
