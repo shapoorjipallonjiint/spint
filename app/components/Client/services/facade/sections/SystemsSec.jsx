@@ -98,7 +98,7 @@ const SystemsSecContent = ({ t, items }) => {
                                     {/* title (+ arrow on mobile) */}
                                     <div className="flex justify-between items-center gap-4">
                                         <h3
-                                            className={`text-19 xs:text-20 xl:text-29 leading-[1.474] lg:leading-[2.43] transition-all duration-500 group-hover:text-black ${
+                                            className={`text-19 xs:text-20 xl:text-29 leading-[1.474] lg:leading-[1.6] transition-all duration-500 group-hover:text-black ${
                                                 isOpen ? "text-black" : "text-paragraph"
                                             } font-light`}
                                         >

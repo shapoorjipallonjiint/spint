@@ -40,7 +40,7 @@ const Continual = ({ data }) => {
     const shapeY = useTransform(shapeProgress, [0, 1], shapeOffset);
 
     return (
-        <section ref={sectionRef} className="py25 relative overflow-hidden bg-[#F5F5F5]">
+        <section ref={sectionRef} className="section-spacing relative overflow-hidden bg-[#F5F5F5]">
             <MotionImage
                 width={1500}
                 height={1000}

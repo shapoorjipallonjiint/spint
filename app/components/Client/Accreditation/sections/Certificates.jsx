@@ -7,8 +7,10 @@ import { useApplyLang } from "@/lib/applyLang";
 import { useState, useEffect } from "react";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
+// Created once at module level; creating it inside the component remounts the images on every render
+const MotionImage = motion.create(Image);
+
 const Certificates = ({ data }) => {
-    const MotionImage = motion.create(Image);
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
 
@@ -45,7 +47,7 @@ const Certificates = ({ data }) => {
     }, [itemIndex, pdfIndex]);
 
     useEffect(() => {
-        const handleKeyDown = () => {
+        const handleKeyDown = (e) => {
             if (!currentItem) return;
             if (e.key === "Escape") closeModal();
             if (e.key === "ArrowRight") nextPdf();
@@ -57,10 +59,10 @@ const Certificates = ({ data }) => {
     }, [currentItem]);
 
     return (
-        <section className="py30">
+        <section className="section-spacing">
             <div className="container">
                 {t.map((item, i) => (
-                    <div key={i} className="py-8">
+                    <div key={i} className="pb-50px last:pb-0">
                         <h3 className="text-24 xl:text-24 3xl:text-32 font-normal text-gray-900 mb-10">
                             {item.name}
                         </h3>
@@ -86,7 +88,7 @@ const Certificates = ({ data }) => {
                                             className="w-[276px] h-[400px] object-contain cursor-pointer"
                                             onClick={() => {
                                                 setItemIndex(i);
-                                                setPdfIndex(0);
+                                                setPdfIndex(index);
                                             }}
                                         />
                                     </div>

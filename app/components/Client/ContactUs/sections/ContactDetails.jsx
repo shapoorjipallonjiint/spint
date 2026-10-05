@@ -136,7 +136,7 @@ const ContactDetails = ({ data }) => {
     };
 
     return (
-        <section className="pt-text30 bg-f5f5 pb-10 lg:pb-0">
+        <section className="pt-80px bg-f5f5 pb-80px lg:pb-0">
             <div className="container">
                 <h1 className="text-45 2xl:text-70 font-light leading-[1.071428571428571] pb-7 xl:pb-15 2xl:pb-22 3xl:pb-31">
                     <SplitTextAnimation children={t.pageTitle} staggerDelay={0.2} animationDuration={0.8} delay={0.2} />

@@ -283,13 +283,13 @@ const MainNavbarTwo = () => {
                                     src="/assets/images/sp-logo.png"
                                     alt="logo"
                                     // small screens: same size as the homepage header logo (max 50px tall, HeaderTw)
-                                    className="max-lg:h-[50px] max-lg:w-auto lg:w-[80px] xl:w-[101px]"
+                                    className="max-xl:h-[50px] max-xl:w-auto xl:w-[101px]"
                                 />
                             </LangLink>
                         </div>
 
                         {/* Desktop Menu */}
-                        <ul className="hidden lg:flex items-center gap-2 xl:gap-4 2xl:gap-4 3xl:gap-[35px]">
+                        <ul className="hidden xl:flex items-center gap-2 xl:gap-4 2xl:gap-4 3xl:gap-[35px]">
                             {menuItems.map((item, index) => (
                                 // <li key={index} className="relative group">
                                 <li
@@ -300,7 +300,7 @@ const MainNavbarTwo = () => {
                                 >
                                     <LangLink
                                         href={item.href || "#"}
-                                        className="flex items-center gap-1 text-[11px] md:text-11 2xl:text-[12px] 3xl:text-16 leading-[1.75] font-300 uppercase hover:font-bold active:font-bold focus-within:font-bold transition-all duration-300"
+                                        className="flex items-center gap-1 text-[11px] md:text-11 2xl:text-[12px] min-[1400px]:text-[13px] 3xl:text-16 leading-[1.75] font-300 uppercase hover:font-bold active:font-bold focus-within:font-bold transition-all duration-300"
                                     >
                                         <span className="relative inline-block group">
                                             <span
@@ -455,7 +455,7 @@ const MainNavbarTwo = () => {
                             {/* Mobile Menu Button */}
                             <button
                                 onClick={toggleMenu}
-                                className="lg:hidden z-[60] w-fit h-10 flex items-center justify-center transition-all duration-300 relative"
+                                className="xl:hidden z-[60] w-fit h-10 flex items-center justify-center transition-all duration-300 relative"
                                 aria-label="Toggle menu"
                             >
                                 {isMenuOpen ? (

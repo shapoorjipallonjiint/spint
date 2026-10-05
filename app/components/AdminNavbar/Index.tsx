@@ -63,11 +63,14 @@ const AdminNavbar = () => {
             children: [
                 // show / hide services on the website
                 { name: "Main", href: "/admin/services/main" },
-                // hidden services stay editable here, just marked
-                ...SERVICE_REGISTRY.map((service) => ({
-                    name: hiddenServices.includes(service.slug) ? `${service.name} (Hidden)` : service.name,
-                    href: service.adminHref,
-                })),
+                // hidden services stay editable here, just marked and listed last
+                ...[...SERVICE_REGISTRY]
+                    .sort((a, b) => Number(hiddenServices.includes(a.slug)) - Number(hiddenServices.includes(b.slug)))
+                    .map((service) => ({
+                        name: hiddenServices.includes(service.slug) ? `${service.name} (Hidden)` : service.name,
+                        href: service.adminHref,
+                        muted: hiddenServices.includes(service.slug),
+                    })),
             ],
         },
         { name: "Gallery", href: "/admin/gallery", icon: GalleryThumbnails },

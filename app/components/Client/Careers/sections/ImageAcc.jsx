@@ -25,7 +25,7 @@ const ImageAcc = ({ data }) => {
     const activeItem = t?.items?.[openIndex];
 
     return (
-        <section className="py30 relative overflow-hidden" ref={sectionRef}>
+        <section className="section-spacing relative overflow-hidden" ref={sectionRef}>
             <div className="container relative">
                 <div>
                     <div className="pb-8 xl:pb-50px">

@@ -12,8 +12,10 @@ import { useApplyLang } from "@/lib/applyLang";
 import { usePathname } from "next/navigation";
 
 
+// Created once at module level; creating it inside the component remounts the shape on every render
+const MotionImage = motion.create(Image);
+
 const VdoSection = ({ data, maxW, maxtextwidth }) => {
-  const MotionImage = motion.create(Image)
 
   const [enableAnim, setEnableAnim] = useState(false);
   const isArabic = useIsPreferredLanguageArabic()
@@ -111,11 +113,11 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
           <div>
             <div className={`lg:max-w-[600px] xl:max-w-[700px] 2xl:max-w-[700px] 3xl:max-w-[795px] ${isArabic ? "mr-auto" : "ml-auto"} mb-4 xl:mb-50px 3xl:mb-17 vdo-content`}>
               {/* <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}> */}
-              <H2Title titleText={t.title} titleColor="black" marginClass="mb-3 md:mb-4 lg:mb-5 3xl:mb-10 " maxW={maxW} delay={1.2} />
+              <H2Title titleText={t.title} titleColor="black" marginClass="mb-3 md:mb-4 lg:mb-5 3xl:mb-10 " maxW={maxW} delay={0.2} />
               {/* </motion.div> */}
               {
                 t.description.split("\n").map((item, i) => (
-                  <motion.p key={i} variants={moveUp(1.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
+                  <motion.p key={i} variants={moveUp(0.7 + i * 0.15)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
                 ))
               }
             </div>

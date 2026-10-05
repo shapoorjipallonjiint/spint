@@ -126,7 +126,7 @@ useEffect(() => {
 
     return (
         <div ref={wrapperRef} style={{ height: wrapperHeight }} className="relative">
-            <section className="lg:sticky top-0 lg:h-screen pt-text90 pb25 bg-f5f5 overflow-hidden" ref={sectionRef}>
+            <section className="lg:sticky top-0 lg:h-screen section-spacing bg-f5f5 overflow-hidden" ref={sectionRef}>
                 <div className="container relative h-full">
                     <div
                         className={`w-[800px] 2xl:w-[1016px] 3xl:w-[1316px] flex ${

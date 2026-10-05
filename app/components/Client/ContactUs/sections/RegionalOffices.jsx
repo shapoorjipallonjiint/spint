@@ -12,16 +12,16 @@ const RegionalOffices = ({ data }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const t = useApplyLang(data);
     return (
-        <section className="pt-text30  pb25">
+        <section className="section-spacing">
             <div className="container ">
                 <H2Title titleText={t.title} titleColor="black" marginClass="mb-4 2xl:mb-50px" />
                 <div className="grid md:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-[506px_1fr_1fr] md:gap-y-8 3xl:gap-y-17">
                     {t.items?.map((office, index) => (
                         <motion.div
-                            variants={zoomIn(0.4 + 0.1 * index)}
+                            variants={zoomIn(0.03 * index)}
                             initial="hidden"
                             whileInView="show"
-                            viewport={{ amount: 0.2, once: true }}
+                            viewport={{ once: true }}
                             key={index}
                             className={`
   first:pt-0 first:md:pt-8

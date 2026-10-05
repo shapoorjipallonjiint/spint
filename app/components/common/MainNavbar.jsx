@@ -283,13 +283,13 @@ const MainNavbar = () => {
                                     src="/assets/images/main-logo.png"
                                     alt="logo"
                                     // small screens: same size as the homepage header logo (max 50px tall, HeaderTw)
-                                    className="max-lg:h-[50px] max-lg:w-auto lg:w-[80px] xl:w-[101px]"
+                                    className="max-xl:h-[50px] max-xl:w-auto xl:w-[101px]"
                                 />
                             </LangLink>
                         </div>
 
                         {/* Desktop Menu */}
-                        <ul className="hidden lg:flex items-center gap-2 xl:gap-4 2xl:gap-4 3xl:gap-[35px]">
+                        <ul className="hidden xl:flex items-center gap-2 xl:gap-4 2xl:gap-4 3xl:gap-[35px]">
                             {menuItems.map((item, index) => (
                                 // <li key={index} className="relative group">
                                 <li
@@ -455,7 +455,7 @@ const MainNavbar = () => {
                             {/* Mobile Menu Button */}
                             <button
                                 onClick={toggleMenu}
-                                className="lg:hidden z-[60] w-fit h-10 flex items-center justify-center transition-all duration-300 relative"
+                                className="xl:hidden z-[60] w-fit h-10 flex items-center justify-center transition-all duration-300 relative"
                                 aria-label="Toggle menu"
                             >
                                 {isMenuOpen ? (

@@ -42,7 +42,7 @@ const RoadMap = ({data}) => {
   const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
 
   return (
-    <section className="relative pt-text90 pb25  overflow-hidden" ref={sectionRef}>
+    <section className="relative section-spacing overflow-hidden" ref={sectionRef}>
       <div className="reveal-overlay4 absolute inset-0 bg-black/20 z-20"></div>
 <div
   className={`absolute bottom-30
