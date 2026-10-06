@@ -96,6 +96,9 @@ const FeaturedProjectSlider = ({ data = [] }) => {
                             spaceBetween={10}
                             slidesPerView={1}
                             loop={true}
+                            // keep one extra slide after the visible ones, otherwise the peeking slide on the right is
+                            // empty whenever the last slide of the set reaches the second position
+                            loopAdditionalSlides={1}
                             centeredSlides={false}
                             watchSlidesProgress={true}
                             navigation={{

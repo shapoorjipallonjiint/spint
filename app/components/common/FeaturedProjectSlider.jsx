@@ -125,7 +125,9 @@ const FeaturedProjectSlider = ({ data }) => {
                             slidesPerView={1}
                             loop={true}
                             centeredSlides={false}
-                            // loopAdditionalSlides={1}
+                            // keep one extra slide after the visible ones, otherwise the peeking slide on the right is
+                            // empty whenever the last slide of the set reaches the second position
+                            loopAdditionalSlides={1}
                             watchSlidesProgress={true}
                             navigation={{
                                 prevEl: ".custom-prev",

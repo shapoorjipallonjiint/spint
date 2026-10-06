@@ -1226,9 +1226,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
     const sectors = [
-        ...tData.fifthSection.items.map((item) => {
+        ...tData.fifthSection.items.map((item, i) => {
             return {
                 name: item.title,
+                // /projects?sector=<slug> filter, from the English title (same slug as the projects page sector filter)
+                slug: slugify(data.fifthSection.items[i]?.title),
                 icon: item.logo,
                 image: item.image,
                 projectsCompleted: Number(item.completedProjects),
@@ -1471,6 +1473,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     });
 
     const activeSector = sectors[displayedIndex];
+    // "View All Projects" opens the projects page filtered by the sector on screen (unknown sector -> all projects)
+    const sectorProjectsHref = activeSector?.slug ? `/projects?sector=${activeSector.slug}` : "/projects";
     const [prevImage, setPrevImage] = useState(null);
     useEffect(() => {
         setPrevImage(activeService?.image);
@@ -2732,7 +2736,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                         ? "lg:mr-[-27px] lg:py-5"
                                                                         : "lg:ml-[-27px] lg:py-5"
                                                                     : "lg:py-1"
-                                                                    } ${sector.position === -3 ? "pointer-events-none" : ""}`}
+                                                                    }`}
                                                                 style={{
                                                                     opacity: SECTOR_ROW_OPACITY[sector.position] ?? 0,
                                                                     transform: `scale(${SECTOR_ROW_SCALE(sector.position)})`,
@@ -2919,7 +2923,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             }`}
                                     >
                                         <LangLink
-                                            href="/projects"
+                                            href={sectorProjectsHref}
                                             className="flex items-center gap-2 uppercase font-light text-[14px] text-white"
                                         >
                                             View All Projects
@@ -3021,7 +3025,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             }
                                         </div>
                                         <div className="hidden lg:block tlnits px-15 py-6 xl:pt-[42px] xl:pb-[49px] group cursor-pointer">
-                                            <LangLink href="/projects" className="flex items-center gap-2">
+                                            <LangLink href={sectorProjectsHref} className="flex items-center gap-2">
                                                 View All Projects
                                                 <Image
                                                     width={27}
