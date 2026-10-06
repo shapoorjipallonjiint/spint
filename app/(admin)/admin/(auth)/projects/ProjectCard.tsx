@@ -4,12 +4,15 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Move } from "lucide-react";
 
+// highlight: "active" = the search match in focus, "match" = any other search match
 export default function ProjectCard({
     id,
     title,
+    highlight,
 }: {
     id: string;
     title: string;
+    highlight?: "active" | "match";
 }) {
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id });
@@ -21,11 +24,18 @@ export default function ProjectCard({
 
     return (
         <div
+            id={`reorder-item-${id}`}
             ref={setNodeRef}
             style={style}
             {...attributes}
             {...listeners}
-            className="flex justify-between border p-2 items-center rounded-md shadow-md bg-white cursor-grab"
+            className={`flex justify-between border p-2 items-center rounded-md shadow-md cursor-grab transition-colors ${
+                highlight === "active"
+                    ? "bg-yellow-100 ring-2 ring-yellow-500"
+                    : highlight === "match"
+                      ? "bg-yellow-50"
+                      : "bg-white"
+            }`}
         >
             <span>{title}</span>
             <Move className="w-4 h-4 text-gray-500" />

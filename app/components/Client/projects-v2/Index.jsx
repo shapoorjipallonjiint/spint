@@ -3,7 +3,7 @@
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import Banner from "./sections/Banner";
 import ProjectLists from "./sections/ProjectLists";
-const Index = ({ data, sectorData, countryData, serviceData, visitorCountry }) => {
+const Index = ({ data, sectorData, countryData, serviceData, visitorCountry, projectOrders }) => {
   const isArabic = useIsPreferredLanguageArabic();
 
   return (
@@ -21,6 +21,7 @@ const Index = ({ data, sectorData, countryData, serviceData, visitorCountry }) =
           serviceData={serviceData}
           data={data.projects}
           visitorCountry={visitorCountry}
+          projectOrders={projectOrders}
         />
       </main>
     </>

@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "Project document not found" }, { status: 404 });
         }
 
-        const reordered = orderedIds
+        const reordered = [...new Set(orderedIds)]
             .map((id) =>
                 doc.projects.find(
                     (p: { _id: Types.ObjectId }) => p._id.toString() === id
@@ -35,8 +35,11 @@ export async function POST(req: NextRequest) {
             )
             .filter(Boolean);
 
+        // never drop a project: any the admin's list didn't include (e.g. added after the page loaded) stays, at the end
+        const sentIds = new Set(reordered.map((p: { _id: Types.ObjectId }) => p._id.toString()));
+        const missing = doc.projects.filter((p: { _id: Types.ObjectId }) => !sentIds.has(p._id.toString()));
 
-        doc.projects = reordered;
+        doc.projects = [...reordered, ...missing];
         await doc.save({ session });
 
         await session.commitTransaction();
