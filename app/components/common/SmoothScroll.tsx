@@ -31,7 +31,11 @@ const SmoothScroll = () => {
 
     requestAnimationFrame(raf);
 
+    // exposed so components can scroll programmatically without fighting Lenis
+    (window as any).__lenis = lenis;
+
     return () => {
+      delete (window as any).__lenis;
       lenis.destroy(); // Cleanup to prevent memory leaks
     };
   }, []);

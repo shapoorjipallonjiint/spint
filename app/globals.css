@@ -1752,7 +1752,17 @@ body::-webkit-scrollbar {
 
 
 .mep-tab-description-project-details li {
-  @apply flex gap-3
+  @apply flex gap-3;
+  break-inside: avoid;
+}
+
+/* more than 2 points: use the full width and split them equally into two columns (from md) */
+@media (min-width: 768px) {
+  .mep-tab-description-project-details ul:has(> li:nth-child(3)) {
+    grid-column: 1 / -1;
+    columns: 2;
+    column-gap: 3rem;
+  }
 }
 
 .mep-tab-description-project-details li::before {
