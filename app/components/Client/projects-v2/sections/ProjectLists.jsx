@@ -156,12 +156,22 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
 
     const handleClearFilters = () => updateUrl({ sector: null, status: null, country: null, service: null, page: null });
 
+    // native smooth scrollIntoView gets cancelled by Lenis, so scroll through Lenis when it's running
+    const scrollToListTop = () => {
+        const el = listTopRef.current;
+        if (!el) return;
+        const offset = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+        const lenis = window.__lenis;
+        if (lenis) lenis.scrollTo(el, { offset: -offset, duration: 1 });
+        else el.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
     const handlePageChange = (newPage) => {
         if (newPage < 1 || newPage > totalPages || isAnimating) return;
         setIsAnimating(true);
         updateUrl({ page: newPage === 1 ? null : newPage }, { push: true });
         // bring the top of the project list into view (not the top of the page)
-        listTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        scrollToListTop();
         setTimeout(() => setIsAnimating(false), 300);
     };
     const handlePrev = () => handlePageChange(currentPage - 1);

@@ -677,10 +677,10 @@ const QualityPage = () => {
                                                                     />
                                                                 </div>
 
-                                                                {!file.file && <RiDeleteBinLine
+                                                                <RiDeleteBinLine
                                                                     onClick={() => handleRemoveFile(index, fileIndex)}
-                                                                    className="absolute top-3 right-3 cursor-pointer text-red-600"
-                                                                />}
+                                                                    className="absolute top-3 right-3 z-10 cursor-pointer text-red-600"
+                                                                />
                                                             </div>
                                                         )
                                                     )}
@@ -1292,10 +1292,10 @@ const QualityPage = () => {
                                                                     />
                                                                 </div>
 
-                                                                {!file.file && <RiDeleteBinLine
+                                                                <RiDeleteBinLine
                                                                     onClick={() => handleRemoveFile(index, fileIndex)}
-                                                                    className="absolute top-3 right-3 cursor-pointer text-red-600"
-                                                                />}
+                                                                    className="absolute top-3 right-3 z-10 cursor-pointer text-red-600"
+                                                                />
                                                             </div>
                                                         )
                                                     )}

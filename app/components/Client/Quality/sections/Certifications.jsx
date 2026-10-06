@@ -68,6 +68,12 @@ const Certifications = ({ data }) => {
   const [pdfIndex, setPdfIndex] = useState(0);
   const [isPdfLoading, setIsPdfLoading] = useState(true); // Tracks which PDF in the array is active
 
+  // Only entries with an uploaded file count as PDFs; with none, the popup shows the thumbnail instead
+  const getFiles = (index) => (t.items[index]?.files || []).filter((f) => f?.file);
+  const activeItem = itemIndex !== null ? t.items[itemIndex] : null;
+  const activeFiles = itemIndex !== null ? getFiles(itemIndex) : [];
+  const hasPdf = activeFiles.length > 0;
+
   // Close Modal Handler
   const closeModal = () => {
     setItemIndex(null);
@@ -76,12 +82,14 @@ const Certifications = ({ data }) => {
 
   // PDF Navigation Logic
   const nextPdf = () => {
-    const pdfArray = t.items[itemIndex].files;
+    const pdfArray = getFiles(itemIndex);
+    if (pdfArray.length < 2) return;
     setPdfIndex((prev) => (prev + 1) % pdfArray.length);
   };
 
   const prevPdf = () => {
-    const pdfArray = t.items[itemIndex].files;
+    const pdfArray = getFiles(itemIndex);
+    if (pdfArray.length < 2) return;
     setPdfIndex((prev) => (prev - 1 + pdfArray.length) % pdfArray.length);
   };
 
@@ -218,33 +226,49 @@ const Certifications = ({ data }) => {
                   {/* Modal Header */}
                   <div className="flex justify-between items-center p-4 bg-zinc-900 border-b border-white/10 text-white">
                     <div>
-                      <h3 className="font-medium">{t.items[itemIndex].title} - {t.items[itemIndex].files[pdfIndex].name}</h3>
-                      <p className="text-xs text-white/50">Document {pdfIndex + 1} of {t.items[itemIndex].files.length}</p>
+                      <h3 className="font-medium">
+                        {activeItem.title}
+                        {hasPdf && activeFiles[pdfIndex]?.name ? ` - ${activeFiles[pdfIndex].name}` : ""}
+                      </h3>
+                      {hasPdf && (
+                        <p className="text-xs text-white/50">Document {pdfIndex + 1} of {activeFiles.length}</p>
+                      )}
                     </div>
                     <button onClick={closeModal} className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full">✕</button>
                   </div>
 
                   {/* PDF Display */}
-                  <div className="flex-1 bg-white relative">
+                  <div className={`flex-1 relative min-h-0 ${hasPdf ? "bg-white" : "bg-zinc-900"}`}>
                     {isPdfLoading && (
-                      <div className="absolute inset-0 z-10 flex items-center justify-center bg-white">
+                      <div className={`absolute inset-0 z-10 flex items-center justify-center ${hasPdf ? "bg-white" : "bg-zinc-900"}`}>
                         {/* Loader */}
                         <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin" />
                       </div>
                     )}
 
-                    <iframe
-                      key={`${itemIndex}-${pdfIndex}`}
-                      src={`/api/pdf-proxy?url=${encodeURIComponent(
-                        t.items[itemIndex].files[pdfIndex].file
-                      )}#toolbar=0`}
-                      className="w-full h-full"
-                      onLoad={() => setIsPdfLoading(false)}
-                    />
+                    {hasPdf ? (
+                      <iframe
+                        key={`${itemIndex}-${pdfIndex}`}
+                        src={`/api/pdf-proxy?url=${encodeURIComponent(
+                          activeFiles[pdfIndex].file
+                        )}#toolbar=0`}
+                        className="w-full h-full"
+                        onLoad={() => setIsPdfLoading(false)}
+                      />
+                    ) : (
+                      <img
+                        key={`img-${itemIndex}`}
+                        src={activeItem.thumbnail}
+                        alt={activeItem.thumbnailAlt || activeItem.title}
+                        className="w-full h-full object-contain p-4"
+                        onLoad={() => setIsPdfLoading(false)}
+                        onError={() => setIsPdfLoading(false)}
+                      />
+                    )}
                   </div>
 
                   {/* Internal PDF Nav Arrows */}
-                  {t.items[itemIndex].files.length > 1 && (
+                  {activeFiles.length > 1 && (
                     <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
                       <button onClick={prevPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>←</button>
                       <button onClick={nextPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>→</button>
