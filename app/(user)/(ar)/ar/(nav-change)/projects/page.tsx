@@ -1,6 +1,9 @@
 import Index from '@/app/components/Client/projects-v2/Index'
+import { getVisitorCountry } from '@/lib/visitorCountry'
 
-const page = async() => {
+const page = async({ searchParams }: { searchParams: Promise<{ geo?: string | string[] }> }) => {
+    const visitorCountry = await getVisitorCountry((await searchParams).geo);
+
     const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project`, { next: { revalidate: 60 } });
     const projectData = await projectResponse.json();
 
@@ -14,7 +17,7 @@ const page = async() => {
     const serviceData = await serviceResponse.json();
 
   return (
-    <Index data={projectData.data} sectorData={sectorData.data} countryData={countryData.data} serviceData={(serviceData.data || []).filter((s: { hidden?: boolean }) => !s.hidden)}/>
+    <Index data={projectData.data} sectorData={sectorData.data} countryData={countryData.data} serviceData={(serviceData.data || []).filter((s: { hidden?: boolean }) => !s.hidden)} visitorCountry={visitorCountry}/>
   )
 }
 
