@@ -10,6 +10,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import { slugify } from "@/lib/slugify";
+import { orderKeyForCountry } from "@/lib/countryCodes";
 import ProjectCard from "./ProjectCard";
 import Pagination from "./Pagination";
 
@@ -37,7 +38,7 @@ const toOptions = (list = [], labelKey = "name") => {
     return [ALL, ...bySlug.values()];
 };
 
-const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCountry }) => {
+const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCountry, projectOrders }) => {
     const tData = useApplyLang(data);
     const router = useRouter();
     const pathname = usePathname();
@@ -76,15 +77,24 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
     const view = searchParams.get("view") === "list" ? "list" : "grid";
     const requestedPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
 
-    // locations whose country code is the visitor's (several map locations can share one country)
-    const visitorLocationIds = useMemo(
-        () =>
-            new Set(
-                (countryData || [])
-                    .filter((c) => visitorCountry && c?.code?.toUpperCase() === visitorCountry)
-                    .map((c) => String(c._id))
-            ),
-        [countryData, visitorCountry]
+    // saved CMS orders are keyed by country code, or "AFRICA" for any African country.
+    // only countries with a saved order get priority; everyone else sees the global order
+    const savedOrderFor = (key) => (key ? (projectOrders || []).find((o) => o?.key === key) : undefined);
+
+    // a country picked in the filter uses that country's saved order (Nigeria -> its projects in the Africa order),
+    // otherwise the visitor's own country's saved order applies
+    const filterOrderKey = useMemo(() => {
+        if (!selectedCountry.slug) return "";
+        const location = (countryData || []).find((c) => selectedCountry.ids.has(String(c?._id)) && c?.code);
+        return orderKeyForCountry(location?.code);
+    }, [countryData, selectedCountry]);
+
+    const activeOrder = savedOrderFor(filterOrderKey) || savedOrderFor(orderKeyForCountry(visitorCountry));
+    const activeOrderKey = activeOrder?.key || "";
+    // position of each project in that order, as arranged in the CMS
+    const activeOrderRank = useMemo(
+        () => new Map((activeOrder?.projectIds || []).map((id, i) => [String(id), i])),
+        [activeOrder]
     );
 
     // ---------- filtering (by ids / English status, independent of the page language) ----------
@@ -103,12 +113,17 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
                 return true;
             });
 
-        // visitor's country first, everything else after it, both in the existing order (no match = unchanged)
-        const isVisitorCountry = (item) => visitorLocationIds.has(String(item?.secondSection?.location?._id));
-        return [...matched.filter(isVisitorCountry), ...matched.filter((item) => !isVisitorCountry(item))].map(
+        // that country's (or Africa's) projects first in its CMS order, then everything else in the global order.
+        // projects not yet placed in that order follow the placed ones, in global order. no saved order = unchanged.
+        const isPriorityItem = (item) =>
+            !!activeOrderKey && orderKeyForCountry(item?.secondSection?.location?.code) === activeOrderKey;
+        const rank = (item) => activeOrderRank.get(String(item?._id)) ?? Number.MAX_SAFE_INTEGER;
+        const priorityItems = matched.filter(isPriorityItem).sort((a, b) => rank(a) - rank(b));
+
+        return [...priorityItems, ...matched.filter((item) => !isPriorityItem(item))].map(
             (item) => translatedById.get(String(item?._id)) || item
         );
-    }, [data, tData, selectedSector, selectedStatus, selectedCountry, selectedService, visitorLocationIds]);
+    }, [data, tData, selectedSector, selectedStatus, selectedCountry, selectedService, activeOrderKey, activeOrderRank]);
 
     const totalPages = Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE));
     const currentPage = Math.min(requestedPage, totalPages);

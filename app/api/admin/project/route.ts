@@ -15,6 +15,7 @@ type LocationCity = {
   _id: Types.ObjectId;
   name?: string;
   name_ar?: string;
+  code?: string;
 };
 
 type HomeLean = {
@@ -27,6 +28,7 @@ type LocationDTO = {
   _id: string;
   name?: string;
   name_ar?: string;
+  code?: string;
 };
 
 type ProjectItem = ProjectType["projects"][number];
@@ -55,6 +57,7 @@ export async function GET(request: NextRequest) {
         _id: city._id.toString(),
         name: city.name,
         name_ar: city.name_ar,
+        code: city.code || "",
       });
     });
     /* ---------------------------------- */

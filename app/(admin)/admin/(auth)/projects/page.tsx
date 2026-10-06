@@ -27,6 +27,30 @@ import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { arrayMove } from "@dnd-kit/sortable";
 import ProjectCard from "./ProjectCard";
+import { isValidOrderKey, orderKeyForCountry, orderKeyLabel } from "@/lib/countryCodes";
+
+type ProjectListItem = {
+    _id: string;
+    slug?: string;
+    firstSection: {
+        title: string;
+        description: string;
+    };
+    secondSection?: {
+        location?: {
+            name?: string;
+            code?: string;
+        };
+    };
+};
+
+const ALL_SCOPE = "Country";
+
+// dropdown value for a project: its order key ("AE", "AFRICA", ...), or its location name when it has no country code
+const scopeOf = (item: ProjectListItem) => {
+    const location = item?.secondSection?.location;
+    return orderKeyForCountry(location?.code) || (location?.name ? `name:${location.name}` : "");
+};
 
 interface ProjectPageProps {
     metaTitle: string;
@@ -49,13 +73,17 @@ interface ProjectPageProps {
 }
 
 export default function Projects() {
-    const [selectedCountry, setSelectedCountry] = useState("Country");
+    const [selectedCountry, setSelectedCountry] = useState(ALL_SCOPE);
     const [search, setSearch] = useState("");
 
     const [sector, setSector] = useState<string>("");
     const [sector_ar, setSectorAr] = useState<string>("");
 
     const [reorderMode, setReorderMode] = useState(false);
+    // saved country / Africa orders: key -> ordered project ids
+    const [projectOrders, setProjectOrders] = useState<Record<string, string[]>>({});
+    // the projects being dragged when reordering one country / Africa (global reorder uses projectList)
+    const [scopedList, setScopedList] = useState<ProjectListItem[]>([]);
 
     // const [service, setService] = useState<string>("");
     // const [service_ar, setServiceAr] = useState<string>("");
@@ -63,21 +91,7 @@ export default function Projects() {
     // const [country, setCountry] = useState<string>("");
     // const [country_ar, setCountryAr] = useState<string>("");
 
-    const [projectList, setProjectList] = useState<
-        {
-            _id: string;
-            slug?: string;
-            firstSection: {
-                title: string;
-                description: string;
-            };
-            secondSection?: {
-                location?: {
-                    name?: string;
-                };
-            };
-        }[]
-    >([]);
+    const [projectList, setProjectList] = useState<ProjectListItem[]>([]);
 
     // const [countryList, setCountryList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
     const [sectorList, setSectorList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
@@ -114,6 +128,22 @@ export default function Projects() {
             }
         } catch (error) {
             console.log("Error fetching projects", error);
+        }
+    };
+
+    const handleFetchProjectOrders = async () => {
+        try {
+            const response = await fetch("/api/admin/project/order");
+            if (response.ok) {
+                const data = await response.json();
+                setProjectOrders(
+                    Object.fromEntries(
+                        (data.data || []).map((o: { key: string; projectIds: string[] }) => [o.key, o.projectIds])
+                    )
+                );
+            }
+        } catch (error) {
+            console.log("Error fetching project orders", error);
         }
     };
 
@@ -267,29 +297,43 @@ export default function Projects() {
 
     useEffect(() => {
         handleFetchProjects();
+        handleFetchProjectOrders();
         handleFetchSector();
         // handleFetchCountry();
         handleFetchService();
         fetchProjectDetails();
     }, []);
 
-    // unique country list
-    const countries = useMemo<string[]>(() => {
-        if (!projectList?.length) return ["All"];
-
+    // dropdown options: one per country (all African countries together as "Africa"), sorted by label
+    const countries = useMemo<{ value: string; label: string }[]>(() => {
         // projects that match search (ignore country filter)
         const searchFiltered = projectList.filter((item) =>
             item?.firstSection?.title?.toLowerCase().includes(search.toLowerCase())
         );
 
-        const list = searchFiltered
-            .map((p) => p?.secondSection?.location?.name)
-            .filter((name): name is string => Boolean(name));
+        const byScope = new Map<string, string>();
+        searchFiltered.forEach((item) => {
+            const scope = scopeOf(item);
+            if (!scope || byScope.has(scope)) return;
+            byScope.set(scope, isValidOrderKey(scope) ? orderKeyLabel(scope) : item.secondSection?.location?.name || scope);
+        });
 
-        const uniqueSorted = Array.from(new Set(list)).sort((a, b) => a.localeCompare(b));
+        const options = Array.from(byScope, ([value, label]) => ({ value, label })).sort((a, b) =>
+            a.label.localeCompare(b.label)
+        );
 
-        return ["Country", ...uniqueSorted];
+        return [{ value: ALL_SCOPE, label: "Country" }, ...options];
     }, [projectList, search]);
+
+    // the selected country's saved order key ("" for all countries, or a location without a country code)
+    const selectedOrderKey = isValidOrderKey(selectedCountry) ? selectedCountry : "";
+
+    // selected country's projects in its saved order; ones not placed yet follow in the global order
+    const sortByScopeOrder = (items: ProjectListItem[]) => {
+        const rank = new Map((projectOrders[selectedOrderKey] || []).map((id, i) => [id, i]));
+        const pos = (item: ProjectListItem) => rank.get(item._id) ?? Number.MAX_SAFE_INTEGER;
+        return [...items].sort((a, b) => pos(a) - pos(b));
+    };
 
     // filtered projects
     const filteredProjects = useMemo(() => {
@@ -297,31 +341,65 @@ export default function Projects() {
 
         const normalizedSearch = search.toLowerCase();
 
-        return projectList.filter((item) => {
-            const countryName = item?.secondSection?.location?.name;
-
-            const countryMatch = selectedCountry === "Country" || countryName === selectedCountry;
+        const list = projectList.filter((item) => {
+            const countryMatch = selectedCountry === ALL_SCOPE || scopeOf(item) === selectedCountry;
 
             const titleMatch = item?.firstSection?.title?.toLowerCase().includes(normalizedSearch) ?? false;
 
             return countryMatch && titleMatch;
         });
-    }, [projectList, selectedCountry, search]);
 
-    const getProjectPos = (id: string) => projectList.findIndex((item) => item._id === id);
+        return selectedOrderKey ? sortByScopeOrder(list) : list;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [projectList, selectedCountry, search, projectOrders]);
+
+    const startReorder = () => {
+        if (selectedCountry === ALL_SCOPE) {
+            setReorderMode(true);
+            return;
+        }
+        if (!selectedOrderKey) {
+            toast.error("Set this location's Country Code in Home > Map Locations to give it its own order");
+            return;
+        }
+        // all of the country's projects (search ignored), starting from its saved order
+        setScopedList(sortByScopeOrder(projectList.filter((item) => scopeOf(item) === selectedOrderKey)));
+        setReorderMode(true);
+    };
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
 
-        const oldIndex = getProjectPos(active.id as string);
-        const newIndex = getProjectPos(over.id as string);
+        const move = (items: ProjectListItem[]) => {
+            const oldIndex = items.findIndex((item) => item._id === active.id);
+            const newIndex = items.findIndex((item) => item._id === over.id);
+            return arrayMove(items, oldIndex, newIndex);
+        };
 
-        setProjectList((items) => arrayMove(items, oldIndex, newIndex));
+        if (selectedCountry === ALL_SCOPE) setProjectList(move);
+        else setScopedList(move);
     };
 
     const confirmProjectOrder = async () => {
         setReorderMode(false);
+
+        // one country / Africa: saved as that country's own order, the global order is not touched
+        if (selectedCountry !== ALL_SCOPE) {
+            const res = await fetch("/api/admin/project/order", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ key: selectedOrderKey, projectIds: scopedList.map((p) => p._id) }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setProjectOrders((prev) => ({ ...prev, [data.data.key]: data.data.projectIds }));
+                toast.success(`${orderKeyLabel(data.data.key)} order saved`);
+            } else {
+                toast.error(data.message || "Failed to save order");
+            }
+            return;
+        }
 
         const orderedIds = projectList.map((p) => p._id);
 
@@ -336,6 +414,65 @@ export default function Projects() {
         if (res.ok) {
             const data = await res.json();
             toast.success(data.message);
+            // reload so the list shows exactly what was saved (incl. any project kept at the end)
+            handleFetchProjects();
+        }
+    };
+
+    const reorderList = selectedCountry === ALL_SCOPE ? projectList : scopedList;
+
+    // ---------- search while reordering: nothing is hidden (the full list stays draggable);
+    // matches are highlighted and the active one is scrolled into view. Enter jumps to the next match.
+    const [activeMatchId, setActiveMatchId] = useState("");
+    const [scrollTick, setScrollTick] = useState(0);
+
+    const reorderMatchIds = useMemo(() => {
+        const term = search.trim().toLowerCase();
+        if (!reorderMode || !term) return [];
+        return reorderList
+            .filter((item) => item?.firstSection?.title?.toLowerCase().includes(term))
+            .map((item) => item._id);
+    }, [reorderMode, reorderList, search]);
+    const reorderMatchSet = useMemo(() => new Set(reorderMatchIds), [reorderMatchIds]);
+
+    // a new search term (or entering reorder mode) focuses the first match
+    useEffect(() => {
+        setActiveMatchId(reorderMatchIds[0] || "");
+        setScrollTick((t) => t + 1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [search, reorderMode]);
+
+    // scroll only when the focused match changes / Enter is pressed, never just because an item was dragged
+    useEffect(() => {
+        if (!activeMatchId) return;
+        document.getElementById(`reorder-item-${activeMatchId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, [activeMatchId, scrollTick]);
+
+    const focusNextMatch = () => {
+        if (!reorderMatchIds.length) return;
+        const next = (reorderMatchIds.indexOf(activeMatchId) + 1) % reorderMatchIds.length;
+        setActiveMatchId(reorderMatchIds[next]);
+        setScrollTick((t) => t + 1);
+    };
+
+    // the selected country / Africa has its own saved order (otherwise its visitors see the global order)
+    const hasSavedOrder = !!selectedOrderKey && !!projectOrders[selectedOrderKey];
+
+    // removes only this country's saved order; projects and the global order are not touched
+    const resetOrderToGlobal = async () => {
+        const key = selectedOrderKey;
+        if (!key) return;
+        const res = await fetch(`/api/admin/project/order?key=${encodeURIComponent(key)}`, { method: "DELETE" });
+        const data = await res.json();
+        if (res.ok) {
+            setProjectOrders((prev) => {
+                const next = { ...prev };
+                delete next[key];
+                return next;
+            });
+            toast.success(`${orderKeyLabel(key)} now uses the global order`);
+        } else {
+            toast.error(data.message || "Failed to reset order");
         }
     };
 
@@ -803,7 +940,7 @@ export default function Projects() {
           </div> */}
                 </div>
 
-                <div className="h-screen w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white">
+                <div className="h-screen w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white flex flex-col">
                     <div className="border-b-2 border-black/20 pb-3">
                         <div className="flex justify-between items-center">
                             {/* LEFT: Title */}
@@ -811,22 +948,53 @@ export default function Projects() {
 
                             {/* RIGHT: Controls */}
                             <div className="flex items-center gap-4">
-                                <Select value={selectedCountry} onValueChange={(value) => setSelectedCountry(value)}>
+                                <Select
+                                    value={selectedCountry}
+                                    onValueChange={(value) => setSelectedCountry(value)}
+                                    disabled={reorderMode}
+                                >
                                     <SelectTrigger className="w-[180px] text-sm">
                                         <SelectValue placeholder="Select country" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-white max-h-[350px] overflow-y-scroll">
                                         {countries.map((country) => (
-                                            <SelectItem key={country} value={country} className="hover:bg-gray-200">
-                                                {country}
+                                            <SelectItem key={country.value} value={country.value} className="hover:bg-gray-200">
+                                                {country.label}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
 
+                                {hasSavedOrder && !reorderMode && (
+                                    <Dialog>
+                                        <DialogTrigger className="border border-black/30 px-3 py-2 rounded-md text-sm">
+                                            Reset to global
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>Reset {orderKeyLabel(selectedOrderKey)} order?</DialogTitle>
+                                                <DialogDescription>
+                                                    Visitors from {orderKeyLabel(selectedOrderKey)} will see the global
+                                                    project order. Only this country&apos;s custom order is removed; no
+                                                    projects are changed.
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <div className="flex justify-end gap-2">
+                                                <DialogClose className="border px-3 py-1 rounded-md">Cancel</DialogClose>
+                                                <DialogClose
+                                                    className="bg-black text-white px-3 py-1 rounded-md"
+                                                    onClick={resetOrderToGlobal}
+                                                >
+                                                    Reset
+                                                </DialogClose>
+                                            </div>
+                                        </DialogContent>
+                                    </Dialog>
+                                )}
+
                                 <Button
                                     className={`text-white ${reorderMode ? "bg-yellow-700" : "bg-green-700"}`}
-                                    onClick={() => (reorderMode ? confirmProjectOrder() : setReorderMode(true))}
+                                    onClick={() => (reorderMode ? confirmProjectOrder() : startReorder())}
                                 >
                                     {reorderMode ? "Done" : "Reorder"}
                                 </Button>
@@ -838,23 +1006,52 @@ export default function Projects() {
                         </div>
 
                         {/* SECOND LINE: Count */}
-                        <p className="text-sm text-muted-foreground mt-1">Count: {filteredProjects.length}</p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                            Count: {reorderMode ? reorderList.length : filteredProjects.length}
+                            {!reorderMode && selectedOrderKey && (
+                                <span className="ml-2">
+                                    · {hasSavedOrder ? "Custom order for its visitors" : "Visitors see the global order"}
+                                </span>
+                            )}
+                            {reorderMode && (
+                                <span className="ml-2 font-medium text-yellow-700">
+                                    {selectedCountry === ALL_SCOPE
+                                        ? "Reordering: Global order (all visitors)"
+                                        : `Reordering: ${orderKeyLabel(selectedOrderKey)} order (visitors from ${orderKeyLabel(selectedOrderKey)})`}
+                                </span>
+                            )}
+                        </p>
                     </div>
 
                     <div className="relative mt-2 mb-4">
                         <Input
                             type="text"
-                            placeholder="Search project..."
+                            placeholder={reorderMode ? "Find a project to move... (Enter = next match)" : "Search project..."}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pr-10 text-sm"
+                            onKeyDown={(e) => {
+                                if (reorderMode && e.key === "Enter") {
+                                    e.preventDefault();
+                                    focusNextMatch();
+                                }
+                            }}
+                            className={`w-full text-sm ${reorderMode && search.trim() ? "pr-28" : "pr-10"}`}
                         />
+
+                        {reorderMode && search.trim() && (
+                            <span className="absolute right-9 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
+                                {reorderMatchIds.length
+                                    ? `${reorderMatchIds.indexOf(activeMatchId) + 1} of ${reorderMatchIds.length}`
+                                    : "No match"}
+                            </span>
+                        )}
 
                         <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                     </div>
 
+                    {/* list takes only the height left under the header + search, so the last rows aren't clipped */}
                     {!reorderMode && (
-                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
+                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll flex-1 min-h-0 pb-2">
                             {filteredProjects.map((item) => (
                                 <div
                                     key={item._id}
@@ -885,14 +1082,25 @@ export default function Projects() {
                     )}
 
                     {reorderMode && (
-                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
+                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll flex-1 min-h-0 pb-2">
                             <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
                                 <SortableContext
-                                    items={projectList.map((p) => p._id)}
+                                    items={reorderList.map((p) => p._id)}
                                     strategy={verticalListSortingStrategy}
                                 >
-                                    {projectList.map((item) => (
-                                        <ProjectCard key={item._id} id={item._id} title={item.firstSection.title} />
+                                    {reorderList.map((item) => (
+                                        <ProjectCard
+                                            key={item._id}
+                                            id={item._id}
+                                            title={item.firstSection.title}
+                                            highlight={
+                                                item._id === activeMatchId
+                                                    ? "active"
+                                                    : reorderMatchSet.has(item._id)
+                                                      ? "match"
+                                                      : undefined
+                                            }
+                                        />
                                     ))}
                                 </SortableContext>
                             </DndContext>

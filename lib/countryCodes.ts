@@ -69,3 +69,27 @@ export const guessCountryCode = (name?: string | null) => {
     if (!key) return "";
     return CODE_BY_NAME.get(key) || NAME_ALIASES[key] || "";
 };
+
+/* ---------- project order keys ---------- */
+
+// every African country shares one "AFRICA" project order (UN geoscheme Africa, incl. its territories)
+export const AFRICA_ORDER_KEY = "AFRICA";
+
+const AFRICA_CODES = new Set<string>([
+    "DZ", "AO", "BJ", "BW", "BF", "BI", "CV", "CM", "CF", "TD", "KM", "CG", "CD", "CI", "DJ", "EG",
+    "GQ", "ER", "SZ", "ET", "GA", "GM", "GH", "GN", "GW", "KE", "LS", "LR", "LY", "MG", "MW", "ML",
+    "MR", "MU", "MA", "MZ", "NA", "NE", "NG", "RW", "ST", "SN", "SC", "SL", "SO", "ZA", "SS", "SD",
+    "TZ", "TG", "TN", "UG", "ZM", "ZW", "EH", "RE", "YT", "SH", "IO", "TF",
+]);
+
+// which saved order a country uses: "AFRICA" for African countries, otherwise its own code ("" when unknown)
+export const orderKeyForCountry = (value?: string | null) => {
+    const code = normalizeCountryCode(value);
+    if (!code) return "";
+    return AFRICA_CODES.has(code) ? AFRICA_ORDER_KEY : code;
+};
+
+export const isValidOrderKey = (key?: string | null) =>
+    key === AFRICA_ORDER_KEY || (!!key && VALID_CODES.has(key) && !AFRICA_CODES.has(key));
+
+export const orderKeyLabel = (key: string) => (key === AFRICA_ORDER_KEY ? "Africa" : countryCodeName(key));
