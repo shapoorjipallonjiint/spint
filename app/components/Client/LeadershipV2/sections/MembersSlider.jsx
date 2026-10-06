@@ -12,6 +12,13 @@ import "swiper/css";
 
 const Promoters = ({ items,title, btmBorder }) => {
     const [imageSwiper, setImageSwiper] = useState(null);
+    const [isBeginning, setIsBeginning] = useState(true);
+    const [isEnd, setIsEnd] = useState(false);
+
+    const syncNavState = (swiper) => {
+      setIsBeginning(swiper.isBeginning);
+      setIsEnd(swiper.isEnd);
+    };
   return (
     <section className="relative overflow-hidden pt-80px">
       <div className="container">
@@ -22,15 +29,17 @@ const Promoters = ({ items,title, btmBorder }) => {
             <div className="flex items-center gap-4 xl:gap-[51px]  border-b border-white/30 ">
               <div className="flex items-center gap-5">
                 <motion.button variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} onClick={() => imageSwiper?.slidePrev()}
-                  className={`w-10 xl:w-[50px] h-10 xl:h-[50px] rounded-full border border-black/20 flex items-center justify-center cursor-pointer`}
+                  disabled={isBeginning}
+                  className={`w-10 xl:w-[50px] h-10 xl:h-[50px] rounded-full border flex items-center justify-center transition-colors ${isBeginning ? "border-black/10 cursor-not-allowed" : "border-black/20 cursor-pointer"}`}
                 >
-                  <Image height={20} width={20} src={assets.arrowLeft2} alt="" />
+                  <Image height={20} width={20} src={assets.arrowLeft2} alt="" className={`transition-opacity ${isBeginning ? "opacity-30" : ""}`} />
                 </motion.button>
                 <motion.button variants={moveUp(0.4)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} 
                   onClick={() => imageSwiper?.slideNext()}
-                  className={`w-10 xl:w-[50px] h-10 xl:h-[50px] rounded-full border border-black/20 flex items-center justify-center cursor-pointer`}
+                  disabled={isEnd}
+                  className={`w-10 xl:w-[50px] h-10 xl:h-[50px] rounded-full border flex items-center justify-center transition-colors ${isEnd ? "border-black/10 cursor-not-allowed" : "border-black/20 cursor-pointer"}`}
                 >
-                  <Image height={20} width={20} src={assets.arrowRight2} alt="" />
+                  <Image height={20} width={20} src={assets.arrowRight2} alt="" className={`transition-opacity ${isEnd ? "opacity-30" : ""}`} />
                 </motion.button>
               </div>
             </div>
@@ -45,7 +54,13 @@ const Promoters = ({ items,title, btmBorder }) => {
             slidesPerView={2}
             speed={800}
             autoplay={true}
-            onSwiper={setImageSwiper}
+            onSwiper={(swiper) => {
+              setImageSwiper(swiper);
+              syncNavState(swiper);
+            }}
+            onSlideChange={syncNavState}
+            onBreakpoint={syncNavState}
+            onResize={syncNavState}
             className="w-full !overflow-hidden"
             breakpoints={{
               576: {

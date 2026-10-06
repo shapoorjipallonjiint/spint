@@ -43,7 +43,7 @@ const ParallaxImage = ({ src, alt }) => {
         style={{ y }}
         src={src}
         alt={alt}
-        className="w-full h-[350px] lg:h-[500px] xl:h-[600px] 3xl:h-[625px]  object-cover"
+        className="w-full h-[350px] lg:h-[460px] xl:h-[555px] 3xl:h-[580px] object-cover"
       />
     </div>
   );
@@ -245,7 +245,7 @@ const ExpertiseSec = ({ data }) => {
         {/* ============ DESKTOP (lg+): SWIPER LAYOUT ============ */}
         {isDesktop === true && (
           <div className="relative">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 3xl:gap-[30px]">
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,48fr)_minmax(0,52fr)] gap-8 lg:gap-10 xl:gap-12 3xl:gap-[50px]">
               {/* Image Section - Swiper */}
               <motion.div
                 variants={moveRight(0.4)}
@@ -287,7 +287,7 @@ const ExpertiseSec = ({ data }) => {
                 viewport={{ amount: 0.2, once: true }}
               >
                 {/* Navigation - Fixed */}
-                <div className="flex items-center gap-4 xl:gap-[50px] mb-5 xl:mb-[50px] border-b border-white/30 pt-5 lg:pt-5 xl:pt-10 3xl:pt-[64px] pb-4 xl:pb-[30px]">
+                <div className="flex items-center gap-4 xl:gap-[50px] mb-5 xl:mb-[50px] border-b border-white/30 pb-4 xl:pb-[30px]">
                   <div className="flex items-center gap-[12px]">
                     <button
                       onClick={() => imageSwiper?.slidePrev()}
