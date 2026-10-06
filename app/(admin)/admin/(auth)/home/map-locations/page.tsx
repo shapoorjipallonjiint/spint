@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Trash2, Pencil, Move, Briefcase, Users } from "lucide-react";
 import MapPointPicker, { cityMapPoint } from "./MapPointPicker";
 import { hasMapPoint } from "@/lib/mapDataHelper";
+import { COUNTRY_OPTIONS } from "@/lib/countryCodes";
 
 /* ---------------- TYPES ---------------- */
 
@@ -26,7 +27,11 @@ type City = {
     completedProjects?: string;
     employees?: string;
     showInProjectFilter?: boolean;
+    code?: string;
 };
+
+// Radix Select can't hold "" as an item value
+const NO_CODE = "none";
 
 /* ---------------- COMPONENT ---------------- */
 
@@ -228,6 +233,36 @@ export default function MapSectionPage() {
                         </div>
 
                         <div className="col-span-2">
+                            <Label>Country Code</Label>
+                            <Controller
+                                key={`code-${editIndex ?? "new"}`}
+                                name="code"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        value={field.value || NO_CODE}
+                                        onValueChange={(v) => field.onChange(v === NO_CODE ? "" : v)}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select country" />
+                                        </SelectTrigger>
+                                        <SelectContent className="max-h-72">
+                                            <SelectItem value={NO_CODE}>None</SelectItem>
+                                            {COUNTRY_OPTIONS.map((opt) => (
+                                                <SelectItem key={opt.code} value={opt.code}>
+                                                    {opt.name} ({opt.code})
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
+                            <p className="text-xs text-muted-foreground mt-1">
+                                Visitors from this country see its projects first on the Projects page.
+                            </p>
+                        </div>
+
+                        <div className="col-span-2">
                             <Label>Position on map</Label>
                             <MapPointPicker
                                 cities={locations}
@@ -359,7 +394,10 @@ function Column({
                     return (
                         <div key={index} className="p-4 flex justify-between items-center border-b last:border-b-0">
                             <div>
-                                <p className="font-medium">{loc.name}</p>
+                                <p className="font-medium">
+                                    {loc.name}
+                                    {loc.code && <span className="ml-2 text-xs text-muted-foreground">({loc.code})</span>}
+                                </p>
 
                                 <div className="mt-1 flex flex-wrap gap-4 text-sm text-muted-foreground">
                                     <div className="flex items-center gap-1">

@@ -234,7 +234,9 @@ const homeSchema = new mongoose.Schema({
             y: { type: Number },
             completedProjects: { type: String },
             employees: { type: String },
-            showInProjectFilter: { type: Boolean}
+            showInProjectFilter: { type: Boolean},
+            // ISO 3166-1 alpha-2 (e.g. "AE"): matched against the visitor's country to list its projects first
+            code: { type: String }
         }]
     },
     seventhSection: {

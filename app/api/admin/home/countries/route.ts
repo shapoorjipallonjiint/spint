@@ -9,6 +9,7 @@ type HomeCitiesResult = {
       name?: string;
       name_ar?: string;
       showInProjectFilter?: boolean;
+      code?: string;
     }[];
   };
 };
@@ -24,6 +25,7 @@ export async function GET() {
         "sixthSection.cities.name": 1,
         "sixthSection.cities.name_ar": 1,
         "sixthSection.cities.showInProjectFilter": 1,
+        "sixthSection.cities.code": 1,
         _id: 0,
       }
     ).lean()) as HomeCitiesResult | null;
@@ -41,6 +43,7 @@ export async function GET() {
         name: city.name ?? "",
         name_ar: city.name_ar ?? "",
         showInProjectFilter: city.showInProjectFilter ?? false,
+        code: city.code ?? "",
       }))
       .filter((city) => city._id && city.name)
       .sort((a, b) => a.name.localeCompare(b.name));

@@ -37,7 +37,7 @@ const toOptions = (list = [], labelKey = "name") => {
     return [ALL, ...bySlug.values()];
 };
 
-const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
+const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCountry }) => {
     const tData = useApplyLang(data);
     const router = useRouter();
     const pathname = usePathname();
@@ -76,11 +76,22 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
     const view = searchParams.get("view") === "list" ? "list" : "grid";
     const requestedPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
 
+    // locations whose country code is the visitor's (several map locations can share one country)
+    const visitorLocationIds = useMemo(
+        () =>
+            new Set(
+                (countryData || [])
+                    .filter((c) => visitorCountry && c?.code?.toUpperCase() === visitorCountry)
+                    .map((c) => String(c._id))
+            ),
+        [countryData, visitorCountry]
+    );
+
     // ---------- filtering (by ids / English status, independent of the page language) ----------
     const filteredItems = useMemo(() => {
         const translatedById = new Map((tData || []).map((item) => [String(item?._id), item]));
 
-        return (data || [])
+        const matched = (data || [])
             .filter((item) => {
                 const second = item?.secondSection || {};
                 if (selectedSector.slug && !(second.sector || []).some((sec) => selectedSector.ids.has(String(sec?._id))))
@@ -90,9 +101,14 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data }) => {
                 if (selectedService.slug && !(second.service || []).some((sv) => selectedService.ids.has(String(sv?.serviceId))))
                     return false;
                 return true;
-            })
-            .map((item) => translatedById.get(String(item?._id)) || item);
-    }, [data, tData, selectedSector, selectedStatus, selectedCountry, selectedService]);
+            });
+
+        // visitor's country first, everything else after it, both in the existing order (no match = unchanged)
+        const isVisitorCountry = (item) => visitorLocationIds.has(String(item?.secondSection?.location?._id));
+        return [...matched.filter(isVisitorCountry), ...matched.filter((item) => !isVisitorCountry(item))].map(
+            (item) => translatedById.get(String(item?._id)) || item
+        );
+    }, [data, tData, selectedSector, selectedStatus, selectedCountry, selectedService, visitorLocationIds]);
 
     const totalPages = Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE));
     const currentPage = Math.min(requestedPage, totalPages);
