@@ -1095,9 +1095,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register("fourthSection.title", {
-                                        required: "Title is required",
-                                    })}
+                                    {...register("fourthSection.title")}
                                 />
                                 {errors.fourthSection?.title && (
                                     <p className="text-red-500">{errors.fourthSection?.title.message}</p>
@@ -1107,9 +1105,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                 <Label className=" font-bold">Description</Label>
                                 <Textarea
                                     placeholder="Description"
-                                    {...register("fourthSection.description", {
-                                        required: "Description is required",
-                                    })}
+                                    {...register("fourthSection.description")}
                                 />
                                 {errors.fourthSection?.description && (
                                     <p className="text-red-500">{errors.fourthSection?.description.message}</p>
