@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import { readHiddenServiceSlugs } from "@/lib/serviceVisibility";
+import { readHiddenServiceSlugs, readServiceOrder } from "@/lib/serviceVisibility";
+import { sortByServiceOrder } from "@/lib/serviceRegistry";
 
 import DesignStudio from "@/app/models/DesignStudio";
 import Engineering from "@/app/models/Engineering";
@@ -37,6 +38,8 @@ export async function GET() {
 
     // services hidden in admin (Services > Main); returned with a flag, never removed here, so the admin keeps them
     const hiddenSlugs = await readHiddenServiceSlugs();
+    // display order set in admin (Services > Main); unchanged when never reordered
+    const serviceOrder = await readServiceOrder();
 
     const unifiedData = collections.flatMap((items, index) =>
       items.map((item) => ({
@@ -57,7 +60,7 @@ export async function GET() {
     return NextResponse.json(
       {
         message: "Page services fetched successfully",
-        data: unifiedData,
+        data: sortByServiceOrder(unifiedData, serviceOrder, (item) => (item.link ? String(item.link) : null)),
       },
       { status: 200 }
     );

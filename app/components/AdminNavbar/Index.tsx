@@ -14,21 +14,25 @@ import {
 } from "@heroicons/react/24/outline";
 import { FileText, GalleryThumbnails, HeartHandshake, LeafIcon, Settings, ThumbsUp, Workflow } from "lucide-react";
 import { GiPaperBagFolded } from "react-icons/gi";
-import { SERVICE_REGISTRY } from "@/lib/serviceRegistry";
+import { normalizeServiceOrder, SERVICE_REGISTRY, sortByServiceOrder } from "@/lib/serviceRegistry";
 
-// fired by the Services > Main page after a show/hide so the sidebar labels update
+// fired by the Services > Main page after a show/hide or reorder so the sidebar updates
 export const SERVICE_VISIBILITY_EVENT = "service-visibility-changed";
 
 const AdminNavbar = () => {
     const [openLink, setOpenLink] = useState<string | null>(null);
     const [hiddenServices, setHiddenServices] = useState<string[]>([]);
+    const [serviceOrder, setServiceOrder] = useState<string[]>([]);
 
-    // which services are hidden on the website (refreshed when Services > Main changes something)
+    // which services are hidden on the website and their order (refreshed when Services > Main changes something)
     useEffect(() => {
         const load = () =>
             fetch("/api/admin/services/visibility", { cache: "no-store" })
                 .then((res) => (res.ok ? res.json() : null))
-                .then((json) => setHiddenServices(json?.data?.hiddenServices || []))
+                .then((json) => {
+                    setHiddenServices(json?.data?.hiddenServices || []);
+                    setServiceOrder(normalizeServiceOrder(json?.data?.serviceOrder));
+                })
                 .catch(() => {});
         load();
         window.addEventListener(SERVICE_VISIBILITY_EVENT, load);
@@ -63,8 +67,8 @@ const AdminNavbar = () => {
             children: [
                 // show / hide services on the website
                 { name: "Main", href: "/admin/services/main" },
-                // hidden services stay editable here, just marked and listed last
-                ...[...SERVICE_REGISTRY]
+                // in the website order; hidden services stay editable here, just marked and listed last
+                ...sortByServiceOrder([...SERVICE_REGISTRY], serviceOrder, (service) => service.slug)
                     .sort((a, b) => Number(hiddenServices.includes(a.slug)) - Number(hiddenServices.includes(b.slug)))
                     .map((service) => ({
                         name: hiddenServices.includes(service.slug) ? `${service.name} (Hidden)` : service.name,

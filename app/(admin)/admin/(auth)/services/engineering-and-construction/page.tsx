@@ -7,7 +7,7 @@ import React, { useEffect } from 'react'
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Button } from '@/components/ui/button'
 import { ImageUploader } from '@/components/ui/image-uploader'
-import { RiDeleteBinLine } from "react-icons/ri";
+import { RiArrowDownLine, RiArrowUpLine, RiDeleteBinLine } from "react-icons/ri";
 import { Textarea } from '@/components/ui/textarea'
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false })
 import 'react-quill-new/dist/quill.snow.css';
@@ -92,7 +92,8 @@ const EngineeringAndConstructionPage = () => {
     const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<EngineeringAndConstructionFormProps>();
 
 
-    const { fields: secondSectionItems, append: secondSectionAppend, remove: secondSectionRemove } = useFieldArray({
+    // move keeps every value of the item (English + Arabic, image, ids) together - only the position changes
+    const { fields: secondSectionItems, append: secondSectionAppend, remove: secondSectionRemove, move: secondSectionMove } = useFieldArray({
         control,
         name: "secondSection.items"
     });
@@ -347,7 +348,9 @@ const EngineeringAndConstructionPage = () => {
 
                                     {secondSectionItems.map((field, index) => (
                                         <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
-                                            <div className='absolute top-2 right-2'>
+                                            <div className='absolute top-2 right-2 flex items-center gap-2'>
+                                                {index > 0 && <RiArrowUpLine title='Move up' onClick={() => secondSectionMove(index, index - 1)} className='cursor-pointer' />}
+                                                {index < secondSectionItems.length - 1 && <RiArrowDownLine title='Move down' onClick={() => secondSectionMove(index, index + 1)} className='cursor-pointer' />}
                                                 <RiDeleteBinLine onClick={() => secondSectionRemove(index)} className='cursor-pointer text-red-600' />
                                             </div>
 
@@ -781,7 +784,9 @@ const EngineeringAndConstructionPage = () => {
 
                                     {secondSectionItems.map((field, index) => (
                                         <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
-                                            <div className='absolute top-2 right-2'>
+                                            <div className='absolute top-2 right-2 flex items-center gap-2'>
+                                                {index > 0 && <RiArrowUpLine title='Move up' onClick={() => secondSectionMove(index, index - 1)} className='cursor-pointer' />}
+                                                {index < secondSectionItems.length - 1 && <RiArrowDownLine title='Move down' onClick={() => secondSectionMove(index, index + 1)} className='cursor-pointer' />}
                                                 <RiDeleteBinLine onClick={() => secondSectionRemove(index)} className='cursor-pointer text-red-600' />
                                             </div>
 

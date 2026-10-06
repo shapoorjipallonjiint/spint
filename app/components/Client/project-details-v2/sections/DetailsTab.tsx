@@ -82,9 +82,12 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const mobilePanelRefs = useRef<Array<HTMLDivElement | null>>([]);
   const mobileScrollFrame = useRef<number | null>(null);
   // only services with some content get a tab (an empty service would show an empty tab)
-  // services hidden in admin (Services > Main) don't get a tab
-  const { isHiddenServiceId } = useServiceVisibility();
-  const visibleServices = data.service.filter((s) => hasServiceContent(s) && !isHiddenServiceId(s?.serviceId));
+  // services hidden in admin (Services > Main) don't get a tab, the rest follow the admin order
+  const { isHiddenServiceId, sortByServiceId } = useServiceVisibility();
+  const visibleServices = sortByServiceId(
+    data.service.filter((s) => hasServiceContent(s) && !isHiddenServiceId(s?.serviceId)),
+    (s) => s?.serviceId
+  );
   const tabs: DetailsTabItem[] = visibleServices.map((s) => {
     // MEP shows the accordion unless admin switched it to the "list" (title + description) layout;
     // projects saved before the toggle existed have no value and stay on the accordion.
