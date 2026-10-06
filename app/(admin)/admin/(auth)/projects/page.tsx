@@ -353,6 +353,15 @@ export default function Projects() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [projectList, selectedCountry, search, projectOrders]);
 
+    // S.No = position in the current order (global, or the selected country's), unaffected by the search box
+    const positionById = useMemo(() => {
+        const scoped =
+            selectedCountry === ALL_SCOPE ? projectList : projectList.filter((item) => scopeOf(item) === selectedCountry);
+        const ordered = selectedOrderKey ? sortByScopeOrder(scoped) : scoped;
+        return new Map(ordered.map((item, i) => [item._id, i + 1]));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [projectList, selectedCountry, projectOrders]);
+
     const startReorder = () => {
         if (selectedCountry === ALL_SCOPE) {
             setReorderMode(true);
@@ -1057,7 +1066,15 @@ export default function Projects() {
                                     key={item._id}
                                     className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md"
                                 >
-                                    <div>{item.firstSection.title}</div>
+                                    <div>
+                                        <span className="inline-block min-w-8 text-muted-foreground tabular-nums">
+                                            {positionById.get(item._id)}.
+                                        </span>
+                                        {item.firstSection.title}
+                                        {item.secondSection?.location?.name && (
+                                            <span className="text-muted-foreground"> - {item.secondSection.location.name}</span>
+                                        )}
+                                    </div>
                                     <div className="flex gap-5 items-center">
                                         {/* view the live project page in a new tab (read-only link, the admin page stays open) */}
                                         {item.slug ? (
@@ -1088,11 +1105,13 @@ export default function Projects() {
                                     items={reorderList.map((p) => p._id)}
                                     strategy={verticalListSortingStrategy}
                                 >
-                                    {reorderList.map((item) => (
+                                    {reorderList.map((item, index) => (
                                         <ProjectCard
                                             key={item._id}
                                             id={item._id}
+                                            serial={index + 1}
                                             title={item.firstSection.title}
+                                            country={item.secondSection?.location?.name}
                                             highlight={
                                                 item._id === activeMatchId
                                                     ? "active"

@@ -7,11 +7,15 @@ import { Move } from "lucide-react";
 // highlight: "active" = the search match in focus, "match" = any other search match
 export default function ProjectCard({
     id,
+    serial,
     title,
+    country,
     highlight,
 }: {
     id: string;
+    serial?: number;
     title: string;
+    country?: string;
     highlight?: "active" | "match";
 }) {
     const { attributes, listeners, setNodeRef, transform, transition } =
@@ -37,7 +41,13 @@ export default function ProjectCard({
                       : "bg-white"
             }`}
         >
-            <span>{title}</span>
+            <span>
+                {serial !== undefined && (
+                    <span className="inline-block min-w-8 text-muted-foreground tabular-nums">{serial}.</span>
+                )}
+                {title}
+                {country && <span className="text-muted-foreground"> - {country}</span>}
+            </span>
             <Move className="w-4 h-4 text-gray-500" />
         </div>
     );
