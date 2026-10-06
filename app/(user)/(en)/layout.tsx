@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic';
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // services hidden in admin (Services > Main) are removed from menus, footers, project tabs, etc.
+  // services hidden in admin (Services > Main) are removed from menus, footers, project tabs, etc. and the rest follow the admin order
   const visibility = await fetchServiceVisibility();
 
 
@@ -30,7 +30,7 @@ export default async function RootLayout({
         <div lang="en">
           <div className={`${dmSans.variable} font-sans antialiased`}>
             {/* <SmoothScroll/> */}
-            <ServiceVisibilityProvider hiddenSlugs={visibility.hiddenServices} hiddenIds={visibility.hiddenServiceIds}>
+            <ServiceVisibilityProvider hiddenSlugs={visibility.hiddenServices} hiddenIds={visibility.hiddenServiceIds} serviceOrder={visibility.serviceOrder} serviceIdSlugs={visibility.serviceIdSlugs}>
             <SearchProvider>
               <ToNavigateCountryProvider>
                 <ScrollToTop />

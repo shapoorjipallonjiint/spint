@@ -76,11 +76,11 @@ const socials = [
 
 const FooterTwo = () => {
   const tFooterLinks = useApplyLang(footerLinks);
-  // services hidden in admin (Services > Main) are left out of the footer
-  const { isHiddenHref } = useServiceVisibility();
+  // services hidden in admin (Services > Main) are left out of the footer, the rest follow the admin order
+  const { isHiddenHref, sortByHref } = useServiceVisibility();
   const visibleFooterLinks = tFooterLinks.map((section) => ({
     ...section,
-    links: section.links.filter((link) => !isHiddenHref(link.href)),
+    links: sortByHref(section.links.filter((link) => !isHiddenHref(link.href)), (link) => link.href),
   }));
   const isArabic = useIsPreferredLanguageArabic();
 

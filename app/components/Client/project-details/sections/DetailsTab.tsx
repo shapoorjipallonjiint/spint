@@ -8,6 +8,7 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import H2Title from "../../../../components/common/H2Title";
 import { detailsTabsData } from "../data";
 import { moveUp } from "../../../motionVarients";
+import { useServiceVisibility } from "@/contexts/serviceVisibility";
 
 const MotionImage = motion.create(Image);
 const MOBILE_ACCORDION_DURATION = 450;
@@ -77,7 +78,10 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const mobileTabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const mobilePanelRefs = useRef<Array<HTMLDivElement | null>>([]);
   const mobileScrollFrame = useRef<number | null>(null);
-  const tabs: DetailsTabItem[] = data.service.map((s) => {
+  // services in the admin order (Services > Main)
+  const { sortByServiceId } = useServiceVisibility();
+  const services = sortByServiceId(data.service, (s) => s?.serviceId);
+  const tabs: DetailsTabItem[] = services.map((s) => {
     // MEP shows the accordion unless admin switched it to the "list" (title + description) layout;
     // projects saved before the toggle existed have no value and stay on the accordion.
     const isMEP = s.serviceName === "MEP" && s.mepDisplayType !== "list";
@@ -112,7 +116,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     };
   });
   const [activeTab, setActiveTab] = useState(
-    data.service?.[0]?.serviceName || ""
+    services?.[0]?.serviceName || ""
   );
   const [direction, setDirection] = useState(1);
   const [openMobileTab, setOpenMobileTab] = useState(() => {

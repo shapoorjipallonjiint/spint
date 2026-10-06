@@ -24,3 +24,24 @@ export const serviceSlugFromHref = (href?: string | null) => {
   const slug = match ? match[1] : String(href).replace(/^\/+|\/+$/g, "");
   return isKnownServiceSlug(slug) ? slug : null;
 };
+
+// Saved order -> every known service exactly once (saved ones first, any missing ones after in registry order).
+// An empty saved order stays empty: the services were never reordered and every list keeps its own order.
+export const normalizeServiceOrder = (order?: unknown): string[] => {
+  if (!Array.isArray(order) || !order.length) return [];
+  const known = order.filter((slug, i) => isKnownServiceSlug(slug) && order.indexOf(slug) === i) as string[];
+  return [...known, ...SERVICE_SLUGS.filter((slug) => !known.includes(slug))];
+};
+
+// Puts the service items of a list in the saved order. Items that are not services (slug null) keep their place,
+// so mixed lists (menus) are safe. Returns the list untouched when there is no saved order.
+export const sortByServiceOrder = <T>(items: T[], order: string[], getSlug: (item: T) => string | null | undefined): T[] => {
+  if (!order.length || !Array.isArray(items)) return items;
+  const rank = (item: T) => {
+    const slug = getSlug(item);
+    return slug ? order.indexOf(slug) : -1;
+  };
+  const serviceItems = items.filter((item) => rank(item) >= 0).sort((a, b) => rank(a) - rank(b));
+  let next = 0;
+  return items.map((item) => (rank(item) >= 0 ? serviceItems[next++] : item));
+};
