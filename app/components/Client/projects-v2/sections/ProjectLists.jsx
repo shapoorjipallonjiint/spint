@@ -77,14 +77,24 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
     const view = searchParams.get("view") === "list" ? "list" : "grid";
     const requestedPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
 
-    // the visitor's order: their country's code, or "AFRICA" for any African country.
-    // only countries with an order saved in the CMS get priority; everyone else sees the global order
-    const visitorOrder = (projectOrders || []).find((o) => o?.key && o.key === orderKeyForCountry(visitorCountry));
-    const visitorOrderKey = visitorOrder?.key || "";
+    // saved CMS orders are keyed by country code, or "AFRICA" for any African country.
+    // only countries with a saved order get priority; everyone else sees the global order
+    const savedOrderFor = (key) => (key ? (projectOrders || []).find((o) => o?.key === key) : undefined);
+
+    // a country picked in the filter uses that country's saved order (Nigeria -> its projects in the Africa order),
+    // otherwise the visitor's own country's saved order applies
+    const filterOrderKey = useMemo(() => {
+        if (!selectedCountry.slug) return "";
+        const location = (countryData || []).find((c) => selectedCountry.ids.has(String(c?._id)) && c?.code);
+        return orderKeyForCountry(location?.code);
+    }, [countryData, selectedCountry]);
+
+    const activeOrder = savedOrderFor(filterOrderKey) || savedOrderFor(orderKeyForCountry(visitorCountry));
+    const activeOrderKey = activeOrder?.key || "";
     // position of each project in that order, as arranged in the CMS
-    const visitorOrderRank = useMemo(
-        () => new Map((visitorOrder?.projectIds || []).map((id, i) => [String(id), i])),
-        [visitorOrder]
+    const activeOrderRank = useMemo(
+        () => new Map((activeOrder?.projectIds || []).map((id, i) => [String(id), i])),
+        [activeOrder]
     );
 
     // ---------- filtering (by ids / English status, independent of the page language) ----------
@@ -103,17 +113,17 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
                 return true;
             });
 
-        // visitor's country (or Africa) first in its CMS order, then everything else in the global order.
+        // that country's (or Africa's) projects first in its CMS order, then everything else in the global order.
         // projects not yet placed in that order follow the placed ones, in global order. no saved order = unchanged.
-        const isVisitorItem = (item) =>
-            !!visitorOrderKey && orderKeyForCountry(item?.secondSection?.location?.code) === visitorOrderKey;
-        const rank = (item) => visitorOrderRank.get(String(item?._id)) ?? Number.MAX_SAFE_INTEGER;
-        const visitorItems = matched.filter(isVisitorItem).sort((a, b) => rank(a) - rank(b));
+        const isPriorityItem = (item) =>
+            !!activeOrderKey && orderKeyForCountry(item?.secondSection?.location?.code) === activeOrderKey;
+        const rank = (item) => activeOrderRank.get(String(item?._id)) ?? Number.MAX_SAFE_INTEGER;
+        const priorityItems = matched.filter(isPriorityItem).sort((a, b) => rank(a) - rank(b));
 
-        return [...visitorItems, ...matched.filter((item) => !isVisitorItem(item))].map(
+        return [...priorityItems, ...matched.filter((item) => !isPriorityItem(item))].map(
             (item) => translatedById.get(String(item?._id)) || item
         );
-    }, [data, tData, selectedSector, selectedStatus, selectedCountry, selectedService, visitorOrderKey, visitorOrderRank]);
+    }, [data, tData, selectedSector, selectedStatus, selectedCountry, selectedService, activeOrderKey, activeOrderRank]);
 
     const totalPages = Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE));
     const currentPage = Math.min(requestedPage, totalPages);
