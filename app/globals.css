@@ -1287,6 +1287,11 @@ body::-webkit-scrollbar {
   max-width: 100%;
 }
 
+/* match the section intro text under the title (text-19, light, same line-height) */
+.our-expertise-item-desc {
+  @apply text-19 leading-[1.473684210526316] font-light;
+}
+
 /* the editor saves a blank line as an empty <p></p>, which would collapse to 0 height - keep it one line tall */
 .our-expertise-item-desc p:empty {
   min-height: 1lh;
