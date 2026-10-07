@@ -17,6 +17,13 @@ const ContactDetails = ({ data }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const t = useApplyLang(data);
     const [subject, setSubject] = useState(null);
+    // the subject is a react-select outside react-hook-form, so its "required" message is tracked here
+    const [subjectError, setSubjectError] = useState("");
+    const validateSubject = (value = subject) => {
+        const message = value?.value ? "" : "Subject is required";
+        setSubjectError(message);
+        return !message;
+    };
     const [captchaVerified, setCaptchaVerified] = useState(false);
 
     const handleCaptchaChange = (value) => {
@@ -100,10 +107,7 @@ const ContactDetails = ({ data }) => {
             return;
         }
 
-        if (!subject?.value) {
-            alert("Please select a subject.");
-            return;
-        }
+        if (!validateSubject()) return;
 
         try {
             const payload = {
@@ -125,6 +129,7 @@ const ContactDetails = ({ data }) => {
                 alert(res.message);
                 reset();
                 setSubject(null);
+                setSubjectError("");
                 setCaptchaVerified(false);
             } else {
                 alert(res.message || "Something went wrong");
@@ -188,7 +193,13 @@ const ContactDetails = ({ data }) => {
                                     viewport={{ amount: 0.2, once: true }}
                                     className="text-black text-20 xl:text-26 3xl:text-29 font-light leading-[1.31] "
                                 >
-                                    {t?.firstSection.phone}
+                                    <a
+                                        href={`tel:${(t?.firstSection.phone || "").replace(/[^\d+]/g, "")}`}
+                                        dir="ltr"
+                                        className="hover:text-secondary transition-colors duration-300"
+                                    >
+                                        {t?.firstSection.phone}
+                                    </a>
                                 </motion.p>
                             </div>
                             <div>
@@ -208,7 +219,12 @@ const ContactDetails = ({ data }) => {
                                     viewport={{ amount: 0.2, once: true }}
                                     className="text-black text-20 xl:text-26 3xl:text-29 leading-[1.31]   font-light"
                                 >
-                                    {t?.firstSection.email}
+                                    <a
+                                        href={`mailto:${(t?.firstSection.email || "").trim()}`}
+                                        className="hover:text-secondary transition-colors duration-300 break-all"
+                                    >
+                                        {t?.firstSection.email}
+                                    </a>
                                 </motion.p>
                             </div>
                         </div>
@@ -252,7 +268,7 @@ const ContactDetails = ({ data }) => {
                     </div>
                     <div className="bg-primary px-5 pt-8 pb-9 lg:p-8 xl:p-10 3xl:p-[70px] 3xl:pt-[59px]">
                         <H2Title titleText={isArabic ? "الإستفسارات العامة" : "General Inquiry"} titleColor="white" marginClass="mb-4 3xl:mb-[30px]" />
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        <form onSubmit={handleSubmit(onSubmit, () => validateSubject())}>
                             <div className="grid sm:grid-cols-2 gap-5 2xl:gap-50px w-full mb-6 xl:mb-8 3xl:mb-[38px]">
                                 <motion.div
                                     variants={moveUp(0.4)}
@@ -381,12 +397,17 @@ const ContactDetails = ({ data }) => {
                                     <Select
                                         options={options}
                                         value={subject}
-                                        onChange={setSubject}
+                                        onChange={(value) => {
+                                            setSubject(value);
+                                            validateSubject(value);
+                                        }}
+                                        onBlur={() => validateSubject()}
                                         styles={customStyles}
                                         placeholder=""
                                         classNamePrefix="react-select font-extralight text-19 !px-0"
                                     />
                                 </div>
+                                <p className="text-red-400 text-14 min-h-3.5 mt-2 absolute">{subjectError}</p>
                             </motion.div>
 
                             <motion.div

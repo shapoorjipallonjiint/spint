@@ -9,6 +9,7 @@ import SplitTextAnimation from "../../../../components/common/SplitTextAnimation
 import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 
 const Gallery = ({ data }) => {
     const t = useApplyLang(data);
@@ -131,24 +132,27 @@ const Gallery = ({ data }) => {
         setImages(imgs);
         setIndex(startIdx);
         setIsOpen(true);
-        // stop body scroll
-        document.body.style.overflow = "hidden";
     }, []);
 
     const closeModal = useCallback(() => {
         setIsOpen(false);
         setImages([]);
         setIndex(0);
-        document.body.style.overflow = "";
     }, []);
 
-    // Prev / Next with wrap-around
+    // Keep the page behind the popup from scrolling
+    useLockBodyScroll(isOpen);
+
+    // Prev / Next stop at the first / last image (the arrows disable there)
+    const isFirst = index === 0;
+    const isLast = index >= images.length - 1;
+
     const prev = useCallback(() => {
-        setIndex((i) => (i - 1 + images.length) % images.length);
-    }, [images.length]);
+        setIndex((i) => Math.max(i - 1, 0));
+    }, []);
 
     const next = useCallback(() => {
-        setIndex((i) => (i + 1) % images.length);
+        setIndex((i) => Math.min(i + 1, images.length - 1));
     }, [images.length]);
 
     // keyboard support
@@ -336,10 +340,14 @@ const Gallery = ({ data }) => {
 
                                     {/* main image area */}
                                     <div className="relative   rounded-md  ">
+                                        {/* arrows only when there is more than one image */}
+                                        {images.length > 1 && (
+                                        <>
                                         <button
                                             onClick={prev}
+                                            disabled={isFirst}
                                             aria-label="Previous image"
-                                            className="w-12 h-12 flex items-center justify-center absolute -left-20 top-1/2 -translate-y-1/2 z-20 p-2 border border-white cursor-pointer transition-all duration-300 hover:bg-black/40 rounded-full"
+                                            className="w-12 h-12 flex items-center justify-center absolute -left-20 top-1/2 -translate-y-1/2 z-20 p-2 border border-white cursor-pointer transition-all duration-300 enabled:hover:bg-black/40 rounded-full disabled:opacity-30 disabled:cursor-not-allowed"
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -379,8 +387,9 @@ const Gallery = ({ data }) => {
 
                                         <button
                                             onClick={next}
+                                            disabled={isLast}
                                             aria-label="Next image"
-                                            className="w-12 h-12 flex items-center justify-center absolute -right-20 top-1/2 z-20 p-2 border border-white cursor-pointer transition-all duration-300 hover:bg-black/40 rounded-full"
+                                            className="w-12 h-12 flex items-center justify-center absolute -right-20 top-1/2 z-20 p-2 border border-white cursor-pointer transition-all duration-300 enabled:hover:bg-black/40 rounded-full disabled:opacity-30 disabled:cursor-not-allowed"
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -418,6 +427,8 @@ const Gallery = ({ data }) => {
                                                 </defs>
                                             </svg>
                                         </button>
+                                        </>
+                                        )}
 
                                         {/* animate image change */}
                                         <div

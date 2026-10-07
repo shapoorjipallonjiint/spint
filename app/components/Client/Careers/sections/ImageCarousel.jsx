@@ -69,6 +69,7 @@ const ImageCarousel = ({ data }) => {
             modules={[Autoplay]}
             centeredSlides
             loop={true}
+            grabCursor
             spaceBetween={15}
             autoplay={{
               delay: 2000,

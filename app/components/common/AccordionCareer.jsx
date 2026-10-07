@@ -107,29 +107,16 @@ const AccordionCareer = ({ accData, openIndex, setOpenIndex }) => {
     setOpenIndex((prev) => (prev === index ? null : index));
   };
 
-  // ✅ Measure height AFTER render (React-safe)
-  // useLayoutEffect(() => {
-  //   if (openIndex === null) return;
-
-  //   const el = contentRefs.current[openIndex];
-  //   if (!el) return;
-
-  //   setHeights((prev) => ({
-  //     ...prev,
-  //     [openIndex]: el.scrollHeight,
-  //   }));
-  // }, [openIndex]);
-
   return (
     <div className="space-y-1">
       {accData.items.map((item, index) => (
         <motion.div
           key={item._id || index}
-          variants={moveUp(0.4 + index * 0.15)}
+          variants={moveUp(index * 0.09)}
           initial="hidden"
           whileInView="show"
           viewport={{ amount: 0.2, once: true }}
-className={`border-b border-black/20 relative transition-all duration-500
+className={`border-b border-black/20 relative transition-colors duration-500
   ${
     openIndex === index
       ? isArabic

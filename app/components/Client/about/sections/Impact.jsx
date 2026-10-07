@@ -242,7 +242,7 @@ const CultureDrivers = ({ CultureData }) => {
             {/* Vertical Line to Content Box - positioned at active letter */}
             {letterPositions.length > 0 && (
               <div
-                className="absolute top-0 w-0.5 bg-black/20 transition-all duration-500 z-[-1]"
+                className="absolute top-0 w-px bg-black/20 transition-all duration-500 z-[-1]"
                 style={{
                   left: `${letterPositions[activeIndex] - 1}px`,
                   height: "145px",

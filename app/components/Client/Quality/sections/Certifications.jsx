@@ -9,6 +9,7 @@ import { useState, useEffect, useRef } from 'react';
 import ImageLightbox from "../../../common/ImagePopup";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -19,47 +20,6 @@ const Certifications = ({ data }) => {
   const MotionImage = motion.create(Image);
   const [activeImage, setActiveImage] = useState(null);
 
-  // const items = [
-  //   {
-  //     fileName: "ISO 19650-2  2018",
-  //     imageAlt: "Building Information Modeling Management System",
-  //     description: "Building Information Modeling Management System ",
-
-  //     // The main thumbnail/file image used in the grid/mobile view
-  //     fileImage: "/assets/pdf/bim/bim.jpg",
-  //     fileImageAlt: "Building Information Modeling Management System",
-  //     // The actual PDF path for the popup iframe
-  //     pdfUrl: [
-  //       {
-  //         name: "dubai",
-  //         url: "/assets/pdf/bim/bim.pdf",
-  //       },
-  //     ]
-
-  //   },
-  //   {
-  //     fileName: "ISO 41001-2018",
-  //     imageAlt: "Facility Management System",
-  //     description: "Facility Management System",
-
-  //     fileImage: "/assets/pdf/fms/fms.jpg",
-  //     fileImageAlt: "Facility Management System",
-  //     pdfUrl: [
-  //       {
-  //         name: "Dubai",
-  //         url: "/assets/pdf/fms/41001-2018-fms-dubai.pdf",
-  //       },
-  //       {
-  //         name: "KSA",
-  //         url: "/assets/pdf/fms/41001-2018-fms-ksa.pdf",
-  //       },
-  //       {
-  //         name: "Oman",
-  //         url: "/assets/pdf/fms/41001-2018-fms-oman.pdf",
-  //       }
-  //     ]
-  //   }
-  // ];
   const [imageSwiper, setImageSwiper] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -99,6 +59,9 @@ const Certifications = ({ data }) => {
     }
   }, [itemIndex, pdfIndex]);
 
+  // Keep the page behind the popup from scrolling
+  useLockBodyScroll(itemIndex !== null);
+
   // Handle Keyboard Escape and Arrows
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -133,6 +96,7 @@ const Certifications = ({ data }) => {
               spaceBetween={30}
               slidesPerView={2}
               loop={true}
+              grabCursor={true}
               autoplay={{ delay: 8000, disableOnInteraction: false }}
               onSwiper={setImageSwiper}
               onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
@@ -147,7 +111,7 @@ const Certifications = ({ data }) => {
                       <img
                         src={item.thumbnail}
                         alt={item.thumbnailAlt}
-                        className="w-full h-full object-cover cursor-pointer"
+                        className="w-full h-full object-cover"
                         onClick={() => {
                           setItemIndex(i);
                           setPdfIndex(0);
@@ -174,7 +138,7 @@ const Certifications = ({ data }) => {
 
             <div className={`grid grid-cols-1  md:grid-cols-3  3xl:grid-cols-[520px_550px_550px]  gap-2 lg:gap-23 3xl:gap-0 `}>
               {t.items.map((item, index) => (
-                <div key={index} className={`p-6 lg:p-10 lg:pb-5 md:border-l border-white/20 md:last:border-r border-b md:border-b-0 `}>
+                <div key={index} className={`p-6 lg:p-10 lg:pb-5 md:border-l border-white/20 md:last:border-r border-b md:border-b-0`}>
                   <motion.img
                     width={276}
                     height={400}

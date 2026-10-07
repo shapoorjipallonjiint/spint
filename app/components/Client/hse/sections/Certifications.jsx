@@ -4,6 +4,7 @@ import H2Title from "@/app/components/common/H2Title";
 import { moveUp } from "@/app/components/motionVarients";
 import Image from "next/image";
 import { useState, useEffect, useRef } from 'react';
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -167,6 +168,8 @@ const Certifications = ({ data }) => {
     }
   }, [itemIndex, pdfIndex]);
 
+  // Keep the page behind the popup from scrolling
+  useLockBodyScroll(itemIndex !== null);
 
   // Handle Keyboard Escape and Arrows
   useEffect(() => {

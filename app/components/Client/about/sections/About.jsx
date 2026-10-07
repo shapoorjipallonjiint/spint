@@ -33,7 +33,7 @@ const About = ({ data }) => {
           {/* Left Column */}
           <div>
             <motion.p
-              variants={moveUp(0.4)}
+              variants={moveUp(0.2)}
               initial="hidden"
               whileInView="show"
               viewport={{ amount: 0.2, once: true }}
@@ -42,7 +42,7 @@ const About = ({ data }) => {
               {t.title}
             </motion.p>
             <motion.div
-              variants={moveUp(0.8 + 0.2)}
+              variants={moveUp(0.4)}
               initial="hidden"
               whileInView="show"
               viewport={{ amount: 0.2, once: true }}
@@ -51,7 +51,7 @@ const About = ({ data }) => {
               <div className="text-19 font-light leading-[1.474] flex flex-col gap-4 lg:gap-7 text-paragraph">
                 {t.description.split("\n").map((p, i) => (
                   <motion.p
-                    variants={moveUp(0.8 + 0.2)}
+                    variants={moveUp(0.4)}
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.2, once: true }}
@@ -67,7 +67,7 @@ const About = ({ data }) => {
           {/* Right Column */}
           <div>
             <motion.div
-              variants={moveLeft(2)}
+              variants={moveLeft(0.5)}
               initial="hidden"
               whileInView="show"
               viewport={{ amount: 0.2, once: true }}
@@ -91,7 +91,7 @@ const About = ({ data }) => {
                     <h3 className="text-40 font-light leading-[1] mb-3 text-white">
                       <InsideCounter
                         value={item.number}
-                        delay={i == 2 ? 20 : 2000}
+                        delay={i == 2 ? 20 : 800}
                         nozero={true}
                       />
                       {getSuffix(item.number)}

@@ -45,7 +45,7 @@ odd:md:border-r-0 odd:2xl:border-r
                                 {" "}
                                 <h3 className="text-19 font-bold max-w-[32ch]">{office.name}</h3>
                             </div>
-                            <p
+                            <div
                                 className={`text-19 font-light  leading-[1.5] md:leading-[1.6] lg:leading-[1.48] text-paragraph ${
                                     office.phone || office.fax ? "mb-4 lg:mb-[45px]" : null
                                 }`}
@@ -53,7 +53,7 @@ odd:md:border-r-0 odd:2xl:border-r
                                 dangerouslySetInnerHTML={{
                                     __html: office.address.replace(/\n/g, "<br />"),
                                 }}
-                            ></p>
+                            ></div>
 
                             {office.phone || office.fax ? (
                                 <div className="bg-f5f5 p-5 2xl:px-7 3xl:px-10 3xl:pt-[34px] 3xl:pb-[36px] md:max-w-[446px]">
@@ -66,7 +66,13 @@ odd:md:border-r-0 odd:2xl:border-r
                                                 <div>
                                                     {office.phone?.split(",").map((phone, i) => (
                                                         <p key={i} className="text-16 3xl:text-19 font-bold leading-[1.53]">
-                                                            {phone.trim()}
+                                                            <a
+                                                                href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+                                                                dir="ltr"
+                                                                className="hover:text-secondary transition-colors duration-300"
+                                                            >
+                                                                {phone.trim()}
+                                                            </a>
                                                         </p>
                                                     ))}
                                                 </div>
@@ -78,7 +84,14 @@ odd:md:border-r-0 odd:2xl:border-r
                                                     {isArabic ? "فاكس" : "Fax"}
                                                 </p>
                                                 <p className=" text-16 3xl:text-19 font-bold leading-[1.31] ">
-                                                    {office.fax}
+                                                    {/* tel: rather than fax: — browsers and phones don't handle the fax: scheme */}
+                                                    <a
+                                                        href={`tel:${office.fax.replace(/[^\d+]/g, "")}`}
+                                                        dir="ltr"
+                                                        className="hover:text-secondary transition-colors duration-300"
+                                                    >
+                                                        {office.fax}
+                                                    </a>
                                                 </p>
                                             </div>
                                         ) : null}

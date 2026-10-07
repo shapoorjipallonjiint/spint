@@ -13,6 +13,7 @@ import H2Title from "../../../common/H2Title";
 import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useContainerInset } from "@/hooks/useContainerInset";
 
 const EmployeeInvolvementSlider = ({ data }) => {
 
@@ -25,6 +26,12 @@ const EmployeeInvolvementSlider = ({ data }) => {
     const targetRef = useRef(null);
     const [imageSwiper, setImageSwiper] = useState(null);
     const [contentSwiper, setContentSwiper] = useState(null);
+    const sliderContainerRef = useRef(null);
+    // both true when every slide fits in view (Swiper locks), so the arrows have nothing to do
+    const [navState, setNavState] = useState({ isBeginning: true, isEnd: true });
+    const updateNavState = (swiper) => setNavState({ isBeginning: swiper.isBeginning, isEnd: swiper.isEnd });
+    // container margin + padding: width of the mask that hides slides in the start-side margin
+    const containerInset = useContainerInset(sliderContainerRef);
 
     useEffect(() => {
         const containerEl = containerRef.current;
@@ -70,7 +77,8 @@ const EmployeeInvolvementSlider = ({ data }) => {
                                     >
                                         <button
                                             onClick={() => imageSwiper?.slidePrev()}
-                                            className={`group ${isArabic ? "hover:translate-x-1 rotate-180" : "hover:-translate-x-1"} transition-all duration-300  cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px]  rounded-full border border-black/20 flex items-center justify-center`}
+                                            disabled={navState.isBeginning}
+                                            className={`group ${isArabic ? "rotate-180" : ""} ${navState.isBeginning ? "opacity-30 cursor-not-allowed" : `cursor-pointer ${isArabic ? "hover:translate-x-1" : "hover:-translate-x-1"}`} transition-all duration-300 w-10 h-10 xl:w-[50px] xl:h-[50px]  rounded-full border border-black/20 flex items-center justify-center`}
                                             aria-label="Previous slide"
                                         >
                                             <Image
@@ -83,7 +91,8 @@ const EmployeeInvolvementSlider = ({ data }) => {
                                         </button>
                                         <button
                                             onClick={() => imageSwiper?.slideNext()}
-                                            className={`group ${isArabic ? "hover:-translate-x-1 -rotate-180" : "hover:translate-x-1"} transition-all duration-300 cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 flex items-center justify-center`}
+                                            disabled={navState.isEnd}
+                                            className={`group ${isArabic ? "-rotate-180" : ""} ${navState.isEnd ? "opacity-30 cursor-not-allowed" : `cursor-pointer ${isArabic ? "hover:-translate-x-1" : "hover:translate-x-1"}`} transition-all duration-300 w-10 h-10 xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 flex items-center justify-center`}
                                             aria-label="Next slide"
                                         >
                                             <Image
@@ -100,7 +109,16 @@ const EmployeeInvolvementSlider = ({ data }) => {
                 </div>
                 {/* Swiper */}
                 <div className={`flex flex-col md:flex-row gap-3  ${isArabic ? "md:ps-0" : "md:pe-0"}`}>
-                    <div className="container">
+                    <div className="container relative" ref={sliderContainerRef}>
+                        {/* slides overflow on both sides; this covers the start-side margin (up to the container's content edge) */}
+                        <div
+                            aria-hidden="true"
+                            className={`absolute top-0 bottom-0 z-10 bg-f5f5 pointer-events-none ${
+                                isArabic ? "left-[calc(100%-15px)]" : "right-[calc(100%-15px)]"
+                            }`}
+                            style={{ width: isArabic ? containerInset.right : containerInset.left }}
+                        />
+
                         <Swiper
                             ref={swiperRef}
                             modules={[EffectFade, Autoplay, Navigation,Controller]}
@@ -108,6 +126,7 @@ const EmployeeInvolvementSlider = ({ data }) => {
                             slidesPerView={1}
                             // loop={true}
                             loopedSlides={6}
+                            grabCursor={true}
                             centeredSlides={false}
                             // navigation={{
                             //     prevEl: ".custom-prev",
@@ -115,10 +134,16 @@ const EmployeeInvolvementSlider = ({ data }) => {
                             // }}
                              onSlideChange={(swiper) => {
                                     setCurrentSlide(swiper.realIndex);
+                                    updateNavState(swiper);
                                 }}
+                            onResize={updateNavState}
+                            onBreakpoint={updateNavState}
 
                                 controller={{ control: contentSwiper }}
-                            onSwiper={setImageSwiper}
+                            onSwiper={(swiper) => {
+                                setImageSwiper(swiper);
+                                updateNavState(swiper);
+                            }}
                             speed={800}
                             autoplay={{
                                 delay: 4000,
@@ -136,7 +161,7 @@ const EmployeeInvolvementSlider = ({ data }) => {
                             }}
                             className="!overflow-visible"
                         >
-                            {[...t.items, ...t.items, ...t.items].map((item, i) => (
+                            {t.items.map((item, i) => (
                                 <SwiperSlide key={i}>
                                     <div className="overflow-hidden ">
                                         <div className="after:h-full after:w-full  after:bg-[linear-gradient(180deg,rgba(0,0,0,0)_42.43%,rgba(0,0,0,0.75)_91.64%)] after:absolute after:top-0 after:left-0 after:right-0 after:bottom-0">

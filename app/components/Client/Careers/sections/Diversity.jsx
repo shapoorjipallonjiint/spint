@@ -108,7 +108,8 @@ const DiversitySection = ({ data }) => {
   slidesPerView={"auto"}
   spaceBetween={24}
   loop
-  allowTouchMove={false}
+  grabCursor
+  // draggable; autoplay picks the marquee back up after a drag (disableOnInteraction: false)
   autoplay={{
     delay: 0,
     disableOnInteraction: false,

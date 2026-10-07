@@ -216,6 +216,8 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
 
   const activeIndex = sections.findIndex((s) => s.id === activeSection);
   const [menuOpen, setMenuOpen] = useState(false);
+  // side header turns white while either the menu or the search panel is open
+  const panelOpen = menuOpen || searchActive;
 
   // SP International, services, sectors and map slides use a blue-tinted header panel
   const isTintedHeader = ["section3", "section4", "section5", "section6"].includes(activeSection);
@@ -425,7 +427,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
               ref={headerRef}
               className={`${isArabic ? "mr-0" : "ml-0"}  w-[125px] 3xl:w-[133px] h-full relative
       transition-all duration-300
-      ${menuOpen ? "bg-white" : "bg-transparent"}
+      ${panelOpen ? "bg-white" : "bg-transparent"}
   `}
             >
               <div className="bg-transparent  w-full absolute z-[-2] bxone"></div>
@@ -442,39 +444,30 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                   className="flex justify-center items-center"
                   onClick={() => handleScroll("section1")}
                 >
-                  {!menuOpen ? (
-                    // both logos stacked and cross-faded; .logsc sits on the wrapper because the intro gsap
-                    // animation sets inline opacity on it, which would override the fade on the images
-                    <div className="logsc relative w-[90px] h-[51px]">
-                      <Image
-                        className={`absolute inset-0 m-auto transition-opacity duration-700 ease-in-out ${
-                          isTintedHeader ? "opacity-0" : "opacity-100"
-                        }`}
-                        src="/assets/logos/home-header-logo.svg"
-                        alt="Logo"
-                        width={90}
-                        height={50}
-                      />
-                      <Image
-                        className={`absolute inset-0 m-auto transition-opacity duration-700 ease-in-out ${
-                          isTintedHeader ? "opacity-100" : "opacity-0"
-                        }`}
-                        src="/assets/images/sp-logo.png"
-                        alt=""
-                        aria-hidden="true"
-                        width={90}
-                        height={51}
-                      />
-                    </div>
-                  ) : (
+                  {/* both logos stacked and cross-faded; .logsc sits on the wrapper because the intro gsap
+                      animation sets inline opacity on it, which would override the fade on the images.
+                      The colour logo shows on blue-tinted slides and on the white header (menu / search open). */}
+                  <div className="logsc relative w-[90px] h-[51px]">
                     <Image
-                      className="logsc"
-                      src="/assets/images/main-logo.png"
+                      className={`absolute inset-0 m-auto transition-opacity duration-700 ease-in-out ${
+                        isTintedHeader || panelOpen ? "opacity-0" : "opacity-100"
+                      }`}
+                      src="/assets/logos/home-header-logo.svg"
                       alt="Logo"
                       width={90}
-                      height={55}
+                      height={50}
                     />
-                  )}
+                    <Image
+                      className={`absolute inset-0 m-auto transition-opacity duration-700 ease-in-out ${
+                        isTintedHeader || panelOpen ? "opacity-100" : "opacity-0"
+                      }`}
+                      src="/assets/images/sp-logo.png"
+                      alt=""
+                      aria-hidden="true"
+                      width={90}
+                      height={51}
+                    />
+                  </div>
                 </div>
                 <div className="flex justify-center items-center">
                   {/* <img
@@ -508,7 +501,11 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
 
                   <button
                     onClick={() => {
-                      setSearchActive(false);
+                      // while search is open this button shows the X, so it closes search instead of opening the menu
+                      if (searchActive) {
+                        setSearchActive(false);
+                        return;
+                      }
                       setMenuOpen((prev) => !prev);
                     }}
                     className={` ${isArabic ? "-scale-x-100" : ""} relative w-[31px] h-[24px] flex items-center justify-center cursor-pointer 2xl:pt-[70px]`}
@@ -520,7 +517,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                       viewBox="0 0 31 24"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      className={`menu-icon ${menuOpen ? "open" : ""} ${isTintedHeader ? "tinted" : ""} logsc-btn`}
+                      className={`menu-icon ${panelOpen ? "open" : ""} ${isTintedHeader ? "tinted" : ""} logsc-btn`}
                     >
                       <line
                         x1="0"
@@ -548,7 +545,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                 </div>
                 <div
                   className={`flex flex-col gap-3 justify-center items-center border-t ${
-                    menuOpen ? "border-[#626262]" : "border-white/25"
+                    panelOpen ? "border-[#626262]" : "border-white/25"
                   } cursor-pointer scrlldwn`}
                   // onClick={() => handleScroll(nextSection.id)}
                   onClick={() => {
@@ -568,7 +565,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.35 }}
                       className={`${
-                        menuOpen ? "text-[#626262]" : isTintedHeader ? "text-black" : "text-white"
+                        panelOpen ? "text-[#626262]" : isTintedHeader ? "text-black" : "text-white"
                       } transition-colors duration-700 ease-in-out font-[300] text-[13px] leading-[25px] pt-3 uppercase`}
                     >
                       {activeSection === "section7"
@@ -584,7 +581,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                   {/* <img src="/assets/images/round-arrow-down-menu.svg" alt="Arrow" width={87} height={87} /> */}
                   <div
                     className={`flex items-center relative group ${
-                      menuOpen ? "border rounded-full border-[#626262]" : ""
+                      panelOpen ? "border rounded-full border-[#626262]" : ""
                     }`}
                   >
                     <Image
@@ -593,7 +590,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                       width={87}
                       height={87}
                       className={`transition-opacity duration-700 ease-in-out ${isArabic ? "-scale-x-100" : ""} ${
-                        isTintedHeader && !menuOpen ? "opacity-0" : "opacity-100"
+                        isTintedHeader && !panelOpen ? "opacity-0" : "opacity-100"
                       }`}
                     />
                     {/* primary-stroke copy of the animated circle, faded in on blue-tinted slides */}
@@ -604,7 +601,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
                       width={87}
                       height={87}
                       className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isArabic ? "-scale-x-100" : ""} ${
-                        isTintedHeader && !menuOpen ? "opacity-100" : "opacity-0"
+                        isTintedHeader && !panelOpen ? "opacity-100" : "opacity-0"
                       }`}
                     />
                     <Image

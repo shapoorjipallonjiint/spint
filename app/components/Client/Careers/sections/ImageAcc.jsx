@@ -5,6 +5,7 @@ import { useScroll, useTransform } from "framer-motion";
 import AccordionCareer from "../../../common/AccordionCareer";
 import H2Title from "../../../common/H2Title";
 import Image from "next/image";
+import WipeSlideshow from "../../../common/WipeSlideshow";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 
@@ -22,7 +23,9 @@ const ImageAcc = ({ data }) => {
 
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
 
-    const activeItem = t?.items?.[openIndex];
+    // image follows the open item; when every item is collapsed it keeps the last one instead of going blank
+    const [imageIndex, setImageIndex] = useState(1);
+    if (openIndex !== null && openIndex !== imageIndex) setImageIndex(openIndex);
 
     return (
         <section className="section-spacing relative overflow-hidden" ref={sectionRef}>
@@ -34,12 +37,20 @@ const ImageAcc = ({ data }) => {
 
                     <div className="grid lg:grid-cols-[600px_1fr] 2xl:grid-cols-[700px_auto] 3xl:grid-cols-[916px_auto] gap-8 2xl:gap-18 3xl:gap-[107px] items-center">
                         {/* LEFT IMAGE – CHANGES WITH ACCORDION */}
-                        <Image
-                            width={1200}
-                            height={621}
-                            src={activeItem?.image}
-                            alt={activeItem?.imageAlt || ""}
-                            className="sm:h-[300px] max-h-[621px] lg:h-auto w-full object-cover"
+                        {/* same clip-path wipe as the other image switchers (TabStyle1, Legacy) */}
+                        <WipeSlideshow
+                            items={t?.items || []}
+                            index={imageIndex}
+                            isArabic={isArabic}
+                            renderSlide={(item, i, isLayer) => (
+                                <Image
+                                    width={1200}
+                                    height={621}
+                                    src={item?.image}
+                                    alt={item?.imageAlt || ""}
+                                    className={isLayer ? "w-full h-full object-cover" : "sm:h-[300px] max-h-[621px] lg:h-auto w-full object-cover"}
+                                />
+                            )}
                         />
 
                         <div className="border-t border-cmnbdr">
