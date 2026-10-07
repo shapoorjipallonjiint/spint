@@ -217,107 +217,6 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
                         <div className={` ${showFilters ? "block" : "hidden"} lg:block mt-4 lg:mt-0`}>
                             <div className="flex flex-col md:flex-row gap-5 md:items-center md:justify-between 2xl:justify-start md:gap-10 lg:gap-12 2xl:gap-[100px] 3xl:gap-[174px]">
                                 <div className="flex flex-col md:flex-row md:flex-wrap gap-4 md:gap-x-8 md:gap-y-3 lg:gap-x-10 2xl:gap-x-[60px] 3xl:gap-x-[90px] w-full md:w-auto">
-                                    {/* Sector */}
-                                    <div className="w-full md:w-fit relative">
-                                        <Listbox value={selectedSector} onChange={handleSectorChange} by="slug">
-                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
-                                                <span className="whitespace-nowrap text-paragraph text-16 font-semibold uppercase">
-                                                    {selectedSector.slug ? optionLabel(selectedSector) : isArabic ? UI_LABELS.SECTOR.ar : UI_LABELS.SECTOR.en}
-                                                </span>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="14"
-                                                    height="7"
-                                                    viewBox="0 0 16 9"
-                                                    fill="none"
-                                                    className="w-[16px] h-[10px]"
-                                                >
-                                                    <path
-                                                        d="M15 1L7.9992 8L1 1.00159"
-                                                        stroke="#464646"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    />
-                                                </svg>
-                                            </Listbox.Button>
-                                            <Listbox.Options
-                                                as={motion.div}
-                                                initial="hidden"
-                                                animate="show"
-                                                variants={dropdownListVariants}
-                                                onWheel={(e) => {
-                                                    e.stopPropagation();
-                                                    e.preventDefault();
-                                                }}
-                                                onTouchMove={(e) => {
-                                                    e.stopPropagation();
-                                                    e.preventDefault();
-                                                }}
-                                                className=" absolute w-full md:w-[290px] h-[290px] overflow-y-auto overscroll-contain  bg-white rounded-sm shadow-sm z-[50]" >
-                                                {sectorOptions.map((opt) => (
-                                                    <Listbox.Option
-                                                        key={opt.slug || "all"}
-                                                        value={opt}
-                                                        as={motion.div}
-                                                        variants={dropdownItemVariants}
-                                                        className=" py-1 px-4 cursor-pointer group hover:bg-[#f0f0f0] hover:font-bold transition-colors duration-300 w-full " >
-                                                        <span className=" transition-transform duration-300 group-hover:scale-[1.03] " >
-                                                            {optionLabel(opt)}
-                                                        </span>
-                                                    </Listbox.Option>
-                                                ))}
-                                            </Listbox.Options>
-                                        </Listbox>
-                                    </div>
-
-                                    {/* Status */}
-                                    <div className="w-full md:w-fit relative">
-                                        <Listbox value={selectedStatus} onChange={handleStatusChange} by="slug">
-                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
-                                                <span className="whitespace-nowrap text-paragraph text-16 font-semibold uppercase">
-                                                    {selectedStatus.slug ? optionLabel(selectedStatus) : isArabic ? UI_LABELS.STATUS.ar : UI_LABELS.STATUS.en}
-                                                </span>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="14"
-                                                    height="7"
-                                                    viewBox="0 0 16 9"
-                                                    fill="none"
-                                                    className="w-[16px] h-[10px]"
-                                                >
-                                                    <path
-                                                        d="M15 1L7.9992 8L1 1.00159"
-                                                        stroke="#464646"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    />
-                                                </svg>
-                                            </Listbox.Button>
-                                            <Listbox.Options
-                                                as={motion.div}
-                                                initial="hidden"
-                                                animate="show"
-                                                variants={dropdownListVariants}
-                                                className="border-0 outline-0 absolute w-full md:w-[150px] bg-white rounded-sm shadow-sm z-[1]"
-                                            >
-                                                {statusOptions.map((opt) => (
-                                                    <Listbox.Option
-                                                        key={opt.slug || "all"}
-                                                        value={opt}
-                                                        as={motion.div}
-                                                        variants={dropdownItemVariants}
-                                                        className=" py-1 px-4 cursor-pointer group hover:bg-[#f0f0f0] hover:font-bold w-full transition-colors duration-300 " >
-                                                        <span className="group-hover:scale-[1.03] transition-transform duration-300">
-                                                            {optionLabel(opt)}
-                                                        </span>
-                                                    </Listbox.Option>
-                                                ))}
-                                            </Listbox.Options>
-                                        </Listbox>
-                                    </div>
-
                                     {/* Country */}
                                     <div className="w-full md:w-fit relative">
                                         <Listbox value={selectedCountry} onChange={handleCountryChange} by="slug">
@@ -442,6 +341,107 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
                                                         }}
                                                         className="py-1 px-4 hover:bg-[#f0f0f0] cursor-pointer group hover:font-bold transition-colors duration-300 w-full"
                                                     >
+                                                        <span className="group-hover:scale-[1.03] transition-transform duration-300">
+                                                            {optionLabel(opt)}
+                                                        </span>
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </Listbox>
+                                    </div>
+
+                                    {/* Sector */}
+                                    <div className="w-full md:w-fit relative">
+                                        <Listbox value={selectedSector} onChange={handleSectorChange} by="slug">
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
+                                                <span className="whitespace-nowrap text-paragraph text-16 font-semibold uppercase">
+                                                    {selectedSector.slug ? optionLabel(selectedSector) : isArabic ? UI_LABELS.SECTOR.ar : UI_LABELS.SECTOR.en}
+                                                </span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="14"
+                                                    height="7"
+                                                    viewBox="0 0 16 9"
+                                                    fill="none"
+                                                    className="w-[16px] h-[10px]"
+                                                >
+                                                    <path
+                                                        d="M15 1L7.9992 8L1 1.00159"
+                                                        stroke="#464646"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            </Listbox.Button>
+                                            <Listbox.Options
+                                                as={motion.div}
+                                                initial="hidden"
+                                                animate="show"
+                                                variants={dropdownListVariants}
+                                                onWheel={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                }}
+                                                onTouchMove={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                }}
+                                                className=" absolute w-full md:w-[290px] h-[290px] overflow-y-auto overscroll-contain  bg-white rounded-sm shadow-sm z-[50]" >
+                                                {sectorOptions.map((opt) => (
+                                                    <Listbox.Option
+                                                        key={opt.slug || "all"}
+                                                        value={opt}
+                                                        as={motion.div}
+                                                        variants={dropdownItemVariants}
+                                                        className=" py-1 px-4 cursor-pointer group hover:bg-[#f0f0f0] hover:font-bold transition-colors duration-300 w-full " >
+                                                        <span className=" transition-transform duration-300 group-hover:scale-[1.03] " >
+                                                            {optionLabel(opt)}
+                                                        </span>
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </Listbox>
+                                    </div>
+
+                                    {/* Status */}
+                                    <div className="w-full md:w-fit relative">
+                                        <Listbox value={selectedStatus} onChange={handleStatusChange} by="slug">
+                                            <Listbox.Button className="relative w-full cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between md:justify-start">
+                                                <span className="whitespace-nowrap text-paragraph text-16 font-semibold uppercase">
+                                                    {selectedStatus.slug ? optionLabel(selectedStatus) : isArabic ? UI_LABELS.STATUS.ar : UI_LABELS.STATUS.en}
+                                                </span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="14"
+                                                    height="7"
+                                                    viewBox="0 0 16 9"
+                                                    fill="none"
+                                                    className="w-[16px] h-[10px]"
+                                                >
+                                                    <path
+                                                        d="M15 1L7.9992 8L1 1.00159"
+                                                        stroke="#464646"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            </Listbox.Button>
+                                            <Listbox.Options
+                                                as={motion.div}
+                                                initial="hidden"
+                                                animate="show"
+                                                variants={dropdownListVariants}
+                                                className="border-0 outline-0 absolute w-full md:w-[150px] bg-white rounded-sm shadow-sm z-[1]"
+                                            >
+                                                {statusOptions.map((opt) => (
+                                                    <Listbox.Option
+                                                        key={opt.slug || "all"}
+                                                        value={opt}
+                                                        as={motion.div}
+                                                        variants={dropdownItemVariants}
+                                                        className=" py-1 px-4 cursor-pointer group hover:bg-[#f0f0f0] hover:font-bold w-full transition-colors duration-300 " >
                                                         <span className="group-hover:scale-[1.03] transition-transform duration-300">
                                                             {optionLabel(opt)}
                                                         </span>
