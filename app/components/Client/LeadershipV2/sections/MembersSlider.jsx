@@ -61,7 +61,7 @@ const Promoters = ({ items,title, btmBorder }) => {
             onSlideChange={syncNavState}
             onBreakpoint={syncNavState}
             onResize={syncNavState}
-            className="w-full !overflow-hidden"
+            className="w-full !overflow-hidden cursor-grab active:cursor-grabbing"
             breakpoints={{
               576: {
                 slidesPerView: 2,
