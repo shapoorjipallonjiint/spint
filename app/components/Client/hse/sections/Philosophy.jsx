@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { moveUp } from "@/app/components/motionVarients";
 import H2Title from "@/app/components/common/H2Title";
+import WipeSlideshow from "@/app/components/common/WipeSlideshow";
 import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
@@ -39,7 +40,8 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoverIndex, setHoverIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeImage, setActiveImage] = useState(null);
+  // index of the item whose image is showing on desktop (stays on the last hovered item)
+  const [imageIndex, setImageIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
 
@@ -59,13 +61,6 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // /* ================= INITIAL IMAGE ================= */
-  useEffect(() => {
-    if (!activeImage && points.length) {
-      setActiveImage(points[0].image ?? FALLBACK_IMAGE);
-    }
-  }, [points, activeImage]);
-
   /* ================= SCROLL PARALLAX ================= */
   const imageOffset = isMob ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
 
@@ -78,7 +73,7 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
   /* ================= IMAGE UPDATE ================= */
   const updateImage = (index) => {
     if (points[index]?.image) {
-      setActiveImage(points[index].image);
+      setImageIndex(index);
     }
   };
 
@@ -224,17 +219,23 @@ const Philosophy = ({ data, bgColor = "", sectionSpacing = "" }) => {
             ref={imageRef}
             className="hidden md:block  relative 3xl:h-[700px] overflow-hidden"
           >
-            <MotionImage
-              src={activeImage ?? points[0]?.image ?? FALLBACK_IMAGE}
-              alt=""
-              width={1920}
-              height={1000}
-              style={{ y: imageY }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="w-full h-full object-cover"
-            />
+            {/* same clip-path wipe as the other image switchers (TabStyle1, Legacy, Careers) */}
+            <motion.div style={{ y: imageY }} className="w-full h-full">
+              <WipeSlideshow
+                items={points}
+                index={imageIndex}
+                isArabic={isArabic}
+                renderSlide={(item, i, isLayer) => (
+                  <Image
+                    src={item.image ?? FALLBACK_IMAGE}
+                    alt={item.imageAlt}
+                    width={1920}
+                    height={1000}
+                    className={isLayer ? "w-full h-full object-cover" : "w-full h-auto 3xl:h-[700px] object-cover"}
+                  />
+                )}
+              />
+            </motion.div>
           </div>
         </div>
       </div>

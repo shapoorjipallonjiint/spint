@@ -146,6 +146,7 @@ const SaftySlider = ({ data }) => {
                         modules={[Autoplay]}
                         centeredSlides
                         loop
+                        grabCursor
                         spaceBetween={15}
                         autoplay={{
                             delay: 2000,

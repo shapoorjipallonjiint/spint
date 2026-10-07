@@ -97,7 +97,7 @@ const ValuesSection = ({ data }) => {
               {title}
             </motion.h2> */}
                         <H2Title titleText={title} marginClass={"mb-[24px] md:mb-[30px] max-w-[10ch]"} />
-<motion.p
+<motion.div
   variants={moveUp(0.2)}
   initial="hidden"
   whileInView="show"
@@ -115,7 +115,7 @@ const ValuesSection = ({ data }) => {
                     variants={moveLeft(0.6)}
                     initial="hidden"
                     whileInView="show"
-                    viewport={{ amount: 0.2, once: true }}
+                    viewport={{ amount: 0.1, once: true }}
                     className="w-full md:w-1/2 h-[260px] sm:h-[340px] md:h-full px-[15px] md:px-0 relative overflow-hidden"
                     ref={imageContainerRefTwo}
                 >

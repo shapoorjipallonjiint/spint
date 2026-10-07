@@ -3,6 +3,7 @@
 import { Listbox } from "@headlessui/react";
 import { pressReleases } from "./data";
 import { useState, useMemo, useRef } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { moveLeft, moveRight, moveUp } from "../../motionVarients";
 import SplitTextAnimation from "../../../components/common/SplitTextAnimation";
@@ -12,6 +13,10 @@ import { useApplyLang } from "@/lib/applyLang";
 import LangLink from "@/lib/LangLink";
 
 const ITEMS_PER_PAGE = 12;
+
+// URL value for a topic: built from the English name so the same link works on /ar too
+const slugify = (str = "") =>
+  str.toString().trim().toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
 const Index = ({ newsData, topicData }) => {
   const isArabic = useIsPreferredLanguageArabic();
@@ -29,12 +34,32 @@ const Index = ({ newsData, topicData }) => {
 
   const topics = [
     { id: 1, name: isArabic ? "Topic ar" : "Topic" }, // default (no filter)
-    ...tTopicData
+    ...tTopicData.map((topic, i) => ({ ...topic, id: topic._id ?? topic.id, slug: slugify(topicData[i]?.name) })),
   ];
 
-  const [currentPage, setCurrentPage] = useState(1);
+  // ---------- URL state: ?topic=<slug>&year=<yyyy>&page=<n> ----------
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const selectedTopic = topics.find((topic) => topic.slug && topic.slug === searchParams.get("topic")) || topics[0];
+  const selectedYear = years.find((year) => year.id !== 1 && year.title === searchParams.get("year")) || years[0];
+  const requestedPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+
+  // replace: filters (no history entry per click). push: page changes (Back goes to the previous page).
+  const updateUrl = (changes, { push = false } = {}) => {
+    const params = new URLSearchParams(searchParams.toString());
+    Object.entries(changes).forEach(([key, value]) => {
+      if (value === null || value === undefined || value === "") params.delete(key);
+      else params.set(key, String(value));
+    });
+    const query = params.toString();
+    const url = query ? `${pathname}?${query}` : pathname;
+    if (push) router.push(url, { scroll: false });
+    else router.replace(url, { scroll: false });
+  };
+
   const [isAnimating, setIsAnimating] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState(topics[0]);
 
   const MotionImage = motion.create(Image)
 
@@ -42,7 +67,6 @@ const Index = ({ newsData, topicData }) => {
 
 
 
-  const [selectedYear, setSelectedYear] = useState(years[0]);
   const sectionRef = useRef(null)
   const { scrollYProgress: shapeProgress } = useScroll({
     target: sectionRef,
@@ -62,19 +86,21 @@ const Index = ({ newsData, topicData }) => {
     if (selectedYear.id !== 1) {
       items = items.filter((item) => {
         const year = new Date(item.date).getUTCFullYear();
-        console.log(year)
         return year === Number(selectedYear.title);
       });
     }
 
 
     return items;
-  }, [selectedTopic, selectedYear]);
+  }, [tNewsData.news, selectedTopic.id, selectedTopic.name, selectedYear.id, selectedYear.title]);
 
   // 🔹 Total pages based on filtered data
   const totalPages = useMemo(() => {
     return Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE));
   }, [filteredItems.length]);
+
+  // a page number past the end (e.g. an old link) shows the last page
+  const currentPage = Math.min(requestedPage, totalPages);
 
   // 🔹 Current page items from filtered list
   const currentItems = useMemo(() => {
@@ -87,7 +113,7 @@ const Index = ({ newsData, topicData }) => {
     if (newPage < 1 || newPage > totalPages || isAnimating) return;
 
     setIsAnimating(true);
-    setCurrentPage(newPage);
+    updateUrl({ page: newPage === 1 ? null : newPage }, { push: true });
 
     const section = document.querySelector("section");
     if (section) {
@@ -108,23 +134,16 @@ const Index = ({ newsData, topicData }) => {
   };
 
   // 🔹 When topic changes → reset to page 1
-  const handleTopicChange = (topic) => {
-    setSelectedTopic(topic);
-    setCurrentPage(1);
-  };
+  const handleTopicChange = (topic) => updateUrl({ topic: topic.slug || null, page: null });
 
   // 🔹 When year changes → reset to page 1
-  const handleYearChange = (year) => {
-    setSelectedYear(year);
-    setCurrentPage(1);
-  };
+  const handleYearChange = (year) => updateUrl({ year: year.id === 1 ? null : year.title, page: null });
+
+  // id 1 is the "Topic" / "Year" placeholder, i.e. no filter
+  const hasActiveFilters = selectedTopic.id !== 1 || selectedYear.id !== 1;
 
   // 🔹 Clear all filters
-  const handleClearFilters = () => {
-    setSelectedTopic(topics[0]);
-    setSelectedYear(years[0]);
-    setCurrentPage(1);
-  };
+  const handleClearFilters = () => updateUrl({ topic: null, year: null, page: null });
 
   return (
     <>
@@ -175,7 +194,7 @@ const Index = ({ newsData, topicData }) => {
               <div className="flex flex-row gap-5 md:gap-x-8 lg:gap-x-10 2xl:gap-x-[60px] 3xl:gap-x-[90px]">
                 {/* Topic filter */}
                 <div className="   md:min-w-[77px] relative">
-                  <Listbox value={selectedTopic} onChange={handleTopicChange}>
+                  <Listbox value={selectedTopic} onChange={handleTopicChange} by="id">
                     <Listbox.Button className="relative w-fit cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between">
                       <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase whitespace-nowrap">
                         {selectedTopic.name}
@@ -218,7 +237,7 @@ const Index = ({ newsData, topicData }) => {
 
                 {/* Year filter */}
                 <div className=" md:min-w-[77px] relative">
-                  <Listbox value={selectedYear} onChange={handleYearChange}>
+                  <Listbox value={selectedYear} onChange={handleYearChange} by="id">
                     <Listbox.Button className="relative w-fit cursor-pointer text-left flex items-center gap-[14px] outline-0 border-0 justify-between">
                       <span className="text-paragraph text-16 font-semibold leading-[1.75] uppercase">
                         {selectedYear.title}
@@ -257,13 +276,15 @@ const Index = ({ newsData, topicData }) => {
                 </div>
               </div>
 
-              {/* Clear Filter */}
+              {/* Clear Filter: only when a topic or year is selected */}
+              {hasActiveFilters && (
               <button type="button" onClick={handleClearFilters} className="flex items-center gap-[8px] lg:gap-[10px] group cursor-pointer justify-end" >
                 <Image width={150} height={150} src="/assets/images/icons/arrow-tail-left.svg" alt="" className={`w-[20px] h-[14px] lg:w-[27px] lg:h-[17px] ${isArabic ? "rotate-180 group-hover:translate-x-[3px]" : "group-hover:translate-x-[-3px]"} transition-all duration-300`} />
                 <p className="text-paragraph text-16 font-light leading-[1.75] uppercase transition-all duration-300 group-hover:font-semibold">
                   {isArabic ? "مسح الفلاتر" : "Clear Filter"}
                 </p>
               </button>
+              )}
             </motion.div>
 
             {/* Grid */}

@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { moveUp } from "@/app/components/motionVarients";
 import H2Title from "@/app/components/common/H2Title";
+import WipeSlideshow from "@/app/components/common/WipeSlideshow";
 import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
@@ -14,6 +15,9 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 gsap.registerPlugin(ScrollTrigger);
 
 const FALLBACK_IMAGE = "/assets/images/placeholder.jpg";
+
+// module level so the slideshow images aren't remounted on every render
+const SlideImage = motion.create(Image);
 
 const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
     const t = useApplyLang(data);
@@ -37,7 +41,8 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [hoverIndex, setHoverIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
-    const [activeImage, setActiveImage] = useState(FALLBACK_IMAGE);
+    // index of the item whose image is showing on desktop (stays on the last hovered item)
+    const [imageIndex, setImageIndex] = useState(0);
     const [mounted, setMounted] = useState(false);
 
     const imageRef = useRef(null);
@@ -55,13 +60,6 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
         return () => window.removeEventListener("resize", check);
     }, []);
 
-    /* ================= INITIAL IMAGE ================= */
-    useEffect(() => {
-        if (t.items.length) {
-            setActiveImage(t.items[0].image ?? FALLBACK_IMAGE);
-        }
-    }, []);
-
     /* ================= SCROLL PARALLAX ================= */
     const imageOffset = isMob ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
 
@@ -72,8 +70,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
     /* ================= IMAGE UPDATE ================= */
     const updateImage = (index) => {
         if (t.items[index]?.image) {
-            setActiveImage(t.items[index].image); 
-             
+            setImageIndex(index);
         }
     };
 
@@ -112,17 +109,21 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                 <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px] items-center">
                     {/* ================= IMAGE (DESKTOP ONLY) ================= */}
                     <div ref={imageRef} className="hidden md:block relative h-[250px] md:h-full overflow-hidden">
-                        <MotionImage
-                            key={activeImage}
-                            src={activeImage}
-                            alt=""
-                            width={1920}
-                            height={1000}
-                            style={{ y: imageY }}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.4 }}
-                            className="w-full h-full object-cover scale-110 md:scale-150 lg:scale-110"
+                        {/* same clip-path wipe as the other image switchers (TabStyle1, Legacy, Careers, HSE) */}
+                        <WipeSlideshow
+                            items={t.items}
+                            index={imageIndex}
+                            isArabic={isArabic}
+                            renderSlide={(item, i, isLayer) => (
+                                <SlideImage
+                                    src={item.image ?? FALLBACK_IMAGE}
+                                    alt={item.imageAlt || ""}
+                                    width={1920}
+                                    height={1000}
+                                    style={isLayer ? { y: imageY } : undefined}
+                                    className={`w-full h-full object-cover ${isLayer ? "scale-110 md:scale-150 lg:scale-110" : ""}`}
+                                />
+                            )}
                         />
                     </div>
 

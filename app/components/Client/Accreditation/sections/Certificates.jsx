@@ -5,6 +5,7 @@ import Image from "next/image";
 import { moveUp } from "../../../motionVarients";
 import { useApplyLang } from "@/lib/applyLang";
 import { useState, useEffect } from "react";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 // Created once at module level; creating it inside the component remounts the images on every render
@@ -45,6 +46,9 @@ const Certificates = ({ data }) => {
     useEffect(() => {
         if (itemIndex !== null) setIsPdfLoading(true);
     }, [itemIndex, pdfIndex]);
+
+    // Keep the page behind the popup from scrolling
+    useLockBodyScroll(itemIndex !== null);
 
     useEffect(() => {
         const handleKeyDown = (e) => {

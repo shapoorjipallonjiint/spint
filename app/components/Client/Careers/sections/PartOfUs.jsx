@@ -108,6 +108,22 @@ const CultureSection = ({ data }) => {
     }, [isArabic]);
 
 
+    const hasButtonLink = !!button?.btnLink && button.btnLink.trim() !== "#";
+    const buttonContent = (
+        <button className="relative inline-flex items-center justify-center">
+            <Image
+                width={240}
+                height={600}
+                src="/assets/images/careers/partofus/btn-svg.svg"
+                alt="button"
+                className="w-[180px] sm:w-[200px] md:w-[220px] lg:w-[240px] h-full"
+            />
+            <span className="absolute text-white font-light uppercase text-12 md:text-14 lg:text-16 leading-[1.75]">
+                {button.text}
+            </span>
+        </button>
+    );
+
     return (
         <section id="careers-stop-section" ref={sectionRef} className="section-spacing overflow-hidden">
             <div
@@ -152,20 +168,14 @@ const CultureSection = ({ data }) => {
                         {description}
                     </p>
                     {/* Button with centered text over SVG */}
-                    <LangLink href={button.btnLink} target="blank">
-                        <button className="relative inline-flex items-center justify-center">
-                            <Image
-                                width={240}
-                                height={600}
-                                src="/assets/images/careers/partofus/btn-svg.svg"
-                                alt="button"
-                                className="w-[180px] sm:w-[200px] md:w-[220px] lg:w-[240px] h-full"
-                            />
-                            <span className="absolute text-white font-light uppercase text-12 md:text-14 lg:text-16 leading-[1.75]">
-                                {button.text}
-                            </span>
-                        </button>
-                    </LangLink>
+                    {/* a "#" / empty link is a placeholder: rendered without a link, otherwise it jumps to the top of the page */}
+                    {hasButtonLink ? (
+                        <LangLink href={button.btnLink} target="_blank">
+                            {buttonContent}
+                        </LangLink>
+                    ) : (
+                        buttonContent
+                    )}
                 </div>
             </div>
         </section>

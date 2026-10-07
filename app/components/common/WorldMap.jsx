@@ -3,7 +3,8 @@
 // SP Group / SP International dots, city pill, "Projects" bubble with count-up + pulse ring (desktop),
 // bubble row under the map (mobile), click a clickable city -> /projects filtered to that country, click outside -> close.
 // Cities come from the home page CMS (sixthSection.cities); projects decide which cities are clickable.
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import gsap from "gsap";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useInView } from "framer-motion";
@@ -43,6 +44,23 @@ const WorldMap = ({ cities = [], projectsData }) => {
     }, [tProjectsData]);
 
     const mapCities = useMemo(() => mapBackendCitiesToMapCities(tCities || [], projectCities), [tCities, projectCities]);
+
+    // dots reveal like the homepage map slide (SlideScrollThree, case 5): hidden until the map is on screen,
+    // then each one fades in from a smaller scale, staggered. Layout effect so they never flash before hiding.
+    useLayoutEffect(() => {
+        const dots = containersRef.current?.querySelectorAll("div.itmbsx");
+        if (!dots?.length) return;
+        if (!inView) {
+            gsap.set(dots, { opacity: 0, scale: 0.6 });
+            return;
+        }
+        const tween = gsap.fromTo(
+            dots,
+            { opacity: 0, scale: 0.6 },
+            { opacity: 1, scale: 1, duration: 0.6, stagger: 0.04, ease: "power3.out", delay: 0.2 },
+        );
+        return () => tween.kill();
+    }, [inView, mapCities.length]);
 
     // keep the desktop bubble inside the map area
     useEffect(() => {

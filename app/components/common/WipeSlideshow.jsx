@@ -68,7 +68,7 @@ const WipeSlideshow = ({ items, renderSlide, delay = 3000, isArabic = false, ind
                         style={{ zIndex: isOutgoing ? 2 : isCurrent ? 1 : 0, opacity: isCurrent || isOutgoing ? 1 : 0 }}
                         initial={false}
                         animate={{ clipPath: isOutgoing ? (isArabic ? "inset(0% 0% 0% 100%)" : "inset(0% 100% 0% 0%)") : FULL }}
-                        transition={isOutgoing ? { duration: 1.3, ease: WIPE_EASE } : { duration: 0 }}
+                        transition={isOutgoing ? { duration: 0.9, ease: WIPE_EASE } : { duration: 0 }}
                         onAnimationComplete={() => {
                             if (isOutgoing) setOutgoing((o) => (o === i ? null : o));
                         }}
@@ -77,7 +77,7 @@ const WipeSlideshow = ({ items, renderSlide, delay = 3000, isArabic = false, ind
                             className="w-full h-full"
                             initial={false}
                             animate={{ scale: isCurrent || isOutgoing ? 1 : 1.08 }}
-                            transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                         >
                             {renderSlide(item, i, true, isCurrent)}
                         </motion.div>

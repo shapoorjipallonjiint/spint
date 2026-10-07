@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { assets } from "@/app/assets";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 
 type ImageLightboxProps = {
     src: string | null;
@@ -11,7 +12,8 @@ type ImageLightboxProps = {
 };
 
 const ImageLightbox = ({ src, alt = "", onClose }: ImageLightboxProps) => {
-    
+    // Keep the page behind the popup from scrolling
+    useLockBodyScroll(!!src);
 
     return (
         <AnimatePresence mode="wait">
