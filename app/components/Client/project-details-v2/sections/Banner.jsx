@@ -46,6 +46,15 @@ const Banner = ({ firstSection, secondSection }) => {
         ? tSecondSection.sector.map((item) => item?.name).filter(Boolean).join(", ")
         : tSecondSection?.sector?.name;
 
+    // subtitle under the title: the Engineering & Construction service title, else the MEP one, else the CMS subtitle.
+    // Services are matched on the English name (raw data), so it works on the Arabic site too.
+    const serviceTitle = (pattern) => {
+        const index = (secondSection?.service || []).findIndex((s) => pattern.test(s?.serviceName ?? ""));
+        return tSecondSection?.service?.[index]?.firstSection?.title?.trim() || "";
+    };
+    const bannerSubTitle =
+        serviceTitle(/engineering|^\s*e\s*&\s*c\s*$|^\s*enc\s*$/i) || serviceTitle(/^\s*mep\b/i) || tFirstSection.subTitle;
+
     // About the Project grid, in reading order
     const details = [
         { label: "Project", value: tSecondSection?.project ? tSecondSection.project : tFirstSection.title },
@@ -94,7 +103,7 @@ const Banner = ({ firstSection, secondSection }) => {
                         </h1>
                         <div className="text-20 2xl:text-29 font-light text-paragraph leading-[1.33]">
                             <SplitTextAnimation
-                                children={tFirstSection.subTitle}
+                                children={bannerSubTitle}
                                 staggerDelay={0.2}
                                 animationDuration={0.8}
                                 delay={0.6}

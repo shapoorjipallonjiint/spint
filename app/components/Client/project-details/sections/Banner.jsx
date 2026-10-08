@@ -35,6 +35,15 @@ const Banner = ({ firstSection, secondSection }) => {
 
     const itemsWithoutLocation = tSecondSection.items.filter((item) => item.key !== "Location");
 
+    // subtitle under the title: the Engineering & Construction service title, else the MEP one, else the CMS subtitle.
+    // Services are matched on the English name (raw data), so it works on the Arabic site too.
+    const serviceTitle = (pattern) => {
+        const index = (secondSection?.service || []).findIndex((s) => pattern.test(s?.serviceName ?? ""));
+        return tSecondSection?.service?.[index]?.firstSection?.title?.trim() || "";
+    };
+    const bannerSubTitle =
+        serviceTitle(/engineering|^\s*e\s*&\s*c\s*$|^\s*enc\s*$/i) || serviceTitle(/^\s*mep\b/i) || tFirstSection.subTitle;
+
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
             <div className="pt-12 xl:pt-15  3xl:pt-30 pb-26 md:pb-38  lg:pb-[170px] xl:pb-[230px] bg-f5f5 2xl:pb-[232px]  ">
@@ -65,7 +74,7 @@ const Banner = ({ firstSection, secondSection }) => {
                             </h1>
                             <div className="text-20 2xl:text-29 font-light text-paragraph leading-[1.33]">
                                 <SplitTextAnimation
-                                    children={tFirstSection.subTitle}
+                                    children={bannerSubTitle}
                                     staggerDelay={0.2}
                                     animationDuration={0.8}
                                     delay={0.6}
