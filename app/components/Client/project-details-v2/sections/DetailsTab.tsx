@@ -8,6 +8,9 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import H2Title from "../../../common/H2Title";
 import { detailsTabsData } from "../data";
 import { moveUp } from "../../../motionVarients";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
+import "swiper/css";
 
 
 import { withNormalSpaces } from "@/lib/withNormalSpaces";
@@ -144,6 +147,11 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     hoverTimer.current = setTimeout(() => setOpenSection(index), 150);
   };
   useEffect(() => clearHoverTimer, []);
+  // click/Enter toggles a row: opens a closed one, closes the open one (-1 = all closed)
+  const toggleSection = (index: number) => {
+    clearHoverTimer();
+    setOpenSection((current) => (current === index ? -1 : index));
+  };
   const [openSection, setOpenSection] = useState(() => {
     const mepTab = tabs.find((tab) => tab.serviceName === "MEP")
     const defaultIndex = (mepTab?.workSections ?? []).findIndex(
@@ -153,6 +161,39 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     return defaultIndex >= 0 ? defaultIndex : 1;
   });
   const [activeImage, setActiveImage] = useState(0);
+  // true while the desktop tab bar overflows (Swiper unlocked), so the tabs show the grab cursor
+  const [tabsScrollable, setTabsScrollable] = useState(false);
+  const tabsSwiperRef = useRef<SwiperType | null>(null);
+
+  // the active tab is bolder (wider) than the rest, so tab widths change on every switch: re-measure the bar,
+  // then bring the new tab fully into view. Also re-measure once the web font loads (fallback font is wider).
+  useEffect(() => {
+    tabsSwiperRef.current?.update();
+    revealTab(tabs.findIndex((tab) => tab.serviceName === activeTab));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
+  useEffect(() => {
+    document.fonts?.ready.then(() => tabsSwiperRef.current?.update());
+  }, []);
+
+  // slide the tab bar just enough to bring a (partly hidden) tab fully into view
+  const revealTab = (index: number) => {
+    const swiper = tabsSwiperRef.current;
+    if (!swiper || swiper.destroyed || swiper.isLocked || index < 0) return;
+    const { slidesGrid, slidesSizesGrid, snapGrid, width: size } = swiper;
+    const start = slidesGrid[index];
+    const end = start + slidesSizesGrid[index];
+    const current = snapGrid[swiper.snapIndex] ?? 0;
+    const maxSnap = snapGrid[snapGrid.length - 1];
+
+    if (start < current) {
+      swiper.slideTo(index);
+    } else if (end > current + size) {
+      // first position where the tab's end edge is inside the bar (the last one stops at the bar's end)
+      const target = slidesGrid.findIndex((offset) => Math.min(offset, maxSnap) >= end - size - 1);
+      swiper.slideTo(target >= 0 ? target : slidesGrid.length - 1);
+    }
+  };
   const activeTabData =
     tabs.find((tab) => tab.serviceName === activeTab) ?? tabs[0];
   const activeImages = activeTabData?.images ?? [];
@@ -357,13 +398,17 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                 key={section.title}
                 role="button"
                 tabIndex={0}
-                onClick={() => setOpenSection(index)}
+                onClick={(event) => {
+                  // taps inside the open content (e.g. while reading the list) don't close the row
+                  if (isOpen && (event.target as HTMLElement).closest("[data-section-content]")) return;
+                  toggleSection(index);
+                }}
                 onMouseEnter={() => openSectionOnHover(index)}
                 onMouseLeave={clearHoverTimer}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
-                    setOpenSection(index);
+                    toggleSection(index);
                   }
                 }}
                 className={`group grid lg:grid-cols-[1.2fr_2.4fr_auto] gap-x-8 xl:gap-x-12 py-4 lg:py-6 xl:py-7 cursor-pointer border-b border-black/20 transition-all duration-300 ${isOpen ? "items-start" : "items-center"
@@ -390,6 +435,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                     {isOpen ? (
                       <motion.div
                         key="content"
+                        data-section-content
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -474,21 +520,31 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
           <div className={`2xl:max-w-[1008px] 3xl:max-w-[1208px] ${isArabic ? "mr-auto" : "ml-auto"}`} >
             <div className="relative z-20">
               <div className="hidden lg:block [&_li]:text-paragraph [&_li]:text-18 [&_li]:opacity-85 [&_li]:mb-4">
-                {/* each tab is as wide as its label (+ padding), at least 242px; the bar fits its tabs and wraps if they don't fit one line */}
-                <div className="flex flex-wrap w-fit max-w-full border border-black/10 mb-2 xl:mb-[27px]">
+                {/* each tab is as wide as its label (+ padding), at least 242px; the bar fits its tabs in one line and
+                    becomes a draggable slider when they don't fit (Swiper locks itself when everything fits) */}
+                <div className="w-fit max-w-full border border-black/10 mb-2 xl:mb-[27px]">
+                  <Swiper
+                    slidesPerView="auto"
+                    grabCursor
+                    dir={isArabic ? "rtl" : "ltr"}
+                    onSwiper={(swiper) => { tabsSwiperRef.current = swiper; }}
+                    onAfterInit={(swiper) => setTabsScrollable(!swiper.isLocked)}
+                    onLock={() => setTabsScrollable(false)}
+                    onUnlock={() => setTabsScrollable(true)}
+                    className="!overflow-hidden"
+                  >
                   {tabs.map((tab) => {
                     const isActive = activeTab === tab.serviceName;
 
                     return (
-                      <button
+                      <SwiperSlide
                         key={tab.serviceName}
+                        className={`!w-auto border-black/10 ${isArabic ? "border-l last:border-l-0" : "border-r last:border-r-0"}`}
+                      >
+                      <button
                         type="button"
                         onClick={() => handleTabChange(tab)}
-                        className={`relative overflow-hidden min-h-[42px] min-w-[242px] px-6 xl:px-10 py-3 xl:py-6 whitespace-nowrap text-19 leading-[1.473684210526316] cursor-pointer border-black/10 transition-colors duration-300 
-                          ${isArabic
-                          ? "border-l last:border-l-0"
-                          : "border-r last:border-r-0"
-                          }`}
+                        className={`relative overflow-hidden min-h-[42px] min-w-[242px] px-6 xl:px-10 py-3 xl:py-6 whitespace-nowrap text-19 leading-[1.473684210526316] transition-colors duration-300 ${tabsScrollable ? "cursor-[inherit]" : "cursor-pointer"}`}
                       >
                         {/* 👉 Base background (for hover) */}
                         <span className={`absolute inset-0 transition-colors duration-300 ${!isActive ? "bg-transparent hover:bg-white" : "" }`} />
@@ -506,8 +562,10 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                           {tab.serviceName}
                         </span>
                       </button>
+                      </SwiperSlide>
                     );
                   })}
+                  </Swiper>
                 </div>
                 {renderTabContent(activeTabData)}
                 {renderTabImage(activeTabData)}
