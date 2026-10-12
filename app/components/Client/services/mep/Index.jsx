@@ -22,7 +22,7 @@ const MEP = ({ data, projectData }) => {
         image={data.banner}
         imageAlt={data.bannerAlt}
       />
-      <VideoSection data={data.firstSection} maxW="max-w-[18ch]" />
+      <VideoSection data={data.firstSection} justify maxW="max-w-[18ch]" />
       <ExpertiseSec data={data.secondSection} />
       {/* <WhyChooseSec
         data={data.thirdSection}

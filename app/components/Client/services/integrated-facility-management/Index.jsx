@@ -21,7 +21,7 @@ const IntegratedFacilityManagement = ({ data, projectData }) => {
         image={data.banner}
         imageAlt={data.bannerAlt}
       />
-      <VdoSection data={data.firstSection} />
+      <VdoSection data={data.firstSection} justify />
       <ExpertiseSec data={data.secondSection} />
       <OurApproach data={data.thirdSection} />
       {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}

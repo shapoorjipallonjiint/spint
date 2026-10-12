@@ -35,14 +35,21 @@ const Banner = ({ firstSection, secondSection }) => {
 
     const itemsWithoutLocation = tSecondSection.items.filter((item) => item.key !== "Location");
 
-    // subtitle under the title: the Engineering & Construction service title, else the MEP one, else the CMS subtitle.
+    // subtitle under the title comes from a service's description heading (rules below).
     // Services are matched on the English name (raw data), so it works on the Arabic site too.
     const serviceTitle = (pattern) => {
         const index = (secondSection?.service || []).findIndex((s) => pattern.test(s?.serviceName ?? ""));
         return tSecondSection?.service?.[index]?.firstSection?.title?.trim() || "";
     };
-    const bannerSubTitle =
-        serviceTitle(/engineering|^\s*e\s*&\s*c\s*$|^\s*enc\s*$/i) || serviceTitle(/^\s*mep\b/i) || tFirstSection.subTitle;
+    const EC = /engineering|^\s*e\s*&\s*c\s*$|^\s*enc\s*$/i;
+    const INTERIOR = /interior/i;
+    const MEP = /^\s*mep\b/i;
+    const serviceNames = (secondSection?.service || []).map((s) => s?.serviceName ?? "");
+    // MEP-only projects: no subtitle. Otherwise E&C's heading, else Interior Fit-Out's, else MEP's, else the CMS subtitle.
+    const isMepOnly = serviceNames.length > 0 && serviceNames.every((name) => MEP.test(name));
+    const bannerSubTitle = isMepOnly
+        ? ""
+        : serviceTitle(EC) || serviceTitle(INTERIOR) || serviceTitle(MEP) || tFirstSection.subTitle;
 
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
@@ -72,14 +79,16 @@ const Banner = ({ firstSection, secondSection }) => {
                                     delay={0.3}
                                 />
                             </h1>
-                            <div className="text-20 2xl:text-29 font-light text-paragraph leading-[1.33]">
-                                <SplitTextAnimation
-                                    children={bannerSubTitle}
-                                    staggerDelay={0.2}
-                                    animationDuration={0.8}
-                                    delay={0.6}
-                                />
-                            </div>
+                            {bannerSubTitle && (
+                                <div className="text-20 2xl:text-29 font-light text-paragraph leading-[1.33]">
+                                    <SplitTextAnimation
+                                        children={bannerSubTitle}
+                                        staggerDelay={0.2}
+                                        animationDuration={0.8}
+                                        delay={0.6}
+                                    />
+                                </div>
+                            )}
                         </motion.div>
                         <div className={`w-fit ${isArabic ? "mr-auto" : "ml-auto"}`}>
                             <motion.div variants={moveUp(0.2)}

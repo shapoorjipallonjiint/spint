@@ -22,7 +22,7 @@ const OurApproach = ({data}) => {
                 </div>
                 <div className="pt-5 xl:pt-8">
                   <h3 className="text-20 xl:text-24 3xl:text-29 leading-[1.344827586206897] font-light mb-2 md:mb-3 xl:mb-[15px]">{item.title}</h3>
-                  <p className="text-paragraph text-19 leading-[1.473684210526316] font-light">{item.description}</p>
+                  <p className="text-justify text-paragraph text-19 leading-[1.473684210526316] font-light">{item.description}</p>
                 </div>
               </motion.div>
             ))

@@ -68,7 +68,7 @@ const SystemsSecContent = ({ t, items }) => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ amount: 0.2, once: true }}
-                        className="text-19 font-light leading-[1.474] max-w-[85ch] text-paragraph mb-7 lg:mb-10"
+                        className="text-justify text-19 font-light leading-[1.474] max-w-[85ch] text-paragraph mb-7 lg:mb-10"
                     >
                         {t.subTitle}
                     </motion.p>
@@ -122,7 +122,7 @@ const SystemsSecContent = ({ t, items }) => {
                                     >
                                         <div className="overflow-hidden">
                                             <div
-                                                className={`pt-2 lg:pt-[11px] pb-2 lg:pb-[15px] text-19 text-paragraph font-light md:grid md:grid-cols-2 md:gap-x-[60px] md:items-start [&>p:empty]:hidden [&>p]:col-span-2 [&>ul:only-of-type]:col-span-2 md:[&>ul:only-of-type]:columns-2 md:[&>ul:only-of-type]:gap-x-[60px] [&_li]:break-inside-avoid ${
+                                                className={`text-justify pt-2 lg:pt-[11px] pb-2 lg:pb-[15px] text-19 text-paragraph font-light md:grid md:grid-cols-2 md:gap-x-[60px] md:items-start [&>p:empty]:hidden [&>p]:col-span-2 [&>ul:only-of-type]:col-span-2 md:[&>ul:only-of-type]:columns-2 md:[&>ul:only-of-type]:gap-x-[60px] [&_li]:break-inside-avoid ${
                                                     isArabic ? "our-values-about-ar" : "our-values-about"
                                                 }`}
                                                 dangerouslySetInnerHTML={{ __html: withNormalSpaces(item.description) }}

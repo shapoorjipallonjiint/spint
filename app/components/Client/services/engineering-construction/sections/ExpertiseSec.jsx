@@ -83,7 +83,7 @@ const ExpertiseSec = ({ data }) => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ amount: 0.2, once: true }}
-                        className="text-19 leading-[1.473684210526316] font-light max-w-[85ch] pb-2 sm:pb-0"
+                        className="text-justify text-19 leading-[1.473684210526316] font-light max-w-[85ch] pb-2 sm:pb-0"
                     >
                         {t.subTitle}
                     </motion.p>
@@ -195,7 +195,7 @@ const ExpertiseSec = ({ data }) => {
                                             <h3 className="text-[22px] md:text-[25px] lg:text-29 leading-[1.344827586206897] font-light mb-4  xl:mb-5">
                                                 {item.title}
                                             </h3>
-                                            <p className="text-white text-19 leading-[1.473684210526316] font-light mb-8 2xl:mb-[45px]">
+                                            <p className="text-justify text-white text-19 leading-[1.473684210526316] font-light mb-8 2xl:mb-[45px]">
                                                 {item.subTitle}
                                             </p>
 
@@ -205,7 +205,7 @@ const ExpertiseSec = ({ data }) => {
                                             </p>
                                             <div
                                                 dangerouslySetInnerHTML={{ __html: withNormalSpaces(item.description) }}
-                                                className="our-expertise-item-desc text-white "
+                                                className="text-justify our-expertise-item-desc text-white "
                                                 dir={isArabic ? "rtl" : "ltr"}
                                             >
                                                 {/* <h4 className="text-29 leading-[1.344827586206897] font-light mb-3 xl:mb-5">

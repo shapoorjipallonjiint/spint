@@ -34,7 +34,8 @@ const TabImages = ({ tab, width, height, className, isArabic }) => (
     />
 );
 
-export default function TabStyle1({ data }) {
+// justify: justified tab descriptions (on for the service pages)
+export default function TabStyle1({ data, justify = false }) {
     const isArabic = useIsPreferredLanguageArabic();
     const t = useApplyLang(data);
     const [activeId, setActiveId] = useState(t[1]?._id || t[0]._id);
@@ -144,7 +145,7 @@ useEffect(() => {
 
                                                 <div
                                                     dangerouslySetInnerHTML={{ __html: withNormalSpaces(activeTab.description) }}
-                                                    className="tab-style1-description"
+                                                    className={`tab-style1-description ${justify ? "text-justify" : ""}`}
                                                 ></div>
                                             </motion.div>
                                         )}
@@ -205,7 +206,7 @@ useEffect(() => {
                                     initial="hidden"
                                     whileInView="show"
                                     viewport={{ amount: 0.2, once: true }}
-                                    className="tab-style1-description"
+                                    className={`tab-style1-description ${justify ? "text-justify" : ""}`}
                                     dangerouslySetInnerHTML={{
                                         __html: withNormalSpaces(activeTab.description),
                                     }}

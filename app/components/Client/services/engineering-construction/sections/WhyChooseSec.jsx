@@ -46,7 +46,7 @@ const WhyChooseSec = ({ data }) => {
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
-                            className="text-19 leading-[1.526315789473684] font-light text-paragraph"
+                            className="text-justify text-19 leading-[1.526315789473684] font-light text-paragraph"
                         >
                             {t.description}
                         </motion.p>

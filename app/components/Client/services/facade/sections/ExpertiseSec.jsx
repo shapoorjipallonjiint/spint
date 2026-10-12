@@ -78,7 +78,7 @@ const ExpertiseSec = ({ data }) => {
                                 />
                             </div>
                             {/* <h3 className='text-29 leading-[1.344827586206897] font-light mt-30px mb-5'>{item.title}</h3> */}
-                            <p className="text-19 leading-[1.473684210526316] font-extralight mt-30px">
+                            <p className="text-justify text-19 leading-[1.473684210526316] font-extralight mt-30px">
                                 {item.description}
                             </p>
                         </motion.div>

@@ -104,7 +104,7 @@ const SectorsSec = ({ data }) => {
                                     </motion.div>
                                     <div className="">
                                         <motion.h3 variants={moveUp(0.4 * index)} initial="hidden" animate="show" viewport={{ amount: 0.2, once: true }} className="text-32 leading-[1.3125] font-light mb-2 xl:mb-3">{item.title}</motion.h3>
-                                        <motion.p variants={moveUp(0.4 * index)} initial="hidden" animate="show" viewport={{ amount: 0.2, once: true }} className="text-19 leading-[1.526315789473684] font-light text-paragraph">
+                                        <motion.p variants={moveUp(0.4 * index)} initial="hidden" animate="show" viewport={{ amount: 0.2, once: true }} className="text-justify text-19 leading-[1.526315789473684] font-light text-paragraph">
                                             {item.description}
                                         </motion.p>
                                     </div>

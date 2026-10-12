@@ -157,7 +157,7 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         }`}
                                     />
                                     <span
-                                        className={`inline-block transition-transform ${
+                                        className={`inline-block text-justify transition-transform ${
                                             isActive(index)
                                                 ? isArabic
                                                     ? "-translate-x-[20px] xl:-translate-x-[43px] pe-5 md:pe-0 "

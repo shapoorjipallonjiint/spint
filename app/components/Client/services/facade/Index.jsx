@@ -22,7 +22,7 @@ const Facade = ({ data, projectData }) => {
           image={data.banner}
           imageAlt={data.bannerAlt}
         />
-        <VdoSection data={data.firstSection} />
+        <VdoSection data={data.firstSection} justify />
         <ExpertiseSec data={data.secondSection} />
         {/* "Our Facade, Glazing & Metalwork" accordion - renders only when items are added in the admin */}
         <SystemsSec data={data.systemsSection} />

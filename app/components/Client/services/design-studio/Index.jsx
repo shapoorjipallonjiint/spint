@@ -19,7 +19,7 @@ const DesignStudio = ({ data, projectData }) => {
     </header> */}
             <main>
                 <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
-                <VdoSection data={data.firstSection} maxW="max-w-[18ch]" maxtextwidth="max-w-[60ch]" />
+                <VdoSection data={data.firstSection} justify maxW="max-w-[18ch]" maxtextwidth="max-w-[60ch]" />
                 <ExpertiseSec data={data.secondSection} />
                 <DesignExcellence data={data.thirdSection} />
                 {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}

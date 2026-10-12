@@ -146,7 +146,7 @@ const ExpertiseSec = ({ data }) => {
                                         <h3 className="md:text-18 2xl:text-24 3xl:text-29 leading-[1.2] 3xl:leading-[1.35] font-light ">
                                             {item.title}
                                         </h3>
-                                        <p className="text-19 leading-[1.526315789473684] font-light">{item.desc}</p>
+                                        <p className="text-justify text-19 leading-[1.526315789473684] font-light">{item.desc}</p>
                                     </div>
                                 </motion.div>
                             </SwiperSlide>

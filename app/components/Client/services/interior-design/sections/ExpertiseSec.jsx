@@ -65,7 +65,7 @@ const ExpertiseSec = ({ data }) => {
                                         initial="hidden"
                                         whileInView="show"
                                         viewport={{ amount: 0.2, once: true }}
-                                        className="text-paragraph text-19 leading-[1.526315789473684] font-light"
+                                        className="text-justify text-paragraph text-19 leading-[1.526315789473684] font-light"
                                     >
                                         {item.description}
                                     </motion.p>

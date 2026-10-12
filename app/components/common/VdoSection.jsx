@@ -14,7 +14,8 @@ import { useApplyLang } from "@/lib/applyLang";
 // Created once at module level; creating it inside the component remounts the shape on every render
 const MotionImage = motion.create(Image);
 
-const VdoSection = ({ data, maxW, maxtextwidth }) => {
+// justify: justified description paragraphs (on for the service pages)
+const VdoSection = ({ data, maxW, maxtextwidth, justify = false }) => {
 
   const [enableAnim, setEnableAnim] = useState(false);
   const isArabic = useIsPreferredLanguageArabic()
@@ -89,7 +90,7 @@ const VdoSection = ({ data, maxW, maxtextwidth }) => {
               {/* </motion.div> */}
               {
                 t.description.split("\n").map((item, i) => (
-                  <motion.p key={i} variants={moveUp(0.7 + i * 0.15)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
+                  <motion.p key={i} variants={moveUp(0.7 + i * 0.15)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} ${justify ? "text-justify" : ""} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
                 ))
               }
             </div>
