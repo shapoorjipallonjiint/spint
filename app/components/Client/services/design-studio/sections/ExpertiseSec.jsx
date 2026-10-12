@@ -201,11 +201,7 @@ const ExpertiseSec = ({ data }) => {
                                                     >
                                                         {item.title}
                                                     </h3>
-                                                    <p
-                                                        className={`text-19 leading-[1.526315789473684] font-light ${
-                                                            isArabic ? "text-right" : "text-left"
-                                                        }`}
-                                                    >
+                                                    <p className="text-justify text-19 leading-[1.526315789473684] font-light">
                                                         {item.description}
                                                     </p>
                                                 </div>

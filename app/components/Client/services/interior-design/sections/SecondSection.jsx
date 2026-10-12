@@ -69,7 +69,7 @@ const SecondSection = ({ data }) => {
                     <motion.p  variants={moveUp(0.2)}
                                 initial="hidden"
                                 whileInView="show"
-                                viewport={{ amount: 0.2, once: true }} className="text-19 leading-[1.473684210526316] font-extralight max-w-[100ch]">{t.description}</motion.p>
+                                viewport={{ amount: 0.2, once: true }} className="text-justify text-19 leading-[1.473684210526316] font-extralight max-w-[100ch]">{t.description}</motion.p>
                 </div>
                 <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-10 lg:gap-5 xl:gap-10 mt-8 md:mt-0">
                     {t.items.map((item, index) => (
@@ -103,7 +103,7 @@ const SecondSection = ({ data }) => {
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
-                                className="text-19 leading-[1.473684210526316] font-extralight"
+                                className="text-justify text-19 leading-[1.473684210526316] font-extralight"
                             >
                                 {item.description}
                             </motion.p>

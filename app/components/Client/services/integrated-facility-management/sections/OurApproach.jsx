@@ -34,7 +34,7 @@ const OurApproach = ({ data }) => {
                                 <h3 className="text-29 leading-[1.344827586206897] font-light mb-2 md:mb-3 xl:mb-[15px]">
                                     {item.title}
                                 </h3>
-                                <p className="text-paragraph text-19 leading-[1.473684210526316] font-light">
+                                <p className="text-justify text-paragraph text-19 leading-[1.473684210526316] font-light">
                                     {item.description}
                                 </p>
                             </div>

@@ -21,7 +21,7 @@ const InteriorDesign = ({ data, projectData }) => {
         image={data.banner}
         imageAlt={data.bannerAlt}
       />
-      <VideoSection data={data.firstSection} />
+      <VideoSection data={data.firstSection} justify />
       <SecondSection data={data.secondSection} />
       <ExpertiseSec data={data.thirdSection} />
       <SectorsSec data={data.fourthSection} />

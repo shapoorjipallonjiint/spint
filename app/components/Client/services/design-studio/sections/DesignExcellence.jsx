@@ -103,7 +103,7 @@ const DesignExcellence = ({ data }) => {
                             initial="hidden"
                             whileInView="show"
                             viewport={{ amount: 0.2, once: true }}
-                            className="text-19 leading-[1.473684210526316] font-light text-paragraph max-w-3xl"
+                            className="text-justify text-19 leading-[1.473684210526316] font-light text-paragraph max-w-3xl"
                         >
                             {t.description}
                         </motion.p>

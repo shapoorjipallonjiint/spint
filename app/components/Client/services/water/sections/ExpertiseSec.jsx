@@ -237,7 +237,7 @@ const ExpertiseSec = ({ data }) => {
                                         initial="hidden"
                                         whileInView="show"
                                         viewport={{ amount: 0.2, once: true }} className="border-0 border-t border-white/20 my-6" />
-                                    <div className="water-our-expertise text-19 font-light">
+                                    <div className="text-justify water-our-expertise text-19 font-light">
                                         <motion.div
                                             variants={moveUp(0.8)}
                                             initial="hidden"

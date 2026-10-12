@@ -216,7 +216,7 @@ const InnovationSustainability = ({ data }) => {
                                                         animate={{ y: 0 }}
                                                         exit={{ y: -10 }}
                                                         transition={{ duration: 0.4 }}
-                                                        className={`text-16 2xl:text-19 leading-[1.473684210526316] text-paragraph font-light mt-4 2xl:mt-[25px] max-w-full xl:max-w-[37ch] ${
+                                                        className={`text-justify text-16 2xl:text-19 leading-[1.473684210526316] text-paragraph font-light mt-4 2xl:mt-[25px] max-w-full xl:max-w-[37ch] ${
                                                             isArabic ? "pl-8" : "pr-8"
                                                         }`}
                                                     >

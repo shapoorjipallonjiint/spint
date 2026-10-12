@@ -162,11 +162,7 @@ const DivisionExpertise = ({ data }) => {
                           {item.title}
                         </h3>
                       </div>
-                      <p
-                        className={`text-14 xl:text-19 font-extralight font-paragraph leading-[1.5] ${
-                          isArabic ? "text-right" : "text-left"
-                        }`}
-                      >
+                      <p className="text-justify text-14 xl:text-19 font-extralight font-paragraph leading-[1.5]">
                         {item.description}
                       </p>
                     </div>

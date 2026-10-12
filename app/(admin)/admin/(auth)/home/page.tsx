@@ -716,9 +716,7 @@ const Home = () => {
                             <Input
                                 type="text"
                                 placeholder="Main Title"
-                                {...register("fifthSection.title", {
-                                    required: "Title is required",
-                                })}
+                                {...register("fifthSection.title")}
                             />
                             <FormError error={errors.fifthSection?.title?.message} />
                         </div>
@@ -744,7 +742,6 @@ const Home = () => {
                                                 <Controller
                                                     name={`fifthSection.items.${index}.image`}
                                                     control={control}
-                                                    rules={{ required: "Image is required" }}
                                                     render={({ field }) => (
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
@@ -762,9 +759,7 @@ const Home = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
-                                                        {...register(`fifthSection.items.${index}.imageAlt`, {
-                                                            required: "Value is required",
-                                                        })}
+                                                        {...register(`fifthSection.items.${index}.imageAlt`)}
                                                     />
                                                     {errors.fifthSection?.items?.[index]?.imageAlt && (
                                                         <p className="text-red-500">
@@ -781,7 +776,6 @@ const Home = () => {
                                                 <Controller
                                                     name={`fifthSection.items.${index}.logo`}
                                                     control={control}
-                                                    rules={{ required: "Logo is required" }}
                                                     render={({ field }) => (
                                                         <ImageUploader isLogo value={field.value} onChange={field.onChange} />
                                                     )}
@@ -799,9 +793,7 @@ const Home = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
-                                                        {...register(`fifthSection.items.${index}.logoAlt`, {
-                                                            required: "Value is required",
-                                                        })}
+                                                        {...register(`fifthSection.items.${index}.logoAlt`)}
                                                     />
                                                     {errors.fifthSection?.items?.[index]?.logoAlt && (
                                                         <p className="text-red-500">
@@ -819,9 +811,7 @@ const Home = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Title"
-                                                        {...register(`fifthSection.items.${index}.title`, {
-                                                            required: "Value is required",
-                                                        })}
+                                                        {...register(`fifthSection.items.${index}.title`)}
                                                     />
                                                     {errors.fifthSection?.items?.[index]?.title && (
                                                         <p className="text-red-500">
@@ -835,9 +825,7 @@ const Home = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Title"
-                                                        {...register(`fifthSection.items.${index}.completedProjects`, {
-                                                            required: "Value is required",
-                                                        })}
+                                                        {...register(`fifthSection.items.${index}.completedProjects`)}
                                                     />
                                                     {errors.fifthSection?.items?.[index]?.completedProjects && (
                                                         <p className="text-red-500">
@@ -1480,7 +1468,6 @@ const Home = () => {
                                                 <Controller
                                                     name={`fifthSection.items.${index}.image`}
                                                     control={control}
-                                                    rules={{ required: "Image is required" }}
                                                     render={({ field }) => (
                                                         <ImageUploader value={field.value} onChange={field.onChange} />
                                                     )}
@@ -1510,7 +1497,6 @@ const Home = () => {
                                                 <Controller
                                                     name={`fifthSection.items.${index}.logo`}
                                                     control={control}
-                                                    rules={{ required: "Logo is required" }}
                                                     render={({ field }) => (
                                                         <ImageUploader isLogo value={field.value} onChange={field.onChange} />
                                                     )}

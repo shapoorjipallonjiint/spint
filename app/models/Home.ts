@@ -194,7 +194,6 @@ const homeSchema = new mongoose.Schema({
     fifthSection: {
         title: {
             type: String,
-            required: true
         },
         title_ar: {
             type: String,

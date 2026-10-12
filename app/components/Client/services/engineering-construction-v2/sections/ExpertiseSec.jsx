@@ -152,7 +152,7 @@ const ExpertiseSec = ({ data }) => {
             initial="hidden"
             whileInView="show"
             viewport={{ amount: 0.2, once: true }}
-            className="text-19 leading-[1.473684210526316] font-light max-w-[85ch] pb-2 sm:pb-0"
+            className="text-19 leading-[1.473684210526316] font-light max-w-[85ch] pb-2 sm:pb-0 text-justify"
           >
             {t.subTitle}
           </motion.p>
@@ -218,7 +218,7 @@ const ExpertiseSec = ({ data }) => {
                             />
                           </div>
 
-                          <p className="text-white text-19 leading-[1.473684210526316] font-light mb-6">
+                          <p className="text-white text-19 leading-[1.473684210526316] font-light text-justify mb-6">
                             {item.subTitle}
                           </p>
 
@@ -229,7 +229,7 @@ const ExpertiseSec = ({ data }) => {
                             dangerouslySetInnerHTML={{
                               __html: withNormalSpaces(item.description),
                             }}
-                            className="our-expertise-item-desc text-white"
+                            className="our-expertise-item-desc text-white text-justify"
                             dir={isArabic ? "rtl" : "ltr"}
                           />
                         </div>
@@ -344,7 +344,7 @@ const ExpertiseSec = ({ data }) => {
                           {item.title}
                         </h3>
                         {item.subTitle && (
-                          <p className="text-white text-19 leading-[1.473684210526316] font-light mb-6">
+                          <p className="text-white text-19 leading-[1.473684210526316] font-light text-justify mb-6">
                             {item.subTitle}
                           </p>
                         )}
@@ -357,7 +357,7 @@ const ExpertiseSec = ({ data }) => {
                           dangerouslySetInnerHTML={{
                             __html: withNormalSpaces(item.description),
                           }}
-                          className="our-expertise-item-desc text-white "
+                          className="our-expertise-item-desc text-white text-justify"
                           dir={isArabic ? "rtl" : "ltr"}
                         />
                       </div>

@@ -65,12 +65,12 @@ const ExpertiseSec = ({ data }) => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ amount: 0.2, once: true }}
-                        className="text-19 leading-[1.473684210526316] opacity-90 font-light max-w-5xl"
+                        className="text-justify text-19 leading-[1.473684210526316] opacity-90 font-light max-w-5xl"
                     >
                         {t.description}
                     </motion.p>
                 </div>
-                <TabStyle1 data={t.items} />
+                <TabStyle1 data={t.items} justify />
             </div>
         </section>
     );

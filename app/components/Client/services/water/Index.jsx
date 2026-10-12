@@ -15,7 +15,7 @@ const Water = ({ data, projectData }) => {
     return (
         <>
             <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
-            <VdoSection data={data.firstSection} />
+            <VdoSection data={data.firstSection} justify />
             <ExpertiseSec data={data.secondSection} />
             <DivisionExpertise data={data.thirdSection} />
             {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} />
