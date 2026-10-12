@@ -135,7 +135,7 @@ const Banner = ({ firstSection, secondSection }) => {
                         variants={fadeIn(0.6)}
                         initial="hidden"
                         animate="show"
-                        className={`flex gap-[4px] bg-white w-full h-[250px] lg:h-[400px] xl:h-[500px] 2xl:h-[600px] 3xl:h-[750px] ${activeImage ? "pointer-events-none" : ""}`}
+                        className={`flex gap-2 bg-white w-full h-[250px] lg:h-[400px] xl:h-[500px] 2xl:h-[600px] 3xl:h-[750px] ${activeImage ? "pointer-events-none" : ""}`}
                     >
                         {bannerImages.map((img, i) => (
                             <div key={i} className="relative flex-1 min-w-0 h-full cursor-pointer" onClick={() => setActiveImage(img.src)}>

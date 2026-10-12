@@ -28,11 +28,23 @@ const footerLinks = [
     title_ar: "",
     delay: 0.3,
     links: [
-      { label: "Engineering & Construction", label_ar: "", href: "/services/engineering-construction" },
+      {
+        label: "Engineering & Construction",
+        label_ar: "",
+        href: "/services/engineering-construction",
+      },
       { label: "MEP", label_ar: "", href: "/services/mep" },
-      { label: "Interior Fit-out", label_ar: "", href: "/services/interior-design" },
+      {
+        label: "Interior Fit-out",
+        label_ar: "",
+        href: "/services/interior-design",
+      },
       { label: "Facade", label_ar: "", href: "/services/facade" },
-      { label: "Facilities Management", label_ar: "", href: "/services/integrated-facility-management" },
+      {
+        label: "Facilities Management",
+        label_ar: "",
+        href: "/services/integrated-facility-management",
+      },
       { label: "Water", label_ar: "", href: "/services/water" },
     ],
   },
@@ -42,7 +54,11 @@ const footerLinks = [
     delay: 0.4,
     links: [
       { label: "Sustainability", label_ar: "", href: "/sustainability" },
-      { label: "Community Engagement", label_ar: "", href: "/community-engagement" },
+      {
+        label: "Community Engagement",
+        label_ar: "",
+        href: "/community-engagement",
+      },
       { label: "Safety & Quality", label_ar: "", href: "/quality" },
     ],
   },
@@ -63,7 +79,11 @@ const footerLinks = [
     links: [
       { label: "Careers", label_ar: "", href: "/careers" },
       { label: "Projects", label_ar: "", href: "/projects" },
-      { label: "Terms and Conditions", label_ar: "", href: "/terms-and-conditions" },
+      {
+        label: "Terms and Conditions",
+        label_ar: "",
+        href: "/terms-and-conditions",
+      },
     ],
   },
 ];
@@ -80,7 +100,10 @@ const FooterTwo = () => {
   const { isHiddenHref, sortByHref } = useServiceVisibility();
   const visibleFooterLinks = tFooterLinks.map((section) => ({
     ...section,
-    links: sortByHref(section.links.filter((link) => !isHiddenHref(link.href)), (link) => link.href),
+    links: sortByHref(
+      section.links.filter((link) => !isHiddenHref(link.href)),
+      (link) => link.href,
+    ),
   }));
   const isArabic = useIsPreferredLanguageArabic();
 
@@ -94,18 +117,34 @@ const FooterTwo = () => {
     <footer className="bg-primary pt-6 md:pt-8 lg:pt-9 xl:pt-10 2xl:pt-12 3xl:pt-[75.26px] text-white">
       <div className="container">
         {/* Scroll To Top */}
-        <div onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        <div
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className={`fixed ${isArabic ? "left-4 lg:left-15" : "right-4 lg:right-15"} bottom-4 flex flex-col gap-1 items-center bg-white/70 rounded-sm cursor-pointer px-2 pt-2 pb-2 lg:pb-0 z-[999]`}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" className="w-[15px] h-[15px] lg:w-[23px] lg:h-[23px]" viewBox="0 0 23 23" fill="none" >
-            <path d="M21.3187 11.286L11.2832 1.25052L1.25 11.2837M11.2804 1.25L11.2347 21.2708" stroke="#30B6F9" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="23"
+            height="23"
+            className="w-[15px] h-[15px] lg:w-[23px] lg:h-[23px]"
+            viewBox="0 0 23 23"
+            fill="none"
+          >
+            <path
+              d="M21.3187 11.286L11.2832 1.25052L1.25 11.2837M11.2804 1.25L11.2347 21.2708"
+              stroke="#30B6F9"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
-          <p className="hidden lg:block font-size[13px] font-light leading-[1.6] text-paragraph"> TOP </p>
+          <p className="hidden lg:block font-size[13px] font-light leading-[1.6] text-paragraph">
+            {" "}
+            TOP{" "}
+          </p>
         </div>
 
         {/* ONE GRID FOR THE WHOLE FOOTER: 5 columns from lg (row 1: 2-2-1, divider: 5, nav: 1 each) */}
         <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-5 gap-x-6 xl:gap-x-0">
-
           <div className="col-span-full grid grid-cols-1 lg:grid-cols-5 gap-x-6 xl:gap-x-0 gap-y-4 mb-60px">
             {/* Row 1: logo (2 of 5) */}
             <div className="lg:col-span-2">
@@ -180,14 +219,18 @@ const FooterTwo = () => {
                         height={17}
                         src={item.icon}
                         alt={item.alt}
-                        className={item.alt === "insta" ? "invert-100 w-[14px] lg:w-[16px]" : "w-[14px] lg:w-[16px]"}
+                        className={
+                          item.alt === "insta"
+                            ? "invert-100 w-[14px] lg:w-[16px]"
+                            : "w-[14px] lg:w-[16px]"
+                        }
                       />
                     </LangLink>
                   </li>
                 ))}
               </motion.ul>
             </div>
-        </div>
+          </div>
 
           {/* Divider */}
           <div className="col-span-full border-t border-white/30 mb-50px" />
@@ -204,7 +247,7 @@ const FooterTwo = () => {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ amount: 0.1, once: true }}
-                className="mb-2 md:mb-50px"
+                className="mb-2 md:mb-40px"
               >
                 <h3 className="text-18 2xl:text-29 leading-[1.344827586206897] font-light mb-2 lg:mb-[27px]">
                   <button
@@ -217,8 +260,9 @@ const FooterTwo = () => {
                     <span>{section.title}</span>
                     <span
                       aria-hidden="true"
-                      className={`md:hidden text-2xl leading-none transition-transform duration-300 ${isOpen ? "rotate-45" : ""
-                        }`}
+                      className={`md:hidden text-2xl leading-none transition-transform duration-300 ${
+                        isOpen ? "rotate-45" : ""
+                      }`}
                     >
                       +
                     </span>
@@ -227,8 +271,9 @@ const FooterTwo = () => {
 
                 <div
                   id={panelId}
-                  className={`grid transition-[grid-template-rows] duration-300 ease-in-out md:grid-rows-[1fr] ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                    }`}
+                  className={`grid transition-[grid-template-rows] duration-300 ease-in-out md:grid-rows-[1fr] ${
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
                 >
                   <ul className="overflow-hidden">
                     {section.links.map((link) => (
@@ -244,36 +289,38 @@ const FooterTwo = () => {
               </motion.div>
             );
           })}
-
         </div>
       </div>
-          {/* Bottom bar */}
-          <div className="w-full h-px bg-white/30"></div>
-          <div className="container">
+      {/* Bottom bar */}
+      {/* <div className="w-full h-px bg-white/30"></div> */}
+      <div className="container">
         <motion.div
           variants={moveUp(0.7)}
           initial="hidden"
           whileInView="show"
           viewport={{ amount: 0.1, once: true }}
-          className="col-span-12 py-1 lg:pt-[12px] lg:pb-[28px]"
+          className="col-span-5 pb-5"
         >
-          <div className="flex flex-wrap gap-x-[35px] items-center">
+          <div className="flex flex-wrap gap-y-1.5 xl:gap-x-[45px] 3xl:gap-x-[56px] items-center">
             <div className="">
-              <p className="text-14 leading-[2.857142857142857] font-normal opacity-50"> Copyright ©{new Date().getFullYear()} All Rights Reserved</p>
+              <p className="text-14 leading-[1.578947368421053] font-normal opacity-50">
+                {" "}
+                Copyright ©{new Date().getFullYear()} All Rights Reserved
+              </p>
             </div>
             <div className="">
-              <ul className="flex flex-wrap gap-x-2 xl:gap-x-[35px]">
-                <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light" >
+              <ul className="flex flex-wrap gap-x-2 xl:gap-x-[45px] 3xl:gap-x-[56px]">
+                <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light">
                   <Link href="#">Privacy Policy</Link>
                 </li>
-                <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light" >
+                <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light">
                   <Link href="#">Cookie Policy</Link>
                 </li>
               </ul>
             </div>
           </div>
         </motion.div>
-          </div>
+      </div>
     </footer>
   );
 };
