@@ -89,7 +89,7 @@ const Legacy = ({ data }) => {
   return (
     <section className="section-spacing bg-primary relative overflow-hidden">
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-[1fr_795px] gap-7 lg:gap-15 2xl:gap-25 3xl:gap-[137px] md:items-end pt-6 md:pt-4 lg:pt-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-[1fr_795px] gap-7 lg:gap-15 2xl:gap-25 3xl:gap-[137px] md:items-start pt-6 md:pt-0">
           {/* LEFT CONTENT */}
           <div className="opacity-80">
             <H2Title titleText={t.title} titleColor="white" marginClass="mb-80px" />
