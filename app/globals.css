@@ -1853,3 +1853,32 @@ body::-webkit-scrollbar {
     --top-shift: calc(var(--gap) * 2 - var(--diag) * 1.4142);
   }
 }
+
+/* admin tooltips (components/ui/tooltip.tsx): fade + small slide away from the trigger, in and out */
+.tooltip-content {
+  transform-origin: var(--radix-tooltip-content-transform-origin);
+  animation-duration: 180ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+.tooltip-content[data-state="delayed-open"],
+.tooltip-content[data-state="instant-open"] {
+  animation-name: tooltip-in;
+}
+.tooltip-content[data-state="closed"] {
+  animation-name: tooltip-out;
+  animation-duration: 120ms;
+  animation-timing-function: ease-in;
+}
+.tooltip-content[data-side="top"] { --tooltip-shift: 0, 4px; }
+.tooltip-content[data-side="bottom"] { --tooltip-shift: 0, -4px; }
+.tooltip-content[data-side="left"] { --tooltip-shift: 4px, 0; }
+.tooltip-content[data-side="right"] { --tooltip-shift: -4px, 0; }
+@keyframes tooltip-in {
+  from { opacity: 0; transform: translate(var(--tooltip-shift, 0, 4px)) scale(0.96); }
+  to { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes tooltip-out {
+  from { opacity: 1; transform: translate(0, 0) scale(1); }
+  to { opacity: 0; transform: translate(var(--tooltip-shift, 0, 4px)) scale(0.96); }
+}
