@@ -43,7 +43,7 @@ export default function ProjectCard({
         >
             <span>
                 {serial !== undefined && (
-                    <span className="inline-block min-w-8 text-muted-foreground tabular-nums">{serial}.</span>
+                    <span className="inline-block min-w-11 text-muted-foreground tabular-nums">{serial}.</span>
                 )}
                 {title}
                 {country && <span className="text-muted-foreground"> - {country}</span>}

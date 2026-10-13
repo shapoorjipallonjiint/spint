@@ -27,6 +27,7 @@ import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { arrayMove } from "@dnd-kit/sortable";
 import ProjectCard from "./ProjectCard";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { isValidOrderKey, orderKeyForCountry, orderKeyLabel } from "@/lib/countryCodes";
 
 type ProjectListItem = {
@@ -263,6 +264,17 @@ export default function Projects() {
         } finally {
             setVisibilityBusyId(null);
         }
+    };
+
+    // project waiting for the Yes / No delete confirmation (null = dialog closed)
+    const [projectToDelete, setProjectToDelete] = useState<ProjectListItem | null>(null);
+    const [deleting, setDeleting] = useState(false);
+    const confirmDeleteProject = async () => {
+        if (!projectToDelete) return;
+        setDeleting(true);
+        await handleDeleteProject(projectToDelete._id);
+        setDeleting(false);
+        setProjectToDelete(null);
     };
 
     const handleDeleteProject = async (id: string) => {
@@ -1067,6 +1079,22 @@ export default function Projects() {
                             placeholder={reorderMode ? "Find a project to move... (Enter = next match)" : "Search project..."}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
+                            // paste as plain text: copies from Word/web/Excel can carry non-breaking or
+                            // invisible spaces, tabs and line breaks that stop a title from matching
+                            onPaste={(e) => {
+                                e.preventDefault();
+                                const pasted = e.clipboardData
+                                    .getData("text/plain")
+                                    .replace(/[​-‍﻿]/g, "")
+                                    .replace(/[\s ]+/g, " ")
+                                    .trim();
+                                const input = e.currentTarget;
+                                const start = input.selectionStart ?? search.length;
+                                const end = input.selectionEnd ?? search.length;
+                                setSearch(search.slice(0, start) + pasted + search.slice(end));
+                                // keep the cursor right after the pasted text
+                                requestAnimationFrame(() => input.setSelectionRange(start + pasted.length, start + pasted.length));
+                            }}
                             onKeyDown={(e) => {
                                 if (reorderMode && e.key === "Enter") {
                                     e.preventDefault();
@@ -1097,52 +1125,104 @@ export default function Projects() {
                                 >
                                     {/* hidden projects stay in the list (editable / reorderable), greyed out */}
                                     <div className={item.isHidden ? "opacity-50" : ""}>
-                                        <span className="inline-block min-w-8 text-muted-foreground tabular-nums">
+                                        <span className="inline-block min-w-11 text-muted-foreground tabular-nums">
                                             {positionById.get(item._id)}.
                                         </span>
                                         {item.firstSection.title}
                                         {item.isHidden && <span className="text-muted-foreground"> (Hidden)</span>}
-                                        {/* TEMP (for editing): "Status - Sector" in place of the country; restore the commented block below to revert */}
-                                        {item.firstSection.status && (
-                                            <span className="text-red-600"> - {item.firstSection.status}</span>
-                                        )}
-                                        {(item.secondSection?.sector || []).some((s) => s?.name) && (
-                                            <span className="text-blue-600">
-                                                {" "}
-                                                - {(item.secondSection?.sector || []).map((s) => s?.name).filter(Boolean).join(", ")}
-                                            </span>
-                                        )}
-                                        {/* {item.secondSection?.location?.name && (
-                                            <span className="text-muted-foreground"> - {item.secondSection.location.name}</span>
-                                        )} */}
+                                        {/* location / status / sector pills under the name, lined up with the title (past the number) */}
+                                        <div className="flex flex-wrap gap-1.5 mt-1 ps-11">
+                                            {item.secondSection?.location?.name && (
+                                                <span className="px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700 border border-gray-200">
+                                                    {item.secondSection.location.name}
+                                                </span>
+                                            )}
+                                            {item.firstSection.status && (
+                                                <span className="px-2 py-0.5 rounded-full text-xs bg-red-50 text-red-600 border border-red-200">
+                                                    {item.firstSection.status}
+                                                </span>
+                                            )}
+                                            {(item.secondSection?.sector || [])
+                                                .filter((s) => s?.name)
+                                                .map((s, i) => (
+                                                    <span
+                                                        key={i}
+                                                        className="px-2 py-0.5 rounded-full text-xs bg-blue-50 text-blue-600 border border-blue-200"
+                                                    >
+                                                        {s.name}
+                                                    </span>
+                                                ))}
+                                        </div>
                                     </div>
+                                    {/* row actions: each icon has a tooltip (components/ui/tooltip) that fades in / out on hover */}
                                     <div className="flex gap-5 items-center">
                                         {/* view the live project page in a new tab (read-only link, the admin page stays open) */}
                                         {item.slug ? (
-                                            <a
-                                                href={`/projects/${item.slug}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                title="View on website"
-                                                aria-label={`View ${item.firstSection.title} on website`}
-                                            >
-                                                <MdOpenInNew />
-                                            </a>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <a
+                                                        href={`/projects/${item.slug}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label={`View ${item.firstSection.title} on website`}
+                                                        className="cursor-pointer transition-transform duration-200 hover:scale-125"
+                                                    >
+                                                        <MdOpenInNew />
+                                                    </a>
+                                                </TooltipTrigger>
+                                                <TooltipContent>View on website</TooltipContent>
+                                            </Tooltip>
                                         ) : (
-                                            <MdOpenInNew className="opacity-30" title="No slug yet" />
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <span aria-label="No slug yet">
+                                                        <MdOpenInNew className="opacity-30" />
+                                                    </span>
+                                                </TooltipTrigger>
+                                                <TooltipContent>No slug yet</TooltipContent>
+                                            </Tooltip>
                                         )}
-                                        <button
-                                            type="button"
-                                            onClick={() => handleToggleVisibility(item)}
-                                            disabled={visibilityBusyId === item._id}
-                                            title={item.isHidden ? "Show on website" : "Hide from website"}
-                                            aria-label={item.isHidden ? `Show ${item.firstSection.title} on website` : `Hide ${item.firstSection.title} from website`}
-                                            className="cursor-pointer disabled:opacity-40"
-                                        >
-                                            {item.isHidden ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                        </button>
-                                        <MdEdit onClick={() => router.push(`/admin/projects/edit/${item._id}`)} />
-                                        <MdDelete onClick={() => handleDeleteProject(item._id)} />
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleToggleVisibility(item)}
+                                                    disabled={visibilityBusyId === item._id}
+                                                    aria-label={item.isHidden ? `Show ${item.firstSection.title} on website` : `Hide ${item.firstSection.title} from website`}
+                                                    className="cursor-pointer transition-transform duration-200 hover:scale-125 disabled:opacity-40 disabled:cursor-default disabled:hover:scale-100"
+                                                >
+                                                    {item.isHidden ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                                </button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>{item.isHidden ? "Hidden - click to show on website" : "Visible - click to hide from website"}</TooltipContent>
+                                        </Tooltip>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => router.push(`/admin/projects/edit/${item._id}`)}
+                                                    aria-label={`Edit ${item.firstSection.title}`}
+                                                    className="cursor-pointer transition-transform duration-200 hover:scale-125"
+                                                >
+                                                    <MdEdit />
+                                                </button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>Edit project</TooltipContent>
+                                        </Tooltip>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <button
+                                                    type="button"
+                                                    // asks Yes / No first (dialog at the end of the page); nothing is deleted here
+                                                    onClick={() => setProjectToDelete(item)}
+                                                    aria-label={`Delete ${item.firstSection.title}`}
+                                                    className="cursor-pointer transition-transform duration-200 hover:scale-125"
+                                                >
+                                                    <MdDelete />
+                                                </button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>Delete project</TooltipContent>
+                                        </Tooltip>
                                     </div>
                                 </div>
                             ))}
@@ -1178,6 +1258,42 @@ export default function Projects() {
                     )}
                 </div>
             </div>
+
+            {/* delete confirmation: the project is deleted only on "Yes"; "No", Esc or clicking outside cancels */}
+            <Dialog
+                open={!!projectToDelete}
+                onOpenChange={(open) => {
+                    if (!open && !deleting) setProjectToDelete(null);
+                }}
+            >
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Delete project?</DialogTitle>
+                        <DialogDescription>
+                            &ldquo;{projectToDelete?.firstSection.title}&rdquo; will be permanently deleted from the website and the
+                            admin. This cannot be undone.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex justify-end gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setProjectToDelete(null)}
+                            disabled={deleting}
+                            className="px-4 py-2 rounded-md border border-black/20 hover:bg-black/5 cursor-pointer disabled:opacity-40"
+                        >
+                            No
+                        </button>
+                        <button
+                            type="button"
+                            onClick={confirmDeleteProject}
+                            disabled={deleting}
+                            className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer disabled:opacity-60"
+                        >
+                            {deleting ? "Deleting..." : "Yes, delete"}
+                        </button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
