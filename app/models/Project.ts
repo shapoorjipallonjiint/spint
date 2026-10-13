@@ -50,6 +50,10 @@ const projectSchema = new mongoose.Schema({
     metaDescription: { type: String },
     metaDescription_ar: { type: String },
 
+    // hidden from the website (admin eye toggle). No default: missing means visible,
+    // so existing projects are not touched until toggled
+    isHidden: { type: Boolean },
+
     thumbnail: { type: String },
     thumbnailAlt: { type: String },
     thumbnailAlt_ar: { type: String },
@@ -77,6 +81,10 @@ const projectSchema = new mongoose.Schema({
         }],
         default: undefined,
       },
+
+      // how the banner shows several cover images: "landscape" (slider) or "portrait" (equal split).
+      // No default: missing means "landscape", so existing projects are not touched until saved with a choice
+      coverLayout: { type: String, enum: ["landscape", "portrait"] },
 
       status: { type: String },
     },

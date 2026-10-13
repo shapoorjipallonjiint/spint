@@ -168,7 +168,8 @@ export async function POST(req: NextRequest) {
     const serviceMap = new Map(serviceDocs.map((item: any) => [String(item._id), item]));
 
     const projectResults = projectDocs
-        .flatMap((doc: any) => (doc.projects ?? []).map((project: any) => {
+        // hidden projects (admin eye toggle) are left out of the website search
+        .flatMap((doc: any) => (doc.projects ?? []).filter((project: any) => !project?.isHidden).map((project: any) => {
             const location = countryMap.get(String(project?.secondSection?.location ?? ""));
             const sectors = (project?.secondSection?.sector ?? [])
                 .map((id: unknown) => sectorMap.get(String(id)))

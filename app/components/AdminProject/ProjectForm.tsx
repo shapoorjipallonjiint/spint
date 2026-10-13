@@ -52,6 +52,8 @@ export interface ProjectFormProps {
         coverImageAlt_ar?: string;
         // optional extra banner images shown next to coverImage on the project page
         additionalCoverImages?: { image: string; imageAlt?: string; imageAlt_ar?: string }[];
+        // banner layout for several cover images; missing means "landscape" (slider)
+        coverLayout?: "landscape" | "portrait";
         status: string;
     };
     secondSection: {
@@ -417,10 +419,13 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             {errors.slug && <p className="text-red-500">{errors.slug.message}</p>}
                         </div>
 
+                        {/* banner images group: cover image, layout and additional images, boxed to set it apart from the other fields */}
+                        <div className="flex flex-col gap-2">
+                        <Label className="">Cover Image</Label>
+                        <div className="flex flex-col gap-5 border border-black/20 rounded-md p-4">
                         <div className="grid grid-cols-1 gap-2">
                             <div>
                                 <div>
-                                    <Label className="">Cover Image</Label>
                                     <ImageUploader
                                         onChange={(url) => setValue("firstSection.coverImage", url)}
                                         value={watch("firstSection.coverImage")}
@@ -439,7 +444,42 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             </div>
                         </div>
 
-                        {/* Additional cover images: shown next to the cover image on the project page (split with a 4px white line) */}
+                        {/* Banner layout toggle: only changes how the cover images are shown on the website.
+                            The images themselves are not touched, so switching never removes anything. */}
+                        <Controller
+                            name="firstSection.coverLayout"
+                            control={control}
+                            render={({ field }) => {
+                                const isPortrait = field.value === "portrait";
+                                return (
+                                    <div className="flex flex-col gap-2">
+                                        <Label className="font-bold">Cover Image Layout</Label>
+                                        <div className="inline-flex w-fit rounded-md border overflow-hidden">
+                                            <button
+                                                type="button"
+                                                onClick={() => field.onChange("landscape")}
+                                                className={`px-4 py-2 text-sm ${!isPortrait ? "bg-primary text-white" : "bg-white"}`}
+                                            >
+                                                Landscape
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => field.onChange("portrait")}
+                                                className={`px-4 py-2 text-sm border-l ${isPortrait ? "bg-primary text-white" : "bg-white"}`}
+                                            >
+                                                Portrait Split
+                                            </button>
+                                        </div>
+                                        <p className="text-xs text-gray-500">
+                                            Landscape shows the cover images as a slider; Portrait Split shows them side by side in equal columns.
+                                            Applies when there is more than one cover image. Switching does not delete any images.
+                                        </p>
+                                    </div>
+                                );
+                            }}
+                        />
+
+                        {/* Additional cover images: shown with the cover image on the project page (slider or equal split, per the layout above) */}
                         <div className="grid grid-cols-1 gap-2">
                             <div className="flex items-center justify-between">
                                 <Label className="font-bold">Additional Cover Images (optional)</Label>
@@ -466,6 +506,8 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                     />
                                 </div>
                             ))}
+                        </div>
+                        </div>
                         </div>
 
                         <div className="grid grid-cols-1 gap-2">

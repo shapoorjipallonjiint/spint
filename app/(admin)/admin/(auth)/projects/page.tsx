@@ -21,7 +21,7 @@ import { ImageUploader } from "@/components/ui/image-uploader";
 // import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { Search } from "lucide-react";
+import { Search, Eye, EyeOff } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -32,11 +32,15 @@ import { isValidOrderKey, orderKeyForCountry, orderKeyLabel } from "@/lib/countr
 type ProjectListItem = {
     _id: string;
     slug?: string;
+    // hidden from the website; missing means visible
+    isHidden?: boolean;
     firstSection: {
         title: string;
         description: string;
+        status?: string;
     };
     secondSection?: {
+        sector?: { name?: string }[];
         location?: {
             name?: string;
             code?: string;
@@ -233,6 +237,31 @@ export default function Projects() {
             }
         } catch (error) {
             console.log("Error fetching service", error);
+        }
+    };
+
+    // show / hide one project on the website; only its isHidden flag is changed
+    const [visibilityBusyId, setVisibilityBusyId] = useState<string | null>(null);
+    const handleToggleVisibility = async (item: ProjectListItem) => {
+        const isHidden = !item.isHidden;
+        setVisibilityBusyId(item._id);
+        try {
+            const response = await fetch("/api/admin/project/visibility", {
+                method: "PATCH",
+                body: JSON.stringify({ id: item._id, isHidden }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setProjectList((list) => list.map((p) => (p._id === item._id ? { ...p, isHidden } : p)));
+                toast.success(data.message);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.log("Error changing project visibility", error);
+            toast.error("Could not change visibility");
+        } finally {
+            setVisibilityBusyId(null);
         }
     };
 
@@ -1066,14 +1095,26 @@ export default function Projects() {
                                     key={item._id}
                                     className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md"
                                 >
-                                    <div>
+                                    {/* hidden projects stay in the list (editable / reorderable), greyed out */}
+                                    <div className={item.isHidden ? "opacity-50" : ""}>
                                         <span className="inline-block min-w-8 text-muted-foreground tabular-nums">
                                             {positionById.get(item._id)}.
                                         </span>
                                         {item.firstSection.title}
-                                        {item.secondSection?.location?.name && (
-                                            <span className="text-muted-foreground"> - {item.secondSection.location.name}</span>
+                                        {item.isHidden && <span className="text-muted-foreground"> (Hidden)</span>}
+                                        {/* TEMP (for editing): "Status - Sector" in place of the country; restore the commented block below to revert */}
+                                        {item.firstSection.status && (
+                                            <span className="text-red-600"> - {item.firstSection.status}</span>
                                         )}
+                                        {(item.secondSection?.sector || []).some((s) => s?.name) && (
+                                            <span className="text-blue-600">
+                                                {" "}
+                                                - {(item.secondSection?.sector || []).map((s) => s?.name).filter(Boolean).join(", ")}
+                                            </span>
+                                        )}
+                                        {/* {item.secondSection?.location?.name && (
+                                            <span className="text-muted-foreground"> - {item.secondSection.location.name}</span>
+                                        )} */}
                                     </div>
                                     <div className="flex gap-5 items-center">
                                         {/* view the live project page in a new tab (read-only link, the admin page stays open) */}
@@ -1090,6 +1131,16 @@ export default function Projects() {
                                         ) : (
                                             <MdOpenInNew className="opacity-30" title="No slug yet" />
                                         )}
+                                        <button
+                                            type="button"
+                                            onClick={() => handleToggleVisibility(item)}
+                                            disabled={visibilityBusyId === item._id}
+                                            title={item.isHidden ? "Show on website" : "Hide from website"}
+                                            aria-label={item.isHidden ? `Show ${item.firstSection.title} on website` : `Hide ${item.firstSection.title} from website`}
+                                            className="cursor-pointer disabled:opacity-40"
+                                        >
+                                            {item.isHidden ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                        </button>
                                         <MdEdit onClick={() => router.push(`/admin/projects/edit/${item._id}`)} />
                                         <MdDelete onClick={() => handleDeleteProject(item._id)} />
                                     </div>

@@ -73,6 +73,13 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // the admin (logged in) gets every project; the website gets only the visible ones.
+    // Missing isHidden (older projects) means visible. Read-only filter: nothing is written.
+    const isAdmin = await verifyAdmin(request);
+    const visibleProjects = isAdmin
+      ? project.projects
+      : project.projects.filter((p) => !p.isHidden);
+
     /* ---------- MAPPER ---------- */
     const mapProject = (p: ProjectItem) => {
 const services =
@@ -141,7 +148,7 @@ const services =
 
     /* ===== SINGLE PROJECT BY ID ===== */
     if (id) {
-      const found = project.projects.find(
+      const found = visibleProjects.find(
         (p) => p._id.toString() === id
       );
 
@@ -163,7 +170,7 @@ const services =
 
     /* ===== SINGLE PROJECT BY SLUG ===== */
     if (slug) {
-      const index = project.projects.findIndex(
+      const index = visibleProjects.findIndex(
         (p) => p.slug === slug
       );
 
@@ -174,9 +181,10 @@ const services =
         );
       }
 
-      const current = project.projects[index];
+      const current = visibleProjects[index];
+      // next among the visible projects only, so a hidden project is never linked from the website
       const nextProject =
-        project.projects[index + 1] ?? project.projects[0];
+        visibleProjects[index + 1] ?? visibleProjects[0];
 
       return NextResponse.json(
         {
@@ -193,7 +201,7 @@ const services =
       {
         data: {
           ...project,
-          projects: project.projects.map(mapProject),
+          projects: visibleProjects.map(mapProject),
         },
         message: "Projects fetched successfully",
       },
@@ -259,6 +267,8 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
+    // visibility is changed only by the eye toggle (/api/admin/project/visibility), never by the edit form
+    delete body.isHidden;
     Object.assign(found, body);
     await project.save({ validateBeforeSave: false });
 

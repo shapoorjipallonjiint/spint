@@ -11,6 +11,9 @@ import ImageLightbox from "../../../common/ImagePopup";
 import { useRouter } from "next/navigation";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
 
 const Banner = ({ firstSection, secondSection }) => {
     const tFirstSection = useApplyLang(firstSection);
@@ -79,6 +82,11 @@ const Banner = ({ firstSection, secondSection }) => {
             alt: img?.imageAlt || tFirstSection?.title || "",
         })),
     ].filter((img) => img.src);
+    // layout chosen in the admin; anything other than "portrait" (incl. missing on older projects) is landscape
+    const isPortraitLayout = firstSection?.coverLayout === "portrait";
+    // slider instance for the arrow buttons, and how far the slider image moves with the parallax
+    const [bannerSwiper, setBannerSwiper] = useState(null);
+    const parallaxRange = Math.abs(imageOffset[0]);
 
     return (
         <section className="relative overflow-hidden" ref={sectionRef}>
@@ -137,8 +145,57 @@ const Banner = ({ firstSection, secondSection }) => {
             </div>
 
             <div className="container relative z-[2] overflow-hidden" ref={imageContainerRefTwo} >
-                {bannerImages.length > 1 ? (
-                    // several images: equal columns split by a 4px white line (the white background shows through the gap)
+                {bannerImages.length > 1 && !isPortraitLayout ? (
+                    // several images, landscape (default): one full-width image at a time in a slider
+                    // the frame and arrows stay in place; only the image layer inside moves with the parallax.
+                    // That layer is taller than the frame by the parallax offset on each side, so no gap shows while it moves
+                    <motion.div
+                        variants={fadeIn(0.6)}
+                        initial="hidden"
+                        animate="show"
+                        className={`relative overflow-hidden w-full h-[250px] lg:h-[400px] xl:h-[500px] 2xl:h-[600px] 3xl:h-[750px] ${activeImage ? "pointer-events-none" : ""}`}
+                    >
+                        <motion.div
+                            style={{ y: imageY, top: -parallaxRange, bottom: -parallaxRange }}
+                            className="absolute inset-x-0"
+                        >
+                            <Swiper
+                                modules={[Autoplay]}
+                                slidesPerView={1}
+                                speed={1200}
+                                rewind={true}
+                                onSwiper={setBannerSwiper}
+                                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                                className="w-full h-full"
+                            >
+                                {bannerImages.map((img, i) => (
+                                    <SwiperSlide key={i} className="relative h-full! cursor-pointer" onClick={() => setActiveImage(img.src)}>
+                                        <Image src={img.src} alt={img.alt} fill sizes="(min-width: 1680px) 1620px, 100vw" className="object-cover" priority={i === 0} />
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                        </motion.div>
+                        <div className="absolute bottom-4 right-4 z-10 flex gap-3" dir="ltr">
+                            <button
+                                onClick={() => bannerSwiper?.slidePrev()}
+                                type="button"
+                                aria-label="Previous image"
+                                className="w-10 h-10 xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group bg-white/80 hover:bg-secondary transition"
+                            >
+                                <Image src="/assets/images/project-details/rightarrow.svg" className="w-[16px] h-[16px] rotate-180 group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
+                            </button>
+                            <button
+                                onClick={() => bannerSwiper?.slideNext()}
+                                type="button"
+                                aria-label="Next image"
+                                className="w-10 h-10 xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group bg-white/80 hover:bg-secondary transition"
+                            >
+                                <Image src="/assets/images/project-details/rightarrow.svg" className="w-[16px] h-[16px] group-hover:brightness-0 group-hover:invert-100 transition-all duration-300" alt="" width={14} height={14} />
+                            </button>
+                        </div>
+                    </motion.div>
+                ) : bannerImages.length > 1 ? (
+                    // several images, portrait split: equal columns split by a 4px white line (the white background shows through the gap)
                     <motion.div
                         style={{ y: imageY }}
                         variants={fadeIn(0.6)}
