@@ -21,14 +21,14 @@ import { ImageUploader } from "@/components/ui/image-uploader";
 // import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { Search, Eye, EyeOff } from "lucide-react";
+import { Search, Eye, EyeOff, MapPin } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { arrayMove } from "@dnd-kit/sortable";
 import ProjectCard from "./ProjectCard";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import { isValidOrderKey, orderKeyForCountry, orderKeyLabel } from "@/lib/countryCodes";
+import { isValidOrderKey, normalizeCountryCode, orderKeyForCountry, orderKeyLabel } from "@/lib/countryCodes";
 
 type ProjectListItem = {
     _id: string;
@@ -46,10 +46,48 @@ type ProjectListItem = {
             name?: string;
             code?: string;
         };
+        // project details rows; the "Location" row holds the city / area (e.g. Dubai)
+        items?: { key?: string; value?: string }[];
     };
 };
 
 const ALL_SCOPE = "Country";
+
+// search text in a comparable form: titles saved from Word/web can hold non-breaking or invisible spaces,
+// tabs or double spaces, so "Sidi Abdellah University" typed normally would not match. Display is unchanged.
+const normalizeForSearch = (text?: string) =>
+    (text || "")
+        .replace(/[\u200B-\u200D\uFEFF]/g, "")
+        .replace(/[\s\u00A0]+/g, " ")
+        .trim()
+        .toLowerCase();
+const titleMatches = (item: ProjectListItem, term: string) =>
+    normalizeForSearch(item?.firstSection?.title).includes(normalizeForSearch(term));
+
+// small flag for the country pill (flagcdn.com image, so it looks the same on every OS - emoji flags
+// show as plain letters on Windows). Nothing is shown for a missing / unknown code or if the image fails.
+const CountryFlag = ({ code }: { code?: string }) => {
+    const iso = normalizeCountryCode(code).toLowerCase();
+    const [failed, setFailed] = useState(false);
+    if (!iso || failed) return null;
+    return (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+            src={`https://flagcdn.com/w20/${iso}.png`}
+            srcSet={`https://flagcdn.com/w40/${iso}.png 2x`}
+            alt=""
+            width={16}
+            height={12}
+            loading="lazy"
+            onError={() => setFailed(true)}
+            className="w-4 h-3 object-cover rounded-[2px] shadow-[0_0_0_1px_rgba(0,0,0,0.1)]"
+        />
+    );
+};
+
+// the project's "Location" detail value (city / area), found by its English label like the project page does
+const locationDetailOf = (item: ProjectListItem) =>
+    (item?.secondSection?.items || []).find((row) => /^\s*location\b/i.test(row?.key ?? ""))?.value?.trim() || "";
 
 // dropdown value for a project: its order key ("AE", "AFRICA", ...), or its location name when it has no country code
 const scopeOf = (item: ProjectListItem) => {
@@ -348,9 +386,7 @@ export default function Projects() {
     // dropdown options: one per country (all African countries together as "Africa"), sorted by label
     const countries = useMemo<{ value: string; label: string }[]>(() => {
         // projects that match search (ignore country filter)
-        const searchFiltered = projectList.filter((item) =>
-            item?.firstSection?.title?.toLowerCase().includes(search.toLowerCase())
-        );
+        const searchFiltered = projectList.filter((item) => titleMatches(item, search));
 
         const byScope = new Map<string, string>();
         searchFiltered.forEach((item) => {
@@ -380,12 +416,10 @@ export default function Projects() {
     const filteredProjects = useMemo(() => {
         if (!projectList?.length) return [];
 
-        const normalizedSearch = search.toLowerCase();
-
         const list = projectList.filter((item) => {
             const countryMatch = selectedCountry === ALL_SCOPE || scopeOf(item) === selectedCountry;
 
-            const titleMatch = item?.firstSection?.title?.toLowerCase().includes(normalizedSearch) ?? false;
+            const titleMatch = titleMatches(item, search);
 
             return countryMatch && titleMatch;
         });
@@ -477,10 +511,9 @@ export default function Projects() {
     const [scrollTick, setScrollTick] = useState(0);
 
     const reorderMatchIds = useMemo(() => {
-        const term = search.trim().toLowerCase();
-        if (!reorderMode || !term) return [];
+        if (!reorderMode || !normalizeForSearch(search)) return [];
         return reorderList
-            .filter((item) => item?.firstSection?.title?.toLowerCase().includes(term))
+            .filter((item) => titleMatches(item, search))
             .map((item) => item._id);
     }, [reorderMode, reorderList, search]);
     const reorderMatchSet = useMemo(() => new Set(reorderMatchIds), [reorderMatchIds]);
@@ -1132,11 +1165,24 @@ export default function Projects() {
                                         {item.isHidden && <span className="text-muted-foreground"> (Hidden)</span>}
                                         {/* location / status / sector pills under the name, lined up with the title (past the number) */}
                                         <div className="flex flex-wrap gap-1.5 mt-1 ps-11">
+                                            {/* country pill with its flag, then the project's location (city / area) from its "Location" detail */}
                                             {item.secondSection?.location?.name && (
-                                                <span className="px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700 border border-gray-200">
+                                                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700 border border-gray-200">
+                                                    <CountryFlag code={item.secondSection.location.code} />
                                                     {item.secondSection.location.name}
                                                 </span>
                                             )}
+                                            {(() => {
+                                                const place = locationDetailOf(item);
+                                                // skip when empty or just repeating the country
+                                                if (!place || normalizeForSearch(place) === normalizeForSearch(item.secondSection?.location?.name)) return null;
+                                                return (
+                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-white text-gray-700 border border-gray-300">
+                                                        <MapPin className="w-3 h-3 text-gray-500" />
+                                                        {place}
+                                                    </span>
+                                                );
+                                            })()}
                                             {item.firstSection.status && (
                                                 <span className="px-2 py-0.5 rounded-full text-xs bg-red-50 text-red-600 border border-red-200">
                                                     {item.firstSection.status}
