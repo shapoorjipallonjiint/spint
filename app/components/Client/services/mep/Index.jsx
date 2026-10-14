@@ -26,12 +26,12 @@ const MEP = ({ data, projectData, featuredIds }) => {
         sectionSpacing="section-spacing"
       /> */}
       {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
+      <InnovationSustainability data={data.fourthSection} />
+      {/* <OurApproach data={mepData.approachesData}/> */}
+      {/* Featured Projects stays the last section of the page */}
       {filteredProjects.length > 0 && (
         <FeaturedProjectSlider data={filteredProjects} />
       )}
-
-      <InnovationSustainability data={data.fourthSection} />
-      {/* <OurApproach data={mepData.approachesData}/> */}
     </>
   );
 };

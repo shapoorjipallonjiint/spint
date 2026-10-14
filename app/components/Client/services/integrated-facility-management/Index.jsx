@@ -21,14 +21,12 @@ const IntegratedFacilityManagement = ({ data, projectData, featuredIds }) => {
       <ExpertiseSec data={data.secondSection} />
       <OurApproach data={data.thirdSection} />
       {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
+      {/* directly after OurApproach, which already gives the spacing above */}
+      <WhyChooseSec data={data.fourthSection} noTopSpacing />
+      {/* Featured Projects stays the last section of the page */}
       {filteredProjects.length > 0 && (
         <FeaturedProjectSlider data={filteredProjects} />
       )}
-
-      <WhyChooseSec
-        data={data.fourthSection}
-        noTopSpacing={filteredProjects.length === 0}
-      />
     </>
   );
 };

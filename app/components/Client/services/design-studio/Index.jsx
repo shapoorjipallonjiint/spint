@@ -21,13 +21,11 @@ const DesignStudio = ({ data, projectData, featuredIds }) => {
                 <ExpertiseSec data={data.secondSection} />
                 <DesignExcellence data={data.thirdSection} />
                 {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
-                {filteredProjects.length > 0 ? (
-                    <FeaturedProjectSlider data={filteredProjects} />
-                ) : (
-                    <section className="-mt-6 md:-mt-11 lg:-mt-10 3xl:-mt-22"></section>
-                )}
-
+                {/* pulls LastSection up so the two sections don't stack their spacing */}
+                <section className="-mt-6 md:-mt-11 lg:-mt-10 3xl:-mt-22"></section>
                 <LastSection data={data.fourthSection} />
+                {/* Featured Projects stays the last section of the page */}
+                {filteredProjects.length > 0 && <FeaturedProjectSlider data={filteredProjects} />}
             </main>
             {/* <footer>
       <Footer />
