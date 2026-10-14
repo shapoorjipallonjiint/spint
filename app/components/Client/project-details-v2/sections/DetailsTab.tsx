@@ -390,28 +390,32 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
         )}
 
         <motion.div variants={moveUp(0.1)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`border-black/20 ${tab.accordionTitle ? "border-t" : ""}`} >
-          {(tab.workSections ?? []).map((section, index) => {
-            const isOpen = openSection === index;
+          {(tab.workSections ?? []).map((section, index, sections) => {
+            // a single row is always open (nothing to switch between): no toggling and no arrow
+            const isSingle = sections.length === 1;
+            const isOpen = isSingle || openSection === index;
 
             return (
               <div
                 key={section.title}
-                role="button"
-                tabIndex={0}
+                role={isSingle ? undefined : "button"}
+                tabIndex={isSingle ? undefined : 0}
                 onClick={(event) => {
+                  if (isSingle) return;
                   // taps inside the open content (e.g. while reading the list) don't close the row
                   if (isOpen && (event.target as HTMLElement).closest("[data-section-content]")) return;
                   toggleSection(index);
                 }}
-                onMouseEnter={() => openSectionOnHover(index)}
+                onMouseEnter={() => !isSingle && openSectionOnHover(index)}
                 onMouseLeave={clearHoverTimer}
                 onKeyDown={(event) => {
+                  if (isSingle) return;
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
                     toggleSection(index);
                   }
                 }}
-                className={`group grid lg:grid-cols-[1.2fr_2.4fr_auto] gap-x-8 xl:gap-x-12 py-4 lg:py-6 xl:py-7 cursor-pointer border-b border-black/20 transition-all duration-300 ${isOpen ? "items-start" : "items-center"
+                className={`group grid lg:grid-cols-[1.2fr_2.4fr_auto] gap-x-8 xl:gap-x-12 py-4 lg:py-6 xl:py-7 ${isSingle ? "" : "cursor-pointer"} border-b border-black/20 transition-all duration-300 ${isOpen ? "items-start" : "items-center"
                   }`}
               >
                 <div className="flex justify-between items-center text-start">
@@ -423,7 +427,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                     {section.title}
                   </span>
                   <span
-                    className={`flex lg:hidden w-[35px] h-[35px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 ${isOpen ? "rotate-180" : ""
+                    className={`${isSingle ? "hidden" : "flex lg:hidden"} w-[35px] h-[35px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 ${isOpen ? "rotate-180" : ""
                       }`}
                   >
                     <Image src="/assets/images/about-us/toparrow.svg" width={14} height={14} alt="arrow" />
@@ -456,7 +460,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                   </AnimatePresence>
                 </div>
 
-                <div className={`hidden lg:flex w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 justify-self-end ${isOpen ? "" : "rotate-180" }`} >
+                <div className={`hidden ${isSingle ? "" : "lg:flex"} w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] rounded-full border border-black/20 justify-center items-center transition-transform duration-500 justify-self-end ${isOpen ? "" : "rotate-180" }`} >
                   <Image src="/assets/images/about-us/arrow-top1.svg" width={20} height={20} alt="arrow" className="w-3 h-3 xl:w-[16px] xl:h-[16px]" />
                 </div>
               </div>
