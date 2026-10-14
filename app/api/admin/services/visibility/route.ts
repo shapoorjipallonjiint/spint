@@ -4,7 +4,7 @@ import connectDB from "@/lib/mongodb";
 import { verifyAdmin } from "@/lib/verifyAdmin";
 import ServiceVisibility from "@/app/models/ServiceVisibility";
 import { isKnownServiceSlug, SERVICE_SLUGS } from "@/lib/serviceRegistry";
-import { readHiddenServiceSlugs, readServiceOrder, SERVICE_VISIBILITY_TAG } from "@/lib/serviceVisibility";
+import { readFeaturedProjects, readHiddenServiceSlugs, readServiceOrder, SERVICE_VISIBILITY_TAG } from "@/lib/serviceVisibility";
 
 import DesignStudio from "@/app/models/DesignStudio";
 import Engineering from "@/app/models/Engineering";
@@ -30,11 +30,16 @@ async function serviceIdSlugs() {
     return map;
 }
 
-// everything the website needs: hidden services (by slug and by id) and their order
+// everything the website needs: hidden services (by slug and by id), their order and each one's featured projects
 async function serviceSettings() {
-    const [hiddenServices, serviceOrder, idSlugs] = await Promise.all([readHiddenServiceSlugs(), readServiceOrder(), serviceIdSlugs()]);
+    const [hiddenServices, serviceOrder, idSlugs, featuredProjects] = await Promise.all([
+        readHiddenServiceSlugs(),
+        readServiceOrder(),
+        serviceIdSlugs(),
+        readFeaturedProjects(),
+    ]);
     const hiddenServiceIds = Object.keys(idSlugs).filter((id) => hiddenServices.includes(idSlugs[id]));
-    return { hiddenServices, hiddenServiceIds, serviceOrder, serviceIdSlugs: idSlugs };
+    return { hiddenServices, hiddenServiceIds, serviceOrder, serviceIdSlugs: idSlugs, featuredProjects };
 }
 
 // show the change on the website right away (menus, footers, service pages, project filters / tabs, search)

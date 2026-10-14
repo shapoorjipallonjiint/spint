@@ -5,12 +5,10 @@ import ExpertiseSec from "./sections/ExpertiseSec";
 import DesignExcellence from "./sections/DesignExcellence";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
 import LastSection from "./sections/LastSection";
-const DesignStudio = ({ data, projectData }) => {
-    const filteredProjects = projectData.projects.filter((item) =>
-        item.secondSection.service?.some((service) =>
-            typeof service === "string" ? service === data._id : service._id === data._id,
-        ),
-    );
+import { pickFeaturedProjects } from "@/lib/serviceRegistry";
+const DesignStudio = ({ data, projectData, featuredIds }) => {
+    // projects picked for this service in admin Services > Main (none picked = section not shown)
+    const filteredProjects = pickFeaturedProjects(projectData?.projects, featuredIds);
 
     return (
         <>

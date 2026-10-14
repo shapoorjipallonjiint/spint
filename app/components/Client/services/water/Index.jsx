@@ -5,12 +5,10 @@ import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider
 // import WhyChooseSec from "./sections/WhyChooseSec";
 import { wtrData } from "./data";
 import DivisionExpertise from "./sections/DivisionExpertise";
-const Water = ({ data, projectData }) => {
-    const filteredProjects = projectData.projects.filter((item) =>
-        item.secondSection.service?.some((service) =>
-            typeof service === "string" ? service === data._id : service._id === data._id,
-        ),
-    );
+import { pickFeaturedProjects } from "@/lib/serviceRegistry";
+const Water = ({ data, projectData, featuredIds }) => {
+    // projects picked for this service in admin Services > Main (none picked = section not shown)
+    const filteredProjects = pickFeaturedProjects(projectData?.projects, featuredIds);
 
     return (
         <>

@@ -90,7 +90,8 @@ const FeaturedProjectSlider = ({ data }) => {
                             viewport={{ amount: 0.2, once: true }}
                             className="flex gap-2 2xl:gap-5 "
                         >
-                            <button className="custom-prev  w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20   hover:bg-secondary hover:text-white transition">
+                            {/* Swiper adds swiper-button-disabled at the start / end: shown faded and not clickable */}
+                            <button className="custom-prev  w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20   hover:bg-secondary hover:text-white transition [&.swiper-button-disabled]:opacity-30 [&.swiper-button-disabled]:cursor-default [&.swiper-button-disabled]:pointer-events-none">
                                 <Image
                                     src="/assets/images/project-details/rightarrow.svg"
                                     className={`w-[16px] h-[16px] ${
@@ -101,7 +102,7 @@ const FeaturedProjectSlider = ({ data }) => {
                                     height={14}
                                 />
                             </button>
-                            <button className="custom-next w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20   hover:bg-secondary hover:text-white transition">
+                            <button className="custom-next w-[35px] h-[35px] xl:w-[50px] xl:h-[50px] flex items-center justify-center cursor-pointer rounded-full group border border-black/20   hover:bg-secondary hover:text-white transition [&.swiper-button-disabled]:opacity-30 [&.swiper-button-disabled]:cursor-default [&.swiper-button-disabled]:pointer-events-none">
                                 <Image
                                     src="/assets/images/project-details/rightarrow.svg"
                                     className={`w-[16px] h-[16px] ${
@@ -123,11 +124,9 @@ const FeaturedProjectSlider = ({ data }) => {
                             modules={[EffectFade, Autoplay, Navigation]}
                             spaceBetween={40}
                             slidesPerView={1}
-                            loop={true}
+                            // no loop: the slider stops at the first / last project and the arrows are disabled there
+                            loop={false}
                             centeredSlides={false}
-                            // keep one extra slide after the visible ones, otherwise the peeking slide on the right is
-                            // empty whenever the last slide of the set reaches the second position
-                            loopAdditionalSlides={1}
                             watchSlidesProgress={true}
                             navigation={{
                                 prevEl: ".custom-prev",
@@ -140,6 +139,8 @@ const FeaturedProjectSlider = ({ data }) => {
                               delay: 4000,
                               disableOnInteraction: false,
                               waitForTransition: true,
+                              // stay on the last project instead of jumping back to the first
+                              stopOnLastSlide: true,
                             }}
                             breakpoints={{
                                 600: {
@@ -156,8 +157,11 @@ const FeaturedProjectSlider = ({ data }) => {
                                 },
                             }}
                             className="!overflow-visible"
+                            // the next project may peek out past the container, but slides leaving at the start side are cut
+                            // at the slider edge (left; right on the Arabic site, where the slider runs right to left)
+                            style={{ clipPath: isArabic ? "inset(-50% 0 -50% -100vw)" : "inset(-50% -100vw -50% 0)" }}
                         >
-                            {[...t,...t].map((item, i) => (
+                            {t.map((item, i) => (
                                 <SwiperSlide key={i}>
                                     <div>
                                         <LangLink href={`/projects/${item.slug}`}>
@@ -227,7 +231,10 @@ const FeaturedProjectSlider = ({ data }) => {
                                                             }`}
                                                         >
                                                             <span>Sector: </span>
-                                                            {item.secondSection?.sector?.name}
+                                                            {/* projects can have several sectors (a list); older data may hold a single one */}
+                                                            {(Array.isArray(item.secondSection?.sector)
+                                                                ? item.secondSection.sector.map((s) => s?.name).filter(Boolean).join(", ")
+                                                                : item.secondSection?.sector?.name) || ""}
                                                         </h4>
                                                     </div>
                                                 </div>
@@ -242,27 +249,10 @@ const FeaturedProjectSlider = ({ data }) => {
                                                                     : "initial-visible"
                                                             }`}
                                                         >
-                                                            <span>BUA (Sq.ft): </span>
-                                                            {item.secondSection.items.find((i) => i.key === "BUA (Sq.ft)")
-                                                                ?.value ?? ""}
+                                                            <span>Location: </span>
+                                                            {item.secondSection?.location?.name}
                                                         </h4>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div className="border-b border-cmnbdr py-1">
-                                                <div className="overflow-hidden">
-                                                    <h4
-                                                        className={`text-19 leading-[2.052631578947368] font-light text-paragraph ${
-                                                            !hasScrolledIntoView
-                                                                ? "initial-hidden-text"
-                                                                : animatingSlide === i || initialAnimating
-                                                                ? "animate-slide-text-3"
-                                                                : "initial-visible"
-                                                        }`}
-                                                    >
-                                                        <span>Location: </span>
-                                                        {item.secondSection.location?.name}
-                                                    </h4>
                                                 </div>
                                             </div>
                                         </div>

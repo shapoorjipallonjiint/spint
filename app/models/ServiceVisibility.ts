@@ -8,6 +8,9 @@ const serviceVisibilitySchema = new mongoose.Schema(
         hiddenServices: { type: [String], default: [] },
         // display order of the services on the website (service slugs); empty = never reordered, lists keep their own order
         serviceOrder: { type: [String], default: [] },
+        // projects picked for each service's "Featured Projects" section: service slug -> project ids (admin order).
+        // No default: missing means nothing picked (section not shown). Saving one service sets only its own key.
+        featuredProjects: { type: Map, of: [String], default: undefined },
     },
     { timestamps: true }
 );

@@ -4,21 +4,12 @@ import ExpertiseSec from "./sections/ExpertiseSec";
 import OurApproach from "./sections/OurApproach";
 import FeaturedProjectSlider from "./sections/FeaturedProjectSlider";
 // import WhyChooseSec from "./sections/WhyChooseSec";
-// how many linked projects the Featured Projects slider shows (in the admin's project order)
-const FEATURED_PROJECTS_LIMIT = 10;
+import { pickFeaturedProjects } from "@/lib/serviceRegistry";
 
-const EngineeringConstruction = ({ data, projectData }) => {
-  // projects tagged with this service in the admin (secondSection.service[].serviceId), that have a thumbnail
-  const featuredProjects = (projectData?.projects || [])
-    .filter((project) =>
-      (project?.secondSection?.service || []).some(
-        (service) =>
-          String(service?.serviceId?._id ?? service?.serviceId ?? "") ===
-          String(data?._id),
-      ),
-    )
+const EngineeringConstruction = ({ data, projectData, featuredIds }) => {
+  // projects picked for this service in admin Services > Main (none picked = section not shown), that have a thumbnail
+  const featuredProjects = pickFeaturedProjects(projectData?.projects, featuredIds)
     .filter((project) => project?.thumbnail)
-    .slice(0, FEATURED_PROJECTS_LIMIT)
     .map((project) => ({
       image: project.thumbnail,
       imageAlt: project.thumbnailAlt,

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { isServiceHidden } from "@/lib/serviceVisibility";
+import { getFeaturedProjectIds, isServiceHidden } from "@/lib/serviceVisibility";
 import Index from '@/app/components/Client/services/design-studio/Index'
 import React from 'react'
 
@@ -12,8 +12,10 @@ const page = async() => {
 
   const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project`, { next: { revalidate: 60 } });
   const projectData = await projectResponse.json();
+  // projects picked in admin Services > Main for this page's Featured Projects section
+  const featuredIds = await getFeaturedProjectIds("design-studio");
   return (
-    <Index data={data.data} projectData={projectData.data}/>
+    <Index data={data.data} projectData={projectData.data} featuredIds={featuredIds}/>
   )
 }
 

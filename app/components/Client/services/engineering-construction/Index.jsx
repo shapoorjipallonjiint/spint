@@ -7,15 +7,11 @@ import OurApproach from "./sections/OurApproach";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
 import WhyChooseSec from "./sections/WhyChooseSec";
 import { engineeringData } from "./data";
-const EngineeringConstruction = ({ data, projectData }) => {
+import { pickFeaturedProjects } from "@/lib/serviceRegistry";
+const EngineeringConstruction = ({ data, projectData, featuredIds }) => {
 
-    const filteredProjects = projectData.projects.filter((item) =>
-        item.secondSection.service?.some((service) =>
-          typeof service === "string"
-            ? service === data._id
-            : service._id === data._id
-        )
-      );
+    // projects picked for this service in admin Services > Main (none picked = section not shown)
+    const filteredProjects = pickFeaturedProjects(projectData?.projects, featuredIds);
       
 
     return (
