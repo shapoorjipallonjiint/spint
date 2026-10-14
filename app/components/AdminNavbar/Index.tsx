@@ -57,7 +57,18 @@ const AdminNavbar = () => {
         //     { name: country.title, href: `/admin/global-presence/${country._id}` }
         //   )),
         // ] },
-        { name: "Projects", href: "/admin/projects", icon: Workflow },
+        {
+            name: "Projects",
+            href: "#####",
+            icon: Workflow,
+            hasChild: true,
+            children: [
+                // projects page banner, first section and SEO
+                { name: "Main", href: "/admin/projects/main" },
+                // add / edit / hide / reorder projects (also highlighted on the add and edit pages)
+                { name: "Project List", href: "/admin/projects" },
+            ],
+        },
         { name: "News", href: "/admin/news", icon: NewspaperIcon },
         {
             name: "Services",

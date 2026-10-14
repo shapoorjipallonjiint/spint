@@ -137,6 +137,10 @@ function ClientSideLink({
         pathname.startsWith(`${child.href}/`)
     );
 
+  const activeChildHref = children
+    ?.filter((child) => pathname === child.href || pathname.startsWith(`${child.href}/`))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
+
   // AUTO-OPEN DROPDOWN ON REFRESH / ROUTE CHANGE
   useEffect(() => {
     if (isParentActive && hasChild) {
@@ -193,9 +197,8 @@ function ClientSideLink({
       {isOpen && children && (
         <div className="flex pl-14 flex-col items-start gap-2">
           {children.map((item, index) => {
-            const isChildActive =
-              pathname === item.href ||
-              pathname.startsWith(`${item.href}/`);
+            // only the closest matching child is active (/admin/projects/main is Main, not also Project List)
+            const isChildActive = item.href === activeChildHref;
 
             return (
               <div key={index} className={cn("flex items-center gap-2", item.muted && "opacity-50")}>
