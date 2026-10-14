@@ -15,12 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import AdminItemContainer from "@/app/components/common/AdminItemContainer";
-import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { ImageUploader } from "@/components/ui/image-uploader";
-// import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { Search, Eye, EyeOff, MapPin } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
@@ -95,27 +90,14 @@ const scopeOf = (item: ProjectListItem) => {
     return orderKeyForCountry(location?.code) || (location?.name ? `name:${location.name}` : "");
 };
 
-interface ProjectPageProps {
-    metaTitle: string;
-    metaTitle_ar: string;
-    metaDescription: string;
-    metaDescription_ar: string;
-    banner: string;
-    bannerAlt: string;
-    bannerAlt_ar: string;
-    pageTitle: string;
-    pageTitle_ar: string;
-    firstSection: {
-        items: {
-            number: string;
-            number_ar: string;
-            value: string;
-            value_ar: string;
-        }[];
-    };
-}
+const PAGE_TABS = [
+    { key: "projects", label: "Projects" },
+    { key: "sectors", label: "Sectors" },
+    { key: "services", label: "Services" },
+] as const;
 
 export default function Projects() {
+    const [activeTab, setActiveTab] = useState<(typeof PAGE_TABS)[number]["key"]>("projects");
     const [selectedCountry, setSelectedCountry] = useState(ALL_SCOPE);
     const [search, setSearch] = useState("");
 
@@ -141,23 +123,6 @@ export default function Projects() {
     const [serviceList, setServiceList] = useState<{ _id: string; pageTitle: string; name_ar: string }[]>([]);
 
     const router = useRouter();
-
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        control,
-        formState: { errors },
-    } = useForm<ProjectPageProps>();
-
-    const {
-        fields: firstSectionItems,
-        append: firstSectionAppend,
-        remove: firstSectionRemove,
-    } = useFieldArray({
-        control,
-        name: "firstSection.items",
-    });
 
     const handleFetchProjects = async () => {
         try {
@@ -265,11 +230,17 @@ export default function Projects() {
 
     const handleFetchService = async () => {
         try {
-            const response = await fetch("/api/admin/services");
+            // services hidden in Services > Main are left out of this list
+            const [response, visibility] = await Promise.all([
+                fetch("/api/admin/services"),
+                fetch("/api/admin/services/visibility", { cache: "no-store" })
+                    .then((res) => (res.ok ? res.json() : null))
+                    .catch(() => null),
+            ]);
             if (response.ok) {
                 const data = await response.json();
-                setServiceList(data.data);
-                console.log(data.data)
+                const hiddenIds: string[] = visibility?.data?.hiddenServiceIds || [];
+                setServiceList((data.data || []).filter((item: { _id: string }) => !hiddenIds.includes(String(item._id))));
             } else {
                 const data = await response.json();
                 toast.error(data.message);
@@ -333,54 +304,12 @@ export default function Projects() {
         }
     };
 
-    const onSubmit = async (data: ProjectPageProps) => {
-        try {
-            const response = await fetch(`/api/admin/project`, {
-                method: "PATCH",
-                body: JSON.stringify(data),
-            });
-            if (response.ok) {
-                const data = await response.json();
-                toast.success(data.message);
-                // router.push("/admin/commitment");
-            }
-        } catch (error) {
-            console.log("Error in submitting project details", error);
-        }
-    };
-
-    const fetchProjectDetails = async () => {
-        try {
-            const response = await fetch("/api/admin/project");
-            if (response.ok) {
-                const data = await response.json();
-                setValue("metaTitle", data.data.metaTitle);
-                setValue("metaTitle_ar", data.data.metaTitle_ar);
-                setValue("metaDescription", data.data.metaDescription);
-                setValue("metaDescription_ar", data.data.metaDescription_ar);
-                setValue("banner", data.data.banner);
-                setValue("bannerAlt", data.data.bannerAlt);
-                setValue("bannerAlt_ar", data.data.bannerAlt);
-                setValue("pageTitle", data.data.pageTitle);
-                setValue("pageTitle_ar", data.data.pageTitle_ar);
-                setValue("firstSection", data.data.firstSection);
-                setValue("firstSection.items", data.data.firstSection.items);
-            } else {
-                const data = await response.json();
-                toast.error(data.message);
-            }
-        } catch (error) {
-            console.log("Error fetching project details", error);
-        }
-    };
-
     useEffect(() => {
         handleFetchProjects();
         handleFetchProjectOrders();
         handleFetchSector();
         // handleFetchCountry();
         handleFetchService();
-        fetchProjectDetails();
     }, []);
 
     // dropdown options: one per country (all African countries together as "Africa"), sorted by label
@@ -560,262 +489,40 @@ export default function Projects() {
     };
 
     return (
-        <div className="flex flex-col gap-5">
-            <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-10">
-                {/*English Version */}
-                <div className="flex flex-col gap-5">
-                    <AdminItemContainer>
-                        <Label className="" main>
-                            Banner Section
-                        </Label>
-                        <div className="p-5 rounded-md flex flex-col gap-5">
-                            <div className="grid grid-cols-2 gap-2 relative pb-5">
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col gap-2">
-                                        <Label className="font-bold">Image</Label>
-                                        <Controller
-                                            name={`banner`}
-                                            control={control}
-                                            rules={{ required: "Image is required" }}
-                                            render={({ field }) => (
-                                                <ImageUploader value={field.value} onChange={field.onChange} />
-                                            )}
-                                        />
-                                        {errors.banner && <p className="text-red-500">{errors.banner?.message}</p>}
-                                    </div>
+        // fills the admin content area exactly: the tabs stay put and only the lists inside scroll
+        <div className="h-full flex flex-col gap-5">
+            {/* one section at a time: Projects (default), Sectors or Services */}
+            <div className="shrink-0 inline-flex w-fit rounded-md border overflow-hidden">
+                {PAGE_TABS.map((tab, index) => (
+                    <button
+                        key={tab.key}
+                        type="button"
+                        onClick={() => setActiveTab(tab.key)}
+                        className={`px-4 py-2 text-sm cursor-pointer ${index > 0 ? "border-l" : ""} ${
+                            activeTab === tab.key ? "bg-primary text-white" : "bg-white"
+                        }`}
+                    >
+                        {tab.label}
+                        <span className={`ms-1.5 text-xs ${activeTab === tab.key ? "text-white/70" : "text-black/40"}`}>
+                            {tab.key === "projects"
+                                ? projectList.length
+                                : tab.key === "sectors"
+                                  ? sectorList.length
+                                  : serviceList.length}
+                        </span>
+                    </button>
+                ))}
+            </div>
 
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="font-bold">Alt Tag</Label>
-                                            <Input
-                                                type="text"
-                                                placeholder="Alt Tag"
-                                                {...register(`bannerAlt`, {
-                                                    required: "Value is required",
-                                                })}
-                                            />
-                                            {errors.bannerAlt && <p className="text-red-500">{errors.bannerAlt.message}</p>}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="font-bold">Title</Label>
-                                            <Input
-                                                type="text"
-                                                placeholder="Title"
-                                                {...register(`pageTitle`, {
-                                                    required: "Value is required",
-                                                })}
-                                            />
-                                            {errors.pageTitle && <p className="text-red-500">{errors.pageTitle.message}</p>}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </AdminItemContainer>
-
-                    <AdminItemContainer>
-                        <Label className="" main>
-                            First Section
-                        </Label>
-                        <div className="p-5 flex flex-col gap-2">
-                            <Label>Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md">
-                                {firstSectionItems.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => firstSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="pl-3 font-bold">Number</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Title"
-                                                    {...register(`firstSection.items.${index}.number`)}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="pl-3 font-bold">Value</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Title"
-                                                    {...register(`firstSection.items.${index}.value`)}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        firstSectionAppend({ number: "", value: "", number_ar: "", value_ar: "" })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
-                            </div>
-                        </div>
-                    </AdminItemContainer>
-
-                    <AdminItemContainer>
-                        <Label main>SEO</Label>
-                        <div className="flex flex-col gap-2 p-5">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Title</Label>
-                                <Input type="text" placeholder="" {...register("metaTitle")} />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Description</Label>
-                                <Input type="text" placeholder="" {...register("metaDescription")} />
-                            </div>
-                        </div>
-                    </AdminItemContainer>
-                </div>
-
-                {/*Arabic Version */}
-                <div className="flex flex-col gap-5">
-                    <AdminItemContainer>
-                        <Label className="" main>
-                            Banner Section
-                        </Label>
-                        <div className="p-5 rounded-md flex flex-col gap-5">
-                            <div className="grid grid-cols-2 gap-2 relative pb-5">
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col gap-2">
-                                        <Label className="font-bold">Image</Label>
-                                        <Controller
-                                            name={`banner`}
-                                            control={control}
-                                            rules={{ required: "Image is required" }}
-                                            render={({ field }) => (
-                                                <ImageUploader value={field.value} onChange={field.onChange} />
-                                            )}
-                                        />
-                                        {errors.banner && <p className="text-red-500">{errors.banner.message}</p>}
-                                    </div>
-
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="font-bold">Alt Tag</Label>
-                                            <Input type="text" placeholder="Alt Tag" {...register(`bannerAlt_ar`)} />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="font-bold">Title</Label>
-                                            <Input type="text" placeholder="Title" {...register(`pageTitle_ar`)} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </AdminItemContainer>
-
-                    <AdminItemContainer>
-                        <Label className="" main>
-                            First Section
-                        </Label>
-                        <div className="p-5 flex flex-col gap-2">
-                            <Label>Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md">
-                                {firstSectionItems.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => firstSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="pl-3 font-bold">Number</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Title"
-                                                    {...register(`firstSection.items.${index}.number_ar`)}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="pl-3 font-bold">Value</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Title"
-                                                    {...register(`firstSection.items.${index}.value_ar`)}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        firstSectionAppend({ number: "", value: "", number_ar: "", value_ar: "" })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
-                            </div>
-                        </div>
-                    </AdminItemContainer>
-
-                    <AdminItemContainer>
-                        <Label main>SEO</Label>
-                        <div className="flex flex-col gap-2 p-5">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Title</Label>
-                                <Input type="text" placeholder="" {...register("metaTitle_ar")} />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Description</Label>
-                                <Input type="text" placeholder="" {...register("metaDescription_ar")} />
-                            </div>
-                        </div>
-                    </AdminItemContainer>
-                </div>
-
-                <div className="col-span-2">
-                    <Button type="submit" className="cursor-pointer text-white text-[16px] w-full">
-                        Submit
-                    </Button>
-                </div>
-            </form>
-
-            <div className="h-screen grid grid-cols-2 gap-5">
-                <div className="flex flex-col gap-2 h-screen">
-                    <div className="h-1/2 w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white">
+            <div className="flex-1 min-h-0">
+                {activeTab !== "projects" && (
+                <div className="h-full">
+                    {activeTab === "services" && (
+                    <div className="h-full w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white flex flex-col">
                         <div className="flex justify-between border-b-2 border-black/20 pb-2">
                             <Label className="text-sm font-bold">Service</Label>
                         </div>
-                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[80%]">
+                        <div className="mt-2 flex flex-col gap-2 overflow-y-auto flex-1 min-h-0 pb-2">
                             {serviceList.map((item) => (
                                 <div
                                     className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
@@ -826,8 +533,10 @@ export default function Projects() {
                             ))}
                         </div>
                     </div>
+                    )}
 
-                    <div className="h-1/2 w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white">
+                    {activeTab === "sectors" && (
+                    <div className="h-full w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white flex flex-col">
                         <div className="flex justify-between border-b-2 border-black/20 pb-2">
                             <Label className="text-sm font-bold">Sector</Label>
                             <Dialog>
@@ -870,7 +579,7 @@ export default function Projects() {
                                 </DialogContent>
                             </Dialog>
                         </div>
-                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[80%]">
+                        <div className="mt-2 flex flex-col gap-2 overflow-y-auto flex-1 min-h-0 pb-2">
                             {sectorList.map((item) => (
                                 <div
                                     className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
@@ -943,6 +652,7 @@ export default function Projects() {
                             ))}
                         </div>
                     </div>
+                    )}
 
                     {/* <div className="h-1/2 w-full p-5 shadow-md border-gray-300 rounded-md overflow-y-hidden bg-white">
             <div className="flex justify-between border-b-2 pb-2">
@@ -1022,8 +732,10 @@ export default function Projects() {
             </div>
           </div> */}
                 </div>
+                )}
 
-                <div className="h-screen w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white flex flex-col">
+                {activeTab === "projects" && (
+                <div className="h-full w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white flex flex-col">
                     <div className="border-b-2 border-black/20 pb-3">
                         <div className="flex justify-between items-center">
                             {/* LEFT: Title */}
@@ -1303,6 +1015,7 @@ export default function Projects() {
                         </div>
                     )}
                 </div>
+                )}
             </div>
 
             {/* delete confirmation: the project is deleted only on "Yes"; "No", Esc or clicking outside cancels */}
