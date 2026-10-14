@@ -24,13 +24,13 @@ const EngineeringConstruction = ({ data, projectData, featuredIds }) => {
             <ExpertiseSec data={data.secondSection} />
             <OurApproach data={data.thirdSection} />
             {/* <FeaturedProjectSlider data={projectData.projects.filter((item)=> item.secondSection.service._id == data._id)} /> */}
+            <WhyChooseSec data={data.fourthSection} />
+            {/* Featured Projects stays the last section of the page */}
             {filteredProjects.length > 0 && (
                 <FeaturedProjectSlider
                     data={filteredProjects}
                 />
             )}
-
-            <WhyChooseSec data={data.fourthSection} />
             {/* <footer>
         <Footer />
       </footer> */}
