@@ -7,6 +7,7 @@ import { useApplyLang } from "@/lib/applyLang";
 import { useState, useEffect } from "react";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import PdfOpenList, { canShowPdfInline } from "@/app/components/common/PdfOpenList";
 
 // Created once at module level; creating it inside the component remounts the images on every render
 const MotionImage = motion.create(Image);
@@ -75,7 +76,7 @@ const Certificates = ({ data }) => {
                             {item.accreditations.map((singleItem, index) => (
                                 <motion.div
                                     key={index}
-                                    variants={moveUp(0.5 + index * 0.15)}
+                                    variants={moveUp(index * 0.07)}
                                     initial="hidden"
                                     whileInView="show"
                                     viewport={{ once: true }}
@@ -152,8 +153,16 @@ const Certificates = ({ data }) => {
                                 </button>
                             </div>
 
-                            {/* PDF */}
+                            {/* PDF (phones can't show a PDF in a frame: list of documents to open instead) */}
                             <div className="flex-1 bg-white relative">
+                                {!canShowPdfInline() ? (
+                                    <PdfOpenList
+                                        files={currentItem.accreditations.map((a) => ({ name: a.title, file: a.file }))}
+                                        activeIndex={pdfIndex}
+                                        isArabic={isArabic}
+                                    />
+                                ) : (
+                                <>
                                 {isPdfLoading && (
                                     <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
                                         <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin" />
@@ -168,10 +177,12 @@ const Certificates = ({ data }) => {
                                     className="w-full h-full"
                                     onLoad={() => setIsPdfLoading(false)}
                                 />
+                                </>
+                                )}
                             </div>
 
                             {/* Navigation */}
-                            {currentItem.accreditations.length > 1 && (
+                            {canShowPdfInline() && currentItem.accreditations.length > 1 && (
                                 <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
                                     <button
                                         onClick={prevPdf}

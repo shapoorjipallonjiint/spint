@@ -51,7 +51,7 @@ const Banner = ({ title, image, imageAlt, data }) => {
         <section
             ref={sectionRef}
             // pulled up under the fixed nav (--nav-h is set by the navbar), so the heights below include the header like the Figma frames
-            className="relative w-full mt-[calc(-1*var(--nav-h,0px))] h-[200px] md:h-[280px] lg:h-[350px] 2xl:h-[480px] 3xl:h-[550px] overflow-hidden bg-secondary/20"
+            className="relative w-full mt-[calc(-1*var(--nav-h,0px))] h-[350px] 2xl:h-[480px] 3xl:h-[550px] overflow-hidden bg-secondary/20"
         >
             {/* Background Image */}
             <div ref={imgRef} className="absolute inset-0 w-full h-full z-0">

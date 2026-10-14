@@ -41,6 +41,31 @@ export default function TabStyle1({ data, justify = false }) {
     const [activeId, setActiveId] = useState(t[1]?._id || t[0]._id);
     const tabsContainerRef = useRef(null);
     const itemRefs = useRef({});
+    // mobile: the tab just tapped, scrolled to when its content has opened
+    const scrollTargetRef = useRef(null);
+
+    // smoothly brings the tapped tab's start to the top, just below the fixed header.
+    // Runs after the open / close animations so the position no longer shifts; native smooth
+    // scrollIntoView gets cancelled by Lenis, so scroll through Lenis when it's running
+    const scrollToItem = (id) => {
+        const el = itemRefs.current[id];
+        if (!el) return;
+        // bottom of whatever fixed / sticky bar covers the top of the screen (the mobile header), if any
+        let headerBottom = 0;
+        for (let node = document.elementFromPoint(window.innerWidth / 2, 1); node && node !== document.body; node = node.parentElement) {
+            const position = getComputedStyle(node).position;
+            if (position === "fixed" || position === "sticky") {
+                const bottom = node.getBoundingClientRect().bottom;
+                // a full-screen fixed layer (background, overlay) is not a header
+                if (bottom < window.innerHeight * 0.4) headerBottom = Math.max(0, bottom);
+                break;
+            }
+        }
+        const offset = headerBottom + 16;
+        const lenis = window.__lenis;
+        if (lenis) lenis.scrollTo(el, { offset: -offset, duration: 0.9 });
+        else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: "smooth" });
+    };
 
     const [ismobile, setIsmobile] = useState(false);
 
@@ -93,15 +118,8 @@ useEffect(() => {
                                     viewport={{ amount: 0.2, once: true }}
                                     onClick={() => {
                                         setActiveId(tab._id);
-
-                                        if (window.innerWidth < 768) {
-                                            setTimeout(() => {
-                                                itemRefs.current[tab._id]?.scrollIntoView({
-                                                    behavior: "smooth",
-                                                    block: "start",
-                                                });
-                                            }, 250); // wait for accordion animation
-                                        }
+                                        // mobile: scrolled to once the accordion has finished opening (see onAnimationComplete)
+                                        if (window.innerWidth < 768) scrollTargetRef.current = tab._id;
                                     }}
                                     className={`tab-style1-btn w-full pb-4 flex flex-col  ${
                                         isArabic ? "text-right" : "text-left"
@@ -127,8 +145,16 @@ useEffect(() => {
                                                 animate={{ height: "auto", opacity: 1 }}
                                                 exit={{ height: 0, opacity: 0 }}
                                                 transition={{ duration: 0.45, ease: "easeOut" }}
-                                                className="px-4 py-6 border border-white/20"
+                                                onAnimationComplete={() => {
+                                                    if (scrollTargetRef.current !== tab._id) return;
+                                                    scrollTargetRef.current = null;
+                                                    scrollToItem(tab._id);
+                                                }}
+                                                // height animates on this clipped box (no padding / border of its own, so it
+                                                // starts and ends at 0 without a jump); the padded card is inside it
+                                                className="overflow-hidden"
                                             >
+                                                <div className="px-4 py-6 border border-white/20">
                                                 {/* Image */}
                                                 <div className="mb-4">
                                                     <TabImages
@@ -147,6 +173,7 @@ useEffect(() => {
                                                     dangerouslySetInnerHTML={{ __html: withNormalSpaces(activeTab.description) }}
                                                     className={`tab-style1-description ${justify ? "text-justify" : ""}`}
                                                 ></div>
+                                                </div>
                                             </motion.div>
                                         )}
                                     </AnimatePresence>

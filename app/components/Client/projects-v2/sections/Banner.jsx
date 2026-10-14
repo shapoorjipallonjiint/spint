@@ -93,7 +93,7 @@ const Banner = ({ banner, bannerAlt, pageTitle, data }) => {
         <section
             ref={sectionRef}
             // same height setup as common/Banner: pulled up under the fixed nav (--nav-h), so the heights include the header
-            className="relative w-full mt-[calc(-1*var(--nav-h,0px))] h-[200px] md:h-[280px] lg:h-[350px] 2xl:h-[480px] 3xl:h-[550px] bg-secondary/20 overflow-hidden"
+            className="relative w-full mt-[calc(-1*var(--nav-h,0px))] h-[350px] 2xl:h-[480px] 3xl:h-[550px] bg-secondary/20 overflow-hidden"
         >
             <Image
                 width={1500}

@@ -146,30 +146,33 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                           )}
                         </div>
 
-                        {/* SUBMENU */}
-                        <AnimatePresence>
-                          {hasSubmenu && openSubmenu === item.title && (
-                            <motion.ul
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className={`${isArabic ? "pr-4" : "pl-4"} mt-3 space-y-[10px]`}
-                            >
-                              {item.submenu.map((sub, i) => (
-                                <li key={i}>
-                                  <LangLink
-                                    href={sub.href}
-                                    onClick={onClose} 
-                                    className="text-14 font-light hover:font-bold transition-all duration-300 block"
-                                  >
-                                    {sub.label}
-                                  </LangLink>
-                                </li>
-                              ))}
-                            </motion.ul>
-                          )}
-                        </AnimatePresence>
+                        {/* SUBMENU: CSS grid row 0fr -> 1fr animates to the exact content height (a measured
+                            height: "auto" animation snapped at the end of opening); inert while closed so the
+                            hidden links can't be tabbed to */}
+                        {hasSubmenu && (
+                          <div
+                            className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                              openSubmenu === item.title ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                            }`}
+                            inert={openSubmenu !== item.title}
+                          >
+                            <div className="overflow-hidden min-h-0">
+                              <ul className={`${isArabic ? "pr-4" : "pl-4"} pt-3 flex flex-col gap-[10px]`}>
+                                {item.submenu.map((sub, i) => (
+                                  <li key={i}>
+                                    <LangLink
+                                      href={sub.href}
+                                      onClick={onClose}
+                                      className="text-14 font-light hover:font-bold transition-all duration-300 block"
+                                    >
+                                      {sub.label}
+                                    </LangLink>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </motion.li>
                   );

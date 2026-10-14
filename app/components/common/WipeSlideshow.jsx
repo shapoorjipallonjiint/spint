@@ -13,7 +13,8 @@ const FULL = "inset(0% 0% 0% 0%)";
 // isCurrent tells the slide whether it is the one showing (e.g. to run a nested slideshow only then).
 // index: pass it to control the slide from outside (no autoplay); leave it out to autoplay every `delay` ms.
 // active: autoplay only runs while true; when it turns true again it restarts from the first slide.
-const WipeSlideshow = ({ items, renderSlide, delay = 3000, isArabic = false, index, active = true }) => {
+// className: extra classes for the outer box (e.g. h-full to fill a fixed-height parent).
+const WipeSlideshow = ({ items, renderSlide, delay = 3000, isArabic = false, index, active = true, className = "" }) => {
     const count = items?.length || 0;
     const controlled = index !== undefined;
     const [autoIndex, setAutoIndex] = useState(0);
@@ -48,7 +49,7 @@ const WipeSlideshow = ({ items, renderSlide, delay = 3000, isArabic = false, ind
     if (count === 1) return renderSlide(items[0], 0, false, true);
 
     return (
-        <div className="relative overflow-hidden">
+        <div className={`relative overflow-hidden ${className}`}>
             {/* sizes the box exactly like a single slide would */}
             <div className="invisible" aria-hidden="true">
                 {renderSlide(items[0], 0, false, false)}

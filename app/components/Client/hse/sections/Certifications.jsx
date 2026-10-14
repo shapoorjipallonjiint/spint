@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import "swiper/css";
+import PdfOpenList, { canShowPdfInline } from "@/app/components/common/PdfOpenList";
 
 const Certifications = ({ data }) => {
   const isArabic = useIsPreferredLanguageArabic();
@@ -306,8 +307,12 @@ const Certifications = ({ data }) => {
                     <button onClick={closeModal} className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full">✕</button>
                   </div>
 
-                  {/* PDF Display */}
+                  {/* PDF Display (phones can't show a PDF in a frame: list of documents to open instead) */}
                   <div className="flex-1 bg-white relative">
+                    {!canShowPdfInline() ? (
+                      <PdfOpenList files={t.items[itemIndex].files} activeIndex={pdfIndex} isArabic={isArabic} />
+                    ) : (
+                    <>
                     {isPdfLoading && (
                       <div className="absolute inset-0 z-10 flex items-center justify-center bg-white">
                         {/* Loader */}
@@ -323,11 +328,13 @@ const Certifications = ({ data }) => {
                       className="w-full h-full"
                       onLoad={() => setIsPdfLoading(false)}
                     />
+                    </>
+                    )}
                   </div>
 
 
                   {/* Internal PDF Nav Arrows */}
-                  {t.items[itemIndex].files.length > 1 && (
+                  {canShowPdfInline() && t.items[itemIndex].files.length > 1 && (
                     <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
                       <button onClick={prevPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>←</button>
                       <button onClick={nextPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>→</button>

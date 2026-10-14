@@ -54,7 +54,8 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
     /* ================= RESPONSIVE CHECK ================= */
     useEffect(() => {
-        const check = () => setIsMobile(window.matchMedia("(max-width: 767px)").matches);
+        // accordion up to lg (< 1024px), two columns with the side image from lg
+        const check = () => setIsMobile(window.matchMedia("(max-width: 1023px)").matches);
         check();
         window.addEventListener("resize", check);
         return () => window.removeEventListener("resize", check);
@@ -106,9 +107,9 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                     </motion.p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px] items-center">
+                <div className="grid lg:grid-cols-[0.8fr_1fr] 2xl:grid-cols-[600px_auto] 3xl:grid-cols-[916px_auto] gap-8 xl:gap-10 2xl:gap-18 3xl:gap-[107px] items-center">
                     {/* ================= IMAGE (DESKTOP ONLY) ================= */}
-                    <div ref={imageRef} className="hidden md:block relative h-[250px] md:h-full overflow-hidden">
+                    <div ref={imageRef} className="hidden lg:block relative h-[250px] lg:h-full overflow-hidden">
                         {/* same clip-path wipe as the other image switchers (TabStyle1, Legacy, Careers, HSE) */}
                         <WipeSlideshow
                             items={t.items}
@@ -183,7 +184,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
                                     {/* TITLE */}
                                     <span
-                                        className={`inline-block transition-transform pe-[20px] md:pe-0 ${
+                                        className={`inline-block transition-transform pe-[20px] lg:pe-0 ${
                                             isActive(index)
                                                 ? isArabic
                                                     ? "-translate-x-[20px] xl:-translate-x-[43px]  "
@@ -203,9 +204,9 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.35 }}
-                                        className={`mt-4 w-full h-[200px] object-cover ps-[20px] md:ps-0 ${
+                                        className={`mt-4 w-full h-[200px] object-cover ps-[20px] lg:ps-0 ${
                                             isActive(index)
-                                                ?    " ps-[20px] md:ps-0" 
+                                                ?    " ps-[20px] lg:ps-0" 
                                                 : " "
                                         }`}
                                     />
@@ -219,7 +220,7 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                             marginTop: isActive(index) ? 10 : 0,
                                         }}
                                         transition={{ duration: 0.25, ease: "easeOut" }}
-                                        className={`overflow-hidden text-sm lg:text-base text-paragraph font-light leading-relaxed pe-[20px] md:pe-0 ${
+                                        className={`overflow-hidden text-sm lg:text-base text-paragraph font-light leading-relaxed pe-[20px] lg:pe-0 ${
                                             isActive(index)
                                                 ? isArabic
                                                     ? "-translate-x-[20px] xl:-translate-x-[43px]  "

@@ -135,7 +135,11 @@ const CultureSection = ({ data }) => {
                     ref={clipPathRef}
                     className="absolute h-full inset-0"
                     style={{
-                        backgroundImage: isArabic
+                        // mobile: an even dark layer over the full width (the text spans the whole width there);
+                        // larger screens: the side gradient behind the text column
+                        backgroundImage: isMobile
+                            ? `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${image})`
+                            : isArabic
                             ? `linear-gradient(
         270deg,
         rgba(0, 0, 0, 0.8) 7.22%,
