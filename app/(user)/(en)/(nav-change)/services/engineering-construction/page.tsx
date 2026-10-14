@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { isServiceHidden } from "@/lib/serviceVisibility";
+import { getFeaturedProjectIds, isServiceHidden } from "@/lib/serviceVisibility";
 import Index from '@/app/components/Client/services/engineering-construction-v2/Index'
 
 const page = async() => {
@@ -12,8 +12,12 @@ const page = async() => {
   const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project`, { next: { revalidate: 60 } });
   const projectData = await projectResponse.json();
 
+  // projects picked in admin Services > Main for this page's Featured Projects section
+
+  const featuredIds = await getFeaturedProjectIds("engineering-construction");
+
   return (
-    <Index data={data.data} projectData={projectData.data}/>
+    <Index data={data.data} projectData={projectData.data} featuredIds={featuredIds}/>
   )
 }
 

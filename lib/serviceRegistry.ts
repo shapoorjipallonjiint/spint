@@ -45,3 +45,10 @@ export const sortByServiceOrder = <T>(items: T[], order: string[], getSlug: (ite
   let next = 0;
   return items.map((item) => (rank(item) >= 0 ? serviceItems[next++] : item));
 };
+
+// Featured Projects section of a service page: the projects picked in admin Services > Main, in the admin's project
+// order. Hidden or deleted projects are not in `projects` (the API leaves them out), so they simply drop out.
+export const pickFeaturedProjects = <T extends { _id?: unknown }>(projects: T[] | undefined, ids: string[] | undefined): T[] => {
+  const picked = new Set(ids || []);
+  return (projects || []).filter((project) => picked.has(String(project?._id)));
+};

@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, ChevronUp, Eye, EyeOff } from "lucide-react";
+import { ChevronDown, ChevronUp, Eye, EyeOff, Star } from "lucide-react";
 import { toast } from "sonner";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { Label } from "@/components/ui/label";
 import { normalizeServiceOrder, SERVICE_REGISTRY, SERVICE_SLUGS } from "@/lib/serviceRegistry";
 import { SERVICE_VISIBILITY_EVENT } from "@/app/components/AdminNavbar/Index";
+import FeaturedProjectsDialog from "./FeaturedProjectsDialog";
 
 // Services > Main: show / hide each service on the website and set the order they are listed in.
 // Hiding only adds the service to a small "hidden" list and the order is a small list of service names - the service
@@ -20,6 +21,10 @@ const ServicesMainPage = () => {
     const [savingOrder, setSavingOrder] = useState(false);
     const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
     const [saving, setSaving] = useState<string | null>(null);
+    // Featured Projects of each service page (slug -> project ids) and the service whose picker is open
+    const [featuredProjects, setFeaturedProjects] = useState<Record<string, string[]>>({});
+    const [serviceIdSlugs, setServiceIdSlugs] = useState<Record<string, string>>({});
+    const [featuredFor, setFeaturedFor] = useState<{ slug: string; name: string } | null>(null);
 
     useEffect(() => {
         fetch("/api/admin/services/visibility", { cache: "no-store" })
@@ -29,6 +34,8 @@ const ServicesMainPage = () => {
             })
             .then((json) => {
                 setHidden(json?.data?.hiddenServices || []);
+                setFeaturedProjects(json?.data?.featuredProjects || {});
+                setServiceIdSlugs(json?.data?.serviceIdSlugs || {});
                 const saved = normalizeServiceOrder(json?.data?.serviceOrder);
                 setOrder(saved.length ? saved : SERVICE_SLUGS);
                 setSavedOrder(saved.length ? saved : SERVICE_SLUGS);
@@ -101,7 +108,8 @@ const ServicesMainPage = () => {
                         Click the eye to hide a service from the whole website. Hidden services stay editable in the admin and
                         nothing is deleted - click again to show it. Use the arrows to change the order services are listed in
                         across the website (menus, footer, home page, project filters and project service tabs), then click
-                        Save Order.
+                        Save Order. Use the star to pick the projects shown in a service page&apos;s Featured Projects section
+                        (none picked = the section is not shown).
                     </p>
 
                     {status === "loading" && <p className="text-black/60">Loading...</p>}
@@ -129,6 +137,21 @@ const ServicesMainPage = () => {
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2">
+                                    {/* pick the projects for this service page's Featured Projects section */}
+                                    <button
+                                        type="button"
+                                        onClick={() => setFeaturedFor({ slug: service.slug, name: service.name })}
+                                        title="Featured projects"
+                                        aria-label={`Featured projects of ${service.name}`}
+                                        className="relative p-2 rounded-full border border-black/20 hover:bg-black/5 cursor-pointer"
+                                    >
+                                        <Star className={`w-5 h-5 ${featuredProjects[service.slug]?.length ? "fill-amber-400 text-amber-500" : ""}`} />
+                                        {!!featuredProjects[service.slug]?.length && (
+                                            <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 rounded-full bg-black text-white text-[11px] leading-5 text-center">
+                                                {featuredProjects[service.slug].length}
+                                            </span>
+                                        )}
+                                    </button>
                                     <button
                                         type="button"
                                         onClick={() => move(index, -1)}
@@ -187,6 +210,14 @@ const ServicesMainPage = () => {
                     )}
                 </div>
             </AdminItemContainer>
+
+            <FeaturedProjectsDialog
+                service={featuredFor}
+                savedIds={featuredFor ? featuredProjects[featuredFor.slug] || [] : []}
+                serviceIdSlugs={serviceIdSlugs}
+                onClose={() => setFeaturedFor(null)}
+                onSaved={setFeaturedProjects}
+            />
         </div>
     );
 };

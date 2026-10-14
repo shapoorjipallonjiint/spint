@@ -5,15 +5,11 @@ import ExpertiseSec from "./sections/ExpertiseSec";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
 import WhyChooseSec from "@/app/components/common/ImgPointsComponent";
 import InnovationSustainability from "./sections/InnovationSustainability";
+import { pickFeaturedProjects } from "@/lib/serviceRegistry";
 // import { mepData } from "./data";
-const MEP = ({ data, projectData }) => {
-  const filteredProjects = projectData.projects.filter((item) =>
-    item.secondSection.service?.some((service) =>
-      typeof service === "string"
-        ? service === data._id
-        : service._id === data._id,
-    ),
-  );
+const MEP = ({ data, projectData, featuredIds }) => {
+  // projects picked for this service in admin Services > Main (none picked = section not shown)
+  const filteredProjects = pickFeaturedProjects(projectData?.projects, featuredIds);
 
   return (
     <>

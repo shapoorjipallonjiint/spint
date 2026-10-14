@@ -4,15 +4,11 @@ import ExpertiseSec from "./sections/ExpertiseSec";
 import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
 import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
 import SystemsSec from "./sections/SystemsSec";
+import { pickFeaturedProjects } from "@/lib/serviceRegistry";
 // import LastSection from "./sections/LastSection";
-const Facade = ({ data, projectData }) => {
-  const filteredProjects = projectData.projects.filter((item) =>
-    item.secondSection.service?.some((service) =>
-      typeof service === "string"
-        ? service === data._id
-        : service._id === data._id,
-    ),
-  );
+const Facade = ({ data, projectData, featuredIds }) => {
+  // projects picked for this service in admin Services > Main (none picked = section not shown)
+  const filteredProjects = pickFeaturedProjects(projectData?.projects, featuredIds);
 
   return (
     <>
