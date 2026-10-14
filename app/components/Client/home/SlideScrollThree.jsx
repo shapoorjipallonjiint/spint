@@ -3077,7 +3077,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         </div>
 
                         <div className="relative">
-                            <div className=" absolute container right-0 lg:right-10 3xl:right-36 bottom-[-13px] sm:bottom-auto">
+                            {/* lg top: on short screens 11.5dvh puts the legend under the fixed header buttons (they end ~96px
+                                from the top), so it is pushed down just enough to clear them; taller screens are unchanged */}
+                            <div className=" absolute container right-0 lg:right-10 3xl:right-36 bottom-[-13px] sm:bottom-auto lg:top-[max(0px,calc(112px-11.5dvh))] 3xl:top-auto">
                                 <div ref={maplegend} className="flex justify-end items-center  ">
                                     <div className="flex items-center gap-[5px] md:gap-2 me-3">
                                         <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-[#30B6F9] border border-[#97DCFF] scale-85"></div>

@@ -34,11 +34,11 @@ const ImageLightbox = ({ src, alt = "", onClose }: ImageLightboxProps) => {
                     className="relative max-w-[95vw] max-h-[95vh]"
                     onClick={(e) => e.stopPropagation()}
                 >
-                    {/* Close button */}
+                    {/* Close button: fully above the image (not on it), dark fill so it reads on any background */}
                     <button
                         onClick={onClose}
                         aria-label="Close"
-                        className="absolute -top-4 right-0 w-9 h-9 rounded-full border border-white text-black flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-300"
+                        className="absolute -top-12 right-0 w-9 h-9 rounded-full border border-white bg-black/60 text-black flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-300"
                     >
                         <Image src={assets.close} width={20} height={20} alt="Close" className="w-3 h-3" />
                     </button>

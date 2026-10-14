@@ -12,6 +12,11 @@ import { moveUp } from "@/app/components/motionVarients";
 import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import WipeSlideshow from "@/app/components/common/WipeSlideshow";
+
+// created once: making it inside the component gave a new component type on every render, so React
+// remounted both images on each item change and the image flashed while the new one faded in
+const MotionImage = motion.create(Image);
 
 const ExpertiseSec = ({ data }) => {
     const t = useApplyLang(data);
@@ -22,8 +27,6 @@ const ExpertiseSec = ({ data }) => {
     const shapeOffset = isMobile ? [-50, 50] : isTablet ? [-100, 100] : [-200, 200];
     const itemRefs = useRef([]);
     const [activeIndex, setActiveIndex] = useState(0);
-    const MotionImage = motion.create(Image);
-    const prevIndexRef = useRef(activeIndex);
 
     const sectionRef = useRef(null);
     const imageContainerRef = useRef(null);
@@ -84,7 +87,6 @@ const ExpertiseSec = ({ data }) => {
         setActiveIndex(activeIndex);
     };
 
-    const activeImage = t?.items?.[activeIndex]?.image ?? t?.items?.[0]?.image;
     const activelist = t?.items?.[activeIndex]?.description ?? t?.items?.[0]?.description;
     const activeItem = t?.items?.[activeIndex];
 
@@ -120,34 +122,27 @@ const ExpertiseSec = ({ data }) => {
                             {/* HEIGHT HOLDER (keeps layout same) */}
                             <div className="h-[200px] md:h-full w-full" />
 
-                            {/* BASE IMAGE (previous) */}
-                            <MotionImage
-                                width={1500}
-                                height={1000}
-                                style={{ y: imageY }}
-                                src={t.items[prevIndexRef.current]?.image}
-                                alt=""
-                                className="absolute inset-0 h-[200px] scale-y-110 md:h-full w-full object-cover"
-                            />
-
-                            {/* ACTIVE IMAGE (fade in) */}
-                            <motion.div
-                                key={activeIndex}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.4, ease: "easeInOut" }}
-                                onAnimationComplete={() => {
-                                    prevIndexRef.current = activeIndex;
-                                }}
-                                className="absolute inset-0"
-                            >
-                                <MotionImage
-                                    width={1500}
-                                    height={1000}
-                                    style={{ y: imageY }}
-                                    src={activeImage}
-                                    alt=""
-                                    className="h-[200px] scale-y-110 md:h-full w-full object-cover"
+                            {/* active item's image: switches with the project's right-to-left clip-path wipe
+                                (left-to-right in Arabic); the parallax moves the whole layer */}
+                            <motion.div style={{ y: imageY }} className="absolute inset-0 scale-y-110">
+                                <WipeSlideshow
+                                    className="h-full"
+                                    index={activeIndex}
+                                    isArabic={isArabic}
+                                    items={t.items}
+                                    renderSlide={(item) =>
+                                        item?.image ? (
+                                            <Image
+                                                width={1500}
+                                                height={1000}
+                                                src={item.image}
+                                                alt={item.imageAlt || ""}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full" />
+                                        )
+                                    }
                                 />
                             </motion.div>
                         </div>

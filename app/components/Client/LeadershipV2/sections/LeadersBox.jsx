@@ -123,7 +123,7 @@ const LeaderBox = ({data,big}) => {
                                 className={`relative z-20 mx-auto block h-auto w-auto max-w-full object-contain object-bottom 
                                     ${big
                                         ? "max-h-[571.67px] 3xl:h-[571.67px]"
-                                        : "max-h-[470px] 3xl:h-[470px]"
+                                        : "max-h-[470px] lg:max-h-[540px] 3xl:max-h-[470px] 3xl:h-[470px]"
                                     }`}
                                 style={{
                                     WebkitMaskImage: "linear-gradient(to bottom, #000 35.6%, transparent 100%)",
@@ -131,14 +131,15 @@ const LeaderBox = ({data,big}) => {
                                 }}
                             />
 
-                            {/* Blue gradient box: 594 x 530, flush with the image bottom */}
+                            {/* Blue gradient box: 594 x 530, flush with the image bottom.
+                                Big card on lg+ uses the desktop proportion (530 / 571.67 ≈ 93%) so laptops look the same */}
                             <motion.div
                                 variants={fadeIn(0.2)}
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.1, once: true }}
-                                className={`absolute bottom-0 left-0 w-full z-10 bg-linear-to-b from-[#0079BA] to-[#003792] h-[80%] lg:h-[70%] xl:h-[75%] 
-                                    ${big ? "3xl:h-[530px]" : "3xl:h-[410px]"
+                                className={`absolute bottom-0 left-0 w-full z-10 bg-linear-to-b from-[#0079BA] to-[#003792] h-[80%] 
+                                    ${big ? "lg:h-[93%] 3xl:h-[530px]" : "lg:h-[70%] xl:h-[75%] 3xl:h-[410px]"
                                     }`}
                             />
                         </div>

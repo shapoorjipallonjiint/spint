@@ -58,14 +58,14 @@ const ValuesSection = ({ data }) => {
 
     return (
         <section
-            className="bg-primary text-white w-full flex flex-col md:flex-row xl:h-[600px] 2xl:h-[656px] overflow-hidden pt-80px pb-80px md:py-0"
+            className="bg-primary text-white w-full flex flex-col lg:flex-row xl:h-[600px] 2xl:h-[656px] overflow-hidden pt-80px pb-80px lg:py-0"
             ref={sectionRef}
         >
             {/* Wrapper */}
-            <div className="flex flex-col md:flex-row w-full md:items-stretch">
+            <div className="flex flex-col lg:flex-row w-full lg:items-stretch">
                 {/* Left Section */}
                 <div
-                    className="relative w-full md:w-1/2 flex flex-col justify-center pb-6 md:py-0 "
+                    className="relative w-full lg:w-1/2 flex flex-col justify-center pb-6 lg:py-80px lg:pe-10 xl:py-0"
                     style={
                         isWideScreen
                             ? isArabic
@@ -102,7 +102,7 @@ const ValuesSection = ({ data }) => {
   initial="hidden"
   whileInView="show"
   viewport={{ amount: 0.2, once: true }}
-  className="text-19 font-light text-white leading-[1.473684210526316] max-w-[43ch] [&_p]:mb-3 [&_p:last-child]:mb-0"
+  className="text-19 font-light text-white leading-[1.473684210526316] lg:max-w-[43ch] [&_p]:mb-3 [&_p:last-child]:mb-0"
   dangerouslySetInnerHTML={{ __html: description }}
 />
 
@@ -116,7 +116,7 @@ const ValuesSection = ({ data }) => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ amount: 0.1, once: true }}
-                    className="w-full md:w-1/2 h-[260px] sm:h-[340px] md:h-full px-[15px] md:px-0 relative overflow-hidden"
+                    className="w-full lg:w-1/2 h-[260px] sm:h-[340px] md:h-[420px] lg:h-auto px-[15px] lg:px-0 relative overflow-hidden"
                     ref={imageContainerRefTwo}
                 >
                     <MotionImage

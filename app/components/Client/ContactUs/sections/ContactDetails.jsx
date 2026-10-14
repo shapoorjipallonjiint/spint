@@ -382,7 +382,9 @@ const ContactDetails = ({ data }) => {
                                 initial="hidden"
                                 whileInView="show"
                                 viewport={{ amount: 0.2, once: true }}
-                                className="relative mb-6 lg:mb-8 xl:mb-[50px] 3xl:mb-[60px]"
+                                // room below for the subject error, which sits under the select (absolute), and the
+                                // message label above the textarea; at 24px / 32px the two overlapped
+                                className="relative mb-10 xl:mb-[50px] 3xl:mb-[60px]"
                             >
                                 {/* Floating Label */}
                                 <label

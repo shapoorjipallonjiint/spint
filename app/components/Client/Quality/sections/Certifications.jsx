@@ -13,6 +13,7 @@ import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
+import PdfOpenList, { canShowPdfInline } from "@/app/components/common/PdfOpenList";
 
 const Certifications = ({ data }) => {
   const t = useApplyLang(data);
@@ -111,7 +112,7 @@ const Certifications = ({ data }) => {
                       <img
                         src={item.thumbnail}
                         alt={item.thumbnailAlt}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover cursor-pointer"
                         onClick={() => {
                           setItemIndex(i);
                           setPdfIndex(0);
@@ -203,14 +204,17 @@ const Certifications = ({ data }) => {
 
                   {/* PDF Display */}
                   <div className={`flex-1 relative min-h-0 ${hasPdf ? "bg-white" : "bg-zinc-900"}`}>
-                    {isPdfLoading && (
+                    {isPdfLoading && (!hasPdf || canShowPdfInline()) && (
                       <div className={`absolute inset-0 z-10 flex items-center justify-center ${hasPdf ? "bg-white" : "bg-zinc-900"}`}>
                         {/* Loader */}
                         <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin" />
                       </div>
                     )}
 
-                    {hasPdf ? (
+                    {/* phones can't show a PDF in a frame: list of documents to open instead */}
+                    {hasPdf && !canShowPdfInline() ? (
+                      <PdfOpenList files={activeFiles} activeIndex={pdfIndex} isArabic={isArabic} />
+                    ) : hasPdf ? (
                       <iframe
                         key={`${itemIndex}-${pdfIndex}`}
                         src={`/api/pdf-proxy?url=${encodeURIComponent(
@@ -232,7 +236,7 @@ const Certifications = ({ data }) => {
                   </div>
 
                   {/* Internal PDF Nav Arrows */}
-                  {activeFiles.length > 1 && (
+                  {canShowPdfInline() && activeFiles.length > 1 && (
                     <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
                       <button onClick={prevPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>←</button>
                       <button onClick={nextPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>→</button>
