@@ -5,105 +5,36 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import LangLink from "@/lib/LangLink";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
-import Link from "next/link";
 import { useState } from "react";
 
 import { useServiceVisibility } from "@/contexts/serviceVisibility";
+import { DEFAULT_FOOTER, isExternalHref, phoneHref } from "@/lib/footer";
 const MotionImage = motion.create(Image);
 
-// links without a page yet point to "#" (Legacy, Media Coverage, Thought Leadership, Privacy/Cookie Policy)
-const footerLinks = [
-  {
-    title: "About",
-    title_ar: "",
-    delay: 0.2,
-    links: [
-      { label: "Overview", label_ar: "", href: "/about-us" },
-      { label: "Legacy", label_ar: "", href: "#" },
-      { label: "Leadership", label_ar: "", href: "/leadership" },
-    ],
-  },
-  {
-    title: "Services",
-    title_ar: "",
-    delay: 0.3,
-    links: [
-      {
-        label: "Engineering & Construction",
-        label_ar: "",
-        href: "/services/engineering-construction",
-      },
-      { label: "MEP", label_ar: "", href: "/services/mep" },
-      {
-        label: "Interior Fit-out",
-        label_ar: "",
-        href: "/services/interior-design",
-      },
-      { label: "Facade", label_ar: "", href: "/services/facade" },
-      {
-        label: "Facilities Management",
-        label_ar: "",
-        href: "/services/integrated-facility-management",
-      },
-      { label: "Water", label_ar: "", href: "/services/water" },
-    ],
-  },
-  {
-    title: "Commitments",
-    title_ar: "",
-    delay: 0.4,
-    links: [
-      { label: "Sustainability", label_ar: "", href: "/sustainability" },
-      {
-        label: "Community Engagement",
-        label_ar: "",
-        href: "/community-engagement",
-      },
-      { label: "Safety & Quality", label_ar: "", href: "/quality" },
-    ],
-  },
-  {
-    title: "Media",
-    title_ar: "",
-    delay: 0.5,
-    links: [
-      { label: "Press Releases", label_ar: "", href: "/press-releases" },
-      { label: "Media Coverage", label_ar: "", href: "#" },
-      { label: "Thought Leadership", label_ar: "", href: "#" },
-    ],
-  },
-  {
-    title: "Quick Links",
-    title_ar: "",
-    delay: 0.6,
-    links: [
-      { label: "Careers", label_ar: "", href: "/careers" },
-      { label: "Projects", label_ar: "", href: "/projects" },
-      {
-        label: "Terms and Conditions",
-        label_ar: "",
-        href: "/terms-and-conditions",
-      },
-    ],
-  },
-];
+// internal links get the language prefix, full URLs / mailto / tel are used as they are
+const FooterLink = ({ href, children, ...props }) =>
+  isExternalHref(href) ? (
+    <a href={href} target={/^https?:/i.test(href) ? "_blank" : undefined} rel="noopener noreferrer" {...props}>
+      {children}
+    </a>
+  ) : (
+    <LangLink href={href} {...props}>
+      {children}
+    </LangLink>
+  );
 
-const socials = [
-  { icon: "/assets/images/icons/insta.svg", alt: "insta" },
-  { icon: "/assets/images/icons/linked-in.svg", alt: "linked-in" },
-  { icon: "/assets/images/icons/youtube.svg", alt: "youtube" },
-];
-
-const FooterTwo = () => {
-  const tFooterLinks = useApplyLang(footerLinks);
+// content comes from admin (Footer), passed in by the layout
+const FooterTwo = ({ data = DEFAULT_FOOTER }) => {
+  const footer = useApplyLang(data);
   // services hidden in admin (Services > Main) are left out of the footer, the rest follow the admin order
   const { isHiddenHref, sortByHref } = useServiceVisibility();
-  const visibleFooterLinks = tFooterLinks.map((section) => ({
+  const visibleFooterLinks = footer.columns.map((section, index) => ({
     ...section,
     links: sortByHref(
       section.links.filter((link) => !isHiddenHref(link.href)),
       (link) => link.href,
     ),
+    delay: 0.2 + index * 0.1,
   }));
   const isArabic = useIsPreferredLanguageArabic();
 
@@ -155,8 +86,8 @@ const FooterTwo = () => {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ amount: 0.1, once: true }}
-                src="/assets/images/sp-logo.png"
-                alt="logo"
+                src={footer.logo}
+                alt={footer.logoAlt || "logo"}
                 className="w-[100px] lg:w-[169px] h-auto brightness-0 invert"
               />
             </div>
@@ -170,8 +101,12 @@ const FooterTwo = () => {
                 viewport={{ amount: 0.1, once: true }}
                 className="text-19 font-extralight leading-[1.578947368421053] text-white/70 mb-[22px] max-w-[35ch]"
               >
-                Al Hudaiba Mall, Al Mina Street P.O. Box No. 118219 <br />
-                Dubai, UAE, Office 307, 3rd Floor
+                {footer.address.split("\n").map((line, index) => (
+                  <span key={index}>
+                    {index > 0 && <br />}
+                    {line}
+                  </span>
+                ))}
               </motion.p>
 
               <motion.div
@@ -181,18 +116,22 @@ const FooterTwo = () => {
                 viewport={{ amount: 0.1, once: true }}
                 className="flex flex-wrap items-center gap-[22px] 2xl:gap-[40px] 3xl:gap-[62px]"
               >
-                <a
-                  href="tel:+97142156222"
-                  className="text-19 lg:text-20 xl:text-29 font-light leading-[1.344827586206897]"
-                >
-                  +971 42156222
-                </a>
-                <a
-                  href="mailto:info@spinternational.ae"
-                  className="text-19 lg:text-20 xl:text-29 font-light leading-[1.344827586206897]"
-                >
-                  info@spinternational.ae
-                </a>
+                {footer.phone && (
+                  <a
+                    href={phoneHref(footer.phone)}
+                    className="text-19 lg:text-20 xl:text-29 font-light leading-[1.344827586206897]"
+                  >
+                    {footer.phone}
+                  </a>
+                )}
+                {footer.email && (
+                  <a
+                    href={`mailto:${footer.email}`}
+                    className="text-19 lg:text-20 xl:text-29 font-light leading-[1.344827586206897]"
+                  >
+                    {footer.email}
+                  </a>
+                )}
               </motion.div>
             </div>
 
@@ -205,27 +144,24 @@ const FooterTwo = () => {
                 viewport={{ amount: 0.1, once: true }}
                 className="flex items-center gap-[4px]"
               >
-                {socials.map((item) => (
+                {footer.socials.filter((item) => !item.hidden).map((item, index) => (
                   <li
-                    key={item.alt}
+                    key={index}
                     className="relative p-[2px] rounded-full bg-[linear-gradient(90deg,#30B6F9,#1E45A2,#30B6F9)] bg-[length:200%_200%] animate-[gradient_3s_linear_infinite] inline-flex items-center justify-center transition-all duration-300 hover:scale-[1.08]"
                   >
-                    <LangLink
-                      href="#"
+                    <FooterLink
+                      href={item.href}
+                      aria-label={item.name}
                       className="w-[24px] h-[24px] md:w-[34px] md:h-[34px] rounded-full bg-[#153071] flex items-center justify-center"
                     >
                       <Image
                         width={17}
                         height={17}
                         src={item.icon}
-                        alt={item.alt}
-                        className={
-                          item.alt === "insta"
-                            ? "invert-100 w-[14px] lg:w-[16px]"
-                            : "w-[14px] lg:w-[16px]"
-                        }
+                        alt={item.name}
+                        className="w-[14px] lg:w-[16px]"
                       />
-                    </LangLink>
+                    </FooterLink>
                   </li>
                 ))}
               </motion.ul>
@@ -236,13 +172,13 @@ const FooterTwo = () => {
           <div className="col-span-full border-t border-white/30 mb-50px" />
 
           {/* Row 2: nav columns, 1 of 5 each */}
-          {visibleFooterLinks.map((section) => {
-            const isOpen = openSection === section.title;
-            const panelId = `footer-panel-${section.title.replace(/\s+/g, "-")}`;
+          {visibleFooterLinks.map((section, index) => {
+            const isOpen = openSection === index;
+            const panelId = `footer-panel-${index}`;
 
             return (
               <motion.div
-                key={section.title}
+                key={index}
                 variants={moveUp(section.delay)}
                 initial="hidden"
                 whileInView="show"
@@ -252,7 +188,7 @@ const FooterTwo = () => {
                 <h3 className="text-18 2xl:text-29 leading-[1.344827586206897] font-light mb-2 lg:mb-[27px]">
                   <button
                     type="button"
-                    onClick={() => toggle(section.title)}
+                    onClick={() => toggle(index)}
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     className="flex w-full items-center justify-between text-left md:pointer-events-none md:cursor-default"
@@ -276,12 +212,12 @@ const FooterTwo = () => {
                   }`}
                 >
                   <ul className="overflow-hidden">
-                    {section.links.map((link) => (
+                    {section.links.map((link, linkIndex) => (
                       <li
-                        key={link.label}
+                        key={linkIndex}
                         className="opacity-70 hover:opacity-100 transition-all duration-200 text-[14px] max-lg:mb-[2px] md:text-[16px] xl:text-19 leading-[1.578947368421053] font-light"
                       >
-                        <LangLink href={link.href}>{link.label}</LangLink>
+                        <FooterLink href={link.href}>{link.label}</FooterLink>
                       </li>
                     ))}
                   </ul>
@@ -304,18 +240,19 @@ const FooterTwo = () => {
           <div className="flex flex-wrap gap-y-1.5 xl:gap-x-[45px] 3xl:gap-x-[56px] items-center">
             <div className="">
               <p className="text-14 leading-[1.578947368421053] font-normal opacity-50">
-                {" "}
-                Copyright ©{new Date().getFullYear()} All Rights Reserved
+                {footer.copyright.replace(/\{year\}/g, new Date().getFullYear())}
               </p>
             </div>
             <div className="">
               <ul className="flex flex-wrap gap-x-2 xl:gap-x-[45px] 3xl:gap-x-[56px]">
-                <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light">
-                  <Link href="#">Privacy Policy</Link>
-                </li>
-                <li className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light">
-                  <Link href="#">Cookie Policy</Link>
-                </li>
+                {footer.bottomLinks.map((link, index) => (
+                  <li
+                    key={index}
+                    className="opacity-50 hover:opacity-100 transition-all duration-200 text-[14px] leading-[1.578947368421053] font-light"
+                  >
+                    <FooterLink href={link.href}>{link.label}</FooterLink>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
