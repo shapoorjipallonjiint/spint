@@ -123,8 +123,8 @@ const NextProject = ({ slug, title, thumbnail }) => {
                                 src={thumbnail}
                                 alt=""
                                 // 2xl and below: height capped a little (the image's own 4:5 ratio made the section very tall);
-                                // 3xl keeps the original 603px+ height
-                                className="w-full object-cover min-h-[250px] md:min-h-[300px] max-h-[420px] lg:max-h-[480px] xl:max-h-[550px] 2xl:min-h-[550px] 2xl:max-h-[560px] 3xl:min-h-[603px] 3xl:max-h-none"
+                                // 3xl keeps the original 603px+ height and natural width
+                                className="max-3xl:w-full object-cover min-h-[250px] md:min-h-[300px] max-h-[420px] lg:max-h-[480px] xl:max-h-[550px] 2xl:min-h-[550px] 2xl:max-h-[560px] 3xl:min-h-[603px] 3xl:max-h-none"
                             />
                         </div>
                         {/* Overlay that reveals from right to left */}

@@ -12,7 +12,7 @@ import {
     GlobeAltIcon,
     UsersIcon,
 } from "@heroicons/react/24/outline";
-import { FileText, GalleryThumbnails, HeartHandshake, LeafIcon, Settings, ThumbsUp, Workflow } from "lucide-react";
+import { FileText, GalleryThumbnails, HeartHandshake, LeafIcon, PanelBottom, Settings, ThumbsUp, Workflow } from "lucide-react";
 import { GiPaperBagFolded } from "react-icons/gi";
 import { normalizeServiceOrder, SERVICE_REGISTRY, sortByServiceOrder } from "@/lib/serviceRegistry";
 
@@ -118,6 +118,7 @@ const AdminNavbar = () => {
         { name: "Sustainability", href: "/admin/sustainability", icon: LeafIcon },
         { name: "Accreditation", href: "/admin/accreditation", icon: GiPaperBagFolded },
         { name: "Terms and Conditions", href: "/admin/terms-and-conditions", icon: FileText },
+        { name: "Footer", href: "/admin/footer", icon: PanelBottom },
         { name: "Settings", href: "/admin/settings", icon: Settings },
     ];
 

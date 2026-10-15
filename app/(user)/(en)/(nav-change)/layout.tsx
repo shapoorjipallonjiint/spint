@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import MainNavbar from "../../../components/common/MainNavbarTwo";
 import Footer from "../../../components/common/FooterTwo";
+import { fetchFooter } from "@/lib/footer";
 
 
 export const metadata: Metadata = {
@@ -14,13 +15,14 @@ export const dynamic = 'force-dynamic';
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-
+  // footer content managed in admin (Footer)
+  const footer = await fetchFooter();
 
   return (
     <div>
         <MainNavbar/>
         {children}
-        <Footer/>
+        <Footer data={footer} />
     </div>
   );
 }
