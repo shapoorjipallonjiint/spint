@@ -1751,6 +1751,23 @@ body::-webkit-scrollbar {
   @apply inline-block align-middle w-[7px] h-[7px] -ms-[19px] me-[12px] bg-secondary;
 }
 
+/* space between a paragraph and the points below/above it (and between paragraphs) */
+.project-services-secondsection-description :is(p, ul, ol) + :is(p, ul, ol) {
+  @apply mt-4 xl:mt-5;
+}
+
+/* more than 2 points: split them equally into two columns (from md), like the MEP list */
+@media (min-width: 768px) {
+  .project-services-secondsection-description :is(ul, ol):has(> li:nth-child(3)) {
+    columns: 2;
+    column-gap: 3rem;
+  }
+
+  .project-services-secondsection-description li {
+    break-inside: avoid;
+  }
+}
+
 .mep-tab-description-project-details ul{
   @apply flex-col gap-3 text-13 lg:text-14 text-paragraph font-light space-y-2;
 }
