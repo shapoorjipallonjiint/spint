@@ -52,3 +52,24 @@ export const pickFeaturedProjects = <T extends { _id?: unknown }>(projects: T[] 
   const picked = new Set(ids || []);
   return (projects || []).filter((project) => picked.has(String(project?._id)));
 };
+
+type FeaturedProjectSource = {
+  slug?: string;
+  thumbnail?: string;
+  thumbnailAlt?: string;
+  thumbnailAlt_ar?: string;
+  firstSection?: { title?: string; title_ar?: string };
+};
+
+// slides for FeaturedProjectCardSlider: projects without a thumbnail are left out
+export const toFeaturedSlides = (projects: FeaturedProjectSource[]) =>
+  projects
+    .filter((project) => project?.thumbnail)
+    .map((project) => ({
+      image: project.thumbnail,
+      imageAlt: project.thumbnailAlt,
+      imageAlt_ar: project.thumbnailAlt_ar,
+      title: project.firstSection?.title,
+      title_ar: project.firstSection?.title_ar,
+      slug: project.slug,
+    }));

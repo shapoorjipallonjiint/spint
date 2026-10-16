@@ -36,7 +36,7 @@ type ProjectListItem = {
         status?: string;
     };
     secondSection?: {
-        sector?: { name?: string }[];
+        sector?: { _id?: string; name?: string }[];
         location?: {
             name?: string;
             code?: string;
@@ -312,6 +312,16 @@ export default function Projects() {
         handleFetchService();
     }, []);
 
+    // number of projects assigned to each sector, keyed by sector id (shown on the Sectors tab)
+    const sectorProjectCounts = useMemo(() => {
+        const counts: Record<string, number> = {};
+        projectList.forEach((project) => {
+            const ids = new Set((project.secondSection?.sector || []).map((s) => s?._id).filter(Boolean) as string[]);
+            ids.forEach((id) => (counts[id] = (counts[id] || 0) + 1));
+        });
+        return counts;
+    }, [projectList]);
+
     // dropdown options: one per country (all African countries together as "Africa"), sorted by label
     const countries = useMemo<{ value: string; label: string }[]>(() => {
         // projects that match search (ignore country filter)
@@ -585,7 +595,13 @@ export default function Projects() {
                                     className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
                                     key={item._id}
                                 >
-                                    <div className="text-[16px]">{item.name}</div>
+                                    <div className="text-[16px] flex items-center gap-2">
+                                        {item.name}
+                                        <span className="px-2 py-0.5 rounded-full text-xs bg-blue-50 text-blue-600 border border-blue-200">
+                                            {sectorProjectCounts[item._id] || 0}{" "}
+                                            {(sectorProjectCounts[item._id] || 0) === 1 ? "project" : "projects"}
+                                        </span>
+                                    </div>
                                     <div className="flex gap-5">
                                         <Dialog>
                                             <DialogTrigger
@@ -632,17 +648,28 @@ export default function Projects() {
                                             </DialogTrigger>
                                             <DialogContent>
                                                 <DialogHeader>
-                                                    <DialogTitle>Are you sure?</DialogTitle>
+                                                    <DialogTitle>Delete sector?</DialogTitle>
+                                                    <DialogDescription>
+                                                        &ldquo;{item.name}&rdquo; will be permanently deleted. This cannot be undone.
+                                                    </DialogDescription>
                                                 </DialogHeader>
-                                                <div className="flex gap-2">
-                                                    <DialogClose className="bg-black text-white px-2 py-1 rounded-md">
+                                                {/* projects are not deleted, but they lose this sector tag */}
+                                                {(sectorProjectCounts[item._id] || 0) > 0 && (
+                                                    <p className="text-sm rounded-md border border-amber-300 bg-amber-50 text-amber-800 px-3 py-2">
+                                                        Warning: this sector is assigned to {sectorProjectCounts[item._id]}{" "}
+                                                        {sectorProjectCounts[item._id] === 1 ? "project" : "projects"}. The projects will
+                                                        not be deleted, but they will no longer show this sector.
+                                                    </p>
+                                                )}
+                                                <div className="flex justify-end gap-2">
+                                                    <DialogClose className="px-4 py-2 rounded-md border border-black/20 hover:bg-black/5 cursor-pointer">
                                                         No
                                                     </DialogClose>
                                                     <DialogClose
-                                                        className="bg-black text-white px-2 py-1 rounded-md"
+                                                        className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer"
                                                         onClick={() => handleDeleteSector(item._id)}
                                                     >
-                                                        Yes
+                                                        Yes, delete
                                                     </DialogClose>
                                                 </div>
                                             </DialogContent>

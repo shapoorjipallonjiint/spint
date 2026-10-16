@@ -2,13 +2,13 @@ import Banner from "@/app/components/common/Banner";
 import VdoSection from "@/app/components/common/VdoSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
 import OurApproach from "./sections/OurApproach";
-import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
+import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectCardSlider";
 import WhyChooseSec from "./sections/WhyChooseSec";
-import { pickFeaturedProjects } from "@/lib/serviceRegistry";
+import { pickFeaturedProjects, toFeaturedSlides } from "@/lib/serviceRegistry";
 
 const IntegratedFacilityManagement = ({ data, projectData, featuredIds }) => {
-  // projects picked for this service in admin Services > Main (none picked = section not shown)
-  const filteredProjects = pickFeaturedProjects(projectData?.projects, featuredIds);
+  // projects picked for this service in admin Services > Main (none picked = section not shown), that have a thumbnail
+  const filteredProjects = toFeaturedSlides(pickFeaturedProjects(projectData?.projects, featuredIds));
 
   return (
     <>
