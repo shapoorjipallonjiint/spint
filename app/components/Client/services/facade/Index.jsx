@@ -1,14 +1,14 @@
 import Banner from "@/app/components/common/Banner";
 import VdoSection from "@/app/components/common/VdoSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
-import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectSlider";
+import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectCardSlider";
 import ImgPointsComponent from "@/app/components/common/ImgPointsComponent";
 import SystemsSec from "./sections/SystemsSec";
-import { pickFeaturedProjects } from "@/lib/serviceRegistry";
+import { pickFeaturedProjects, toFeaturedSlides } from "@/lib/serviceRegistry";
 // import LastSection from "./sections/LastSection";
 const Facade = ({ data, projectData, featuredIds }) => {
-  // projects picked for this service in admin Services > Main (none picked = section not shown)
-  const filteredProjects = pickFeaturedProjects(projectData?.projects, featuredIds);
+  // projects picked for this service in admin Services > Main (none picked = section not shown), that have a thumbnail
+  const filteredProjects = toFeaturedSlides(pickFeaturedProjects(projectData?.projects, featuredIds));
 
   return (
     <>

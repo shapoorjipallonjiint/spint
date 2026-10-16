@@ -15,7 +15,9 @@ import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useContainerInset } from "@/hooks/useContainerInset";
 
-const FeaturedProjectSlider = ({ data = [] }) => {
+// Featured Projects slider of the service pages: large image cards with the title over the image.
+// `data` is the list from toFeaturedSlides (lib/serviceRegistry).
+const FeaturedProjectCardSlider = ({ data = [] }) => {
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
     const swiperRef = useRef(null);
@@ -203,4 +205,4 @@ const FeaturedProjectSlider = ({ data = [] }) => {
     );
 };
 
-export default FeaturedProjectSlider;
+export default FeaturedProjectCardSlider;

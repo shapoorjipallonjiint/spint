@@ -2,22 +2,13 @@ import Banner from "@/app/components/common/Banner";
 import VdoSection from "./sections/VdoSection";
 import ExpertiseSec from "./sections/ExpertiseSec";
 import OurApproach from "./sections/OurApproach";
-import FeaturedProjectSlider from "./sections/FeaturedProjectSlider";
+import FeaturedProjectSlider from "@/app/components/common/FeaturedProjectCardSlider";
 // import WhyChooseSec from "./sections/WhyChooseSec";
-import { pickFeaturedProjects } from "@/lib/serviceRegistry";
+import { pickFeaturedProjects, toFeaturedSlides } from "@/lib/serviceRegistry";
 
 const EngineeringConstruction = ({ data, projectData, featuredIds }) => {
   // projects picked for this service in admin Services > Main (none picked = section not shown), that have a thumbnail
-  const featuredProjects = pickFeaturedProjects(projectData?.projects, featuredIds)
-    .filter((project) => project?.thumbnail)
-    .map((project) => ({
-      image: project.thumbnail,
-      imageAlt: project.thumbnailAlt,
-      imageAlt_ar: project.thumbnailAlt_ar,
-      title: project.firstSection?.title,
-      title_ar: project.firstSection?.title_ar,
-      slug: project.slug,
-    }));
+  const featuredProjects = toFeaturedSlides(pickFeaturedProjects(projectData?.projects, featuredIds));
 
   // const filteredProjects = projectData.projects.filter((item) =>
   //     item.secondSection.service?.some((service) =>
