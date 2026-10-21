@@ -37,6 +37,7 @@ type ProjectListItem = {
     };
     secondSection?: {
         sector?: { _id?: string; name?: string }[];
+        service?: { serviceId?: string }[];
         location?: {
             name?: string;
             code?: string;
@@ -100,6 +101,8 @@ export default function Projects() {
     const [activeTab, setActiveTab] = useState<(typeof PAGE_TABS)[number]["key"]>("projects");
     const [selectedCountry, setSelectedCountry] = useState(ALL_SCOPE);
     const [search, setSearch] = useState("");
+    // list filter only (nothing saved): "" = all services, otherwise a service id
+    const [serviceFilter, setServiceFilter] = useState("");
 
     const [sector, setSector] = useState<string>("");
     const [sector_ar, setSectorAr] = useState<string>("");
@@ -322,6 +325,16 @@ export default function Projects() {
         return counts;
     }, [projectList]);
 
+    // number of projects linked to each service, keyed by service id (shown in the service filter)
+    const serviceProjectCounts = useMemo(() => {
+        const counts: Record<string, number> = {};
+        projectList.forEach((project) => {
+            const ids = new Set((project.secondSection?.service || []).map((s) => String(s?.serviceId || "")).filter(Boolean));
+            ids.forEach((id) => (counts[id] = (counts[id] || 0) + 1));
+        });
+        return counts;
+    }, [projectList]);
+
     // dropdown options: one per country (all African countries together as "Africa"), sorted by label
     const countries = useMemo<{ value: string; label: string }[]>(() => {
         // projects that match search (ignore country filter)
@@ -360,12 +373,15 @@ export default function Projects() {
 
             const titleMatch = titleMatches(item, search);
 
-            return countryMatch && titleMatch;
+            const serviceMatch =
+                !serviceFilter || (item.secondSection?.service || []).some((s) => String(s?.serviceId) === serviceFilter);
+
+            return countryMatch && titleMatch && serviceMatch;
         });
 
         return selectedOrderKey ? sortByScopeOrder(list) : list;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [projectList, selectedCountry, search, projectOrders]);
+    }, [projectList, selectedCountry, search, serviceFilter, projectOrders]);
 
     // S.No = position in the current order (global, or the selected country's), unaffected by the search box
     const positionById = useMemo(() => {
@@ -770,6 +786,28 @@ export default function Projects() {
 
                             {/* RIGHT: Controls */}
                             <div className="flex items-center gap-4">
+                                {/* service filter: only narrows the list below; not shown while reordering (that uses the full list) */}
+                                {!reorderMode && (
+                                    <Select
+                                        value={serviceFilter || "all"}
+                                        onValueChange={(value) => setServiceFilter(value === "all" ? "" : value)}
+                                    >
+                                        <SelectTrigger className="w-[220px] text-sm">
+                                            <SelectValue placeholder="Service" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-white max-h-[350px] overflow-y-scroll">
+                                            <SelectItem value="all" className="hover:bg-gray-200">
+                                                Service
+                                            </SelectItem>
+                                            {serviceList.map((item) => (
+                                                <SelectItem key={item._id} value={String(item._id)} className="hover:bg-gray-200">
+                                                    {item.pageTitle} ({serviceProjectCounts[String(item._id)] || 0})
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+
                                 <Select
                                     value={selectedCountry}
                                     onValueChange={(value) => setSelectedCountry(value)}

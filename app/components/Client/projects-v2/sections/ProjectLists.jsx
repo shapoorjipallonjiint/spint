@@ -1,12 +1,12 @@
 "use client";
 
 import { Listbox } from "@headlessui/react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { dropdownItemVariants, dropdownListVariants, moveUp } from "../../../motionVarients";
 import { statusData, UI_LABELS } from "@/app/components/AdminProject/statusData";
 import Image from "next/image";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import { slugify } from "@/lib/slugify";
@@ -40,7 +40,6 @@ const toOptions = (list = [], labelKey = "name") => {
 
 const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCountry, projectOrders }) => {
     const tData = useApplyLang(data);
-    const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const isArabic = useIsPreferredLanguageArabic();
@@ -134,6 +133,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
 
     // ---------- URL updates ----------
     // replace: filters / view (no history entry per click). push: page changes (Back goes to the previous page).
+    // Native history calls (Next keeps useSearchParams in sync) instead of router.push/replace: the list is filtered and
+    // paged on the client, so there is nothing to fetch. router.push asked the server for the page again first, and on
+    // production that round trip left the old page's projects on screen for a moment before the new ones appeared.
     const updateUrl = (changes, { push = false } = {}) => {
         const params = new URLSearchParams(searchParams.toString());
         Object.entries(changes).forEach(([key, value]) => {
@@ -142,8 +144,8 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
         });
         const query = params.toString();
         const url = query ? `${pathname}?${query}` : pathname;
-        if (push) router.push(url, { scroll: false });
-        else router.replace(url, { scroll: false });
+        if (push) window.history.pushState(null, "", url);
+        else window.history.replaceState(null, "", url);
     };
 
     const handleFilterChange = (key) => (opt) => updateUrl({ [key]: opt?.slug || null, page: null });
@@ -166,13 +168,22 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
         else el.scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
+    // set by a pagination click: once the new page's projects have rendered, scroll to the list top and fade them in
+    const pendingPageScroll = useRef(false);
+    useEffect(() => {
+        if (!pendingPageScroll.current) return;
+        pendingPageScroll.current = false;
+        // bring the top of the project list into view (not the top of the page)
+        scrollToListTop();
+        // not cleared on re-run: a quick Back must not leave the list faded out
+        setTimeout(() => setIsAnimating(false), 300);
+    }, [currentPage]);
+
     const handlePageChange = (newPage) => {
         if (newPage < 1 || newPage > totalPages || isAnimating) return;
         setIsAnimating(true);
+        pendingPageScroll.current = true;
         updateUrl({ page: newPage === 1 ? null : newPage }, { push: true });
-        // bring the top of the project list into view (not the top of the page)
-        scrollToListTop();
-        setTimeout(() => setIsAnimating(false), 300);
     };
     const handlePrev = () => handlePageChange(currentPage - 1);
     const handleNext = () => handlePageChange(currentPage + 1);
