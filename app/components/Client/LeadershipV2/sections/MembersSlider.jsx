@@ -1,10 +1,10 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import H2Title from "../../../common/H2Title";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { moveUp } from "@/app/components/motionVarients";
 import { assets } from "../../../../assets/index"
 import "swiper/css";
@@ -15,12 +15,21 @@ const Promoters = ({ items,title, btmBorder }) => {
     const [isBeginning, setIsBeginning] = useState(true);
     const [isEnd, setIsEnd] = useState(false);
 
+    // autoplay starts only once the section has scrolled into view (Swiper starts it on init, so hold it until then)
+    const sectionRef = useRef(null);
+    const isInView = useInView(sectionRef, { once: true, amount: 0.45 });
+    useEffect(() => {
+      if (!imageSwiper?.autoplay) return;
+      if (isInView) imageSwiper.autoplay.start();
+      else imageSwiper.autoplay.stop();
+    }, [imageSwiper, isInView]);
+
     const syncNavState = (swiper) => {
       setIsBeginning(swiper.isBeginning);
       setIsEnd(swiper.isEnd);
     };
   return (
-    <section className="relative overflow-hidden pt-80px">
+    <section ref={sectionRef} className="relative overflow-hidden pt-80px">
       <div className="container">
         <div className="flex justify-between mb-40px 3xl:mb-[45px]">
           <H2Title titleText={title} />
@@ -53,7 +62,7 @@ const Promoters = ({ items,title, btmBorder }) => {
             spaceBetween={15}
             slidesPerView={2}
             speed={800}
-            autoplay={true}
+            autoplay={{ delay: 4000 }}
             onSwiper={(swiper) => {
               setImageSwiper(swiper);
               syncNavState(swiper);

@@ -139,9 +139,7 @@ interface HomeFormProps {
             logoAlt: string;
             logoAlt_ar: string;
             completedProjects: string;
-            ongoingProjects: string;
             completedProjects_ar: string;
-            ongoingProjects_ar: string;
             title: string;
             title_ar: string;
         }[];
@@ -833,20 +831,6 @@ const Home = () => {
                                                         </p>
                                                     )}
                                                 </div>
-
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Ongoing Projects</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Ongoing Projects"
-                                                        {...register(`fifthSection.items.${index}.ongoingProjects`)}
-                                                    />
-                                                    {errors.fifthSection?.items?.[index]?.ongoingProjects && (
-                                                        <p className="text-red-500">
-                                                            {errors.fifthSection?.items?.[index]?.ongoingProjects.message}
-                                                        </p>
-                                                    )}
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -867,9 +851,7 @@ const Home = () => {
                                             logoAlt: "",
                                             logoAlt_ar: "",
                                             completedProjects: "",
-                                            ongoingProjects: "",
                                             completedProjects_ar: "",
-                                            ongoingProjects_ar: "",
                                         })
                                     }
                                 >
@@ -1539,15 +1521,6 @@ const Home = () => {
                                                         {...register(`fifthSection.items.${index}.completedProjects_ar`)}
                                                     />
                                                 </div>
-
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Ongoing Projects</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Ongoing Projects"
-                                                        {...register(`fifthSection.items.${index}.ongoingProjects_ar`)}
-                                                    />
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1568,9 +1541,7 @@ const Home = () => {
                                             logoAlt: "",
                                             logoAlt_ar: "",
                                             completedProjects: "",
-                                            ongoingProjects: "",
                                             completedProjects_ar: "",
-                                            ongoingProjects_ar: "",
                                         })
                                     }
                                 >

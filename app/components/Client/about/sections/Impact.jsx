@@ -7,6 +7,7 @@ import {
   motion,
   useScroll,
   useTransform,
+  useInView,
   AnimatePresence,
 } from "framer-motion";
 import { moveUp, moveRight } from "../../../motionVarients";
@@ -121,15 +122,17 @@ const CultureDrivers = ({ CultureData }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Auto-advance every 5s; restarts whenever the active item changes or a letter/dot is clicked
+  // Auto-advance every 5s, starting only once the section has scrolled into view;
+  // restarts whenever the active item changes or a letter/dot is clicked
+  const isInView = useInView(sectionRef, { once: true, amount: 0.4 });
   const itemCount = t.items.length;
   useEffect(() => {
-    if (itemCount < 2) return;
+    if (!isInView || itemCount < 2) return;
     const timer = setTimeout(() => {
       setActiveIndex((prev) => (prev + 1) % itemCount);
     }, 5000);
     return () => clearTimeout(timer);
-  }, [activeIndex, autoplayKey, itemCount]);
+  }, [isInView, activeIndex, autoplayKey, itemCount]);
 
   const goTo = (index) => {
     setActiveIndex(index);

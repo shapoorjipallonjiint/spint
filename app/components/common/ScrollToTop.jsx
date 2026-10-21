@@ -49,7 +49,7 @@ const ScrollToTop = () => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "auto", // change to "smooth" if you want
+      behavior: "instant",
     });
   }, [pathname]);
 

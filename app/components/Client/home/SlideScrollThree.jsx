@@ -1225,16 +1225,29 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
+    // ongoing count per sector slug, from the visible projects (status "Ongoing"); not entered in the CMS
+    const ongoingBySector = useMemo(() => {
+        const counts = {};
+        (projectsData?.projects || []).forEach((p) => {
+            if (p?.secondSection?.status?.toLowerCase() !== "ongoing") return;
+            new Set((p.secondSection.sector || []).map((s) => slugify(s?.name))).forEach((slug) => {
+                counts[slug] = (counts[slug] || 0) + 1;
+            });
+        });
+        return counts;
+    }, [projectsData]);
+
     const sectors = [
         ...tData.fifthSection.items.map((item, i) => {
+            // /projects?sector=<slug> filter, from the English title (same slug as the projects page sector filter)
+            const slug = slugify(data.fifthSection.items[i]?.title);
             return {
                 name: item.title,
-                // /projects?sector=<slug> filter, from the English title (same slug as the projects page sector filter)
-                slug: slugify(data.fifthSection.items[i]?.title),
+                slug,
                 icon: item.logo,
                 image: item.image,
                 projectsCompleted: Number(item.completedProjects),
-                ongoingProjects: Number(item.ongoingProjects),
+                ongoingProjects: ongoingBySector[slug] || 0,
             };
         }),
     ];

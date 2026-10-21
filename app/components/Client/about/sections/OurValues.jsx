@@ -16,7 +16,7 @@ const OurValues = ({ data }) => {
         <H2Title titleText={t.title} marginClass={"mb-4 xl:mb-10 3xl:mb-[54px]"} />
 
         {/* value groups side by side under one line; column widths follow the design at 1920 (347 / 557 / 300) */}
-        <div className="lg:max-w-[90%] 3xl:max-w-[74.51%] border-t border-black/20 pt-5 3xl:pt-[26px] grid grid-cols-1 md:grid-cols-3 lg:grid-cols-[347fr_557fr_300fr] gap-x-6 xl:gap-x-0 gap-y-5 lg:gap-y-8">
+        <div className="border-t border-black/20 pt-5 3xl:pt-[26px] grid grid-cols-1 md:grid-cols-3 lg:grid-cols-[347fr_557fr_300fr] gap-x-6 xl:gap-x-0 gap-y-5 lg:gap-y-8">
           {t.items.map((item, index) => (
             <motion.div
               key={index}

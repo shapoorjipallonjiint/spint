@@ -11,7 +11,8 @@ import type { Types } from "mongoose";
 type ProjectIdsLean = { projects?: { _id: Types.ObjectId }[] };
 
 // admin: save the projects shown in one service's Featured Projects section.
-// Body: { slug: "mep", projectIds: [...] } - an empty list means the section is not shown on that service page.
+// Body: { slug: "mep", projectIds: [...] } in the order shown in the section - an empty list means the section is not
+// shown on that service page.
 // Only featuredProjects.<slug> of the small services settings document is set; projects and services are never written.
 export async function PUT(request: NextRequest) {
     try {
@@ -27,10 +28,10 @@ export async function PUT(request: NextRequest) {
 
         await connectDB();
 
-        // keep only ids of projects that exist, each once, in the admin's project order
+        // keep only ids of projects that exist, each once, in the order given (the Featured Projects order of this service)
         const projectDoc = await Project.findOne({}, { "projects._id": 1 }).lean<ProjectIdsLean>();
-        const requested = new Set(projectIds.map(String));
-        const cleanIds = (projectDoc?.projects || []).map((p) => p._id.toString()).filter((id) => requested.has(id));
+        const existing = new Set((projectDoc?.projects || []).map((p) => p._id.toString()));
+        const cleanIds = [...new Set(projectIds.map(String))].filter((id) => existing.has(id));
 
         await ServiceVisibility.findOneAndUpdate(
             {},

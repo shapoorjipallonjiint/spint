@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, Controller } from "swiper/modules";
 import { assets } from "../../../../assets/index";
@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 // import { highlightedData } from '../data';
 import H2Title from "../../../common/H2Title";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
@@ -29,6 +29,17 @@ const HighlightedProgramsSlider = ({ data }) => {
     const [contentSwiper, setContentSwiper] = useState(null);
     const imageContainerRef = useRef(null);
     const sectionRef = useRef(null);
+
+    // autoplay starts only once the section has scrolled into view (Swiper starts it on init, so hold it until then);
+    // both the image and the content swiper autoplay
+    const isInView = useInView(sectionRef, { once: true, amount: 0.45 });
+    useEffect(() => {
+        [imageSwiper, contentSwiper].forEach((swiper) => {
+            if (!swiper?.autoplay) return;
+            if (isInView) swiper.autoplay.start();
+            else swiper.autoplay.stop();
+        });
+    }, [imageSwiper, contentSwiper, isInView]);
 
     // Parallax for main image container
     const { scrollYProgress: imageProgress } = useScroll({

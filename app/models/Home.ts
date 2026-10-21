@@ -206,9 +206,7 @@ const homeSchema = new mongoose.Schema({
             logoAlt: String,
             logoAlt_ar: String,
             completedProjects: String,
-            ongoingProjects: String,
             completedProjects_ar: String,
-            ongoingProjects_ar: String,
             title: String,
             title_ar: String,
         }]

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 
 const WIPE_EASE = [0.77, 0, 0.175, 1];
 const FULL = "inset(0% 0% 0% 0%)";
@@ -13,6 +13,7 @@ const FULL = "inset(0% 0% 0% 0%)";
 // isCurrent tells the slide whether it is the one showing (e.g. to run a nested slideshow only then).
 // index: pass it to control the slide from outside (no autoplay); leave it out to autoplay every `delay` ms.
 // active: autoplay only runs while true; when it turns true again it restarts from the first slide.
+// Autoplay also waits until the slideshow has scrolled into view (once), so it starts on the first slide there.
 // className: extra classes for the outer box (e.g. h-full to fill a fixed-height parent).
 const WipeSlideshow = ({ items, renderSlide, delay = 3000, isArabic = false, index, active = true, className = "" }) => {
     const count = items?.length || 0;
@@ -22,6 +23,8 @@ const WipeSlideshow = ({ items, renderSlide, delay = 3000, isArabic = false, ind
     const [outgoing, setOutgoing] = useState(null);
     const [shown, setShown] = useState(current);
     const [prevActive, setPrevActive] = useState(active);
+    const boxRef = useRef(null);
+    const inView = useInView(boxRef, { once: true, amount: 0.45 });
 
     // adjust state during render (React's "previous value" pattern) rather than in an effect
     if (active !== prevActive) {
@@ -40,16 +43,16 @@ const WipeSlideshow = ({ items, renderSlide, delay = 3000, isArabic = false, ind
 
     // the timer starts once the wipe has finished, so every slide is fully on screen for `delay` ms
     useEffect(() => {
-        if (controlled || !active || count < 2 || outgoing !== null) return;
+        if (controlled || !active || !inView || count < 2 || outgoing !== null) return;
         const timer = setTimeout(() => setAutoIndex((i) => (i + 1) % count), delay);
         return () => clearTimeout(timer);
-    }, [controlled, active, autoIndex, count, delay, outgoing]);
+    }, [controlled, active, inView, autoIndex, count, delay, outgoing]);
 
     if (count === 0) return null;
     if (count === 1) return renderSlide(items[0], 0, false, true);
 
     return (
-        <div className={`relative overflow-hidden ${className}`}>
+        <div ref={boxRef} className={`relative overflow-hidden ${className}`}>
             {/* sizes the box exactly like a single slide would */}
             <div className="invisible" aria-hidden="true">
                 {renderSlide(items[0], 0, false, false)}

@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { moveUp } from "@/app/components/motionVarients";
 import H2Title from "@/app/components/common/H2Title";
 import Image from "next/image";
@@ -24,8 +24,19 @@ const DivisionExpertise = ({ data }) => {
 
   const imageContainerRefTwo = useRef(null);
 
+  // autoplay starts only once the section has scrolled into view (Swiper starts it on init, so hold it until then).
+  // swiperRef holds either the swiper element (ref) or the instance (onSwiper), whichever was set last
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.45 });
+  useEffect(() => {
+    const autoplay = (swiperRef.current?.swiper ?? swiperRef.current)?.autoplay;
+    if (!autoplay) return;
+    if (isInView) autoplay.start();
+    else autoplay.stop();
+  }, [isInView]);
+
   return (
-    <section className="section-spacing relative  overflow-hidden">
+    <section ref={sectionRef} className="section-spacing relative  overflow-hidden">
       <div className="xl:px-[15px] md:pe-0 relative">
         {/* Counter + Arrows */}
         <div className="container flex items-center justify-between mb-[50px]">

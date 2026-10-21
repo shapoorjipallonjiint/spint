@@ -10,6 +10,18 @@ const innerStroke = "inset 0 0 0 0.77px rgba(255, 255, 255, 0.4)";
 
 const topFaceShift = "var(--top-shift)";
 
+// leading figure in the description (e.g. "315+") is bold and 1px larger than the rest
+const renderDescription = (text) => {
+  const match = text?.match(/^(\d[\d,.]*\+?)(.*)$/s);
+  if (!match) return text;
+  return (
+    <>
+      <span className="font-bold text-[calc(1em+1px)]">{match[1]}</span>
+      {match[2]}
+    </>
+  );
+};
+
 const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
   <div
     data-cube-row={row}
@@ -50,7 +62,7 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
       >
         <div>
           <p
-            className="font-semibold text-[12px] lg:text-16 leading-[12px] lg:leading-[1.34] mb-[2px] lg:mb-[3px] group-hover:animate-[cube-value-bob_0.8s_ease-in-out_infinite]"
+            className="font-semibold text-[12px] md:text-[13px] lg:text-[17px] leading-[12px] md:leading-[13px] lg:leading-[1.34] mb-[2px] lg:mb-[3px] group-hover:animate-[cube-value-bob_0.8s_ease-in-out_infinite]"
           >
             {value}
           </p>
@@ -75,7 +87,7 @@ const CredentialsPanel = ({ cubesRef, data }) => {
       {data?.title}
     </h2>
     <p data-cred-intro className="font-light text-[13px] lg:text-16 xl:text-18 3xl:text-19 leading-[1.5]">
-      {data?.description}
+      {renderDescription(data?.description)}
     </p>
     <hr data-cred-intro className="hidden lg:block border-black/20 mt-3 lg:mt-5 xl:mt-8 3xl:mt-[30px]" />
 
