@@ -5,7 +5,7 @@ import { assets } from "@/app/assets/index";
 import H2Title from "@/app/components/common/H2Title";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { moveUp } from "@/app/components/motionVarients";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay, Navigation } from "swiper/modules";
@@ -22,6 +22,16 @@ const ExpertiseSec = ({ data }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const swiperRef = useRef(null);
     const sectionRef = useRef(null);
+
+    // autoplay starts only once the section has scrolled into view (Swiper starts it on init, so hold it until then)
+    const isInView = useInView(sectionRef, { once: true, amount: 0.45 });
+    useEffect(() => {
+        const autoplay = swiperRef.current?.swiper?.autoplay;
+        if (!autoplay) return;
+        if (isInView) autoplay.start();
+        else autoplay.stop();
+    }, [isInView]);
+
     useEffect(() => {
         if (!sectionRef.current) return;
 

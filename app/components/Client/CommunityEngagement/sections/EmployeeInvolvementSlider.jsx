@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import { assets } from "../../../../assets/index";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { moveUp } from "../../../motionVarients";
 import H2Title from "../../../common/H2Title";
 import Image from "next/image";
@@ -32,6 +32,15 @@ const EmployeeInvolvementSlider = ({ data }) => {
     const updateNavState = (swiper) => setNavState({ isBeginning: swiper.isBeginning, isEnd: swiper.isEnd });
     // container margin + padding: width of the mask that hides slides in the start-side margin
     const containerInset = useContainerInset(sliderContainerRef);
+
+    // autoplay starts only once the section has scrolled into view (Swiper starts it on init, so hold it until then)
+    const sectionRef = useRef(null);
+    const isInView = useInView(sectionRef, { once: true, amount: 0.45 });
+    useEffect(() => {
+        if (!imageSwiper?.autoplay) return;
+        if (isInView) imageSwiper.autoplay.start();
+        else imageSwiper.autoplay.stop();
+    }, [imageSwiper, isInView]);
 
     useEffect(() => {
         const containerEl = containerRef.current;
@@ -60,7 +69,7 @@ const EmployeeInvolvementSlider = ({ data }) => {
     }, []);
 
     return (
-        <section className="section-spacing relative bg-f5f5 overflow-hidden">
+        <section ref={sectionRef} className="section-spacing relative bg-f5f5 overflow-hidden">
             <div className={`px-[15px] ${isArabic ? "md:ps-0" : "md:pe-0"} relative`}>
                 {/* Counter + Arrows */}
                 <div className="container" ref={containerRef}>

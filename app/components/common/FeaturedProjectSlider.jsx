@@ -37,6 +37,15 @@ const FeaturedProjectSlider = ({ data }) => {
         }
     }, [sectionInView, hasScrolledIntoView]);
 
+    // autoplay starts only once the section has scrolled into view (Swiper starts it on init, so hold it until then)
+    const autoplayInView = useInView(sectionRef, { once: true, amount: 0.45 });
+    useEffect(() => {
+        const autoplay = swiperRef.current?.swiper?.autoplay;
+        if (!autoplay) return;
+        if (autoplayInView) autoplay.start();
+        else autoplay.stop();
+    }, [autoplayInView]);
+
     const handleSlideChange = (swiper) => {
         const activeIndex = swiper.realIndex;
         const slidesPerView = window.innerWidth >= 768 ? 2 : 1;

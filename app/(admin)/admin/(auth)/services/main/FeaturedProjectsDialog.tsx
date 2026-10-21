@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import { Move, Search } from "lucide-react";
+import { DndContext, closestCenter, DragEndEvent, Modifier, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -21,8 +24,40 @@ const normalize = (text?: string) =>
         .trim()
         .toLowerCase();
 
-// Picks the projects shown in one service page's "Featured Projects" section.
-// Nothing is written until Save; Save sets only this service's list (projects themselves are never changed).
+// the order list only moves up/down: drop the sideways part of the drag (no horizontal scroll while dragging)
+const restrictToVerticalAxis: Modifier = ({ transform }) => ({ ...transform, x: 0 });
+
+// one row of the "Order" tab: dragged to set where the project appears in the service's Featured Projects slider
+const SortableFeaturedRow = ({ id, serial, project }: { id: string; serial: number; project?: ProjectOption }) => {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+    return (
+        <div
+            ref={setNodeRef}
+            style={{ transform: CSS.Transform.toString(transform), transition }}
+            {...attributes}
+            {...listeners}
+            className={`flex items-center gap-3 px-3 py-2 bg-white cursor-grab active:cursor-grabbing touch-none ${
+                isDragging ? "relative z-10 shadow-md" : ""
+            }`}
+        >
+            <span className="min-w-7 text-sm text-black/50 tabular-nums">{serial}.</span>
+            <span className={`flex-1 text-sm ${project?.isHidden ? "text-black/40" : ""}`}>
+                {project?.firstSection?.title}
+                {project?.secondSection?.location?.name && (
+                    <span className="text-black/50"> - {project.secondSection.location.name}</span>
+                )}
+            </span>
+            {project?.isHidden && (
+                <span className="px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-600 border border-gray-200">Hidden</span>
+            )}
+            <Move className="w-4 h-4 text-gray-500 shrink-0" />
+        </div>
+    );
+};
+
+// Picks the projects shown in one service page's "Featured Projects" section, and their order there.
+// Nothing is written until Save; Save sets only this service's list (projects themselves are never changed),
+// so the order here never affects the projects pages or other services.
 const FeaturedProjectsDialog = ({
     service,
     savedIds,
@@ -38,7 +73,9 @@ const FeaturedProjectsDialog = ({
 }) => {
     const [projects, setProjects] = useState<ProjectOption[]>([]);
     const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
-    const [selected, setSelected] = useState<Set<string>>(new Set());
+    // ticked project ids in their Featured Projects order (newly ticked ones go to the end)
+    const [selected, setSelected] = useState<string[]>([]);
+    const [tab, setTab] = useState<"select" | "order">("select");
     const [search, setSearch] = useState("");
     const [onlySelected, setOnlySelected] = useState(false);
     const [onlyLinked, setOnlyLinked] = useState(false);
@@ -47,7 +84,8 @@ const FeaturedProjectsDialog = ({
     // (re)load every time the dialog opens for a service, starting from its saved selection
     useEffect(() => {
         if (!service) return;
-        setSelected(new Set(savedIds));
+        setSelected([...new Set(savedIds)]);
+        setTab("select");
         setSearch("");
         setOnlySelected(false);
         setOnlyLinked(false);
@@ -69,28 +107,39 @@ const FeaturedProjectsDialog = ({
     const isLinked = (project: ProjectOption) =>
         (project.secondSection?.service || []).some((s) => serviceIdSlugs[String(s?.serviceId)] === service?.slug);
 
+    const selectedSet = useMemo(() => new Set(selected), [selected]);
+    const projectById = useMemo(() => new Map(projects.map((p) => [p._id, p])), [projects]);
+    // ticked ids that are still projects (a deleted project drops out of the order list)
+    const orderedIds = useMemo(() => selected.filter((id) => projectById.has(id)), [selected, projectById]);
+
     const visibleProjects = useMemo(() => {
         const term = normalize(search);
         return projects.filter(
             (p) =>
                 (!term || normalize(p.firstSection?.title).includes(term)) &&
-                (!onlySelected || selected.has(p._id)) &&
+                (!onlySelected || selectedSet.has(p._id)) &&
                 (!onlyLinked || isLinked(p))
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [projects, search, onlySelected, onlyLinked, selected, serviceIdSlugs, service?.slug]);
+    }, [projects, search, onlySelected, onlyLinked, selectedSet, serviceIdSlugs, service?.slug]);
 
     const toggle = (id: string) =>
-        setSelected((prev) => {
-            const next = new Set(prev);
-            if (next.has(id)) next.delete(id);
-            else next.add(id);
-            return next;
-        });
+        setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
+    // small move threshold so a click on a row doesn't start a drag
+    const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+    const handleDragEnd = ({ active, over }: DragEndEvent) => {
+        if (!over || active.id === over.id) return;
+        setSelected((prev) => {
+            const ids = prev.filter((id) => projectById.has(id));
+            return arrayMove(ids, ids.indexOf(String(active.id)), ids.indexOf(String(over.id)));
+        });
+    };
+
+    // a different set of projects or a different order both count as a change
     const changed = (() => {
-        const saved = new Set(savedIds);
-        return saved.size !== selected.size || [...selected].some((id) => !saved.has(id));
+        const saved = [...new Set(savedIds)];
+        return saved.length !== selected.length || saved.some((id, i) => selected[i] !== id);
     })();
 
     const save = async () => {
@@ -100,7 +149,7 @@ const FeaturedProjectsDialog = ({
             const res = await fetch("/api/admin/services/featured-projects", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ slug: service.slug, projectIds: [...selected] }),
+                body: JSON.stringify({ slug: service.slug, projectIds: orderedIds }),
             });
             const json = await res.json();
             if (!res.ok) throw new Error(json?.message || "Could not save");
@@ -125,8 +174,9 @@ const FeaturedProjectsDialog = ({
                 <DialogHeader>
                     <DialogTitle>Featured Projects - {service?.name}</DialogTitle>
                     <DialogDescription>
-                        Tick the projects to show in the Featured Projects section of the {service?.name} page. They appear in
-                        the projects list order. With none ticked, the section is not shown on that page.
+                        Tick the projects to show in the Featured Projects section of the {service?.name} page, then drag
+                        them into place under Order. This order is used only in that section, not on the projects pages.
+                        With none ticked, the section is not shown on that page.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -136,6 +186,57 @@ const FeaturedProjectsDialog = ({
                 )}
 
                 {status === "ready" && (
+                    <div className="flex gap-1 border-b border-black/10">
+                        {(
+                            [
+                                ["select", "Select projects"],
+                                ["order", `Order (${orderedIds.length})`],
+                            ] as const
+                        ).map(([key, label]) => (
+                            <button
+                                key={key}
+                                type="button"
+                                onClick={() => setTab(key)}
+                                className={`px-3 py-2 -mb-px text-sm border-b-2 cursor-pointer ${
+                                    tab === key ? "border-black font-medium" : "border-transparent text-black/60 hover:text-black"
+                                }`}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {status === "ready" && tab === "order" && (
+                    <>
+                        <p className="text-sm text-black/60">
+                            Drag the projects into the order they should appear in the slider. Projects without a thumbnail or
+                            hidden projects stay in the list but are not shown on the website.
+                        </p>
+                        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden border border-black/10 rounded-md">
+                            {orderedIds.length === 0 ? (
+                                <p className="p-3 text-sm text-black/60">No projects ticked yet - tick them under Select projects.</p>
+                            ) : (
+                                <DndContext
+                                    sensors={sensors}
+                                    collisionDetection={closestCenter}
+                                    modifiers={[restrictToVerticalAxis]}
+                                    onDragEnd={handleDragEnd}
+                                >
+                                    <SortableContext items={orderedIds} strategy={verticalListSortingStrategy}>
+                                        <div className="divide-y divide-black/10">
+                                            {orderedIds.map((id, i) => (
+                                                <SortableFeaturedRow key={id} id={id} serial={i + 1} project={projectById.get(id)} />
+                                            ))}
+                                        </div>
+                                    </SortableContext>
+                                </DndContext>
+                            )}
+                        </div>
+                    </>
+                )}
+
+                {status === "ready" && tab === "select" && (
                     <>
                         <div className="flex flex-col gap-2">
                             <div className="relative">
@@ -157,11 +258,11 @@ const FeaturedProjectsDialog = ({
                                     <input type="checkbox" checked={onlyLinked} onChange={(e) => setOnlyLinked(e.target.checked)} />
                                     Only projects linked to {service?.name}
                                 </label>
-                                <span className="ms-auto text-black/60">{selected.size} selected</span>
-                                {selected.size > 0 && (
+                                <span className="ms-auto text-black/60">{orderedIds.length} selected</span>
+                                {orderedIds.length > 0 && (
                                     <button
                                         type="button"
-                                        onClick={() => setSelected(new Set())}
+                                        onClick={() => setSelected([])}
                                         className="text-red-600 hover:underline cursor-pointer"
                                     >
                                         Clear all
@@ -173,7 +274,7 @@ const FeaturedProjectsDialog = ({
                         <div className="flex-1 min-h-0 overflow-y-auto border border-black/10 rounded-md divide-y divide-black/10">
                             {visibleProjects.length === 0 && <p className="p-3 text-sm text-black/60">No projects match.</p>}
                             {visibleProjects.map((project) => {
-                                const checked = selected.has(project._id);
+                                const checked = selectedSet.has(project._id);
                                 return (
                                     <label
                                         key={project._id}

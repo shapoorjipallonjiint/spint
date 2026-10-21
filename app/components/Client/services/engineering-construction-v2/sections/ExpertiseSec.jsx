@@ -3,6 +3,7 @@ import {
   motion,
   useScroll,
   useTransform,
+  useInView,
   AnimatePresence,
 } from "framer-motion";
 import { moveUp, moveLeft, moveRight } from "@/app/components/motionVarients";
@@ -76,6 +77,14 @@ const ExpertiseSec = ({ data }) => {
   const isArabic = useIsPreferredLanguageArabic();
   const isDesktop = useIsDesktop();
   const t = useApplyLang(data);
+
+  // autoplay starts only once the section has scrolled into view (Swiper starts it on init, so hold it until then)
+  const isInView = useInView(sectionRef, { once: true, amount: 0.45 });
+  useEffect(() => {
+    if (!imageSwiper?.autoplay) return;
+    if (isInView) imageSwiper.autoplay.start();
+    else imageSwiper.autoplay.stop();
+  }, [imageSwiper, isInView]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
