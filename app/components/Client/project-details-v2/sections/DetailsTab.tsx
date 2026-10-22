@@ -238,7 +238,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const renderAccordionContent = (section: WorkSection) => {
     // if (!section.items.length) return null;
     return (
-      <div className="grid md:grid-cols-2 gap-x-12 gap-y-2 pb-1 lg:pt-2 mep-tab-description-project-details" dangerouslySetInnerHTML={{ __html: withNormalSpaces(section.description) }}>
+      <div className="grid md:grid-cols-2 gap-x-12 gap-y-2 pb-1 lg:pt-2 text-justify [&_li]:text-start mep-tab-description-project-details" dangerouslySetInnerHTML={{ __html: withNormalSpaces(section.description) }}>
         {/* <div dangerouslySetInnerHTML={{ __html: section.description }}></div> */}
         {/* {section.items.map((item) => (
           <div
@@ -337,7 +337,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
 
       {tab.description && (
         <motion.p variants={moveUp(0.2)}
-          className="text-16 xl:text-19 text-paragraph font-light leading-[1.55] mb-8 xl:mb-12 max-w-[110ch]"
+          className="text-16 xl:text-19 text-paragraph font-light leading-[1.55] text-justify mb-8 xl:mb-12 max-w-[110ch]"
         >
           {tab.description}
         </motion.p>
@@ -363,7 +363,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
       </div> */}
       <motion.div variants={moveUp(0.35 + 1 * 0.08)} dangerouslySetInnerHTML={{ __html: withNormalSpaces(tab.scopeDescription) }}
         // same text style as the first paragraph (tab.description) above
-        className="project-services-secondsection-description text-16 xl:text-19 text-paragraph font-light leading-[1.55] max-w-[110ch]">
+        className="project-services-secondsection-description text-16 xl:text-19 text-paragraph font-light leading-[1.55] text-justify [&_li]:text-start max-w-[110ch]">
 
       </motion.div>
       {/* <ul>

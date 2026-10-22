@@ -153,6 +153,8 @@ const projectSchema = new mongoose.Schema({
           key_ar: { type: String },
           value: { type: String },
           value_ar: { type: String },
+          // eye toggle in the admin: kept in the CMS but not shown on the site (missing = shown)
+          hidden: { type: Boolean },
         },
       ],
     },
