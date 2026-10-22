@@ -17,7 +17,7 @@ import ImageCard from "./ImageCard";
 import { TbReorder } from "react-icons/tb";
 import { GiConfirmed } from "react-icons/gi";
 import AdminItemContainer from "../common/AdminItemContainer";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { RiDeleteBinLine, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { statusData } from "./statusData";
@@ -91,6 +91,7 @@ export interface ProjectFormProps {
             key_ar: string;
             value: string;
             value_ar: string;
+            hidden?: boolean;
         }[];
     };
     thirdSection: {
@@ -1006,7 +1007,27 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             <div className="border p-2 rounded-md flex flex-col gap-5">
                                 {secondSectionItems.map((field, index) => (
                                     <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b  pb-5">
-                                        <div className="absolute top-2 right-2">
+                                        <div className="absolute top-2 right-2 flex items-center gap-2">
+                                            {/* eye: hide/show this row on the site; the key and value stay saved (shared by English and Arabic) */}
+                                            <Controller
+                                                name={`secondSection.items.${index}.hidden`}
+                                                control={control}
+                                                render={({ field: { value, onChange } }) =>
+                                                    value ? (
+                                                        <RiEyeOffLine
+                                                            title="Hidden on the site — click to show"
+                                                            onClick={() => onChange(false)}
+                                                            className="cursor-pointer text-gray-400"
+                                                        />
+                                                    ) : (
+                                                        <RiEyeLine
+                                                            title="Shown on the site — click to hide"
+                                                            onClick={() => onChange(true)}
+                                                            className="cursor-pointer text-gray-700"
+                                                        />
+                                                    )
+                                                }
+                                            />
                                             <RiDeleteBinLine
                                                 onClick={() => secondSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1673,7 +1694,27 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             <div className="border p-2 rounded-md flex flex-col gap-5">
                                 {secondSectionItems.map((field, index) => (
                                     <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b  pb-5">
-                                        <div className="absolute top-2 right-2">
+                                        <div className="absolute top-2 right-2 flex items-center gap-2">
+                                            {/* eye: hide/show this row on the site; the key and value stay saved (shared by English and Arabic) */}
+                                            <Controller
+                                                name={`secondSection.items.${index}.hidden`}
+                                                control={control}
+                                                render={({ field: { value, onChange } }) =>
+                                                    value ? (
+                                                        <RiEyeOffLine
+                                                            title="Hidden on the site — click to show"
+                                                            onClick={() => onChange(false)}
+                                                            className="cursor-pointer text-gray-400"
+                                                        />
+                                                    ) : (
+                                                        <RiEyeLine
+                                                            title="Shown on the site — click to hide"
+                                                            onClick={() => onChange(true)}
+                                                            className="cursor-pointer text-gray-700"
+                                                        />
+                                                    )
+                                                }
+                                            />
                                             <RiDeleteBinLine
                                                 onClick={() => secondSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"

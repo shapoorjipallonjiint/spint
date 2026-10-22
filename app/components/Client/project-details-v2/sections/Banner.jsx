@@ -36,14 +36,15 @@ const Banner = ({ firstSection, secondSection }) => {
     const imageY = useTransform(imageProgress, [0, 1], imageOffset);
     const hasAnimatedRef = useRef(false);
 
-    // details grid: Location is shown separately above; BUA and Contract Model stay in the CMS but aren't shown.
+    // details grid: rows hidden with the eye toggle in the admin stay in the CMS but aren't shown.
+    // Location is placed separately below, so it's left out of the remaining items.
     // Matched on the English label (raw data), so it works on the Arabic site too.
-    const HIDDEN_DETAIL_KEYS = /^\s*(location|bua|contract\s*model)\b/i;
+    const isLocationKey = (key) => /^\s*location\b/i.test(key ?? "");
     const itemsWithoutLocation = tSecondSection.items.filter(
-        (item, i) => !HIDDEN_DETAIL_KEYS.test(secondSection.items?.[i]?.key ?? item.key ?? ""),
+        (item, i) => !secondSection.items?.[i]?.hidden && !isLocationKey(secondSection.items?.[i]?.key ?? item.key),
     );
-    // Location value, found by its English label so it also works on the Arabic site
-    const locationIndex = (secondSection.items || []).findIndex((item) => /^\s*location\b/i.test(item?.key ?? ""));
+    // Location value, found by its English label so it also works on the Arabic site (unless hidden)
+    const locationIndex = (secondSection.items || []).findIndex((item) => !item?.hidden && isLocationKey(item?.key));
     const locationValue = tSecondSection.items?.[locationIndex]?.value;
     const sectorValue = Array.isArray(tSecondSection?.sector)
         ? tSecondSection.sector.map((item) => item?.name).filter(Boolean).join(", ")
@@ -68,7 +69,7 @@ const Banner = ({ firstSection, secondSection }) => {
     // About the Project grid, in reading order
     const details = [
         { label: "Project", value: tSecondSection?.project ? tSecondSection.project : tFirstSection.title },
-        { label: "Location", value: locationValue },
+        ...(locationIndex >= 0 ? [{ label: "Location", value: locationValue }] : []),
         { label: "Sector", value: sectorValue },
         { label: "Status", value: tSecondSection?.status },
         ...itemsWithoutLocation.map((item) => ({ label: item?.key, value: item?.value })),

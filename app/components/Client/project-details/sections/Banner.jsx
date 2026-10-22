@@ -33,7 +33,11 @@ const Banner = ({ firstSection, secondSection }) => {
     const imageY = useTransform(imageProgress, [0, 1], imageOffset);
     const hasAnimatedRef = useRef(false);
 
-    const itemsWithoutLocation = tSecondSection.items.filter((item) => item.key !== "Location");
+    // rows hidden with the eye toggle in the admin stay in the CMS but aren't shown; Location is placed separately above.
+    // Checked on the raw (English) data, so it works on the Arabic site too.
+    const itemsWithoutLocation = tSecondSection.items.filter(
+        (item, i) => !secondSection.items?.[i]?.hidden && !/^\s*location\b/i.test(secondSection.items?.[i]?.key ?? item.key ?? ""),
+    );
 
     // subtitle under the title comes from a service's description heading (rules below).
     // Services are matched on the English name (raw data), so it works on the Arabic site too.
