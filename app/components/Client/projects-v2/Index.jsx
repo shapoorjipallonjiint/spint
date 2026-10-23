@@ -3,7 +3,8 @@
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import Banner from "./sections/Banner";
 import ProjectLists from "./sections/ProjectLists";
-const Index = ({ data, sectorData, countryData, serviceData, visitorCountry, projectOrders }) => {
+// cardV2: the /v2/projects preview renders the cards with ProjectCardV2
+const Index = ({ data, sectorData, countryData, serviceData, visitorCountry, projectOrders, cardV2 = false }) => {
   const isArabic = useIsPreferredLanguageArabic();
 
   return (
@@ -22,6 +23,7 @@ const Index = ({ data, sectorData, countryData, serviceData, visitorCountry, pro
           data={data.projects}
           visitorCountry={visitorCountry}
           projectOrders={projectOrders}
+          cardV2={cardV2}
         />
       </main>
     </>
