@@ -125,6 +125,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
       images: s.images?.map((img) => img.url) || [],
     };
   });
+  const fillTabs = tabs.length === 4;
   const [activeTab, setActiveTab] = useState(
     visibleServices?.[0]?.serviceName || ""
   );
@@ -526,7 +527,8 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
               <div className="hidden lg:block [&_li]:text-paragraph [&_li]:text-18 [&_li]:opacity-85 [&_li]:mb-4">
                 {/* each tab is as wide as its label (+ padding), at least 242px; the bar fits its tabs in one line and
                     becomes a draggable slider when they don't fit (Swiper locks itself when everything fits) */}
-                <div className="w-fit max-w-full border border-black/10 mb-2 xl:mb-[27px]">
+                {/* exactly 4 tabs: the bar spans the full width and the tabs grow to fill it */}
+                <div className={`${fillTabs ? "w-full" : "w-fit"} max-w-full border border-black/10 mb-2 xl:mb-[27px]`}>
                   <Swiper
                     slidesPerView="auto"
                     grabCursor
@@ -543,12 +545,12 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                     return (
                       <SwiperSlide
                         key={tab.serviceName}
-                        className={`!w-auto border-black/10 ${isArabic ? "border-l last:border-l-0" : "border-r last:border-r-0"}`}
+                        className={`!w-auto ${fillTabs ? "grow" : ""} border-black/10 ${isArabic ? "border-l last:border-l-0" : "border-r last:border-r-0"}`}
                       >
                       <button
                         type="button"
                         onClick={() => handleTabChange(tab)}
-                        className={`relative overflow-hidden min-h-[42px] min-w-[242px] px-6 xl:px-10 py-3 xl:py-6 whitespace-nowrap text-19 leading-[1.473684210526316] transition-colors duration-300 ${tabsScrollable ? "cursor-[inherit]" : "cursor-pointer"}`}
+                        className={`relative overflow-hidden ${fillTabs ? "w-full" : ""} min-h-[42px] min-w-[210px] px-6 xl:px-8 3xl:px-10 py-3 xl:py-6 whitespace-nowrap text-19 leading-[1.473684210526316] transition-colors duration-300 ${tabsScrollable ? "cursor-[inherit]" : "cursor-pointer"}`}
                       >
                         {/* 👉 Base background (for hover) */}
                         <span className={`absolute inset-0 transition-colors duration-300 ${!isActive ? "bg-transparent hover:bg-white" : "" }`} />
@@ -562,7 +564,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
                         />
 
                         {/* 👉 Text */}
-                        <span className={`relative z-10 ${isActive ? "text-white font-medium" : "text-paragraph font-light"} transition-colors duration-300`}>
+                        <span className={`relative z-10 ${isActive ? "text-white" : "text-paragraph"} transition-colors duration-400`}>
                           {tab.serviceName}
                         </span>
                       </button>
@@ -627,8 +629,8 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
         </div>
 
         <div className={`absolute hidden xl:block top-0 lg:bottom-[73px] z-10 ${isArabic
-          ? "left-0 lg:right-[-400px] 3xl:right-[-290px]"
-          : "right-0 lg:left-[-400px] 3xl:left-[-290px]"
+          ? "left-0 lg:right-[-450px] 3xl:right-[-290px]"
+          : "right-0 lg:left-[-450px] 3xl:left-[-290px]"
           }`}
         >
           <MotionImage
