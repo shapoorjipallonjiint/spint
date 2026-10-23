@@ -12,6 +12,7 @@ import { useApplyLang } from "@/lib/applyLang";
 import { slugify } from "@/lib/slugify";
 import { orderKeyForCountry } from "@/lib/countryCodes";
 import ProjectCard from "./ProjectCard";
+import ProjectCardV2 from "./ProjectCardV2";
 import Pagination from "./Pagination";
 
 const ITEMS_PER_PAGE = 12;
@@ -38,7 +39,8 @@ const toOptions = (list = [], labelKey = "name") => {
     return [ALL, ...bySlug.values()];
 };
 
-const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCountry, projectOrders }) => {
+const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCountry, projectOrders, cardV2 = false }) => {
+    const Card = cardV2 ? ProjectCardV2 : ProjectCard;
     const tData = useApplyLang(data);
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -566,7 +568,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
                     }}
                 >
                     {currentItems.map((item) => (
-                        <ProjectCard key={item._id} item={item} variant="grid" isArabic={isArabic} revealDelay={cardRevealDelay} />
+                        <Card key={item._id} item={item} variant="grid" isArabic={isArabic} revealDelay={cardRevealDelay} />
                     ))}
 
                     {currentItems.length === 0 && (
@@ -587,7 +589,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
                     }}
                 >
                     {currentItems.map((item) => (
-                        <ProjectCard key={item._id} item={item} variant="list" isArabic={isArabic} revealDelay={cardRevealDelay} />
+                        <Card key={item._id} item={item} variant="list" isArabic={isArabic} revealDelay={cardRevealDelay} />
                     ))}
 
                     {currentItems.length === 0 && (
