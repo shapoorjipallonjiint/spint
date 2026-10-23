@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
-const Banner = ({ firstSection, secondSection }) => {
+const Banner = ({ firstSection, secondSection, smallerTitle = false }) => {
     const tFirstSection = useApplyLang(firstSection);
     const tSecondSection = useApplyLang(secondSection);
     const isArabic = useIsPreferredLanguageArabic();
@@ -109,7 +109,7 @@ const Banner = ({ firstSection, secondSection }) => {
                                     className={`w-8 h-8 mb-5 ${isArabic ? "" : "rotate-180"}`}
                                 />
                             </button> */}
-                        <h1 className="text-40 2xl:text-70 font-light leading-[1.07] mb-3 lg:mb-5">
+                        <h1 className={`text-40 ${smallerTitle ? "xl:text-[length:calc(var(--text-40)-3px)] 2xl:text-[length:calc(var(--text-70)-3px)]" : "2xl:text-70"} font-light leading-[1.07] mb-3 lg:mb-5`}>
                             <SplitTextAnimation
                                 children={tFirstSection.title}
                                 staggerDelay={0.2}
