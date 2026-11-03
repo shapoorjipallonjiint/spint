@@ -16,6 +16,15 @@ const Gallery = ({ data }) => {
     const isArabic = useIsPreferredLanguageArabic();
     const MotionImage = motion.create(Image);
 
+    // Page-load sequence: title -> filter tabs -> items. Cards visible on load wait for
+    // the title and tabs; once the intro has played, cards revealed by scrolling start immediately.
+    const INTRO_ITEMS_DELAY = 1.2;
+    const [introDelay, setIntroDelay] = useState(INTRO_ITEMS_DELAY);
+    useEffect(() => {
+        const timer = setTimeout(() => setIntroDelay(0), (INTRO_ITEMS_DELAY + 0.4) * 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
     const ITEMS_PER_PAGE = 12;
     const ALL_CATEGORY = useMemo(
         () => (isArabic ? "الكل" : "All"),
@@ -307,10 +316,21 @@ const Gallery = ({ data }) => {
                         ) : (
                             currentItems.map((item, idx) => (
                                 <motion.div
-                                    variants={moveUp(0.9 + 0.1 * idx)}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 24 },
+                                        show: {
+                                            opacity: 1,
+                                            y: 0,
+                                            // Each card animates when it scrolls into view, so only
+                                            // stagger within a row (3 columns), not across the whole page.
+                                            // Long, gentle ease-out (quart) for a smooth glide with no snap.
+                                            transition: { delay: introDelay + 0.1 * (idx % 3), duration: 0.9, ease: [0.25, 1, 0.5, 1] },
+                                        },
+                                    }}
+                                    style={{ willChange: "transform, opacity" }}
                                     initial="hidden"
                                     whileInView="show"
-                                    viewport={{ amount: 0.2, once: true }}
+                                    viewport={{ amount: 0.1, once: true }}
                                     key={`${selectedCategory}-${item.title}-${idx}`}
                                     className="border-b border-black/20 pb-5 lg:border-b-0 lg:pb-0 cursor-pointer"
                                     onClick={() => openModal(item, 0)}
