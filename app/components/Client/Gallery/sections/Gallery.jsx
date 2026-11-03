@@ -22,14 +22,25 @@ const Gallery = ({ data }) => {
         [isArabic]
     );
 
-    const normalizedItems = useMemo(() => {
-        if (!t?.gallery) return [];
+    // Sections / albums hidden in the CMS are not shown on the site.
+    const visibleSections = useMemo(
+        () =>
+            (t?.gallery || [])
+                .filter((section) => !section.isHidden)
+                .map((section) => ({
+                    ...section,
+                    categories: (section.categories || []).filter((category) => !category.isHidden),
+                })),
+        [t]
+    );
 
-        return t.gallery.flatMap((section) =>
+    const normalizedItems = useMemo(() => {
+        return visibleSections.flatMap((section) =>
             section.categories.flatMap((category) => {
                 if (!category.images?.length) return [];
 
                 return {
+                    id: String(category._id),
                     title: category.title,
                     category: section.title,
                     image: category.images[0],
@@ -37,7 +48,7 @@ const Gallery = ({ data }) => {
                 };
             })
         );
-    }, [t]);
+    }, [visibleSections]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORY);
@@ -49,11 +60,22 @@ const Gallery = ({ data }) => {
     });
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
 
+    const allOrder = data?.allOrder;
+
     // Filter items based on selected category
     const filteredItems = useMemo(() => {
-        if (selectedCategory === ALL_CATEGORY) return normalizedItems;
+        if (selectedCategory === ALL_CATEGORY) {
+            // Custom "All" order from the CMS. Albums not in the list keep their default order at the end.
+            const order = Array.isArray(allOrder) ? allOrder : [];
+            if (!order.length) return normalizedItems;
+            const rank = new Map(order.map((id, i) => [String(id), i]));
+            return normalizedItems
+                .map((item, i) => ({ item, i, r: rank.has(item.id) ? rank.get(item.id) : order.length + i }))
+                .sort((a, b) => a.r - b.r)
+                .map(({ item }) => item);
+        }
         return normalizedItems.filter(item => item.category === selectedCategory);
-    }, [selectedCategory, normalizedItems, ALL_CATEGORY]);
+    }, [selectedCategory, normalizedItems, ALL_CATEGORY, allOrder]);
 
 
     // Calculate total pages based on filtered data
@@ -247,7 +269,7 @@ const Gallery = ({ data }) => {
                         className="flex flex-col md:flex-row gap-6 md:gap-0 justify-between border-y border-cmnbdr pt-4 md:pt-6 xl:pt-[35px] mb-50px"
                     >
                         <div className="flex flex-wrap justify-between xl:justify-start gap-3 md:gap-x-8 lg:gap-x-10 2xl:gap-x-[60px] 3xl:gap-x-[90px] mb-4 md:mb-0">
-                            {[ALL_CATEGORY, ...(t?.gallery?.map((g) => g.title) || [])].map((cat) => (
+                            {[ALL_CATEGORY, ...visibleSections.map((g) => g.title)].map((cat) => (
                                 <div
                                     key={cat}
                                     className={`relative pb-0 md:pb-6 xl:pb-[35px] transition-all duration-300 group cursor-pointer ${selectedCategory === cat ? "text-black" : ""
