@@ -84,12 +84,17 @@ export async function GET(request: NextRequest) {
     const mapProject = (p: ProjectItem) => {
 const services =
   Array.isArray(p.secondSection?.service)
-    ? p.secondSection.service.map((s: any) => {
+    ? p.secondSection.service
+      // services hidden in this project (admin Hide toggle) are left out for the website
+      // (details tabs + projects filter); the admin still gets them. Read-only: nothing is written.
+      .filter((s: any) => isAdmin || !s?.hidden)
+      .map((s: any) => {
         const serviceId = s.serviceId?.toString();
         const serviceDetails = serviceMap.get(serviceId);
 
         return {
           serviceId,
+          hidden: !!s.hidden,
 
           // ✅ ADD THESE
           serviceName: serviceDetails?.title || "",

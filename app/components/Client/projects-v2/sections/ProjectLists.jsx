@@ -109,7 +109,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
                     return false;
                 if (selectedStatus.slug && slugify(second.status) !== selectedStatus.slug) return false;
                 if (selectedCountry.slug && !selectedCountry.ids.has(String(second.location?._id))) return false;
-                if (selectedService.slug && !(second.service || []).some((sv) => selectedService.ids.has(String(sv?.serviceId))))
+                if (selectedService.slug && !(second.service || []).some((sv) => !sv?.hidden && selectedService.ids.has(String(sv?.serviceId))))
                     return false;
                 return true;
             });

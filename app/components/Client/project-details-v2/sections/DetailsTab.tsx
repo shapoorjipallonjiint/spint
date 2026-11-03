@@ -32,6 +32,7 @@ type ScopeItem = {
 type Service = {
   service: {
     serviceId: string;
+    hidden?: boolean;
     serviceName: string;
     firstSection: {
       title: string;
@@ -86,9 +87,9 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const mobileScrollFrame = useRef<number | null>(null);
   // only services with some content get a tab (an empty service would show an empty tab)
   // services hidden in admin (Services > Main) don't get a tab, the rest follow the admin order
-  const { isHiddenServiceId, sortByServiceId } = useServiceVisibility();
+  const { isHiddenServiceId, sortByServiceId, serviceIdSlugs } = useServiceVisibility();
   const visibleServices = sortByServiceId(
-    data.service.filter((s) => hasServiceContent(s) && !isHiddenServiceId(s?.serviceId)),
+    data.service.filter((s) => hasServiceContent(s) && !s?.hidden && !isHiddenServiceId(s?.serviceId)),
     (s) => s?.serviceId
   );
   const tabs: DetailsTabItem[] = visibleServices.map((s) => {
@@ -162,6 +163,18 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     return defaultIndex >= 0 ? defaultIndex : 1;
   });
   const [activeImage, setActiveImage] = useState(0);
+  // coming from a service page (?service=<slug>, added by its Featured Projects slider): open that service's tab
+  // (desktop tab + mobile accordion). Unknown slug or a service this project doesn't show: default tab stays.
+  // Read from window after mount so the page stays statically rendered.
+  useEffect(() => {
+    const slug = new URLSearchParams(window.location.search).get("service");
+    if (!slug) return;
+    const index = visibleServices.findIndex((s) => serviceIdSlugs[String(s?.serviceId)] === slug);
+    if (index < 0) return;
+    setActiveTab(visibleServices[index].serviceName);
+    setOpenMobileTab(index);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // true while the desktop tab bar overflows (Swiper unlocked), so the tabs show the grab cursor
   const [tabsScrollable, setTabsScrollable] = useState(false);
   const tabsSwiperRef = useRef<SwiperType | null>(null);

@@ -11,6 +11,8 @@ import "./featuredProjectSlider.css";
 import H2Title from "@/app/components/common/H2Title";
 import Image from "next/image";
 import LangLink from '@/lib/LangLink'
+import { usePathname } from "next/navigation";
+import { serviceSlugFromHref } from "@/lib/serviceRegistry";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useContainerInset } from "@/hooks/useContainerInset";
@@ -18,6 +20,9 @@ import { useContainerInset } from "@/hooks/useContainerInset";
 // Featured Projects slider of the service pages: large image cards with the title over the image.
 // `data` is the list from toFeaturedSlides (lib/serviceRegistry).
 const FeaturedProjectCardSlider = ({ data = [] }) => {
+    // on a service page (/services/<slug>), project links carry ?service=<slug> so the project page opens that service's tab
+    const serviceSlug = serviceSlugFromHref(usePathname());
+    const projectHref = (slug) => `/projects/${slug}${serviceSlug ? `?service=${serviceSlug}` : ""}`;
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
     const swiperRef = useRef(null);
@@ -144,7 +149,7 @@ const FeaturedProjectCardSlider = ({ data = [] }) => {
                             {t.map((item, i) => (
                                 <SwiperSlide key={i}>
                                     {/* card links to the project page when the item has a slug */}
-                                    <LangLink href={item.slug ? `/projects/${item.slug}` : "#"} className={item.slug ? "block" : "block pointer-events-none"}>
+                                    <LangLink href={item.slug ? projectHref(item.slug) : "#"} className={item.slug ? "block" : "block pointer-events-none"}>
                                     {/* Outer card: clips the animation */}
                                     <div className="relative overflow-hidden">
 

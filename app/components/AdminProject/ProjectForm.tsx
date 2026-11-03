@@ -40,6 +40,32 @@ import {
 import { FaRegEdit } from "react-icons/fa";
 import { ServiceImagesEditor } from "./ServiceImageEditor";
 
+// true when a project's service entry has any content (EN/AR text, MEP items or images),
+// so unticking it would lose data and needs a confirmation first
+type ServiceEntryContent = {
+    firstSection?: Record<string, unknown>;
+    secondSection?: Record<string, unknown>;
+    accordionTitle?: string;
+    items?: { title?: string; description?: string }[];
+    images?: ({ url?: string } | string)[];
+};
+const hasServiceContent = (s: ServiceEntryContent | undefined): boolean => {
+    if (!s) return false;
+    const strip = (v: unknown) => (typeof v === "string" ? v.replace(/<[^>]*>/g, "").trim() : "");
+    const texts = [s.firstSection, s.secondSection].flatMap((sec) =>
+        sec ? [sec.title, sec.title_ar, sec.description, sec.description_ar] : []
+    );
+    return (
+        texts.some((t) => strip(t)) ||
+        !!strip(s.accordionTitle) ||
+        (Array.isArray(s.items) && s.items.some((i) => strip(i?.title) || strip(i?.description))) ||
+        (Array.isArray(s.images) && s.images.some((img) => (typeof img === "string" ? img : img?.url)))
+    );
+};
+
+const UNTICK_SERVICE_CONFIRM =
+    "This service has content in this project. Unticking it will delete that content when you save.\n\nTo keep the content and only remove it from the website, use the eye icon instead.\n\nDelete it anyway?";
+
 
 export interface ProjectFormProps {
     firstSection: {
@@ -63,6 +89,8 @@ export interface ProjectFormProps {
         sector: string[];
         service: {
             serviceId: string;
+            // hidden on the website for this project only; content is kept
+            hidden?: boolean;
             firstSection: {
                 title: string;
                 title_ar: string;
@@ -654,6 +682,8 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                             checked={selected}
                                                             onChange={() => {
                                                                 if (selected) {
+                                                                    // unticking removes the content on save, so ask first when there is any
+                                                                    if (hasServiceContent(field.value[serviceIndex]) && !window.confirm(UNTICK_SERVICE_CONFIRM)) return;
                                                                     field.onChange(field.value.filter((s) => s.serviceId !== item._id));
                                                                 } else {
                                                                     field.onChange([
@@ -681,7 +711,20 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                         />
                                                         {item.pageTitle}
                                                         {item.hidden && <span className="ms-2 text-xs text-red-600">(Hidden on website)</span>}
+                                                        {selected && field.value[serviceIndex]?.hidden && <span className="ms-2 text-xs text-amber-600">(Hidden in this project)</span>}
                                                     </label>
+                                                    {selected && (
+                                                        <button
+                                                            type="button"
+                                                            className="ms-auto me-3 cursor-pointer"
+                                                            title={field.value[serviceIndex]?.hidden ? "Hidden in this project — click to show" : "Shown in this project — click to hide"}
+                                                            onClick={() =>
+                                                                field.onChange(field.value.map((s, i) => (i === serviceIndex ? { ...s, hidden: !s.hidden } : s)))
+                                                            }
+                                                        >
+                                                            {field.value[serviceIndex]?.hidden ? <RiEyeOffLine className="text-gray-400" /> : <RiEyeLine className="text-gray-700" />}
+                                                        </button>
+                                                    )}
                                                     {item.pageTitle.includes("MEP") && serviceIndex !== -1 && (
                                                         <FaRegEdit
                                                             className="cursor-pointer"
@@ -1525,6 +1568,8 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                             checked={selected}
                                                             onChange={() => {
                                                                 if (selected) {
+                                                                    // unticking removes the content on save, so ask first when there is any
+                                                                    if (hasServiceContent(field.value[serviceIndex]) && !window.confirm(UNTICK_SERVICE_CONFIRM)) return;
                                                                     field.onChange(field.value.filter((s) => s.serviceId !== item._id));
                                                                 } else {
                                                                     field.onChange([
@@ -1551,7 +1596,20 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                         {item.pageTitle}{" "}
                                                         <span className="text-primary text-sm">AR:({item.title_ar})</span>
                                                         {item.hidden && <span className="ms-2 text-xs text-red-600">(Hidden on website)</span>}
+                                                        {selected && field.value[serviceIndex]?.hidden && <span className="ms-2 text-xs text-amber-600">(Hidden in this project)</span>}
                                                     </label>
+                                                    {selected && (
+                                                        <button
+                                                            type="button"
+                                                            className="ms-auto me-3 cursor-pointer"
+                                                            title={field.value[serviceIndex]?.hidden ? "Hidden in this project — click to show" : "Shown in this project — click to hide"}
+                                                            onClick={() =>
+                                                                field.onChange(field.value.map((s, i) => (i === serviceIndex ? { ...s, hidden: !s.hidden } : s)))
+                                                            }
+                                                        >
+                                                            {field.value[serviceIndex]?.hidden ? <RiEyeOffLine className="text-gray-400" /> : <RiEyeLine className="text-gray-700" />}
+                                                        </button>
+                                                    )}
 
                                                     <Sheet>
                                                         <SheetTrigger asChild>

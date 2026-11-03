@@ -45,6 +45,8 @@ export const useServiceVisibility = () => {
     return {
         hiddenSlugs,
         hiddenIds,
+        // service document id -> slug
+        serviceIdSlugs,
         // service links ("/services/mep") in the admin order; other links keep their place
         sortByHref: <T,>(items: T[], getHref: (item: T) => string | null | undefined) =>
             sortByServiceOrder(items, serviceOrder, (item) => serviceSlugFromHref(getHref(item))),

@@ -26,6 +26,7 @@ type ScopeItem = {
 type Service = {
   service: {
     serviceId: string;
+    hidden?: boolean;
     serviceName:string;
     firstSection: {
       title: string;
@@ -79,8 +80,9 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   const mobilePanelRefs = useRef<Array<HTMLDivElement | null>>([]);
   const mobileScrollFrame = useRef<number | null>(null);
   // services in the admin order (Services > Main)
-  const { sortByServiceId } = useServiceVisibility();
-  const services = sortByServiceId(data.service, (s) => s?.serviceId);
+  const { sortByServiceId, serviceIdSlugs } = useServiceVisibility();
+  // services hidden in this project (admin Hide toggle) are skipped
+  const services = sortByServiceId(data.service.filter((s) => !s?.hidden), (s) => s?.serviceId);
   const tabs: DetailsTabItem[] = services.map((s) => {
     // MEP shows the accordion unless admin switched it to the "list" (title + description) layout;
     // projects saved before the toggle existed have no value and stay on the accordion.
@@ -146,6 +148,18 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     return defaultIndex >= 0 ? defaultIndex : 1;
   });
   const [activeImage, setActiveImage] = useState(0);
+  // coming from a service page (?service=<slug>, added by its Featured Projects slider): open that service's tab
+  // (desktop tab + mobile accordion). Unknown slug or a service this project doesn't show: default tab stays.
+  // Read from window after mount so the page stays statically rendered.
+  useEffect(() => {
+    const slug = new URLSearchParams(window.location.search).get("service");
+    if (!slug) return;
+    const index = services.findIndex((s) => serviceIdSlugs[String(s?.serviceId)] === slug);
+    if (index < 0) return;
+    setActiveTab(services[index].serviceName);
+    setOpenMobileTab(index);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const activeTabData =
     tabs.find((tab) => tab.serviceName === activeTab) ?? tabs[0];
   const activeImages = activeTabData?.images ?? [];
