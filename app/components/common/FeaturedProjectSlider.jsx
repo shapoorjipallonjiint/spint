@@ -11,10 +11,15 @@ import "./featuredProjectSlider.css";
 import H2Title from "./H2Title";
 import Image from "next/image";
 import LangLink from '@/lib/LangLink'
+import { usePathname } from "next/navigation";
+import { serviceSlugFromHref } from "@/lib/serviceRegistry";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const FeaturedProjectSlider = ({ data }) => {
+    // on a service page (/services/<slug>), project links carry ?service=<slug> so the project page opens that service's tab
+    const serviceSlug = serviceSlugFromHref(usePathname());
+    const projectHref = (slug) => `/projects/${slug}${serviceSlug ? `?service=${serviceSlug}` : ""}`;
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
     const swiperRef = useRef(null);
@@ -173,7 +178,7 @@ const FeaturedProjectSlider = ({ data }) => {
                             {t.map((item, i) => (
                                 <SwiperSlide key={i}>
                                     <div>
-                                        <LangLink href={`/projects/${item.slug}`}>
+                                        <LangLink href={projectHref(item.slug)}>
                                             <div className="overflow-hidden">
                                                 {hasValidImage(item.thumbnail) ? (
                                                     <Image
@@ -212,7 +217,7 @@ const FeaturedProjectSlider = ({ data }) => {
                                         <div>
                                             <div className="border-b border-cmnbdr pt-5 3xl:pt-7 pb-5 xl:pb-7">
                                                 <div className="overflow-hidden">
-                                                    <LangLink href={`/projects/${item.slug}`}>
+                                                    <LangLink href={projectHref(item.slug)}>
                                                         <h3
                                                             className={`text-24 xl:text-29 leading-[1.344827586206897] font-light ${
                                                                 !hasScrolledIntoView

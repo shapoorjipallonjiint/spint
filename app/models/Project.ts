@@ -112,6 +112,10 @@ const projectSchema = new mongoose.Schema({
             required: true,
           },
 
+          // hidden on the website for this project only (tab + projects filter); content is kept.
+          // Missing (older projects) means visible.
+          hidden: { type: Boolean, default: false },
+
           firstSection: {
             title: { type: String },
             title_ar: { type: String },

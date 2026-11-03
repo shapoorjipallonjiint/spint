@@ -71,7 +71,8 @@ const AdminNavbar = () => {
         {
             label: "Pages",
             items: [
-                { name: "Home", href: "/admin/home", icon: HomeIcon },
+                // exact: Map Locations (/admin/home/map-locations) lives under Projects, so Home must not also light up there
+                { name: "Home", href: "/admin/home", icon: HomeIcon, exact: true },
                 { name: "About", href: "/admin/about", icon: UserGroupIcon },
                 { name: "Leadership & Team", href: "/admin/leadership", icon: UserGroupIcon },
                 { name: "Quality", href: "/admin/quality", icon: ThumbsUp },
@@ -96,6 +97,8 @@ const AdminNavbar = () => {
                         { name: "Main", href: "/admin/projects/main" },
                         // add / edit / hide / reorder projects (also highlighted on the add and edit pages)
                         { name: "Project List", href: "/admin/projects" },
+                        // world map points (page lives under /admin/home; also linked from the Home page)
+                        { name: "Map Locations", href: "/admin/home/map-locations" },
                     ],
                 },
                 { name: "Services", href: "#services", icon: BriefcaseIcon, hasChild: true, children: servicesChildren },
