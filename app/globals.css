@@ -1899,3 +1899,12 @@ body::-webkit-scrollbar {
   from { opacity: 1; transform: translate(0, 0) scale(1); }
   to { opacity: 0; transform: translate(var(--tooltip-shift, 0, 4px)) scale(0.96); }
 }
+
+/* Admin sidebar: slim scrollbar that only shows on hover */
+.admin-sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.admin-sidebar-scroll:hover {
+  scrollbar-color: #d1d5db transparent;
+}
