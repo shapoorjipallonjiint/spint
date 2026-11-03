@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, ChevronUp, Eye, EyeOff, Star } from "lucide-react";
+import { ChevronDown, ChevronUp, ExternalLink, Eye, EyeOff, Star } from "lucide-react";
 import { toast } from "sonner";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { Label } from "@/components/ui/label";
@@ -137,6 +137,27 @@ const ServicesMainPage = () => {
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2">
+                                    {/* view the live service page in a new tab; disabled while hidden (the page is not on the website) */}
+                                    {isHidden ? (
+                                        <span
+                                            title="Hidden services are not on the website"
+                                            aria-disabled="true"
+                                            className="p-2 rounded-full border border-black/20 opacity-40 cursor-not-allowed"
+                                        >
+                                            <ExternalLink className="w-5 h-5" />
+                                        </span>
+                                    ) : (
+                                        <a
+                                            href={`/services/${service.slug}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            title="View on website"
+                                            aria-label={`View ${service.name} on website`}
+                                            className="p-2 rounded-full border border-black/20 hover:bg-black/5 cursor-pointer"
+                                        >
+                                            <ExternalLink className="w-5 h-5" />
+                                        </a>
+                                    )}
                                     {/* pick the projects for this service page's Featured Projects section */}
                                     <button
                                         type="button"

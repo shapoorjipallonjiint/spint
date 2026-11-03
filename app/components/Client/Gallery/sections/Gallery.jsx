@@ -11,17 +11,20 @@ import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 
+// Created once at module scope; creating it inside the component gave React a new
+// component type every render, remounting (and re-animating) every MotionImage.
+const MotionImage = motion.create(Image);
+
 const Gallery = ({ data }) => {
     const t = useApplyLang(data);
     const isArabic = useIsPreferredLanguageArabic();
-    const MotionImage = motion.create(Image);
 
     // Page-load sequence: title -> filter tabs -> items. Cards visible on load wait for
     // the title and tabs; once the intro has played, cards revealed by scrolling start immediately.
-    const INTRO_ITEMS_DELAY = 1.2;
+    const INTRO_ITEMS_DELAY = 0.6;
     const [introDelay, setIntroDelay] = useState(INTRO_ITEMS_DELAY);
     useEffect(() => {
-        const timer = setTimeout(() => setIntroDelay(0), (INTRO_ITEMS_DELAY + 0.4) * 1000);
+        const timer = setTimeout(() => setIntroDelay(0), (INTRO_ITEMS_DELAY + 0.2) * 1000);
         return () => clearTimeout(timer);
     }, []);
 
@@ -61,7 +64,6 @@ const Gallery = ({ data }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORY);
-    const [isAnimating, setIsAnimating] = useState(false);
     const sectionRef = useRef(null);
     const { scrollYProgress: shapeProgress } = useScroll({
         target: sectionRef,
@@ -97,44 +99,18 @@ const Gallery = ({ data }) => {
         return filteredItems.slice(startIndex, endIndex);
     }, [currentPage, filteredItems]);
 
-    // Reset to page 1 when category changes
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [selectedCategory]);
-
+    // Category and page change in the same render, so the grid never shows an
+    // intermediate state (old page number on the new category / "No items found").
     const handleCategoryChange = (category) => {
-        if (category === selectedCategory || isAnimating) return;
-
-        setIsAnimating(true);
+        if (category === selectedCategory) return;
         setSelectedCategory(category);
-
-        // Scroll to top of section smoothly
-        const section = document.querySelector("section");
-        if (section) {
-            section.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-
-        setTimeout(() => {
-            setIsAnimating(false);
-        }, 300);
+        setCurrentPage(1);
     };
 
     const handlePageChange = (newPage) => {
-        if (newPage < 1 || newPage > totalPages || isAnimating) return;
-
-        setIsAnimating(true);
+        if (newPage < 1 || newPage > totalPages) return;
         setCurrentPage(newPage);
-
-        // Scroll to top of section smoothly
-        const section = document.querySelector("section");
-        if (section) {
-            section.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-
-        // Reset animation state
-        setTimeout(() => {
-            setIsAnimating(false);
-        }, 300);
+        sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
     const handlePrev = () => {
@@ -263,15 +239,15 @@ const Gallery = ({ data }) => {
                         <h1 className="text-70 font-light leading-[1.071428571428571]">
                             <SplitTextAnimation
                                 children={t.pageTitle}
-                                staggerDelay={0.2}
-                                animationDuration={0.8}
-                                delay={0.2}
+                                staggerDelay={0.1}
+                                animationDuration={0.6}
+                                delay={0.1}
                             />
                         </h1>
                     </div>
 
                     <motion.div
-                        variants={moveUp(0.8)}
+                        variants={moveUp(0.35)}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ amount: 0.2, once: true }}
@@ -301,13 +277,12 @@ const Gallery = ({ data }) => {
                         </div>
                     </motion.div>
 
-                    <div
-                        className={`relative grid xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-10 xl:gap-y-15 2xl:gap-y-18 3xl:gap-y-20 pb-10 xl:pb-[70px] transition-all duration-300 ${isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
-                            }`}
-                        style={{
-                            transform: isAnimating ? "translateY(16px)" : "translateY(0)",
-                            transition: "opacity 300ms ease-in-out, transform 300ms ease-in-out",
-                        }}
+                    {/* Old grid fades out fully before the new one mounts, then its cards stagger in. */}
+                    <AnimatePresence mode="wait">
+                    <motion.div
+                        key={`${selectedCategory}-${currentPage}`}
+                        exit={{ opacity: 0, transition: { duration: 0.18, ease: "easeOut" } }}
+                        className="relative grid xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-30px gap-y-10 xl:gap-y-15 2xl:gap-y-18 3xl:gap-y-20 pb-10 xl:pb-[70px]"
                     >
                         {currentItems.length === 0 ? (
                             <div className="col-span-full flex justify-center items-center py-10">
@@ -324,14 +299,14 @@ const Gallery = ({ data }) => {
                                             // Each card animates when it scrolls into view, so only
                                             // stagger within a row (3 columns), not across the whole page.
                                             // Long, gentle ease-out (quart) for a smooth glide with no snap.
-                                            transition: { delay: introDelay + 0.1 * (idx % 3), duration: 0.9, ease: [0.25, 1, 0.5, 1] },
+                                            transition: { delay: introDelay + 0.07 * (idx % 3), duration: 0.6, ease: [0.25, 1, 0.5, 1] },
                                         },
                                     }}
                                     style={{ willChange: "transform, opacity" }}
                                     initial="hidden"
                                     whileInView="show"
                                     viewport={{ amount: 0.1, once: true }}
-                                    key={`${selectedCategory}-${item.title}-${idx}`}
+                                    key={item.id}
                                     className="border-b border-black/20 pb-5 lg:border-b-0 lg:pb-0 cursor-pointer"
                                     onClick={() => openModal(item, 0)}
                                 >
@@ -353,7 +328,8 @@ const Gallery = ({ data }) => {
                                 </motion.div>
                             ))
                         )}
-                    </div>
+                    </motion.div>
+                    </AnimatePresence>
                     <AnimatePresence>
                         {isOpen && images.length > 0 && (
                             <motion.div
@@ -522,10 +498,10 @@ const Gallery = ({ data }) => {
 
                 <div className="pagination flex items-center gap-5 justify-center pb-80px">
                     <button
-                        className={` ${isArabic ? "rotate-180" : ""} prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 || isAnimating ? "opacity-30" : "opacity-100"
+                        className={` ${isArabic ? "rotate-180" : ""} prev cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === 1 ? "opacity-30" : "opacity-100"
                             }`}
                         onClick={handlePrev}
-                        disabled={currentPage === 1 || isAnimating}
+                        disabled={currentPage === 1}
                     >
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -547,10 +523,10 @@ const Gallery = ({ data }) => {
                     </p>
 
                     <button
-                        className={` ${isArabic ? "rotate-180" : ""} next cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === totalPages || isAnimating ? "opacity-30" : "opacity-100"
+                        className={` ${isArabic ? "rotate-180" : ""} next cursor-pointer transition-all duration-200 hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed ${currentPage === totalPages ? "opacity-30" : "opacity-100"
                             }`}
                         onClick={handleNext}
-                        disabled={currentPage === totalPages || isAnimating}
+                        disabled={currentPage === totalPages}
                     >
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
