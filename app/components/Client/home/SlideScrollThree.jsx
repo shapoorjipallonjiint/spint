@@ -380,8 +380,22 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         return v * (isArabic ? -1 : 1);
     };
 
+    // start the background video(s) of the slide being shown. Mobile browsers (iOS Safari, Chrome power saving) don't
+    // autoplay a muted video that was hidden (visibility: hidden) at page load, and don't start it reliably when the
+    // slide appears, so `autoPlay` alone only works on desktop. muted/playsInline are set as properties too: React
+    // doesn't put `muted` in the server HTML, and iOS needs it for autoplay. A refused play() is ignored (the video
+    // just stays on its first frame, as before).
+    const playSlideVideos = (index) => {
+        sections[index]?.current?.querySelectorAll("video").forEach((video) => {
+            video.muted = true;
+            video.playsInline = true;
+            if (video.paused) video.play()?.catch(() => {});
+        });
+    };
+
     const playEntryAnimation = (index) => {
         console.log("Calleddddd", index);
+        playSlideVideos(index);
         gsap.set([ttbxsRef.current, rightSecRef.current, leftSecRef.current], {
             x: 0,
             opacity: 1,

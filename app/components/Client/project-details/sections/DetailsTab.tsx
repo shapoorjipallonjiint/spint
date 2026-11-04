@@ -121,11 +121,8 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     services?.[0]?.serviceName || ""
   );
   const [direction, setDirection] = useState(1);
-  const [openMobileTab, setOpenMobileTab] = useState(() => {
-    const defaultIndex = tabs.findIndex((tab) => tab.title === "MEP");
-
-    return defaultIndex >= 0 ? defaultIndex : 0;
-  });
+  // mobile opens the same service as desktop: the first one in the admin order (or the ?service= one, below)
+  const [openMobileTab, setOpenMobileTab] = useState(0);
   // desktop hover opens a row after a short delay, so passing the cursor over rows
   // (which shift while one expands) doesn't open each of them in turn
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
