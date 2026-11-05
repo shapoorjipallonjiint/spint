@@ -132,6 +132,11 @@ const Gallery = ({ data }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [images, setImages] = useState([]); // array of image urls for modal
     const [index, setIndex] = useState(0); // current slide index
+    // urls that have finished loading: the modal shows a small loader until the current one is in
+    const [loadedImages, setLoadedImages] = useState(() => new Set());
+    const markLoaded = useCallback((src) => {
+        setLoadedImages((prev) => (prev.has(src) ? prev : new Set(prev).add(src)));
+    }, []);
 
     // Open modal for an item: main image first, then lmglist
     const openModal = useCallback((item, startIdx = 0) => {
@@ -173,6 +178,22 @@ const Gallery = ({ data }) => {
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
     }, [isOpen, closeModal, next, prev]);
+
+    // Quietly load the next and previous images in the background while the current one is shown, so switching is
+    // usually instant (no loader). Images load as-is (unoptimized), so the browser cache serves the modal's <img>.
+    useEffect(() => {
+        if (!isOpen) return;
+        // no cleanup: a download that finishes after the user has moved on still marks that image as ready
+        [images[index + 1], images[index - 1]]
+            .filter((src) => src && !loadedImages.has(src))
+            .forEach((src) => {
+                const img = new window.Image();
+                img.onload = () => markLoaded(src);
+                img.src = src;
+            });
+        // loadedImages left out on purpose: re-running on every load would only re-check the same two neighbours
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen, images, index, markLoaded]);
 
     const touchStartX = useRef(null);
     const touchStartY = useRef(null);
@@ -449,19 +470,36 @@ const Gallery = ({ data }) => {
                                         )}
 
                                         {/* animate image change */}
+                                        {/* while the image loads the box keeps a height (so the loader and the arrows stay
+                                            in place) and the image stays hidden; it fades in once loaded */}
                                         <div
-                                            className="w-full  h-full  flex items-center justify-center"
+                                            className={`relative w-full  h-full  flex items-center justify-center ${
+                                                loadedImages.has(images[index]) ? "" : "min-h-[40vh] sm:min-h-[60vh]"
+                                            }`}
                                             onTouchStart={handleTouchStart}
                                             onTouchEnd={handleTouchEnd}
                                         >
+                                            {!loadedImages.has(images[index]) && (
+                                                <div
+                                                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                                                    role="status"
+                                                    aria-label="Loading image"
+                                                >
+                                                    <span className="w-9 h-9 rounded-full border-2 border-white/25 border-t-[#30B6F9] animate-spin" />
+                                                </div>
+                                            )}
                                             <MotionImage
                                                 height={1000}
                                                 width={1920}
                                                 key={images[index]} // important so framer animates on src change
                                                 src={images[index]}
                                                 alt={`Gallery image ${index + 1}`}
+                                                onLoad={() => markLoaded(images[index])}
+                                                onError={() => markLoaded(images[index])} // don't spin forever on a broken image
                                                 initial={{ opacity: 0, y: 10 }}
-                                                animate={{ opacity: 1, y: 0 }}
+                                                animate={
+                                                    loadedImages.has(images[index]) ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
+                                                }
                                                 exit={{ opacity: 0, y: -10 }}
                                                 transition={{ duration: 0.25 }}
                                                 className="max-h-[60vh] sm:max-h-[80vh] 3xl:max-h-[83.44dvh] object-cover w-full "

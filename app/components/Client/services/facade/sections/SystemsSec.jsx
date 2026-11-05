@@ -7,6 +7,7 @@ import { moveLeft, moveUp, paragraphItem } from "../../../../motionVarients";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { withNormalSpaces } from "@/lib/withNormalSpaces";
+import { revealBelowHeader } from "@/lib/scrollBelowHeader";
 
 const MotionImage = motion.create(Image);
 
@@ -32,6 +33,16 @@ const SystemsSecContent = ({ t, items }) => {
         if (eventTime < hoverLockUntil.current || index === openIndex) return;
         hoverLockUntil.current = eventTime + 600;
         setOpenIndex(index);
+    };
+
+    // click (mobile / touch): open the row, then once it has finished expanding (500ms) bring it to the top below the
+    // header, but only if the opened row isn't already fully on screen
+    const rowRefs = useRef([]);
+    // (no "already open" early return: a tap fires mouseenter first, so the hover handler has usually opened it already)
+    const openOnClick = (index) => {
+        setOpenIndex(index);
+        if (window.matchMedia("(min-width: 1024px)").matches) return; // desktop opens on hover, no scrolling there
+        setTimeout(() => revealBelowHeader(rowRefs.current[index]), 520);
     };
 
     const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
@@ -81,6 +92,7 @@ const SystemsSecContent = ({ t, items }) => {
                         return (
                             <motion.div
                                 key={index}
+                                ref={(el) => (rowRefs.current[index] = el)}
                                 variants={paragraphItem}
                                 initial="hidden"
                                 whileInView="show"
@@ -93,7 +105,7 @@ const SystemsSecContent = ({ t, items }) => {
                                     }`}
                                     onMouseEnter={(e) => openOnHover(index, e.timeStamp)}
                                     // one item is always open: the first by default, then whichever was last hovered / clicked (stays open)
-                                    onClick={() => setOpenIndex(index)}
+                                    onClick={() => openOnClick(index)}
                                 >
                                     {/* title (+ arrow on mobile) */}
                                     <div className="flex justify-between items-center gap-4">

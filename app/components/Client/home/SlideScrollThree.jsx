@@ -31,8 +31,10 @@ import { getSuffix } from "@/helpers/getSuffix.ts";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import { slugify } from "@/lib/slugify";
+import SocialIcons from "@/app/components/common/SocialIcons";
+import { DEFAULT_FOOTER } from "@/lib/footer";
 
-const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData }) => {
+const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData, socials = DEFAULT_FOOTER.socials }) => {
     const tData = useApplyLang(data);
     const tServiceData = useApplyLang(serviceData);
     const tProjectsData = useApplyLang(projectsData);
@@ -111,6 +113,23 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const srvsArrw = useRef([]);
     const srvsRghtBx = useRef([]);
     const srvLftBx = useRef([]);
+    const serviceSwiperRef = useRef(null);
+    const sectorSwiperRef = useRef(null);
+
+    // Slide a freeMode tab swiper just enough to bring the tapped tab fully into view (no-op if already visible).
+    // When it has to move, the tab is left `gap` px clear of the edge so it doesn't sit flush against it.
+    const revealSwiperSlide = (swiper, slideEl, speed = 400, gap = 24) => {
+        if (!swiper || !slideEl || swiper.destroyed) return;
+        const box = swiper.el.getBoundingClientRect();
+        const slide = slideEl.getBoundingClientRect();
+        let shift = 0; // + moves content right, - moves it left (visual pixels)
+        if (slide.left < box.left) shift = box.left + gap - slide.left;
+        else if (slide.right > box.right) shift = box.right - gap - slide.right;
+        if (Math.abs(shift) < 1) return;
+        // Swiper stores RTL translate mirrored, so flip the visual shift into its internal space
+        const target = swiper.translate + (swiper.rtlTranslate ? -shift : shift);
+        swiper.translateTo(target, speed, false, true);
+    };
 
     const section5Ref = useRef(null);
     const talenttitle = useRef([]);
@@ -155,7 +174,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const containersRef = useRef(null);
 
     const [isLargeScreen, setIsLargeScreen] = useState(false);
-    const swiperRef = useRef(null); // Add this ref for Swiper
     const [showBlueBox, setShowBlueBox] = useState(false);
     // sectors slide timings are shorter on phones (no desktop rotation to wait for)
     const [isMobileView, setIsMobileView] = useState(false);
@@ -1339,23 +1357,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
         if (stepIndex < path.length) animationRef.current = setInterval(advance, 400);
     };
 
-    const getVisibleSectors = () => {
-        const result = [];
-        const totalSectors = sectors.length;
-
-        // 3 above (-3, -2, -1), center (0), 4 below (1, 2, 3, 4)
-        for (let i = -3; i <= 4; i++) {
-            const index = (activeIndex + i + totalSectors) % totalSectors;
-
-            result.push({
-                ...sectors[index],
-                originalIndex: index,
-                position: i,
-            });
-        }
-
-        return result;
-    };
     useEffect(() => {
         setShowBlueBox(false);
 
@@ -1366,8 +1367,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
         return () => clearTimeout(timer);
     }, [displayedIndex]);
-
-    const visibleSectors = getVisibleSectors();
 
     // Desktop sectors wheel: the 8 rows stay in place (no layout shift, nothing crosses the icon circle); on every
     // step of the rotation only the names roll: the old one slides out and the next one slides in. `virtual` is an
@@ -1567,20 +1566,6 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
             setMapCities(mapBackendCitiesToMapCities(tData.sixthSection.cities, projectCities));
         }
     }, [data, projectCities]);
-
-    useEffect(() => {
-        if (!isLargeScreen && swiperRef.current && swiperRef.current.swiper) {
-            const swiper = swiperRef.current.swiper;
-
-            // Find the index of the active sector (position === 0)
-            const activeSectorIndex = visibleSectors.findIndex((s) => s.position === 0);
-
-            if (activeSectorIndex !== -1) {
-                // Scroll to the active slide with smooth animation
-                swiper.slideTo(activeSectorIndex, 500); // 500ms animation
-            }
-        }
-    }, [activeIndex, isLargeScreen]); // Re-run when activeIndex changes
 
     // opens the projects list filtered to the city's country (URL based, see projects-v2 ProjectLists);
     // the slug is made from the English name so it works from the Arabic site too
@@ -1806,17 +1791,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     <p className="text-13 uppercase font-light">
                                         {isArabic ? "Stay Connected" : "Stay Connected"}
                                     </p>
-                                    <div className="flex items-center gap-2">
-                                        <div className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full">
-                                            <Image src="../assets/images/ln.svg" alt="LinkedIn" width={15} height={14} />
-                                        </div>
-                                        <div className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full">
-                                            <Image src="../assets/images/fb.svg" alt="Facebook" width={8} height={14} />
-                                        </div>
-                                        <div className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full">
-                                            <Image src="../assets/images/ytube.svg" alt="YouTube" width={16} height={11} />
-                                        </div>
-                                    </div>
+                                    {/* same icons + links as the footer (admin > Footer > socials) */}
+                                    <SocialIcons socials={socials} />
                                 </div>
                             </div>
                         </div>
@@ -2455,8 +2431,10 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             <Swiper
                                                 modules={[FreeMode]}
                                                 freeMode={true}
+                                                onSwiper={(swiper) => (serviceSwiperRef.current = swiper)}
                                                 slidesPerView="auto"
                                                 spaceBetween={24}
+                                                slidesOffsetAfter={24}
                                                 className={`border-b border-[#ffffff20] mb-5 xs-pt-1 pt-[4dvh] ${isArabic ? "pl-2" : "pr-2"
                                                     }`}
                                                 touchStartPreventDefault={false}
@@ -2482,7 +2460,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                 ? "border-white"
                                                                 : "border-transparent"
                                                                 }`}
-                                                            onClick={() => {
+                                                            onClick={(e) => {
+                                                                revealSwiperSlide(
+                                                                    serviceSwiperRef.current,
+                                                                    e.currentTarget.closest(".swiper-slide")
+                                                                );
                                                                 setActiveService({
                                                                     image: service.homeImage,
                                                                     title: service.title,
@@ -2826,13 +2808,15 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 </div>
                                             ) : (
                                                 /* Mobile (< 1024px): Swiper for horizontal scroll */
+                                                /* Same setup as the Our Services tabs: a fixed list in order, tapping a tab only
+                                                   slides the strip if that tab isn't fully visible */
                                                 <Swiper
-                                                    ref={swiperRef}
+                                                    onSwiper={(swiper) => (sectorSwiperRef.current = swiper)}
                                                     modules={[FreeMode]}
                                                     freeMode={true}
                                                     slidesPerView="auto"
                                                     spaceBetween={20}
-                                                    centeredSlides={false}
+                                                    slidesOffsetAfter={24}
                                                     className="border-b border-white/20 mb-5"
                                                     touchStartPreventDefault={false}
                                                     preventClicks={false}
@@ -2846,21 +2830,24 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         WebkitOverflowScrolling: "touch",
                                                     }}
                                                 >
-                                                    {visibleSectors.map((sector) => {
-                                                        const isActive = sector.position === 0;
-
-                                                        // Only render visible items
-                                                        if (Math.abs(sector.position) > 4) return null;
+                                                    {sectors.map((sector, index) => {
+                                                        const isActive = index === activeIndex;
 
                                                         return (
                                                             <SwiperSlide
-                                                                key={`${sector.originalIndex}-${sector.position}`}
+                                                                key={index}
                                                                 style={{ width: "auto" }}
                                                                 className="!w-auto"
                                                             >
                                                                 <div
                                                                     className="flex items-center gap-5 cursor-pointer"
-                                                                    onClick={() => handleSlideClick(sector.originalIndex)}
+                                                                    onClick={(e) => {
+                                                                        revealSwiperSlide(
+                                                                            sectorSwiperRef.current,
+                                                                            e.currentTarget.closest(".swiper-slide")
+                                                                        );
+                                                                        handleSlideClick(index);
+                                                                    }}
                                                                 >
                                                                     <h3
                                                                         className={`whitespace-nowrap hover:opacity-100 transition-opacity duration-500 text-white ${isActive

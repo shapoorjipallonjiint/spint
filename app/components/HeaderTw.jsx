@@ -26,7 +26,7 @@ const sections = [
   { id: "section7", label: "PEOPLE" },
 ];
 
-const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
+const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }) => {
   const isArabic = useIsPreferredLanguageArabic();
   const headerRef = useRef(null);
   const navItemsRef = useRef([]);
@@ -651,8 +651,9 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll }) => {
         isOpen={searchActive}
         closeMenu={() => setMenuOpen(false)}
         searchActive={searchActive}
+        socials={socials}
       />
-      <NavPage isOpen={menuOpen} closeMenu={() => setMenuOpen(false)} />
+      <NavPage isOpen={menuOpen} closeMenu={() => setMenuOpen(false)} socials={socials} />
       <HomeMobileNavbar
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}

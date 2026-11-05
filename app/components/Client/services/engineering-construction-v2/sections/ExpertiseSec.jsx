@@ -22,6 +22,7 @@ import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 import { withNormalSpaces } from "@/lib/withNormalSpaces";
+import { scrollBelowHeader } from "@/lib/scrollBelowHeader";
 gsap.registerPlugin(ScrollTrigger);
 
 // Created once, outside the component (creating it inside re-creates the component every render)
@@ -118,14 +119,9 @@ const ExpertiseSec = ({ data }) => {
     setOpenIndex(willOpen ? index : null);
 
     // The previously open panel collapses above the clicked header and shifts the page,
-    // so bring the clicked header back into view once the animation is done.
+    // so once the open / close animation (0.35s) is done, glide the clicked header to the top, below the header bar.
     if (willOpen) {
-      setTimeout(() => {
-        headerRefs.current[index]?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }, 380);
+      setTimeout(() => scrollBelowHeader(headerRefs.current[index]), 370);
     }
   };
 

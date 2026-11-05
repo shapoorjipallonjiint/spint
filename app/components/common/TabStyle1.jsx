@@ -8,6 +8,7 @@ import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import { withNormalSpaces } from "@/lib/withNormalSpaces";
+import { scrollBelowHeader } from "@/lib/scrollBelowHeader";
 import WipeSlideshow from "@/app/components/common/WipeSlideshow";
 
 // Main image first, then any additional images (admin: Our Expertise > item > Additional Images)
@@ -47,25 +48,7 @@ export default function TabStyle1({ data, justify = false }) {
     // smoothly brings the tapped tab's start to the top, just below the fixed header.
     // Runs after the open / close animations so the position no longer shifts; native smooth
     // scrollIntoView gets cancelled by Lenis, so scroll through Lenis when it's running
-    const scrollToItem = (id) => {
-        const el = itemRefs.current[id];
-        if (!el) return;
-        // bottom of whatever fixed / sticky bar covers the top of the screen (the mobile header), if any
-        let headerBottom = 0;
-        for (let node = document.elementFromPoint(window.innerWidth / 2, 1); node && node !== document.body; node = node.parentElement) {
-            const position = getComputedStyle(node).position;
-            if (position === "fixed" || position === "sticky") {
-                const bottom = node.getBoundingClientRect().bottom;
-                // a full-screen fixed layer (background, overlay) is not a header
-                if (bottom < window.innerHeight * 0.4) headerBottom = Math.max(0, bottom);
-                break;
-            }
-        }
-        const offset = headerBottom + 16;
-        const lenis = window.__lenis;
-        if (lenis) lenis.scrollTo(el, { offset: -offset, duration: 0.9 });
-        else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: "smooth" });
-    };
+    const scrollToItem = (id) => scrollBelowHeader(itemRefs.current[id]);
 
     const [ismobile, setIsmobile] = useState(false);
 
