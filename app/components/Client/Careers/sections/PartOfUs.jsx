@@ -30,6 +30,9 @@ const CultureSection = ({ data }) => {
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
     const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-90, 90];
+    // the image layer overhangs the frame by the parallax distance on both ends, so only the image moves
+    // inside the (fixed) frame and its edges never show
+    const imageBleed = imageOffset[1];
 
     const imageContainerRefTwo = useRef(null);
 
@@ -125,7 +128,7 @@ const CultureSection = ({ data }) => {
     );
 
     return (
-        <section id="careers-stop-section" ref={sectionRef} className="section-spacing overflow-hidden">
+        <section id="careers-stop-section" ref={sectionRef} className="section-spacing max-[550px]:pb-0 overflow-hidden">
             <div
                 className="relative w-full h-[350px] lg:h-[420px] xl:h-[490px] overflow-hidden flex items-center container"
                 ref={imageContainerRefTwo}
@@ -133,8 +136,10 @@ const CultureSection = ({ data }) => {
                 {/* Background image with clip path reveal */}
                 <motion.div
                     ref={clipPathRef}
-                    className="absolute h-full inset-0"
+                    className="absolute inset-x-0"
                     style={{
+                        top: -imageBleed,
+                        bottom: -imageBleed,
                         // mobile: an even dark layer over the full width (the text spans the whole width there);
                         // larger screens: the side gradient behind the text column
                         backgroundImage: isMobile

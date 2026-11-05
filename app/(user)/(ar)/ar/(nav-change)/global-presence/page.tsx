@@ -8,7 +8,7 @@ const page = async() => {
   const homeResponse = await fetch(`${process.env.BASE_URL}/api/admin/home`, { next: { revalidate: 60 } });
   const homeData = await homeResponse.json();
 
-  const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project`, { next: { revalidate: 60 } });
+  const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project?view=summary`, { next: { revalidate: 60 } }); // only status / sector / location (see the API)
   const projectData = await projectResponse.json();
 
   return (

@@ -6,12 +6,13 @@ import { useVisibleNavData } from "@/contexts/serviceVisibility";
 import { moveRight, moveUp } from "../motionVarients";
 import Image from 'next/image'
 import LangLink from "@/lib/LangLink"
+import SocialIcons from "@/app/components/common/SocialIcons";
 import { useSearchContext } from "@/contexts/searchContext";
 import {  AnimatePresence } from "framer-motion";
 import { useDebounce } from '@/hooks/useDebounce'
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
-const NavPageSearch = ({ isOpen, searchActive }) => {
+const NavPageSearch = ({ isOpen, searchActive, socials }) => {
     // services hidden in admin (Services > Main) are removed from the menus
     const navData = useVisibleNavData(allNavData);
     const isArabic = useIsPreferredLanguageArabic();
@@ -284,32 +285,8 @@ const NavPageSearch = ({ isOpen, searchActive }) => {
                     >
                         <div className="flex flex-col items-center gap-3">
                             <p className="text-13 uppercase font-light">{isArabic ? "Stay Connected" : "Stay Connected"}</p>
-                            <div className="flex items-center gap-2">
-                                <motion.div
-                                    variants={moveUp(0.2)}
-                                    initial="hidden"
-                                    whileInView="show"
-                                    className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full"
-                                >
-                                    <img src="../assets/images/ln.svg" alt="LinkedIn" width={15} height={14} />
-                                </motion.div>
-                                <motion.div
-                                    variants={moveUp(0.35)}
-                                    initial="hidden"
-                                    whileInView="show"
-                                    className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full"
-                                >
-                                    <img src="../assets/images/fb.svg" alt="Facebook" width={8} height={14} />
-                                </motion.div>
-                                <motion.div
-                                    variants={moveUp(0.5)}
-                                    initial="hidden"
-                                    whileInView="show"
-                                    className="flex items-center justify-center border border-[#30B6F9] cursor-pointer w-[34px] h-[34px] bg-[#00000030] rounded-full"
-                                >
-                                    <img src="../assets/images/ytube.svg" alt="YouTube" width={16} height={11} />
-                                </motion.div>
-                            </div>
+                            {/* same icons + links as the footer (admin > Footer > socials) */}
+                            <SocialIcons socials={socials} motionDelay={0.2} />
                         </div>
                     </motion.div>
                     {/* END STAY CONNECTED */}

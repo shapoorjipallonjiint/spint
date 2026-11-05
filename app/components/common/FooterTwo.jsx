@@ -12,7 +12,8 @@ import { DEFAULT_FOOTER, isExternalHref, phoneHref } from "@/lib/footer";
 const MotionImage = motion.create(Image);
 
 // internal links get the language prefix, full URLs / mailto / tel are used as they are
-const FooterLink = ({ href, children, ...props }) =>
+// (also used by the home page "Stay Connected" icons, which show the same admin socials)
+export const FooterLink = ({ href, children, ...props }) =>
   isExternalHref(href) ? (
     <a href={href} target={/^https?:/i.test(href) ? "_blank" : undefined} rel="noopener noreferrer" {...props}>
       {children}

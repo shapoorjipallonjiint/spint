@@ -269,7 +269,7 @@ const ContactDetails = ({ data }) => {
                     <div className="bg-primary px-5 pt-8 pb-9 lg:p-8 xl:p-10 3xl:p-[70px] 3xl:pt-[59px]">
                         <H2Title titleText={isArabic ? "الإستفسارات العامة" : "General Inquiry"} titleColor="white" marginClass="mb-4 3xl:mb-[30px]" />
                         <form onSubmit={handleSubmit(onSubmit, () => validateSubject())}>
-                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-50px w-full mb-6 xl:mb-8 3xl:mb-[38px]">
+                            <div className="grid sm:grid-cols-2 gap-x-5 gap-y-10 sm:gap-y-5 2xl:gap-50px w-full mb-10 sm:mb-6 xl:mb-8 3xl:mb-[38px]">
                                 <motion.div
                                     variants={moveUp(0.4)}
                                     initial="hidden"
@@ -326,7 +326,7 @@ const ContactDetails = ({ data }) => {
                                     </label>
                                 </motion.div>
                             </div>
-                            <div className="grid sm:grid-cols-2 gap-5 2xl:gap-12 w-full mb-6 xl:mb-12 3xl:mb-[43px]">
+                            <div className="grid sm:grid-cols-2 gap-x-5 gap-y-10 sm:gap-y-5 2xl:gap-12 w-full mb-11 xl:mb-12 3xl:mb-[43px]">
                                 <motion.div
                                     variants={moveUp(0.7)}
                                     initial="hidden"

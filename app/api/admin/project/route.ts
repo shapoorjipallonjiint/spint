@@ -201,6 +201,75 @@ const services =
       );
     }
 
+    /* ===== ALL PROJECTS, LIST VIEW (?view=list) ===== */
+    // The /projects listing only reads card + filter fields, so send just those (the full list is ~1MB, mostly
+    // detail-page content). Same visibility rules and mapping as below; keys are copied only when present so
+    // useApplyLang's `key_ar in obj` fallback behaves exactly as with the full response.
+    type Loose = Record<string, unknown>;
+    const pick = (obj: unknown, keys: string[]) => {
+      const out: Loose = {};
+      if (!obj || typeof obj !== "object") return out;
+      keys.forEach((k) => {
+        if (k in obj) out[k] = (obj as Loose)[k];
+      });
+      return out;
+    };
+
+    /* ===== ALL PROJECTS, SUMMARY (?view=summary) ===== */
+    // Home page (ongoing count per sector + clickable map cities) and Global Presence (clickable map cities) read
+    // only status / sector / location, so send just those, as-is (same visibility rules and mapping as below).
+    if (request.nextUrl.searchParams.get("view") === "summary") {
+      return NextResponse.json(
+        {
+          data: {
+            ...project,
+            projects: visibleProjects.map((p) => {
+              const mapped = mapProject(p) as unknown as Loose;
+              return {
+                ...pick(mapped, ["_id"]),
+                secondSection: pick(mapped.secondSection, ["status", "sector", "location"]),
+              };
+            }),
+          },
+          message: "Projects fetched successfully",
+        },
+        { status: 200 }
+      );
+    }
+
+    if (request.nextUrl.searchParams.get("view") === "list") {
+
+      const toListItem = (p: ProjectItem) => {
+        const mapped = mapProject(p) as unknown as Loose;
+        const second = (mapped.secondSection || {}) as Loose;
+        const items = (second.items || []) as { key?: string }[];
+        const services = (second.service || []) as { serviceId?: string; hidden?: boolean }[];
+        return {
+          ...pick(mapped, ["_id", "slug", "thumbnail", "thumbnailAlt", "thumbnailAlt_ar"]),
+          firstSection: pick(mapped.firstSection, ["title", "title_ar"]),
+          secondSection: {
+            ...pick(second, ["sector", "location", "status"]),
+            // the list card only looks up the first "BUA" row (items.find(key includes "BUA")), so keeping just
+            // those rows, in order, gives the same result without the client / consultant / ... rows
+            ...("items" in second ? { items: items.filter((i) => i?.key?.includes("BUA")) } : {}),
+            // filter needs only the id + per-project hide flag (already filtered for the website above)
+            service: services.map((s) => ({ serviceId: s.serviceId, hidden: s.hidden })),
+          },
+        };
+      };
+
+      return NextResponse.json(
+        {
+          data: {
+            ...project,
+            projects: visibleProjects.map(toListItem),
+          },
+          message: "Projects fetched successfully",
+        },
+        { status: 200 }
+      );
+    }
+
     /* ===== ALL PROJECTS ===== */
     return NextResponse.json(
       {
