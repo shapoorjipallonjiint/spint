@@ -2628,13 +2628,17 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             }`}
                                         ref={srvsArrw}
                                     >
-                                        <LangLink href={`/services/${activeService?.link}`}>
+                                        <LangLink href={`/services/${activeService?.link}`} className="group">
+                                            {/* same arrow as "View All Projects" on mobile */}
                                             <Image
-                                                src="../assets/images/services/thickarrow.svg"
-                                                alt="Arrow"
-                                                className={`${isArabic ? "-scale-x-100" : ""}`}
-                                                width={19}
-                                                height={19}
+                                                src="../assets/images/icons/arrow-right.svg"
+                                                alt="arrow right"
+                                                className={`transition-all duration-300 ${isArabic
+                                                    ? "group-hover:-translate-x-2 -scale-x-100"
+                                                    : "group-hover:translate-x-2"
+                                                    }`}
+                                                width={27}
+                                                height={27}
                                             />
                                         </LangLink>
                                     </div>
