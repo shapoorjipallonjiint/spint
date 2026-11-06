@@ -34,6 +34,60 @@ import { slugify } from "@/lib/slugify";
 import SocialIcons from "@/app/components/common/SocialIcons";
 import { DEFAULT_FOOTER } from "@/lib/footer";
 
+// Small prev / next arrows for the mobile freeMode tab strips: each tap scrolls the strip by ~60% of its
+// visible width (clamped to the ends), and the arrow fades when there is nothing more in that direction.
+// Arrows are visual (left / right); in RTL the strip's start is on the right, so the shift is mirrored.
+const TabStripArrows = ({ swiper, className = "" }) => {
+    const [edges, setEdges] = useState({ start: true, end: false });
+
+    useEffect(() => {
+        if (!swiper || swiper.destroyed) return;
+        const update = () => setEdges({ start: swiper.isBeginning, end: swiper.isEnd });
+        update();
+        const events = ["progress", "setTranslate", "transitionEnd", "resize", "update"];
+        events.forEach((ev) => swiper.on(ev, update));
+        return () => {
+            if (!swiper.destroyed) events.forEach((ev) => swiper.off(ev, update));
+        };
+    }, [swiper]);
+
+    if (edges.start && edges.end) return null; // everything fits, nothing to scroll
+
+    const shiftBy = (dir) => {
+        if (!swiper || swiper.destroyed) return;
+        const step = swiper.el.clientWidth * 0.6;
+        const shift = dir === "left" ? step : -step; // visual px: + moves content right
+        const target = swiper.translate + (swiper.rtlTranslate ? -shift : shift);
+        swiper.translateTo(target, 400, false, true);
+    };
+
+    // visual left = start in LTR, end in RTL
+    const rtl = !!swiper?.rtlTranslate;
+    const leftDisabled = rtl ? edges.end : edges.start;
+    const rightDisabled = rtl ? edges.start : edges.end;
+
+    const btn = (dir, disabled) => (
+        <button
+            type="button"
+            aria-label={dir === "left" ? "Scroll left" : "Scroll right"}
+            disabled={disabled}
+            onClick={() => shiftBy(dir)}
+            className={`w-6 h-6 flex items-center justify-center rounded-full border border-white/40 text-white transition-opacity duration-300 ${disabled ? "opacity-30" : "opacity-100 active:bg-white/15"}`}
+        >
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className={dir === "left" ? "rotate-180" : ""}>
+                <path d="M3.5 1.5L7 5l-3.5 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        </button>
+    );
+
+    return (
+        <div dir="ltr" className={`flex items-center gap-2 ${className}`}>
+            {btn("left", leftDisabled)}
+            {btn("right", rightDisabled)}
+        </div>
+    );
+};
+
 const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData, socials = DEFAULT_FOOTER.socials }) => {
     const tData = useApplyLang(data);
     const tServiceData = useApplyLang(serviceData);
@@ -115,6 +169,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
     const srvLftBx = useRef([]);
     const serviceSwiperRef = useRef(null);
     const sectorSwiperRef = useRef(null);
+    const [serviceSwiper, setServiceSwiper] = useState(null);
+    const [sectorSwiper, setSectorSwiper] = useState(null);
 
     // Slide a freeMode tab swiper just enough to bring the tapped tab fully into view (no-op if already visible).
     // When it has to move, the tab is left `gap` px clear of the edge so it doesn't sit flush against it.
@@ -2428,14 +2484,23 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             </div>
                                         ) : (
                                             /* Mobile (< 1024px): Swiper for iOS horizontal scroll */
+                                            <div className="relative w-full min-w-0 xs-pt-1 pt-[4dvh]">
+                                            <div className="relative">
+                                            <TabStripArrows
+                                                swiper={serviceSwiper}
+                                                className={`absolute bottom-full mb-1.5 z-10 ${isArabic ? "left-4" : "right-4"}`}
+                                            />
                                             <Swiper
                                                 modules={[FreeMode]}
                                                 freeMode={true}
-                                                onSwiper={(swiper) => (serviceSwiperRef.current = swiper)}
+                                                onSwiper={(swiper) => {
+                                                    serviceSwiperRef.current = swiper;
+                                                    setServiceSwiper(swiper);
+                                                }}
                                                 slidesPerView="auto"
                                                 spaceBetween={24}
                                                 slidesOffsetAfter={24}
-                                                className={`border-b border-[#ffffff20] mb-5 xs-pt-1 pt-[4dvh] ${isArabic ? "pl-2" : "pr-2"
+                                                className={`border-b border-[#ffffff20] mb-5 ${isArabic ? "pl-2" : "pr-2"
                                                     }`}
                                                 touchStartPreventDefault={false}
                                                 preventClicks={false}
@@ -2487,6 +2552,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                     </SwiperSlide>
                                                 ))}
                                             </Swiper>
+                                            </div>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
@@ -2814,8 +2881,16 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 /* Mobile (< 1024px): Swiper for horizontal scroll */
                                                 /* Same setup as the Our Services tabs: a fixed list in order, tapping a tab only
                                                    slides the strip if that tab isn't fully visible */
+                                                <div className="w-full min-w-0">
+                                                <TabStripArrows
+                                                    swiper={sectorSwiper}
+                                                    className={`mb-1.5 ${isArabic ? "justify-start pl-4" : "justify-end pr-4"}`}
+                                                />
                                                 <Swiper
-                                                    onSwiper={(swiper) => (sectorSwiperRef.current = swiper)}
+                                                    onSwiper={(swiper) => {
+                                                        sectorSwiperRef.current = swiper;
+                                                        setSectorSwiper(swiper);
+                                                    }}
                                                     modules={[FreeMode]}
                                                     freeMode={true}
                                                     slidesPerView="auto"
@@ -2868,6 +2943,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         );
                                                     })}
                                                 </Swiper>
+                                                </div>
                                             )}
 
                                             <div
