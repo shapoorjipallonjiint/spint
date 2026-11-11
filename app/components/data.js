@@ -27,7 +27,7 @@ export const navData = {
                     href: "/services/engineering-construction"
                 },
                 {
-                    label: "MEP",
+                    label: "Mechanical, Electrical & Plumbing",
                     label_ar: "",
                     href: "/services/mep"
                 },
@@ -107,11 +107,13 @@ export const navData = {
             title: "Media",
             title_ar: "",
             href: "#",
-            submenu: [{
-                    label: "Press Releases",
-                    label_ar: "",
-                    href: "/press-releases"
-                },
+            submenu: [
+                // Press Releases hidden for now
+                // {
+                //     label: "Press Releases",
+                //     label_ar: "",
+                //     href: "/press-releases"
+                // },
                 {
                     label: "Gallery",
                     label_ar: "",

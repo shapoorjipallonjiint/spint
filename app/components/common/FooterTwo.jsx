@@ -76,7 +76,8 @@ const FooterTwo = ({ data = DEFAULT_FOOTER }) => {
         </div>
 
         {/* ONE GRID FOR THE WHOLE FOOTER: 5 columns from lg (row 1: 2-2-1, divider: 5, nav: 1 each) */}
-        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-5 gap-x-6 xl:gap-x-0">
+        {/* 1st nav column 0.75fr, 2nd 1.25fr: together still 2 of 5 parts, so columns 3–5 keep their positions */}
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-[0.75fr_1.25fr_1fr_1fr_1fr] gap-x-6 xl:gap-x-0">
           <div className="col-span-full grid grid-cols-1 lg:grid-cols-5 gap-x-6 xl:gap-x-0 gap-y-4 mb-60px">
             {/* Row 1: logo (2 of 5) */}
             <div className="lg:col-span-2">

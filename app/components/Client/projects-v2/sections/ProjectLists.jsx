@@ -60,7 +60,19 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
 
     // ---------- filter options (built from the untranslated data, so slugs are always English) ----------
     const sectorOptions = useMemo(() => toOptions(sectorData), [sectorData]);
-    const countryOptions = useMemo(() => toOptions((countryData || []).filter((c) => c?.showInProjectFilter)), [countryData]);
+    // countries ordered by project volume (most projects first); ties fall back to the API's alphabetical order
+    const countryOptions = useMemo(() => {
+        const [all, ...options] = toOptions((countryData || []).filter((c) => c?.showInProjectFilter));
+        const countByLocation = new Map();
+        (data || []).forEach((item) => {
+            const id = String(item?.secondSection?.location?._id || "");
+            if (id) countByLocation.set(id, (countByLocation.get(id) || 0) + 1);
+        });
+        const volume = (opt) => [...opt.ids].reduce((sum, id) => sum + (countByLocation.get(id) || 0), 0);
+        const ranked = options.map((opt, i) => ({ opt, count: volume(opt), i }));
+        ranked.sort((a, b) => b.count - a.count || a.i - b.i);
+        return [all, ...ranked.map((r) => r.opt)];
+    }, [countryData, data]);
     const serviceOptions = useMemo(() => toOptions(serviceData, "title"), [serviceData]);
     const statusOptions = useMemo(
         () => toOptions(statusData.filter((item) => item.name && item.name.toLowerCase() !== "nill")),

@@ -251,11 +251,12 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }
             />
           </div>
           <div className="flex gap-6 lg:gap-2">
+            {/* Arabic language button hidden for now
             <a href="#">
               <div
                 className={`flex items-center justify-center z-[1]  cursor-pointer relative  h-[24px] lg:h-[31px]  ${logostatus === true ? "bg-[#00000040] lg:bg-[#ffffff]" : "bg-[#00000040]"} rounded-[15px]`}
               >
-                {/* gradient ring on the pill's edge (the fixed-ratio grbdr.svg shrank inside the pill) */}
+                {/ * gradient ring on the pill's edge (the fixed-ratio grbdr.svg shrank inside the pill) * /}
                 <span
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-0 rounded-[inherit] p-px bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] bg-[length:200%_200%] animate-[gradient_3s_linear_infinite]"
@@ -272,6 +273,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }
                 </p>
               </div>
             </a>
+            */}
             <div
               className="flex lg:hidden justify-center items-center "
               onClick={() => setMobileMenuOpen(true)}
