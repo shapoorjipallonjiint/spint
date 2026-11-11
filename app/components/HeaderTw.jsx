@@ -653,6 +653,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }
         isOpen={searchActive}
         closeMenu={() => setMenuOpen(false)}
         searchActive={searchActive}
+        closeSearch={() => setSearchActive(false)}
         socials={socials}
       />
       <NavPage isOpen={menuOpen} closeMenu={() => setMenuOpen(false)} socials={socials} />

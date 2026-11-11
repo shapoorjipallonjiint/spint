@@ -5,14 +5,14 @@ import { navData as allNavData } from "../data";
 import { useVisibleNavData } from "@/contexts/serviceVisibility";
 import { moveRight, moveUp } from "../motionVarients";
 import Image from 'next/image'
-import LangLink from "@/lib/LangLink"
+import SearchResults from "@/app/components/common/SearchResults";
 import SocialIcons from "@/app/components/common/SocialIcons";
 import { useSearchContext } from "@/contexts/searchContext";
 import {  AnimatePresence } from "framer-motion";
 import { useDebounce } from '@/hooks/useDebounce'
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
-const NavPageSearch = ({ isOpen, searchActive, socials }) => {
+const NavPageSearch = ({ isOpen, searchActive, socials, closeSearch }) => {
     // services hidden in admin (Services > Main) are removed from the menus
     const navData = useVisibleNavData(allNavData);
     const isArabic = useIsPreferredLanguageArabic();
@@ -185,7 +185,6 @@ const NavPageSearch = ({ isOpen, searchActive, socials }) => {
 
 
                         <div className="mt-5 px-4 flex flex-col gap-5 text-white h-[80%]">
-                            {result && result.length > 0 ? <div className="text-md font-semibold">Results</div> : null}
                             {loading ? (<div className="flex justify-center items-center h-full"><div className="loader">
                                 <div className="bar1"></div>
                                 <div className="bar2"></div>
@@ -200,17 +199,13 @@ const NavPageSearch = ({ isOpen, searchActive, socials }) => {
                                 <div className="bar11"></div>
                                 <div className="bar12"></div>
                             </div></div>) : (
-                                <div className="overflow-hidden h-fit"><ul className="grid grid-cols-1 list-disc gap-5 text-sm px-4 h-full overflow-y-auto custom-scrollbar">
-                                    {result && result.length > 0 ? result.map((item, index) => {
-                                        if (item.project) {
-                                            return <LangLink href={`/projects/${item.project.slug}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.project.firstSection.title}</li></LangLink>
-                                        } else if (item.type == "news") {
-                                            return <LangLink href={`/press-releases/${item.item.slug}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.item.title}</li></LangLink>
-                                        } else if (item.type == "service") {
-                                            return <LangLink href={`/services/${item.item.link}`} key={index} className="cursor-pointer" onClick={() => { setSearchActive(false); setResult(null) }}><li>{item.item.title}</li></LangLink>
-                                        }
-                                    }) : (result?.length == 0 ? <div>No Results</div> : null)}
-                                </ul></div>)}
+                                <div className="overflow-hidden h-full">
+                                    <SearchResults
+                                        result={result}
+                                        isArabic={isArabic}
+                                        onSelect={() => { closeSearch?.(); setResult(null) }}
+                                    />
+                                </div>)}
                         </div>
                     </div>
 
