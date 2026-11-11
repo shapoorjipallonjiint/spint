@@ -67,7 +67,14 @@ const tokenSimilarity = (queryToken: string, candidateToken: string) => {
     if (!queryToken || !candidateToken) return 0;
     if (queryToken === candidateToken) return 1;
     if (candidateToken.startsWith(queryToken) || candidateToken.includes(queryToken)) return 0.94;
-    if (queryToken.length >= 4 && queryToken.includes(candidateToken)) return 0.82;
+    // query word contains the field word (e.g. "hospitals" -> "hospital"); the field word must be nearly as long,
+    // otherwise filler words like "a" / "at" inside "damac" matched almost every project
+    if (
+        queryToken.length >= 4 &&
+        candidateToken.length >= 4 &&
+        queryToken.length - candidateToken.length <= 2 &&
+        queryToken.includes(candidateToken)
+    ) return 0.82;
     if (queryToken.length >= 4 && candidateToken.length > queryToken.length) {
         const candidatePrefix = candidateToken.slice(0, queryToken.length);
         const prefixDistance = levenshteinDistance(queryToken, candidatePrefix);

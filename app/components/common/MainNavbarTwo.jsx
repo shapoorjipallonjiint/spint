@@ -7,6 +7,7 @@ import Image from "next/image";
 import { navData as allNavData } from "../data";
 import { useVisibleNavData } from "@/contexts/serviceVisibility";
 import { useSearchContext } from "@/contexts/searchContext";
+import SearchResults from "@/app/components/common/SearchResults";
 import HomeMobileNavbarSearch from "@/app/components/common/HomeMobileNavbarSearch";
 import HomeMobileNavbar from "@/app/components/common/HomeMobileNavbar";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -562,7 +563,6 @@ const MainNavbarTwo = () => {
                         </form>
 
                         <div className="mt-5 px-4 flex flex-col gap-5 text-black ">
-                            {result && result.length > 0 ? <div className="text-md font-semibold">Results</div> : null}
                             {loading ? (
                                 <div className="flex justify-center">
                                     <div className="loader">
@@ -573,57 +573,15 @@ const MainNavbarTwo = () => {
                                 </div>
                             ) : (
                                 <div className="overflow-hidden h-fit mb-5">
-                                    <ul className="grid grid-cols-2 list-disc gap-5 text-sm px-4 h-full overflow-y-auto">
-                                        {result && result.length > 0 ? (
-                                            result.map((item, index) => {
-                                                if (item.project) {
-                                                    return (
-                                                        <LangLink
-                                                            href={`/projects/${item.project.slug}`}
-                                                            key={index}
-                                                            className="cursor-pointer"
-                                                            onClick={() => {
-                                                                setSearchActive(false);
-                                                                setResult(null);
-                                                            }}
-                                                        >
-                                                            <li>{item.project.firstSection.title}</li>
-                                                        </LangLink>
-                                                    );
-                                                } else if (item.type == "news") {
-                                                    return (
-                                                        <LangLink
-                                                            href={`/press-releases/${item.item.slug}`}
-                                                            key={index}
-                                                            className="cursor-pointer"
-                                                            onClick={() => {
-                                                                setSearchActive(false);
-                                                                setResult(null);
-                                                            }}
-                                                        >
-                                                            <li>{item.item.title}</li>
-                                                        </LangLink>
-                                                    );
-                                                } else if (item.type == "service") {
-                                                    return (
-                                                        <LangLink
-                                                            href={`/services/${item.item.link}`}
-                                                            key={index}
-                                                            className="cursor-pointer"
-                                                            onClick={() => {
-                                                                setSearchActive(false);
-                                                                setResult(null);
-                                                            }}
-                                                        >
-                                                            <li>{item.item.title}</li>
-                                                        </LangLink>
-                                                    );
-                                                }
-                                            })
-                                        ) : result?.length == 0 ? (
-                                            <div className="">No Results</div>
-                                        ) : null}
-                                    </ul>
+                                    <SearchResults
+                                        result={result}
+                                        isArabic={isArabic}
+                                        columns={2}
+                                        onSelect={() => {
+                                            setSearchActive(false);
+                                            setResult(null);
+                                        }}
+                                    />
                                 </div>
                             )}
                         </div>
