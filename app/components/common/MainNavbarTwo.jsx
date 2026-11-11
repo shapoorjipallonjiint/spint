@@ -420,9 +420,11 @@ const MainNavbarTwo = () => {
                         <div className="flex items-center gap-3">
                             {/* Desktop Actions */}
                             <div className="hidden md:flex items-center">
+                                {/* Arabic language button hidden for now
                                 <button className={`bg-gradient-to-r from-[#30B6F9] to-[#1E45A2] text-white text-13 leading-[1.230769230769231] font-300 uppercase rounded-full px-4 2xl:px-[22px] py-[7.5px] cursor-pointer ${isArabic ? "ml-3" : "mr-3"} hover:scale-[1.03] transition-all duration-300`}>
                                     {isArabic ? "English" : "العربية"}
                                 </button>
+                                */}
                                 <div className=" leading-[1] p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%] inline-block transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] hover:scale-[1.03] cursor-pointer">
                                     <LangLink
                                         target="_blank"

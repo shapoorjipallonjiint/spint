@@ -187,9 +187,11 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                 variants={itemVariants}
                 className="space-y-4 pt-6 border-t border-gray-200"
               >
+                {/* Arabic language button hidden for now
                 <button className="w-full bg-gradient-to-r from-[#30B6F9] to-[#1E45A2] text-white text-sm uppercase rounded-full px-5 py-3">
                   {isArabic ? "English" : "العربية"}
                 </button>
+                */}
 
                 <div className="p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9]">
                   <LangLink href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji" target="_blank" ><button className="w-full uppercase px-5 py-2 bg-white rounded-full">
