@@ -135,9 +135,7 @@ const SecondSectionItem = ({ index, removeItem, side }: Props) => {
                 {isRight && (
                     <Input
                         placeholder="Projects (AR)"
-                        {...register(`secondSection.items.${index}.projects_ar`, {
-                            required: "المشاريع مطلوبة",
-                        })}
+                        {...register(`secondSection.items.${index}.projects_ar`)}
                     />
                 )}
 
@@ -166,9 +164,7 @@ const SecondSectionItem = ({ index, removeItem, side }: Props) => {
                 {isRight && (
                     <Input
                         placeholder="Total Countries (AR)"
-                        {...register(`secondSection.items.${index}.country_ar`, {
-                            required: "إجمالي الدول مطلوب",
-                        })}
+                        {...register(`secondSection.items.${index}.country_ar`)}
                     />
                 )}
 

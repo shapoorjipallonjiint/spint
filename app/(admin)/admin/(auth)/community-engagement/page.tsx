@@ -722,7 +722,7 @@ const CommunityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Page Title"
-                                    {...register("pageTitle_ar", { required: "Page title is required" })}
+                                    {...register("pageTitle_ar")}
                                 />
                                 <FormError error={errors.pageTitle_ar?.message} />
                             </div>
@@ -731,7 +731,7 @@ const CommunityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Alt Tag"
-                                    {...register("bannerAlt_ar", { required: "Alt tag is required" })}
+                                    {...register("bannerAlt_ar")}
                                 />
                                 <FormError error={errors.bannerAlt_ar?.message} />
                             </div>
@@ -748,9 +748,7 @@ const CommunityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register("firstSection.title_ar", {
-                                        required: "Title is required",
-                                    })}
+                                    {...register("firstSection.title_ar")}
                                 />
                                 <FormError error={errors.firstSection?.title_ar?.message} />
                             </div>
@@ -759,7 +757,6 @@ const CommunityPage = () => {
                                 <Controller
                                     name="firstSection.description_ar"
                                     control={control}
-                                    rules={{ required: "Description is required" }}
                                     render={({ field }) => {
                                         return <Textarea value={field.value} onChange={field.onChange} />;
                                     }}
@@ -783,9 +780,7 @@ const CommunityPage = () => {
                                     <Input
                                         type="text"
                                         placeholder="Title"
-                                        {...register("secondSection.title_ar", {
-                                            required: "Title is required",
-                                        })}
+                                        {...register("secondSection.title_ar")}
                                     />
                                     <FormError error={errors.secondSection?.title_ar?.message} />
                                 </div>
@@ -819,9 +814,7 @@ const CommunityPage = () => {
                                                         <Input
                                                             type="text"
                                                             placeholder="Description"
-                                                            {...register(`secondSection.items.${index}.description_ar`, {
-                                                                required: "Description is required",
-                                                            })}
+                                                            {...register(`secondSection.items.${index}.description_ar`)}
                                                         />
                                                         <FormError
                                                             error={
@@ -916,9 +909,7 @@ const CommunityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register(`thirdSection.title_ar`, {
-                                        required: "Value is required",
-                                    })}
+                                    {...register(`thirdSection.title_ar`)}
                                 />
                                 <FormError error={errors.thirdSection?.title_ar?.message} />
                             </div>
@@ -1015,9 +1006,7 @@ const CommunityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register("fourthSection.title_ar", {
-                                        required: "Title is required",
-                                    })}
+                                    {...register("fourthSection.title_ar")}
                                 />
                                 <FormError error={errors.fourthSection?.title_ar?.message} />
                             </div>
@@ -1043,9 +1032,7 @@ const CommunityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Title"
-                                                        {...register(`fourthSection.items.${index}.title_ar`, {
-                                                            required: "Title is required",
-                                                        })}
+                                                        {...register(`fourthSection.items.${index}.title_ar`)}
                                                     />
                                                     <FormError
                                                         error={errors.fourthSection?.items?.[index]?.title_ar?.message}
@@ -1087,9 +1074,7 @@ const CommunityPage = () => {
                                                 <Input
                                                     type="text"
                                                     placeholder="Alt Tag"
-                                                    {...register(`fourthSection.items.${index}.imageAlt_ar`, {
-                                                        required: "Alt tag is required",
-                                                    })}
+                                                    {...register(`fourthSection.items.${index}.imageAlt_ar`)}
                                                 />
                                                 <FormError
                                                     error={errors.fourthSection?.items?.[index]?.imageAlt_ar?.message}

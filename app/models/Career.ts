@@ -158,7 +158,7 @@ const careerSchema = new mongoose.Schema({
             text: { type: String, required: true },
             text_ar: { type: String },
             btnLink: { type: String, required: true },
-            btnLink_ar: { type: String, required: true },
+            btnLink_ar: { type: String },
         }
     }
 })

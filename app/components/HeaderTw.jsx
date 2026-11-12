@@ -12,6 +12,7 @@ import HomeMobileNavbar from "../components/common/HomeMobileNavbar";
 import HomeMobileNavbarSearch from "../components/common/HomeMobileNavbarSearch";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { useHeaderPortal } from "@/contexts/headerContent";
 
 gsap.registerPlugin(ScrollToPlugin);
 gsap.registerPlugin(ScrollTrigger);
@@ -32,6 +33,8 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }
   const navItemsRef = useRef([]);
   navItemsRef.current = [];
   const [searchActive, setSearchActive] = useState(false);
+  // Employee Login button (admin Header); null when hidden
+  const portal = useHeaderPortal();
 
   const addToNavRefs = (el) => {
     if (el && !navItemsRef.current.includes(el)) {
@@ -306,8 +309,9 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }
               </svg>
             </div>
             {/* desktop only (its button is hidden on mobile; an empty link here added a 24px flex gap after the menu icon) */}
+            {portal && (
             <a
-              href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji"
+              href={portal.href}
               target="_blank"
               className="hidden lg:block"
             >
@@ -322,10 +326,11 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }
                 <p
                   className={`mb-0 ${logostatus === true ? "text-[#ffffff] lg:text-[#000]" : "text-[#ffffff]"} z-1 font-[300] text-[16px] px-4 pt-[1px] uppercase`}
                 >
-                  Employee Login
+                  {portal.label}
                 </p>
               </div>
             </a>
+            )}
           </div>
           <div
             className="hidden lg:flex cursor-pointer items-center justify-center bg-black rounded-full p-2 w-11 h-11 overflow-hidden"

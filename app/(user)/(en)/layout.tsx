@@ -5,6 +5,8 @@ import ScrollToTop from "@/app/components/common/ScrollToTop";
 import { SearchProvider } from "@/contexts/searchContext";
 import { ServiceVisibilityProvider } from "@/contexts/serviceVisibility";
 import { fetchServiceVisibility } from "@/lib/serviceVisibility";
+import { HeaderContentProvider } from "@/contexts/headerContent";
+import { fetchHeader } from "@/lib/header";
 import { ToNavigateCountryProvider } from "@/contexts/toNavigateCountry";
 
 
@@ -20,7 +22,8 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   // services hidden in admin (Services > Main) are removed from menus, footers, project tabs, etc. and the rest follow the admin order
-  const visibility = await fetchServiceVisibility();
+  // header menu and Employee Login button managed in admin (Header)
+  const [visibility, header] = await Promise.all([fetchServiceVisibility(), fetchHeader()]);
 
 
 
@@ -31,12 +34,14 @@ export default async function RootLayout({
           <div className={`${dmSans.variable} font-sans antialiased`}>
             {/* <SmoothScroll/> */}
             <ServiceVisibilityProvider hiddenSlugs={visibility.hiddenServices} hiddenIds={visibility.hiddenServiceIds} serviceOrder={visibility.serviceOrder} serviceIdSlugs={visibility.serviceIdSlugs}>
+            <HeaderContentProvider data={header}>
             <SearchProvider>
               <ToNavigateCountryProvider>
                 <ScrollToTop />
                 {children}
               </ToNavigateCountryProvider>
             </SearchProvider>
+            </HeaderContentProvider>
             </ServiceVisibilityProvider>
           </div>
         </div>

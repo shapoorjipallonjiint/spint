@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import CredentialsCubesEditor from "@/app/components/common/CredentialsCubesEditor";
 import { fromLegacyCubes, normalizeColumns } from "@/lib/credentialsCubes";
+import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 
 interface HomeFormProps {
     metaTitle: string;
@@ -194,6 +195,11 @@ const Home = () => {
         formState: { errors },
     } = useForm<HomeFormProps>();
 
+    // English / Arabic tabs in the top bar: one column at a time (both stay mounted, so nothing is lost on switch)
+    const { enabled: langTabs, lang, showErrors } = useAdminLangTab();
+    const columnClass = (column: "en" | "ar") =>
+        `flex flex-col gap-5 ${langTabs && lang !== column ? "hidden" : ""}`;
+
     // live cube values for the admin preview
     const credentialCubes = watch("thirdSection.credentials.cubes");
     const credentialColumns = watch("thirdSection.credentials.columns");
@@ -315,9 +321,13 @@ const Home = () => {
     }, []);
 
     return (
-        <form className="grid grid-cols-2 gap-10" onSubmit={handleSubmit(handleAddHome)}>
+        <form
+            id={LANG_TAB_FORM_ID}
+            className={langTabs ? "grid grid-cols-1 gap-10" : "grid grid-cols-2 gap-10"}
+            onSubmit={handleSubmit(handleAddHome, showErrors)}
+        >
             {/* English Version */}
-            <div className="flex flex-col gap-5">
+            <div className={columnClass("en")}>
                 <AdminItemContainer>
                     <Label className="" main>
                         First Section
@@ -745,7 +755,7 @@ const Home = () => {
                                                     )}
                                                 />
                                                 {errors.fifthSection?.items?.[index]?.image && (
-                                                    <p className="text-red-500">
+                                                    <p data-form-error className="text-red-500">
                                                         {errors.fifthSection?.items?.[index]?.image.message}
                                                     </p>
                                                 )}
@@ -760,7 +770,7 @@ const Home = () => {
                                                         {...register(`fifthSection.items.${index}.imageAlt`)}
                                                     />
                                                     {errors.fifthSection?.items?.[index]?.imageAlt && (
-                                                        <p className="text-red-500">
+                                                        <p data-form-error className="text-red-500">
                                                             {errors.fifthSection?.items?.[index]?.imageAlt.message}
                                                         </p>
                                                     )}
@@ -779,7 +789,7 @@ const Home = () => {
                                                     )}
                                                 />
                                                 {errors.fifthSection?.items?.[index]?.logo && (
-                                                    <p className="text-red-500">
+                                                    <p data-form-error className="text-red-500">
                                                         {errors.fifthSection?.items?.[index]?.logo.message}
                                                     </p>
                                                 )}
@@ -794,7 +804,7 @@ const Home = () => {
                                                         {...register(`fifthSection.items.${index}.logoAlt`)}
                                                     />
                                                     {errors.fifthSection?.items?.[index]?.logoAlt && (
-                                                        <p className="text-red-500">
+                                                        <p data-form-error className="text-red-500">
                                                             {errors.fifthSection?.items?.[index]?.logoAlt.message}
                                                         </p>
                                                     )}
@@ -812,7 +822,7 @@ const Home = () => {
                                                         {...register(`fifthSection.items.${index}.title`)}
                                                     />
                                                     {errors.fifthSection?.items?.[index]?.title && (
-                                                        <p className="text-red-500">
+                                                        <p data-form-error className="text-red-500">
                                                             {errors.fifthSection?.items?.[index]?.title.message}
                                                         </p>
                                                     )}
@@ -826,7 +836,7 @@ const Home = () => {
                                                         {...register(`fifthSection.items.${index}.completedProjects`)}
                                                     />
                                                     {errors.fifthSection?.items?.[index]?.completedProjects && (
-                                                        <p className="text-red-500">
+                                                        <p data-form-error className="text-red-500">
                                                             {errors.fifthSection?.items?.[index]?.completedProjects.message}
                                                         </p>
                                                     )}
@@ -1131,7 +1141,7 @@ const Home = () => {
             </div>
 
             {/* Arabic Version */}
-            <div className="flex flex-col gap-5">
+            <div className={columnClass("ar")}>
                 <AdminItemContainer>
                     <Label className="" main>
                         First Section
@@ -1455,7 +1465,7 @@ const Home = () => {
                                                     )}
                                                 />
                                                 {errors.fifthSection?.items?.[index]?.image && (
-                                                    <p className="text-red-500">
+                                                    <p data-form-error className="text-red-500">
                                                         {errors.fifthSection?.items?.[index]?.image.message}
                                                     </p>
                                                 )}
@@ -1484,7 +1494,7 @@ const Home = () => {
                                                     )}
                                                 />
                                                 {errors.fifthSection?.items?.[index]?.logo && (
-                                                    <p className="text-red-500">
+                                                    <p data-form-error className="text-red-500">
                                                         {errors.fifthSection?.items?.[index]?.logo.message}
                                                     </p>
                                                 )}
@@ -1761,7 +1771,8 @@ const Home = () => {
                 </AdminItemContainer>
             </div>
 
-            <div className="col-span-2">
+            {/* with the language tabs, Submit sits in the top bar */}
+            <div className={langTabs ? "hidden" : "col-span-2"}>
                 <Button type="submit" className="cursor-pointer text-white text-[16px] w-full">
                     Submit
                 </Button>

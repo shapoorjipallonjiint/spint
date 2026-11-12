@@ -68,8 +68,7 @@ const aboutSchema = new mongoose.Schema({
             required: true
         },
         title_ar: {
-            type: String,
-            required: true
+            type: String
         },
         subTitle: {
             type: String,

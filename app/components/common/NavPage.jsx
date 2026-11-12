@@ -1,8 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { navData as allNavData } from "../data";
 import { useVisibleNavData } from "@/contexts/serviceVisibility";
+import { useHeaderNavData } from "@/contexts/headerContent";
 import { moveRight, moveLeft, moveUp } from "../motionVarients";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
@@ -11,7 +11,7 @@ import SocialIcons from "@/app/components/common/SocialIcons";
 
 const NavPage = ({ isOpen, socials }) => {
     // services hidden in admin (Services > Main) are removed from the menus
-    const navData = useVisibleNavData(allNavData);
+    const navData = useVisibleNavData(useHeaderNavData());
     const isArabic = useIsPreferredLanguageArabic();
     const tNavData = useApplyLang(navData);
     const [activeMenu, setActiveMenu] = useState(2);

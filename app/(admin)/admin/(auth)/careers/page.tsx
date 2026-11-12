@@ -1045,7 +1045,6 @@ const SustainabilityPage = () => {
                             <Controller
                                 name="fourthSection.description_ar"
                                 control={control}
-                                rules={{ required: "Description is required" }}
                                 render={({ field }) => {
                                     return <TinyEditor setNewsContent={field.onChange} newsContent={field.value} />;
                                 }}

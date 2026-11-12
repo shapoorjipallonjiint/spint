@@ -61,11 +61,11 @@ const globalPresenceSchema = new mongoose.Schema({
             name_ar: { type: String },
             image: { type: String, required: true },
             imageAlt: { type: String, required: true },
-            imageAlt_ar: { type: String, required: true },
+            imageAlt_ar: { type: String },
             projects: { type: String, required: true },
-            projects_ar: { type: String, required: true },
+            projects_ar: { type: String },
             country: { type: String, required: true },
-            country_ar: { type: String, required: true },
+            country_ar: { type: String },
             countries: [{ name: { type: String }, name_ar: { type: String } }],
             link: { type: String }
         }]

@@ -301,7 +301,7 @@ const ContactPage = () => {
                         <Label className="font-bold">Page Title</Label>
                         <Input
                             placeholder="Page Title"
-                            {...register("pageTitle_ar", { required: "Page title is required" })}
+                            {...register("pageTitle_ar")}
                         />
                     </div>
                 </AdminItemContainer>
