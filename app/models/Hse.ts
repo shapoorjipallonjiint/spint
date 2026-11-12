@@ -93,8 +93,7 @@ const hseSchema = new mongoose.Schema({
                 required: true
             },
             thumbnailAlt_ar: {
-                type: String,
-                required: true
+                type: String
             },
             files: [{
                 file: {

@@ -963,9 +963,7 @@ const QualityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register("firstSection.title_ar", {
-                                        required: "Title is required",
-                                    })}
+                                    {...register("firstSection.title_ar")}
                                 />
                             </div>
                             <div>
@@ -973,7 +971,6 @@ const QualityPage = () => {
                                 <Controller
                                     name="firstSection.description_ar"
                                     control={control}
-                                    rules={{ required: "Description is required" }}
                                     render={({ field }) => {
                                         return <Textarea value={field.value} onChange={field.onChange} />;
                                     }}
@@ -1150,9 +1147,7 @@ const QualityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
-                                                        {...register(`fourthSection.items.${index}.imageAlt_ar`, {
-                                                            required: "Value is required",
-                                                        })}
+                                                        {...register(`fourthSection.items.${index}.imageAlt_ar`)}
                                                     />
                                                 </div>
                                             </div>
@@ -1339,9 +1334,7 @@ const QualityPage = () => {
                                 <Input
                                     type="text"
                                     placeholder="Title"
-                                    {...register(`thirdSection.title_ar`, {
-                                        required: "Value is required",
-                                    })}
+                                    {...register(`thirdSection.title_ar`)}
                                 />
                             </div>
                         </div>
@@ -1432,9 +1425,7 @@ const QualityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Alt Tag"
-                                                        {...register(`thirdSection.itemsTwo.${index}.imageAlt_ar`, {
-                                                            required: "Value is required",
-                                                        })}
+                                                        {...register(`thirdSection.itemsTwo.${index}.imageAlt_ar`)}
                                                     />
                                                 </div>
                                             </div>

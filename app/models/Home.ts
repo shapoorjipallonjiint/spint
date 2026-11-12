@@ -37,8 +37,7 @@ const homeSchema = new mongoose.Schema({
             required: true
         },
         videoAlt_ar: {
-            type: String,
-            required: true
+            type: String
         },
         videoPosterImage: {
             type: String

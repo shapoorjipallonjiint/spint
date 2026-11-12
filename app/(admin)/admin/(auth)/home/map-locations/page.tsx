@@ -229,7 +229,7 @@ export default function MapSectionPage() {
 
                         <div>
                             <Label>Name (Arabic)</Label>
-                            <Input {...register("name_ar", { required: true })} placeholder="Name (Arabic)" />
+                            <Input {...register("name_ar")} placeholder="Name (Arabic)" />
                         </div>
 
                         <div className="col-span-2">

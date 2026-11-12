@@ -85,8 +85,7 @@ const sustainabilitySchema = new mongoose.Schema({
             required: true
         },
         imageAlt_ar: {
-            type: String,
-            required: true
+            type: String
         },
         items: [{
             title: {
@@ -111,8 +110,7 @@ const sustainabilitySchema = new mongoose.Schema({
                 required: true
             },
             iconAlt_ar: {
-                type: String,
-                required: true
+                type: String
             }
         }]
     },
@@ -215,16 +213,14 @@ const sustainabilitySchema = new mongoose.Schema({
                 required: true
             },
             iconAlt_ar: {
-                type: String,
-                required: true
+                type: String
             },
             description: {
                 type: String,
                 required: true
             },
             description_ar: {
-                type: String,
-                required: true
+                type: String
             },
             image: {
                 type: String,
@@ -235,8 +231,7 @@ const sustainabilitySchema = new mongoose.Schema({
                 required: true
             },
             imageAlt_ar: {
-                type: String,
-                required: true
+                type: String
             }
 
         }]

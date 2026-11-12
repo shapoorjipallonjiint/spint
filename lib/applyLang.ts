@@ -62,7 +62,8 @@ export function useApplyLang<T extends object>(data: T): T {
         // If arabic version exists, apply language fallback rules
         if (arabicKey in obj) {
           const arValue = typeof arabicRaw === "string" ? arabicRaw : undefined;
-          const hasArabic = arValue?.trim() !== "";
+          // empty, missing or non-text Arabic falls back to English
+          const hasArabic = !!arValue?.trim();
           result[key] = isArabic && hasArabic ? (arValue as string) : rawValue;
           continue;
         }

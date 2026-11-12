@@ -5,6 +5,7 @@ import AdminTopBar from "@/app/components/AdminNavbar/AdminTopBar";
 import Image from "next/image";
 import Link from "next/link";
 import { Toaster } from "sonner";
+import { AdminLangTabProvider } from "@/contexts/adminLangTab";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -69,12 +70,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Main content */}
+            <AdminLangTabProvider>
             <main className="relative h-screen flex-1 overflow-hidden">
                 <AdminTopBar />
 
                 {/* Scrollable Content (relative: absolute children such as Radix's hidden <select> stay inside this scroller instead of stretching the page) */}
                 <div className="relative mt-14 h-[calc(100vh-56px)] overflow-y-auto bg-gray-100 p-4">{children}</div>
             </main>
+            </AdminLangTabProvider>
         </div>
     );
 }
