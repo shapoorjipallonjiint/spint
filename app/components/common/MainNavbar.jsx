@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import LangLink from "@/lib/LangLink"
 import Image from "next/image";
-import { navData as allNavData } from "../data";
 import { useVisibleNavData } from "@/contexts/serviceVisibility";
+import { useHeaderNavData, useHeaderPortal } from "@/contexts/headerContent";
 import { useSearchContext } from "@/contexts/searchContext";
 import SearchResults from "@/app/components/common/SearchResults";
 import HomeMobileNavbarSearch from "@/app/components/common/HomeMobileNavbarSearch";
@@ -16,7 +16,9 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 
 const MainNavbar = () => {
     // services hidden in admin (Services > Main) are removed from the menus
-    const navData = useVisibleNavData(allNavData);
+    const navData = useVisibleNavData(useHeaderNavData());
+    // Employee Login button (admin Header); null when hidden
+    const portal = useHeaderPortal();
     const tNavData = useApplyLang(navData);
     const isArabic = useIsPreferredLanguageArabic();
     const [isSticky, setIsSticky] = useState(false);
@@ -426,16 +428,18 @@ const MainNavbar = () => {
                                     {isArabic ? "English" : "العربية"}
                                 </button>
                                 */}
+                                {portal && (
                                 <div className=" leading-[1] p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9] animate-[gradient_3s_linear_infinite] bg-[length:200%_200%] inline-block transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] hover:scale-[1.03] cursor-pointer">
                                     <LangLink
                                         target="_blank"
-                                        href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji"
+                                        href={portal.href}
                                     >
                                         <button className="cursor-pointer uppercase text-[10px] xl:text-[12px] 2xl:text-16 leading-[1.75] font-300 px-[10px] 2xl:px-[18px] py-[5px] xl:py-1 2xl:py-[1.5px]  bg-white rounded-full transition-all duration-300 hover:bg-[#f7faff]">
-                                            {isArabic ? "Employee login" : "Employee login"}
+                                            {portal.label}
                                         </button>
                                     </LangLink>
                                 </div>
+                                )}
                                 <button
                                     ref={searchButtonRef}
                                     className={`cursor-pointer bg-[#000000CC] rounded-full p-[2px] w-[30px] h-[30px]  2xl:w-[45px] 2xl:h-[45px] flex items-center justify-center ${isArabic ? "mr-3 xl:mr-5" : "ml-3 xl:ml-5"} transition-all duration-300 hover:shadow-[0_0_12px_rgba(48,182,249,0.6)] group`}

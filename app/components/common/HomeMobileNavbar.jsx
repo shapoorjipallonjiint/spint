@@ -3,15 +3,17 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import LangLink from "@/lib/LangLink"
-import { navData as allNavData } from "../data";
 import { useVisibleNavData } from "@/contexts/serviceVisibility";
+import { useHeaderNavData, useHeaderPortal } from "@/contexts/headerContent";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 
 const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
     // services hidden in admin (Services > Main) are removed from the menus; labels in the current language
     // (used on the homepage and on the inner pages: MainNavbar / MainNavbarTwo)
-    const navData = useApplyLang(useVisibleNavData(allNavData));
+    const navData = useApplyLang(useVisibleNavData(useHeaderNavData()));
+    // Employee Login button (admin Header); null when hidden
+    const portal = useHeaderPortal();
   const isArabic = useIsPreferredLanguageArabic();
   const [openSubmenu, setOpenSubmenu] = useState(null);
 
@@ -193,11 +195,13 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
                 </button>
                 */}
 
+                {portal && (
                 <div className="p-[1px] rounded-full bg-gradient-to-r from-[#30B6F9] via-[#1E45A2] to-[#30B6F9]">
-                  <LangLink href="https://portal.zinghr.ae/2015/pages/authentication/zing.aspx?ccode=shapoorji" target="_blank" ><button className="w-full uppercase px-5 py-2 bg-white rounded-full">
-                    {isArabic ? "Employee login" : "Employee login"}
+                  <LangLink href={portal.href} target="_blank" ><button className="w-full uppercase px-5 py-2 bg-white rounded-full">
+                    {portal.label}
                   </button></LangLink>
                 </div>
+                )}
 
                 <button className="w-full bg-black/80 rounded-full p-3 flex items-center justify-center gap-2 text-white" onClick={()=>setMobileMenuOpenSearch(true)}>
                   <span className="text-sm uppercase">{isArabic ? "Search" : "Search"}</span>
