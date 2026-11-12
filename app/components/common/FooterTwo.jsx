@@ -88,7 +88,7 @@ const FooterTwo = ({ data = DEFAULT_FOOTER }) => {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ amount: 0.1, once: true }}
-                src={footer.logo}
+                src="/assets/logos/final-sp-logo.png"
                 alt={footer.logoAlt || "logo"}
                 className="w-[100px] lg:w-[169px] h-auto brightness-0 invert"
               />

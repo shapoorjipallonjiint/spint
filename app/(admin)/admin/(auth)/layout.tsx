@@ -21,10 +21,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     className="group relative flex shrink-0 flex-col items-center gap-3 border-b border-gray-300 bg-[radial-gradient(ellipse_at_top,rgba(30,69,162,0.07),transparent_70%)] px-6 pb-5 pt-8"
                 >
                     <Image
-                        src="/assets/images/sp-logo.png"
+                        src="/assets/logos/final-sp-logo.png"
                         alt="Shapoorji Pallonji"
-                        width={404}
-                        height={228}
+                        width={1522}
+                        height={897}
                         className="h-auto w-[124px] transition-transform duration-300 group-hover:scale-[1.03]"
                         priority
                     />

@@ -85,7 +85,7 @@ const HomeMobileNavbar = ({ isOpen, onClose,setMobileMenuOpenSearch }) => {
             {/* LOGO */}
             <div className="flex items-center p-3 absolute">
               {/* same size as the header logo on small screens (50px tall) */}
-              <img src="/assets/images/main-logo.png" alt="logo" className="h-[50px] w-auto" />
+              <img src="/assets/logos/final-sp-logo.png" alt="logo" className="h-[50px] w-auto" />
             </div>
 
             {/* CONTENT */}

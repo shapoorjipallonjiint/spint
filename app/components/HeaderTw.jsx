@@ -238,7 +238,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }
             onClick={() => handleScroll("section1")}
           >
             <Image
-              src="/assets/images/main-logo.png"
+              src="/assets/logos/final-sp-logo.png"
               width={90}
               height={55}
               className={`logsc w-auto max-h-[50px] ${mobileDarkHeader ? "block" : "hidden"}`}
@@ -246,7 +246,7 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }
             />
 
             <Image
-              src="/assets/images/main-logo.png"
+              src="/assets/logos/final-sp-logo.png"
               width={90}
               height={55}
               className={`logsc w-auto max-h-[50px] invert brightness-0 ${mobileDarkHeader ? "hidden" : "block"}`}
@@ -456,23 +456,23 @@ const HeaderTw = ({ activeSection, setActiveSection, setIndexToScroll, socials }
                       The colour logo shows on blue-tinted slides and on the white header (menu / search open). */}
                   <div className="logsc relative w-[90px] h-[51px]">
                     <Image
-                      className={`absolute inset-0 m-auto transition-opacity duration-700 ease-in-out ${
+                      className={`absolute inset-0 m-auto w-full h-full object-contain brightness-0 invert transition-opacity duration-700 ease-in-out ${
                         isTintedHeader || panelOpen ? "opacity-0" : "opacity-100"
                       }`}
-                      src="/assets/logos/home-header-logo.svg"
+                      src="/assets/logos/final-sp-logo.png"
                       alt="Logo"
-                      width={90}
-                      height={50}
+                      width={1522}
+                      height={897}
                     />
                     <Image
-                      className={`absolute inset-0 m-auto transition-opacity duration-700 ease-in-out ${
+                      className={`absolute inset-0 m-auto w-full h-full object-contain transition-opacity duration-700 ease-in-out ${
                         isTintedHeader || panelOpen ? "opacity-100" : "opacity-0"
                       }`}
-                      src="/assets/images/sp-logo.png"
+                      src="/assets/logos/final-sp-logo.png"
                       alt=""
                       aria-hidden="true"
-                      width={90}
-                      height={51}
+                      width={1522}
+                      height={897}
                     />
                   </div>
                 </div>

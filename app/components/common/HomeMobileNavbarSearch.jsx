@@ -110,7 +110,7 @@ const HomeMobileNavbarSearch = ({ isOpen, onClose, navbarClose }) => {
 
             {/* LOGO */}
             <div className="flex items-center p-3 absolute">
-              <img src="/assets/images/main-logo.png" alt="logo" className="w-25" />
+              <img src="/assets/logos/final-sp-logo.png" alt="logo" className="w-25" />
             </div>
 
             {/* CONTENT */}

@@ -25,7 +25,7 @@ export const FOOTER_TAG = "footer";
 
 // the footer as it was before it became editable; used until the first save and whenever loading fails
 export const DEFAULT_FOOTER: FooterData = {
-    logo: "/assets/images/sp-logo.png",
+    logo: "/assets/logos/final-sp-logo.png",
     logoAlt: "SP International",
     logoAlt_ar: "",
     address: "Al Hudaiba Mall, Al Mina Street P.O. Box No. 118219\nDubai, UAE, Office 307, 3rd Floor",
