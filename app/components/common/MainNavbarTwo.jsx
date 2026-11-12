@@ -283,7 +283,7 @@ const MainNavbarTwo = () => {
                                     width={0}
                                     height={0}
                                     // src="/assets/images/main-logo.svg"
-                                    src="/assets/images/sp-logo.png"
+                                    src="/assets/logos/final-sp-logo.png"
                                     alt="logo"
                                     // small screens: same size as the homepage header logo (max 50px tall, HeaderTw)
                                     className="max-xl:h-[50px] max-xl:w-auto xl:w-[101px]"

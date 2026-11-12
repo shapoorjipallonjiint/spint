@@ -61,10 +61,10 @@ export default function AdminLogin() {
       <div className="flex flex-1 items-center justify-center bg-gray-50 px-4 py-12 sm:px-8 lg:bg-white">
         <div className="w-full max-w-[400px] rounded-2xl bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] sm:p-10 lg:shadow-none">
           <Image
-            src="/assets/images/sp-logo.png"
+            src="/assets/logos/final-sp-logo.png"
             alt="Shapoorji Pallonji"
-            width={404}
-            height={228}
+            width={1522}
+            height={897}
             className="h-auto w-[120px]"
             priority
           />
