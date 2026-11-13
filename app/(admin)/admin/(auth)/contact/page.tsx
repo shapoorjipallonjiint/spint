@@ -1,6 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Move } from "lucide-react";
+import { DndContext, closestCenter, DragEndEvent, Modifier, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
@@ -47,12 +51,36 @@ interface ContactFormProps {
     };
 }
 
+// the reorder list only moves up/down: drop the sideways part of the drag
+const restrictToVerticalAxis: Modifier = ({ transform }) => ({ ...transform, x: 0 });
+
+// one regional office in the reorder list: only its name, dragged into place
+const SortableOfficeRow = ({ id, serial, name }: { id: string; serial: number; name: string }) => {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+    return (
+        <div
+            ref={setNodeRef}
+            style={{ transform: CSS.Transform.toString(transform), transition }}
+            {...attributes}
+            {...listeners}
+            className={`flex items-center gap-3 px-3 py-2 bg-white cursor-grab active:cursor-grabbing touch-none ${
+                isDragging ? "relative z-10 shadow-md" : ""
+            }`}
+        >
+            <span className="min-w-7 text-sm text-black/50 tabular-nums">{serial}.</span>
+            <span className={`flex-1 text-sm ${name ? "" : "text-black/40 italic"}`}>{name || "(no name)"}</span>
+            <Move className="w-4 h-4 text-gray-500 shrink-0" />
+        </div>
+    );
+};
+
 const ContactPage = () => {
     const {
         register,
         handleSubmit,
         control,
         reset,
+        getValues,
         formState: { errors },
     } = useForm<ContactFormProps>({
         defaultValues: {
@@ -85,10 +113,94 @@ const ContactPage = () => {
         fields: secondSectionItems,
         append: secondSectionAppend,
         remove: secondSectionRemove,
+        replace: secondSectionReplace,
     } = useFieldArray({
         control,
         name: "secondSection.items",
     });
+
+    // ---------- regional office reorder ----------
+    // Reorder shows a names-only list (in both columns: English and Arabic share the same items).
+    // Done applies the new order to the form; nothing is written until Submit.
+    // null = not reordering, otherwise the draft order as field ids.
+    const [reorderIds, setReorderIds] = useState<string[] | null>(null);
+    const isReordering = reorderIds !== null;
+
+    // small move threshold so a click on a row doesn't start a drag
+    const reorderSensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+    const startReorder = () => setReorderIds(secondSectionItems.map((f) => f.id));
+    const cancelReorder = () => setReorderIds(null);
+
+    const handleReorderDragEnd = ({ active, over }: DragEndEvent) => {
+        if (!over || active.id === over.id) return;
+        setReorderIds((ids) =>
+            ids ? arrayMove(ids, ids.indexOf(String(active.id)), ids.indexOf(String(over.id))) : ids
+        );
+    };
+
+    const finishReorder = () => {
+        if (!reorderIds) return;
+        const indexById = new Map(secondSectionItems.map((f, i) => [f.id, i]));
+        const unchanged = reorderIds.every((id, i) => indexById.get(id) === i);
+        if (!unchanged) {
+            // current values (incl. unsaved edits), in the new order
+            const items = getValues("secondSection.items");
+            secondSectionReplace(reorderIds.map((id) => items[indexById.get(id) as number]));
+            toast.success("Order updated - click Submit to save");
+        }
+        setReorderIds(null);
+    };
+
+    // names shown in the reorder list: English column uses name, Arabic column name_ar (falls back to name)
+    const renderReorderList = (lang: "en" | "ar") => {
+        const indexById = new Map(secondSectionItems.map((f, i) => [f.id, i]));
+        return (
+            <div className="border border-black/20 rounded-md overflow-hidden divide-y divide-black/10">
+                <DndContext
+                    sensors={reorderSensors}
+                    collisionDetection={closestCenter}
+                    modifiers={[restrictToVerticalAxis]}
+                    onDragEnd={handleReorderDragEnd}
+                >
+                    <SortableContext items={reorderIds || []} strategy={verticalListSortingStrategy}>
+                        {(reorderIds || []).map((id, i) => {
+                            const item = watchedSecondSectionItems?.[indexById.get(id) as number];
+                            const name = lang === "ar" ? item?.name_ar || item?.name || "" : item?.name || "";
+                            return <SortableOfficeRow key={id} id={id} serial={i + 1} name={name} />;
+                        })}
+                    </SortableContext>
+                </DndContext>
+            </div>
+        );
+    };
+
+    // "Items" label with the Reorder / Cancel + Done buttons beside it
+    const renderItemsHeader = () => (
+        <div className="flex items-center justify-between gap-3">
+            <Label className="font-bold">Items</Label>
+            {isReordering ? (
+                <div className="flex items-center gap-2">
+                    <Button type="button" size="sm" variant="outline" onClick={cancelReorder}>
+                        Cancel
+                    </Button>
+                    <Button type="button" size="sm" className="text-white bg-yellow-700" onClick={finishReorder}>
+                        Done
+                    </Button>
+                </div>
+            ) : (
+                <Button
+                    type="button"
+                    size="sm"
+                    className="text-white bg-green-700"
+                    disabled={secondSectionItems.length < 2}
+                    onClick={startReorder}
+                >
+                    Reorder
+                </Button>
+            )}
+        </div>
+    );
 
     const handleSubmitForm = async (data: ContactFormProps) => {
         try {
@@ -202,8 +314,11 @@ const ContactPage = () => {
                             <FormError error={errors.secondSection?.title?.message} />
                         </div>
 
-                        <Label className="font-bold">Items</Label>
+                        {renderItemsHeader()}
 
+                        {isReordering ? (
+                            renderReorderList("en")
+                        ) : (
                         <div className="border border-black/20 p-3 rounded-md flex flex-col gap-5">
                             {secondSectionItems.map((field, index) => (
                                 <div key={field.id} className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-5">
@@ -272,6 +387,7 @@ const ContactPage = () => {
                                 </Button>
                             </div>
                         </div>
+                        )}
                     </div>
                 </AdminItemContainer>
 
@@ -370,8 +486,11 @@ const ContactPage = () => {
                             <Input {...register("secondSection.title_ar")} />
                         </div>
 
-                        <Label className="font-bold">Items</Label>
+                        {renderItemsHeader()}
 
+                        {isReordering ? (
+                            renderReorderList("ar")
+                        ) : (
                         <div className="border border-black/20 p-3 rounded-md flex flex-col gap-5">
                             {secondSectionItems.map((field, index) => (
                                 <div key={field.id} className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-5">
@@ -442,6 +561,7 @@ const ContactPage = () => {
                                 </Button>
                             </div>
                         </div>
+                        )}
                     </div>
                 </AdminItemContainer>
 
@@ -463,7 +583,12 @@ const ContactPage = () => {
             </div>
 
             <div className="col-span-2">
-                <Button type="submit" className="w-full text-white text-[16px]">
+                {isReordering && (
+                    <p className="text-sm text-yellow-700 mb-2 text-center">
+                        Click Done in the Regional Office Section to keep the new order, then Submit to save.
+                    </p>
+                )}
+                <Button type="submit" className="w-full text-white text-[16px]" disabled={isReordering}>
                     Submit
                 </Button>
             </div>
