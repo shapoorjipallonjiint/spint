@@ -153,6 +153,9 @@ export interface ProjectFormProps {
     thumbnail?: string;
     thumbnailAlt?: string;
     thumbnailAlt_ar?: string;
+    certificationBadge?: string;
+    certificationBadgeAlt?: string;
+    certificationBadgeAlt_ar?: string;
     metaTitle: string;
     metaTitle_ar: string;
     metaDescription: string;
@@ -257,6 +260,9 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                 setValue("thumbnail", data.data?.thumbnail);
                 setValue("thumbnailAlt", data.data?.thumbnailAlt);
                 setValue("thumbnailAlt_ar", data.data?.thumbnailAlt_ar);
+                setValue("certificationBadge", data.data?.certificationBadge || "");
+                setValue("certificationBadgeAlt", data.data?.certificationBadgeAlt || "");
+                setValue("certificationBadgeAlt_ar", data.data?.certificationBadgeAlt_ar || "");
                 setValue("metaTitle", data.data.metaTitle);
                 setValue("metaTitle_ar", data.data.metaTitle_ar);
                 setValue("metaDescription", data.data.metaDescription);
@@ -555,6 +561,31 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                     {/* {errors.thumbnailAlt && <p className="text-red-500">{errors.thumbnailAlt.message}</p>} */}
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+                {/* Certification badge (e.g. LEED Gold): shown on the project's listing card, top-left of the thumbnail */}
+                <AdminItemContainer>
+                    <Label className="" main>
+                        Certification Badge
+                    </Label>
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <p className="text-sm text-black/60">
+                            Optional. Upload a certification emblem (e.g. LEED Gold) to show it on this project&apos;s card in the
+                            projects listing. A transparent PNG or SVG works best. Leave empty for no badge.
+                        </p>
+                        <div>
+                            <Label className="">Badge</Label>
+                            <ImageUploader
+                                isLogo
+                                onChange={(url) => setValue("certificationBadge", url)}
+                                value={watch("certificationBadge")}
+                            />
+                        </div>
+                        <div>
+                            <Label className="">Badge Alt</Label>
+                            <Input type="text" placeholder="e.g. LEED Gold Certified" {...register("certificationBadgeAlt")} />
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -1463,6 +1494,33 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                     <Input type="text" placeholder="Alt Tag" {...register("thumbnailAlt_ar")} />
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </AdminItemContainer>
+
+                {/* Certification badge: same image as the English side, only the alt text is per language */}
+                <AdminItemContainer>
+                    <Label className="" main>
+                        Certification Badge
+                    </Label>
+                    <div className="p-5 rounded-md flex flex-col gap-2">
+                        <p className="text-sm text-black/60">Same badge as the English side; upload or remove it there.</p>
+                        <div>
+                            <Label className="">Badge</Label>
+                            {watch("certificationBadge") ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                    src={watch("certificationBadge")}
+                                    alt=""
+                                    className="h-20 w-auto object-contain border border-black/10 rounded-md p-2 bg-white"
+                                />
+                            ) : (
+                                <p className="text-sm text-black/40">No badge</p>
+                            )}
+                        </div>
+                        <div>
+                            <Label className="">Badge Alt</Label>
+                            <Input type="text" placeholder="Alt Tag" {...register("certificationBadgeAlt_ar")} />
                         </div>
                     </div>
                 </AdminItemContainer>

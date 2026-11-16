@@ -16,7 +16,9 @@ import "swiper/css";
 import { withNormalSpaces } from "@/lib/withNormalSpaces";
 import { hasServiceContent } from "../serviceContent";
 import { useServiceVisibility } from "@/contexts/serviceVisibility";
+import type { ServiceSlug } from "@/lib/serviceRegistry";
 const MotionImage = motion.create(Image);
+const MEP_SLUG: ServiceSlug = "mep";
 const MOBILE_ACCORDION_DURATION = 450;
 
 type WorkSection = {
@@ -70,6 +72,8 @@ type DetailsTabItem = {
   workSections?: WorkSection[];
   images?: string[];
   serviceName: string;
+  // fixed service slug ("mep", "engineering-construction", ...); stays the same when the display name is edited
+  serviceSlug?: string;
 };
 
 type DetailsTabProps = {
@@ -93,13 +97,17 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     (s) => s?.serviceId
   );
   const tabs: DetailsTabItem[] = visibleServices.map((s) => {
+    // services are identified by their fixed slug (from the service document's `link`), not by name,
+    // so renaming a service in the admin doesn't change how its tab renders
+    const serviceSlug = serviceIdSlugs[String(s?.serviceId)];
     // MEP shows the accordion unless admin switched it to the "list" (title + description) layout;
     // projects saved before the toggle existed have no value and stay on the accordion.
-    const isMEP = s.serviceName === "MEP" && s.mepDisplayType !== "list";
+    const isMEP = serviceSlug === MEP_SLUG && s.mepDisplayType !== "list";
 
     return {
       title: s.serviceName,
       serviceName: s.serviceName,
+      serviceSlug,
 
       type: isMEP ? "accordion" : "default",
 
@@ -152,7 +160,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     setOpenSection((current) => (current === index ? -1 : index));
   };
   const [openSection, setOpenSection] = useState(() => {
-    const mepTab = tabs.find((tab) => tab.serviceName === "MEP")
+    const mepTab = tabs.find((tab) => tab.serviceSlug === MEP_SLUG)
     const defaultIndex = (mepTab?.workSections ?? []).findIndex(
       (section) => section.title === defaultOpenTitle
     );

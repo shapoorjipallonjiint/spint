@@ -450,12 +450,14 @@ export default function Projects() {
             body: formData,
         });
 
+        const data = await res.json().catch(() => ({}));
         if (res.ok) {
-            const data = await res.json();
             toast.success(data.message);
-            // reload so the list shows exactly what was saved (incl. any project kept at the end)
-            handleFetchProjects();
+        } else {
+            toast.error(data.message || "Failed to save the project order");
         }
+        // reload either way so the list shows exactly what is saved (incl. any project kept at the end)
+        handleFetchProjects();
     };
 
     const reorderList = selectedCountry === ALL_SCOPE ? projectList : scopedList;

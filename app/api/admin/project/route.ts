@@ -245,7 +245,16 @@ const services =
         const items = (second.items || []) as { key?: string }[];
         const services = (second.service || []) as { serviceId?: string; hidden?: boolean }[];
         return {
-          ...pick(mapped, ["_id", "slug", "thumbnail", "thumbnailAlt", "thumbnailAlt_ar"]),
+          ...pick(mapped, [
+            "_id",
+            "slug",
+            "thumbnail",
+            "thumbnailAlt",
+            "thumbnailAlt_ar",
+            "certificationBadge",
+            "certificationBadgeAlt",
+            "certificationBadgeAlt_ar",
+          ]),
           firstSection: pick(mapped.firstSection, ["title", "title_ar"]),
           secondSection: {
             ...pick(second, ["sector", "location", "status"]),
