@@ -58,6 +58,12 @@ const projectSchema = new mongoose.Schema({
     thumbnailAlt: { type: String },
     thumbnailAlt_ar: { type: String },
 
+    // certification emblem (e.g. LEED Gold) shown on the project's listing card, top-left of the thumbnail.
+    // Empty / missing = no badge.
+    certificationBadge: { type: String },
+    certificationBadgeAlt: { type: String },
+    certificationBadgeAlt_ar: { type: String },
+
     images: [{ type: String }],
 
     firstSection: {

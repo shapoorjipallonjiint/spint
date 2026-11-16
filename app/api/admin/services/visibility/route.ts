@@ -3,7 +3,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import connectDB from "@/lib/mongodb";
 import { verifyAdmin } from "@/lib/verifyAdmin";
 import ServiceVisibility from "@/app/models/ServiceVisibility";
-import { isKnownServiceSlug, SERVICE_SLUGS } from "@/lib/serviceRegistry";
+import { isKnownServiceSlug, SERVICE_SLUGS, type ServiceSlug } from "@/lib/serviceRegistry";
 import { readFeaturedProjects, readHiddenServiceSlugs, readServiceOrder, SERVICE_VISIBILITY_TAG } from "@/lib/serviceVisibility";
 
 import DesignStudio from "@/app/models/DesignStudio";
@@ -14,19 +14,28 @@ import InteriorDesign from "@/app/models/InteriorDesign";
 import Mep from "@/app/models/Mep";
 import Water from "@/app/models/Water";
 
+// each service lives in its own collection, so the collection decides the slug - never the editable `link` field
+// or the service name, which admins can change
+const SERVICE_MODELS: [ServiceSlug, typeof Mep][] = [
+    ["engineering-construction", Engineering],
+    ["mep", Mep],
+    ["interior-design", InteriorDesign],
+    ["facade", Facade],
+    ["integrated-facility-management", IntegratedFacilityManagement],
+    ["water", Water],
+    ["design-studio", DesignStudio],
+];
+
 // id -> slug of every service document (projects link services by id); read only
 async function serviceIdSlugs() {
-    const docs = (
-        await Promise.all(
-            [Engineering, Mep, InteriorDesign, Facade, IntegratedFacilityManagement, Water, DesignStudio].map((Model) =>
-                Model.find({}, { _id: 1, link: 1 }).lean<{ _id: unknown; link?: string }[]>()
-            )
-        )
-    ).flat();
+    const groups = await Promise.all(
+        SERVICE_MODELS.map(async ([slug, Model]) => ({
+            slug,
+            docs: await Model.find({}, { _id: 1 }).lean<{ _id: unknown }[]>(),
+        }))
+    );
     const map: Record<string, string> = {};
-    docs.forEach((d) => {
-        if (isKnownServiceSlug(d.link)) map[String(d._id)] = d.link;
-    });
+    groups.forEach(({ slug, docs }) => docs.forEach((d) => (map[String(d._id)] = slug)));
     return map;
 }
 

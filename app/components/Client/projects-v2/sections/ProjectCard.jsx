@@ -4,6 +4,7 @@ import LangLink from "@/lib/LangLink";
 import Reveal from "@/app/components/common/Reveal";
 import { moveUpV2 } from "../../../motionVarients";
 import { UI_LABELS } from "@/app/components/AdminProject/statusData";
+import CertificationBadge from "./CertificationBadge";
 
 // start the reveal as soon as the card's top edge enters the screen (no 25% / -30px wait)
 const REVEAL_AT_EDGE = { amount: 0, margin: "0px 0px" };
@@ -29,7 +30,8 @@ const ProjectCard = ({ item, variant = "grid", isArabic = false, revealDelay = 0
             <Reveal variants={moveUpV2} {...REVEAL_AT_EDGE} delay={revealDelay} className="border-b border-black/20 pb-[30px] mb-[30px] group">
                 <LangLink href={href}>
                     <div className="flex flex-col lg:grid grid-cols-[240px_244px_448px_0px] xl:grid-cols-[240px_244px_448px_32px] 2xl:grid-cols-[274px_324px_458px_32px] 3xl:grid-cols-[274px_384px_658px_32px] justify-between gap-3 md:gap-8 lg:gap-4 3xl:gap-[69px] ">
-                        <div className="w-full xl:w-full">
+                        <div className="w-full xl:w-full relative">
+                            <CertificationBadge item={item} variant="list" />
                             {item?.thumbnail ? (
                                 <Image
                                     src={item.thumbnail}
@@ -112,6 +114,9 @@ const ProjectCard = ({ item, variant = "grid", isArabic = false, revealDelay = 0
                         group-hover:opacity-100 group-hover:translate-y-0
                         group-focus-visible:opacity-100 group-focus-visible:translate-y-0"
                     />
+
+                    {/* Certification badge (top-left, same inset and size as the arrow badge) */}
+                    <CertificationBadge item={item} variant="grid" />
 
                     {/* Arrow badge (top-right, 80x80, 40px inset on desktop) */}
                     <div
