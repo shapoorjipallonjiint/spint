@@ -64,7 +64,7 @@ const Banner = ({ firstSection, secondSection }) => {
     const isMepOnly = serviceNames.length > 0 && serviceNames.every((name) => MEP.test(name));
     const bannerSubTitle = isMepOnly
         ? ""
-        : serviceTitle(EC) || serviceTitle(INTERIOR) || serviceTitle(MEP) || tFirstSection.subTitle;
+        : serviceTitle(EC) || serviceTitle(INTERIOR) || serviceTitle(MEP) || tFirstSection.subTitle?.trim() || "";
 
     // About the Project grid, in reading order
     const details = [
