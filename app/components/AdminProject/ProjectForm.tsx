@@ -417,15 +417,9 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                         </div>
 
                         <div>
-                            <Label className="">Sub Title</Label>
-                            <Input
-                                type="text"
-                                placeholder="Sub Title"
-                                {...register("firstSection.subTitle", { required: "Sub Title is required" })}
-                            />
-                            {errors.firstSection?.subTitle && (
-                                <p className="text-red-500">{errors.firstSection.subTitle.message}</p>
-                            )}
+                            <Label className="">Sub Title (optional)</Label>
+                            {/* optional: left empty, no subtitle is shown under the project title */}
+                            <Input type="text" placeholder="Sub Title" {...register("firstSection.subTitle")} />
                         </div>
 
                         <div>
