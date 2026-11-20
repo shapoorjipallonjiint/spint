@@ -23,6 +23,7 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { arrayMove } from "@dnd-kit/sortable";
 import ProjectCard from "./ProjectCard";
 import CertificationsTab from "./CertificationsTab";
+import CountryFilterTab from "./CountryFilterTab";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { isValidOrderKey, normalizeCountryCode, orderKeyForCountry, orderKeyLabel } from "@/lib/countryCodes";
 
@@ -42,6 +43,7 @@ type ProjectListItem = {
         sector?: { _id?: string; name?: string }[];
         service?: { serviceId?: string }[];
         location?: {
+            _id?: string;
             name?: string;
             code?: string;
         };
@@ -99,6 +101,8 @@ const PAGE_TABS = [
     { key: "sectors", label: "Sectors" },
     { key: "services", label: "Services" },
     { key: "certifications", label: "Certifications" },
+    // order of the countries in the website's projects filter (client's volume order)
+    { key: "countryFilter", label: "Country Filter" },
 ] as const;
 
 export default function Projects() {
@@ -541,6 +545,7 @@ export default function Projects() {
                         }`}
                     >
                         {tab.label}
+                        {tab.key !== "countryFilter" && (
                         <span className={`ms-1.5 text-xs ${activeTab === tab.key ? "text-white/70" : "text-black/40"}`}>
                             {tab.key === "projects"
                                 ? projectList.length
@@ -550,6 +555,7 @@ export default function Projects() {
                                     ? certificationCount
                                     : serviceList.length}
                         </span>
+                        )}
                     </button>
                 ))}
             </div>
@@ -557,6 +563,8 @@ export default function Projects() {
             <div className="flex-1 min-h-0">
                 {activeTab !== "projects" && (
                 <div className="h-full">
+                    {activeTab === "countryFilter" && <CountryFilterTab projects={projectList} />}
+
                     {activeTab === "certifications" && (
                         <CertificationsTab projects={projectList} onCountChange={setCertificationCount} />
                     )}
