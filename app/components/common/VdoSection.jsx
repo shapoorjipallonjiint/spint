@@ -9,6 +9,8 @@ import { moveUp, moveLeft } from "@/app/components/motionVarients";
 import Image from "next/image";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
+import { isHtml } from "@/lib/plainTextToHtml";
+import { withNormalSpaces } from "@/lib/withNormalSpaces";
 
 
 // Created once at module level; creating it inside the component remounts the shape on every render
@@ -88,11 +90,22 @@ const VdoSection = ({ data, maxW, maxtextwidth, justify = false }) => {
               {/* <motion.div variants={moveUp(0.2)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}> */}
               <H2Title titleText={t.title} titleColor="black" marginClass="mb-3 md:mb-4 lg:mb-5 3xl:mb-10 " maxW={maxW} delay={0.2} />
               {/* </motion.div> */}
-              {
+              {isHtml(t.description) ? (
+                // saved from the rich-text editor (Facility Management): render its formatting
+                <motion.div
+                  variants={moveUp(0.7)}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ amount: 0.2, once: true }}
+                  dir={isArabic ? "rtl" : "ltr"}
+                  className={`${maxtextwidth} ${justify ? "text-justify" : ""} vdo-rich-desc text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph`}
+                  dangerouslySetInnerHTML={{ __html: withNormalSpaces(t.description) }}
+                />
+              ) : (
                 t.description.split("\n").map((item, i) => (
                   <motion.p key={i} variants={moveUp(0.7 + i * 0.15)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }} className={`${maxtextwidth} ${justify ? "text-justify" : ""} text-16 xl:text-19 leading-[1.473684210526316] font-light text-paragraph mb-4 xl:mb-8 last:mb-0`}>{item}</motion.p>
                 ))
-              }
+              )}
             </div>
           </div>
         </div>

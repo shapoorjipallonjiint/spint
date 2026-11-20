@@ -1908,3 +1908,33 @@ body::-webkit-scrollbar {
 .admin-sidebar-scroll:hover {
   scrollbar-color: #d1d5db transparent;
 }
+
+/* VdoSection description saved from the rich-text editor - paragraphs spaced like the plain-text version */
+.vdo-rich-desc p {
+  @apply mb-3 xl:mb-5;
+}
+.vdo-rich-desc p:last-child {
+  margin-bottom: 0;
+}
+.vdo-rich-desc p:empty,
+.vdo-rich-desc p:has(> br:only-child) {
+  min-height: 1lh;
+}
+.vdo-rich-desc strong {
+  font-weight: 600;
+}
+.vdo-rich-desc a {
+  text-decoration: underline;
+}
+.vdo-rich-desc ul,
+.vdo-rich-desc ol {
+  padding-inline-start: 1.25em;
+  @apply mb-4 xl:mb-8;
+}
+.vdo-rich-desc ul { list-style: disc; }
+.vdo-rich-desc ol { list-style: decimal; }
+/* Quill 2 saves bullet lists as <ol> with li[data-list="bullet"] */
+.vdo-rich-desc li[data-list="bullet"] { list-style-type: disc; }
+.vdo-rich-desc li[data-list="ordered"] { list-style-type: decimal; }
+.vdo-rich-desc .ql-ui { display: none; }
+.vdo-rich-desc li { margin-bottom: 0.4em; }

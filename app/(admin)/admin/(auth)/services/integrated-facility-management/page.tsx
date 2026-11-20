@@ -14,6 +14,7 @@ import { VideoUploader } from '@/components/ui/video-uploader';
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false })
 import 'react-quill-new/dist/quill.snow.css';
 import dynamic from 'next/dynamic'
+import { plainTextToHtml } from '@/lib/plainTextToHtml'
 
 interface IntegratedFacilityManagementProps {
 
@@ -328,7 +329,7 @@ const IntegratedFacilityManagementPage = () => {
                             <div>
                                 <Label className="text-sm font-bold">Description</Label>
                                 <Controller name="firstSection.description" control={control} rules={{ required: "Description is required" }} render={({ field }) => {
-                                    return <Textarea value={field.value} onChange={field.onChange} />
+                                    return <ReactQuill theme='snow' value={plainTextToHtml(field.value)} onChange={field.onChange} />
                                 }} />
                             </div>
                         </div>
@@ -738,7 +739,7 @@ const IntegratedFacilityManagementPage = () => {
                             <div>
                                 <Label className="text-sm font-bold">Description</Label>
                                 <Controller name="firstSection.description_ar" control={control} render={({ field }) => {
-                                    return <Textarea value={field.value} onChange={field.onChange} />
+                                    return <ReactQuill theme='snow' value={plainTextToHtml(field.value)} onChange={field.onChange} />
                                 }} />
                             </div>
                         </div>
