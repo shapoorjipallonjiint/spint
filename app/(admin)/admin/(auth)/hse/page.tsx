@@ -7,10 +7,13 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { ImageUploader } from "@/components/ui/image-uploader";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { Textarea } from "@/components/ui/textarea";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
 import { FileUploader } from "@/components/ui/file-uploader";
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
+import { plainTextToHtml } from "@/lib/plainTextToHtml";
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface HseFormProps {
     metaTitle: string;
@@ -308,9 +311,9 @@ const HsePage = () => {
                                     name="firstSection.description"
                                     control={control}
                                     rules={{ required: "Description is required" }}
-                                    render={({ field }) => {
-                                        return <Textarea value={field.value} onChange={field.onChange} />;
-                                    }}
+                                    render={({ field }) => (
+                                        <ReactQuill theme="snow" value={plainTextToHtml(field.value)} onChange={field.onChange} />
+                                    )}
                                 />
                             </div>
                             <div className="flex justify-between gap-2">
@@ -926,9 +929,9 @@ const HsePage = () => {
                                 <Controller
                                     name="firstSection.description_ar"
                                     control={control}
-                                    render={({ field }) => {
-                                        return <Textarea value={field.value} onChange={field.onChange} />;
-                                    }}
+                                    render={({ field }) => (
+                                        <ReactQuill theme="snow" value={plainTextToHtml(field.value)} onChange={field.onChange} />
+                                    )}
                                 />
                             </div>
                             <div className="flex justify-between gap-2">

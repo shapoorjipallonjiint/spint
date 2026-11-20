@@ -9,6 +9,8 @@ import { useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useApplyLang } from "@/lib/applyLang";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
+import { isHtml } from "@/lib/plainTextToHtml";
+import { withNormalSpaces } from "@/lib/withNormalSpaces";
 
 const CoreValues = ({ data }) => {
     const t = useApplyLang(data);
@@ -72,15 +74,27 @@ const CoreValues = ({ data }) => {
                             className="md:hidden w-full md:w-full h-[200px] xs:h-[250px] md:h-[450px] lg:h-[520px] 2xl:h-[580px] 3xl:h-[648px] object-cover mb-4  "
                         />
                     </div>
-                        <motion.p
-                            variants={moveUp(1.6)}
-                            initial="hidden"
-                            whileInView="show"
-                            viewport={{ amount: 0.2, once: true }}
-                            className="text-19 font-light leading-[1.474] xl:max-w-[59ch] text-paragraph"
-                        >
-                            {t.description}
-                        </motion.p>
+                        {isHtml(t.description) ? (
+                            // saved from the rich-text editor: render its paragraphs / formatting
+                            <motion.div
+                                variants={moveUp(1.6)}
+                                initial="hidden"
+                                whileInView="show"
+                                viewport={{ amount: 0.2, once: true }}
+                                className="vdo-rich-desc text-19 font-light leading-[1.474] xl:max-w-[59ch] text-paragraph"
+                                dangerouslySetInnerHTML={{ __html: withNormalSpaces(t.description) }}
+                            />
+                        ) : (
+                            <motion.p
+                                variants={moveUp(1.6)}
+                                initial="hidden"
+                                whileInView="show"
+                                viewport={{ amount: 0.2, once: true }}
+                                className="text-19 font-light leading-[1.474] xl:max-w-[59ch] text-paragraph"
+                            >
+                                {t.description}
+                            </motion.p>
+                        )}
                     </div>
                     <MotionImage
                         src="/assets/images/svg/sv-02.svg"
