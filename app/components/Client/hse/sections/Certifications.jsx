@@ -12,6 +12,7 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import "swiper/css";
 import PdfOpenList, { canShowPdfInline } from "@/app/components/common/PdfOpenList";
+import { assets } from "@/app/assets";
 
 const Certifications = ({ data }) => {
   const isArabic = useIsPreferredLanguageArabic();
@@ -139,6 +140,9 @@ const Certifications = ({ data }) => {
   // ];
   const [imageSwiper, setImageSwiper] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  // locked = all cards fit in view (Swiper disables sliding), so the arrows are hidden
+  const [navState, setNavState] = useState({ locked: false });
+  const updateNavState = (swiper) => setNavState({ locked: !!swiper.isLocked });
   const [isPdfLoading, setIsPdfLoading] = useState(true);
 
 
@@ -152,15 +156,21 @@ const Certifications = ({ data }) => {
     setPdfIndex(0);
   };
 
+  // documents of a card (entries without an uploaded file are ignored). A card with none opens its image instead.
+  const filesOf = (item) => (Array.isArray(item?.files) ? item.files.filter((f) => f?.file) : []);
+  const openItem = itemIndex !== null ? t.items[itemIndex] : null;
+  const openFiles = filesOf(openItem);
+  const isImageOnly = !!openItem && openFiles.length === 0;
+
   // PDF Navigation Logic
   const nextPdf = () => {
-    const pdfArray = t.items[itemIndex].files;
-    setPdfIndex((prev) => (prev + 1) % pdfArray.length);
+    if (openFiles.length < 2) return;
+    setPdfIndex((prev) => (prev + 1) % openFiles.length);
   };
 
   const prevPdf = () => {
-    const pdfArray = t.items[itemIndex].files;
-    setPdfIndex((prev) => (prev - 1 + pdfArray.length) % pdfArray.length);
+    if (openFiles.length < 2) return;
+    setPdfIndex((prev) => (prev - 1 + openFiles.length) % openFiles.length);
   };
 
   useEffect(() => {
@@ -186,99 +196,104 @@ const Certifications = ({ data }) => {
   return (
     <section className="section-spacing bg-primary">
       <div className="container ">
-        <div>
-          <H2Title titleText={t.title} titleColor="white" marginClass="mb-4 2xl:mb-50px" />
-          <motion.p
-            variants={moveUp(0.4)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ amount: 0.2, once: true }}
-            className="text-19 font-light leading-[1.474] max-w-[85ch] text-white"
-          >
-            {t.description}
-          </motion.p>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 md:gap-10">
+          <div>
+            <H2Title titleText={t.title} titleColor="white" marginClass="mb-4 2xl:mb-50px" />
+            <motion.p
+              variants={moveUp(0.4)}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ amount: 0.2, once: true }}
+              className="text-19 font-light leading-[1.474] max-w-[85ch] text-white"
+            >
+              {t.description}
+            </motion.p>
+          </div>
+
+          {/* arrows + counter (hidden when every card already fits in view) */}
+          {!navState.locked && (
+            <motion.div
+              variants={moveUp(0.6)}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ amount: 0.2, once: true }}
+              className="flex items-center gap-4 shrink-0"
+            >
+              <button
+                type="button"
+                onClick={() => imageSwiper?.slidePrev()}
+                className={`group ${isArabic ? "hover:translate-x-1 rotate-180" : "hover:-translate-x-1"} transition-all duration-300 cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px] rounded-full border border-white/20 hover:border-white/50 flex items-center justify-center`}
+                aria-label="Previous slide"
+              >
+                <Image src={assets.arrowLeft2} alt="" width={14} height={14} className="w-[16px] h-[16px]" />
+              </button>
+              <button
+                type="button"
+                onClick={() => imageSwiper?.slideNext()}
+                className={`group ${isArabic ? "hover:-translate-x-1 -rotate-180" : "hover:translate-x-1"} transition-all duration-300 cursor-pointer w-10 h-10 xl:w-[50px] xl:h-[50px] rounded-full border border-white/20 hover:border-white/50 flex items-center justify-center`}
+                aria-label="Next slide"
+              >
+                <Image src={assets.arrowRight2} alt="" width={14} height={14} className="w-[16px] h-[16px]" />
+              </button>
+              <span className="text-19 leading-[1.473684210526316] text-white ms-2 tabular-nums">
+                {String(currentSlide + 1).padStart(2, "0")}/{String(t.items.length).padStart(2, "0")}
+              </span>
+            </motion.div>
+          )}
         </div>
+
         <div className="relative">
-          <div className="md:hidden mt-5 border-t border-white/20">
+          {/* one slider for every screen: 1.4 cards per view on phones (next card peeks in), 2 from md, 3 from lg. Cards keep the old grid look
+              (thin white divider on the start side of each card, closing divider at the end of the track) */}
+          <div className="mt-5 xl:mt-50px border-t border-white/20">
             <Swiper
               modules={[Autoplay]}
-              spaceBetween={30}
-              slidesPerView={2}
-              loop={true}
-              autoplay={{ delay: 8000, disableOnInteraction: false }}
-              onSwiper={setImageSwiper}
+              spaceBetween={0}
+              slidesPerView={1.4}
+              breakpoints={{ 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }}
+              rewind={true}
+              speed={700}
+              autoplay={{ delay: 6000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+              onSwiper={(swiper) => {
+                setImageSwiper(swiper);
+                updateNavState(swiper);
+              }}
               onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
-              className="legacy-main-swiper"
+              onResize={updateNavState}
+              onBreakpoint={updateNavState}
+              className="hse-recognitions-swiper md:border-e border-white/20"
             >
-              {t.items.map((item, i) => (
-                <SwiperSlide key={i}>
-                  <div className="grid grid-cols-1 gap-7 items-center pt-6 pb-4 border-b border-white/20">
-
-                    {/* Image */}
-                    <div className="relative overflow-hidden">
+              {t.items.map((item, index) => (
+                <SwiperSlide key={index} className="!h-auto">
+                  <div className="h-full p-3 pt-6 md:p-6 lg:p-10 lg:pb-5 border-s border-white/20">
+                    <button
+                      type="button"
+                      className="block cursor-pointer overflow-hidden"
+                      onClick={() => {
+                        setItemIndex(index);
+                        setPdfIndex(0);
+                      }}
+                      aria-label={item.title}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
+                        width={276}
+                        height={400}
                         src={item.thumbnail}
                         alt={item.thumbnailAlt}
-                        className="w-full h-full object-cover cursor-pointer"
-                        onClick={() => {
-                          setItemIndex(i);
-                          setPdfIndex(0);
-                        }}
+                        className="w-auto max-w-full h-[130px] sm:h-[170px] lg:h-[200px] 3xl:h-[226px] object-contain transition-transform duration-500 hover:scale-[1.03]"
                       />
-                      <motion.h3
-                        // variants={moveUp(0)}
-                        // initial="hidden"
-                        // whileInView="show"
-                        // viewport={{ amount: 0.2, once: true }}
-                        className="text-19 lg:text-29 mt-7 text-white font-light leading-[1.312]  max-w-[15ch]"
-                      >
-                        {item.title}
-                      </motion.h3>
-
-                    </div>
-
+                    </button>
+                    <h3 className="text-20 lg:text-29 mt-5 lg:mt-7 text-white font-light leading-[1.312]">
+                      {item.title}
+                    </h3>
+                    {item.subTitle && (
+                      <p className="text-16 lg:text-19 mt-2 lg:mt-4 text-white/70 font-light leading-[1.35]">{item.subTitle}</p>
+                    )}
                   </div>
                 </SwiperSlide>
               ))}
             </Swiper>
-          </div>
-
-
-          <div className="hidden md:block mt-5 xl:mt-50px border-t border-white/20">
-
-            <div className="grid grid-cols-1  md:grid-cols-3  3xl:grid-cols-[520px_550px_550px]  gap-2 lg:gap-23 3xl:gap-0 ">
-              {t.items.map((item, index) => (
-                <div key={index} className="p-6 lg:p-10 lg:pb-5 md:border-l border-white/20 md:last:border-r border-b md:border-b-0">
-                  <motion.img
-                    width={276}
-                    height={400}
-                    src={item.thumbnail}
-                    alt={item.thumbnailAlt}
-                    className="  cursor-pointer  "
-                    onClick={() => { setItemIndex(index); setPdfIndex(0); }}
-
-                  />
-                  <motion.h3
-                    variants={moveUp(0.5 + 0.2 * index)}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ amount: 0.2, once: true }}
-                    className="text-19 lg:text-29 mt-7 text-white font-light leading-[1.312]  max-w-[15ch]"
-                  >
-                    {item.title}
-                  </motion.h3>
-                  <motion.p
-                    variants={moveUp(0.5 + 0.2 * index)}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ amount: 0.2, once: true }}
-                    className="text-19   mt-4 text-white font-light leading-[1.2]   "
-                  >
-                    {item.subTitle}
-                  </motion.p>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* --- PDF POPUP MODAL --- */}
@@ -291,6 +306,34 @@ const Certifications = ({ data }) => {
                 className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
                 onClick={closeModal} // Click outside to close
               >
+                {isImageOnly ? (
+                  /* image-only card: show its image large */
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    className="relative flex flex-col items-center max-w-6xl w-full"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="w-full flex justify-between items-center gap-4 pb-3 text-white">
+                      <h3 className="font-medium">{openItem.title}</h3>
+                      <button
+                        type="button"
+                        onClick={closeModal}
+                        aria-label="Close"
+                        className="w-10 h-10 shrink-0 flex items-center justify-center hover:bg-white/10 rounded-full"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={openItem.thumbnail}
+                      alt={openItem.thumbnailAlt || openItem.title || ""}
+                      className="max-w-full max-h-[80vh] w-auto h-auto object-contain bg-white shadow-2xl"
+                    />
+                  </motion.div>
+                ) : (
                 <motion.div
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -301,8 +344,8 @@ const Certifications = ({ data }) => {
                   {/* Modal Header */}
                   <div className="flex justify-between items-center p-4 bg-zinc-900 border-b border-white/10 text-white">
                     <div>
-                      <h3 className="font-medium">{t.items[itemIndex].title} - {t.items[itemIndex].files[pdfIndex].name}</h3>
-                      <p className="text-xs text-white/50">Document {pdfIndex + 1} of {t.items[itemIndex].files.length}</p>
+                      <h3 className="font-medium">{openItem.title} - {openFiles[pdfIndex]?.name}</h3>
+                      <p className="text-xs text-white/50">Document {pdfIndex + 1} of {openFiles.length}</p>
                     </div>
                     <button onClick={closeModal} className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full">✕</button>
                   </div>
@@ -310,7 +353,7 @@ const Certifications = ({ data }) => {
                   {/* PDF Display (phones can't show a PDF in a frame: list of documents to open instead) */}
                   <div className="flex-1 bg-white relative">
                     {!canShowPdfInline() ? (
-                      <PdfOpenList files={t.items[itemIndex].files} activeIndex={pdfIndex} isArabic={isArabic} />
+                      <PdfOpenList files={openFiles} activeIndex={pdfIndex} isArabic={isArabic} />
                     ) : (
                     <>
                     {isPdfLoading && (
@@ -322,9 +365,7 @@ const Certifications = ({ data }) => {
 
                     <iframe
                       key={`${itemIndex}-${pdfIndex}`}
-                      src={`/api/pdf-proxy?url=${encodeURIComponent(
-                        t.items[itemIndex].files[pdfIndex].file
-                      )}#toolbar=0`}
+                      src={`/api/pdf-proxy?url=${encodeURIComponent(openFiles[pdfIndex]?.file || "")}#toolbar=0`}
                       className="w-full h-full"
                       onLoad={() => setIsPdfLoading(false)}
                     />
@@ -334,13 +375,14 @@ const Certifications = ({ data }) => {
 
 
                   {/* Internal PDF Nav Arrows */}
-                  {canShowPdfInline() && t.items[itemIndex].files.length > 1 && (
+                  {canShowPdfInline() && openFiles.length > 1 && (
                     <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
                       <button onClick={prevPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>←</button>
                       <button onClick={nextPdf} className={`pointer-events-auto w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 border border-white/20 ${isArabic ? "rotate-180" : "rotate-0"}`}>→</button>
                     </div>
                   )}
                 </motion.div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
