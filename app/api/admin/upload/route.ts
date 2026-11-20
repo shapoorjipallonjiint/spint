@@ -5,7 +5,7 @@ import Upload from "@/app/models/Upload";
 import connectDB from "@/lib/mongodb";
 
 export async function POST(request: NextRequest) {
-  const isAdmin = verifyAdmin(request);
+  const isAdmin = await verifyAdmin(request);
   if (!isAdmin) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
