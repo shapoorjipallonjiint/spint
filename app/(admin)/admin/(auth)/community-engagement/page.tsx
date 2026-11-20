@@ -118,6 +118,9 @@ interface CommunityFormProps {
             title: string;
             title_ar?: string;
 
+            description?: string;
+            description_ar?: string;
+
             date: string;
 
             image: string;
@@ -630,6 +633,20 @@ const CommunityPage = () => {
                                                 </div>
                                             </div>
 
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Description</Label>
+                                                <Controller
+                                                    name={`fourthSection.items.${index}.description`}
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Textarea value={field.value ?? ""} onChange={field.onChange} />
+                                                    )}
+                                                />
+                                                <FormError
+                                                    error={errors.fourthSection?.items?.[index]?.description?.message}
+                                                />
+                                            </div>
+
                                             {/* Image */}
                                             <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Image</Label>
@@ -670,6 +687,8 @@ const CommunityPage = () => {
                                         fourthSectionAppend({
                                             title: "",
                                             title_ar: "",
+                                            description: "",
+                                            description_ar: "",
                                             date: "",
                                             image: "",
                                             imageAlt: "",
@@ -1054,6 +1073,20 @@ const CommunityPage = () => {
                                                 </div>
                                             </div>
 
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Description</Label>
+                                                <Controller
+                                                    name={`fourthSection.items.${index}.description_ar`}
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Textarea value={field.value ?? ""} onChange={field.onChange} />
+                                                    )}
+                                                />
+                                                <FormError
+                                                    error={errors.fourthSection?.items?.[index]?.description_ar?.message}
+                                                />
+                                            </div>
+
                                             {/* Image */}
                                             <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Image</Label>
@@ -1092,6 +1125,8 @@ const CommunityPage = () => {
                                         fourthSectionAppend({
                                             title: "",
                                             title_ar: "",
+                                            description: "",
+                                            description_ar: "",
                                             date: "",
                                             image: "",
                                             imageAlt: "",

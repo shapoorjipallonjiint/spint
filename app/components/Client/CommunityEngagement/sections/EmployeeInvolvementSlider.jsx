@@ -201,6 +201,11 @@ const EmployeeInvolvementSlider = ({ data }) => {
                                                 <h3 className="text-[20px] md:text-29 leading-[1.1] 2xl:leading-[1.2] 3xl:leading-[1.344827586206897] font-light text-white">
                                                     {item.title}
                                                 </h3>
+                                                {item.description && (
+                                                    <p className="text-16 lg:text-19 mt-2 3xl:mt-[14px] leading-[1.473684210526316] font-light text-white/80 whitespace-pre-line">
+                                                        {item.description}
+                                                    </p>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
