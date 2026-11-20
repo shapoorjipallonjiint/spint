@@ -23,7 +23,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    const filePath = `/uploads/${fileType}/${Date.now()}${file.name.replace(/,/g, "")}`;
+    // Dropbox rejects some characters in paths (e.g. the narrow no-break space macOS puts in screenshot
+    // names before "AM/PM"), so keep the name to plain letters, digits, dot, dash and underscore.
+    const safeName =
+      file.name
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^A-Za-z0-9._-]+/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-(?=\.[^.]+$)|-$/g, "") || "file";
+    const filePath = `/uploads/${fileType}/${Date.now()}${safeName}`;
     console.log("FILEPATH", filePath);
 
     const uploadResult = await uploadToDropbox(file, filePath);
