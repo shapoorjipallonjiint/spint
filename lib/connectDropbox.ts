@@ -70,7 +70,8 @@ export async function getDropboxInstance(): Promise<Dropbox> {
     dropboxInstance = new Dropbox({
       accessToken,
       fetch: (url: RequestInfo, init?: RequestInit) => {
-        console.log("Dropbox API Request:", url, init); // Log each Dropbox API request
+        // log the endpoint only: init carries the Authorization header (access token) and the file body
+        console.log("Dropbox API Request:", url);
         return fetch(url, init) as Promise<Response>;
       },
     });

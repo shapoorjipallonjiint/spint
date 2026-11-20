@@ -118,7 +118,10 @@ interface CommunityFormProps {
             title: string;
             title_ar?: string;
 
-            date: string;
+            description?: string;
+            description_ar?: string;
+
+            date?: string;
 
             image: string;
             imageAlt: string;
@@ -620,14 +623,26 @@ const CommunityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Date"
-                                                        {...register(`fourthSection.items.${index}.date`, {
-                                                            required: "Date is required",
-                                                        })}
+                                                        {...register(`fourthSection.items.${index}.date`)}
                                                     />
                                                     <FormError
                                                         error={errors.fourthSection?.items?.[index]?.date?.message}
                                                     />
                                                 </div>
+                                            </div>
+
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Description</Label>
+                                                <Controller
+                                                    name={`fourthSection.items.${index}.description`}
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Textarea value={field.value ?? ""} onChange={field.onChange} />
+                                                    )}
+                                                />
+                                                <FormError
+                                                    error={errors.fourthSection?.items?.[index]?.description?.message}
+                                                />
                                             </div>
 
                                             {/* Image */}
@@ -670,6 +685,8 @@ const CommunityPage = () => {
                                         fourthSectionAppend({
                                             title: "",
                                             title_ar: "",
+                                            description: "",
+                                            description_ar: "",
                                             date: "",
                                             image: "",
                                             imageAlt: "",
@@ -1044,14 +1061,26 @@ const CommunityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Date"
-                                                        {...register(`fourthSection.items.${index}.date`, {
-                                                            required: "Date is required",
-                                                        })}
+                                                        {...register(`fourthSection.items.${index}.date`)}
                                                     />
                                                     <FormError
                                                         error={errors.fourthSection?.items?.[index]?.date?.message}
                                                     />
                                                 </div>
+                                            </div>
+
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Description</Label>
+                                                <Controller
+                                                    name={`fourthSection.items.${index}.description_ar`}
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Textarea value={field.value ?? ""} onChange={field.onChange} />
+                                                    )}
+                                                />
+                                                <FormError
+                                                    error={errors.fourthSection?.items?.[index]?.description_ar?.message}
+                                                />
                                             </div>
 
                                             {/* Image */}
@@ -1092,6 +1121,8 @@ const CommunityPage = () => {
                                         fourthSectionAppend({
                                             title: "",
                                             title_ar: "",
+                                            description: "",
+                                            description_ar: "",
                                             date: "",
                                             image: "",
                                             imageAlt: "",

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-// Certification emblem (e.g. LEED Gold) uploaded per project in the admin (Certification Badge).
+// Certification emblem (e.g. LEED Gold) picked per project from admin Projects > Certifications (resolved by the API).
 // Sits top-start of the thumbnail, mirroring the hover arrow badge (top-end):
 //   grid: same insets (16 / 24 / 40px) and same box (50px, 80px on xl) as the arrow, so the two line up
 //   list: smaller, closer to the edge to fit the shorter thumbnail

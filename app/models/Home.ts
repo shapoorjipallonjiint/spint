@@ -155,6 +155,8 @@ const homeSchema = new mongoose.Schema({
         }],
         // right side background video (desktop); optional, one video for both languages
         video: { type: String },
+        // optional still shown until the background video loads
+        videoPosterImage: { type: String },
         // left side of the slide: "Our Credentials" title, description and the cubes (order: lib/credentialsCubes.ts).
         // New and optional (cubes default undefined), so existing documents are not touched until saved.
         // title / description / link above are the right side ("About SP International"); image and items are no

@@ -85,7 +85,9 @@ const communitySchema = new mongoose.Schema({
             {
                 title: { type: String, required: true },
                 title_ar: { type: String },
-                date: { type: String, required: true },
+                description: { type: String },
+                description_ar: { type: String },
+                date: { type: String },
                 image: { type: String, required: true },
                 imageAlt: { type: String, required: true },
                 imageAlt_ar: { type: String },

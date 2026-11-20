@@ -183,24 +183,31 @@ const EmployeeInvolvementSlider = ({ data }) => {
                                                 viewport={{ amount: 0.2, once: true }}
                                                 src={item.image}
                                                 alt={item.imageAlt}
-                                                className="w-full h-[300px] md:h-[350px] lg:h-[400px] 2xl:h-auto object-cover"
+                                                className="w-full h-auto aspect-[533/634] object-cover"
                                             /> */}
                                              <Image
                                                 height={900}
                                                 width={1000} 
                                                 src={item.image}
                                                 alt={item.imageAlt}
-                                                className="w-full h-[300px] md:h-[350px] lg:h-[400px] 2xl:h-auto object-cover"
+                                                className="w-full h-auto aspect-[533/634] object-cover"
                                             />
                                         </div>
                                         <div className="absolute bottom-0 left-0 right-0 px-5 lg:px-8 3xl:px-12">
                                             <div className=" pb-5 lg:pb-8 3xl:pb-[42px]">
-                                                <p className="text-19  mb-2 3xl:mb-[18px] leading-[1.344827586206897] font-light text-white">
-                                                    {item.date}
-                                                </p>
+                                                {item.date && (
+                                                    <p className="text-19  mb-2 3xl:mb-[18px] leading-[1.344827586206897] font-light text-white">
+                                                        {item.date}
+                                                    </p>
+                                                )}
                                                 <h3 className="text-[20px] md:text-29 leading-[1.1] 2xl:leading-[1.2] 3xl:leading-[1.344827586206897] font-light text-white">
                                                     {item.title}
                                                 </h3>
+                                                {item.description && (
+                                                    <p className="text-16 lg:text-19 mt-2 3xl:mt-[14px] leading-[1.473684210526316] font-light text-white/80 whitespace-pre-line">
+                                                        {item.description}
+                                                    </p>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

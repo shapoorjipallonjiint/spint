@@ -153,14 +153,32 @@ export interface ProjectFormProps {
     thumbnail?: string;
     thumbnailAlt?: string;
     thumbnailAlt_ar?: string;
-    certificationBadge?: string;
-    certificationBadgeAlt?: string;
-    certificationBadgeAlt_ar?: string;
+    certificationBadgeId?: string;
     metaTitle: string;
     metaTitle_ar: string;
     metaDescription: string;
     metaDescription_ar: string;
 }
+
+// one row of the certification badge dropdown (also shown in the closed trigger): thumbnail + name
+const BadgeOption = ({ image, label, hint }: { image?: string; label: string; hint?: string }) => (
+    <span className="flex items-center gap-3 py-0.5">
+        {image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+                src={image}
+                alt=""
+                className="h-9 w-9 shrink-0 object-contain rounded-md bg-neutral-900 p-1 ring-1 ring-black/10"
+            />
+        ) : (
+            <span className="h-9 w-9 shrink-0 rounded-md border border-dashed border-black/25 bg-neutral-50" />
+        )}
+        <span className="flex flex-col text-left leading-tight">
+            <span className="text-sm font-medium text-black/90">{label}</span>
+            {hint && <span className="text-xs text-black/45">{hint}</span>}
+        </span>
+    </span>
+);
 
 const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
     const router = useRouter();
@@ -172,6 +190,8 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
         { _id: string; pageTitle: string; pageTitle_ar: string; title_ar: string; hidden?: boolean }[]
     >([]);
     const [reorderMode, setReorderMode] = useState(false);
+    // shared badges from Projects > Certifications
+    const [badgeList, setBadgeList] = useState<{ _id: string; name: string; image: string; alt?: string }[]>([]);
 
     const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
@@ -260,9 +280,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                 setValue("thumbnail", data.data?.thumbnail);
                 setValue("thumbnailAlt", data.data?.thumbnailAlt);
                 setValue("thumbnailAlt_ar", data.data?.thumbnailAlt_ar);
-                setValue("certificationBadge", data.data?.certificationBadge || "");
-                setValue("certificationBadgeAlt", data.data?.certificationBadgeAlt || "");
-                setValue("certificationBadgeAlt_ar", data.data?.certificationBadgeAlt_ar || "");
+                setValue("certificationBadgeId", data.data?.certificationBadgeId || "");
                 setValue("metaTitle", data.data.metaTitle);
                 setValue("metaTitle_ar", data.data.metaTitle_ar);
                 setValue("metaDescription", data.data.metaDescription);
@@ -328,6 +346,19 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
             console.log("Error in fetching service", error);
         }
     };
+
+    useEffect(() => {
+        fetch("/api/admin/project/certification", { cache: "no-store" })
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => setBadgeList(data?.data || []))
+            .catch(() => {});
+    }, []);
+
+    // badge dropdown: a shared badge id from Projects > Certifications, or "none"
+    const badgeId = watch("certificationBadgeId");
+    const badgeChoice = badgeId || "none";
+    const chosenBadgeImage = badgeId ? badgeList.find((b) => b._id === badgeId)?.image : undefined;
+    const handleBadgeChoice = (value: string) => setValue("certificationBadgeId", value === "none" ? "" : value);
 
     useEffect(() => {
         if (editMode) {
@@ -566,20 +597,35 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                     </Label>
                     <div className="p-5 rounded-md flex flex-col gap-2">
                         <p className="text-sm text-black/60">
-                            Optional. Upload a certification emblem (e.g. LEED Gold) to show it on this project&apos;s card in the
-                            projects listing. A transparent PNG or SVG works best. Leave empty for no badge.
+                            Optional. Choose a certification (e.g. LEED Gold) to show on this project&apos;s card in the projects
+                            listing. Badges are added and edited in Projects &gt; Certifications.
                         </p>
-                        <div>
+                        <div className="w-full max-w-sm flex flex-col gap-1">
                             <Label className="">Badge</Label>
-                            <ImageUploader
-                                isLogo
-                                onChange={(url) => setValue("certificationBadge", url)}
-                                value={watch("certificationBadge")}
-                            />
-                        </div>
-                        <div>
-                            <Label className="">Badge Alt</Label>
-                            <Input type="text" placeholder="e.g. LEED Gold Certified" {...register("certificationBadgeAlt")} />
+                            <Select value={badgeChoice} onValueChange={handleBadgeChoice}>
+                                <SelectTrigger className="h-auto min-h-14 py-2 bg-white shadow-sm hover:border-black/40 transition-colors">
+                                    <SelectValue placeholder="No badge" />
+                                </SelectTrigger>
+                                <SelectContent className="max-h-80">
+                                    <SelectItem value="none" className="py-2 cursor-pointer">
+                                        <BadgeOption label="No badge" hint="Card shows no certification" />
+                                    </SelectItem>
+                                    {badgeList.map((badge) => (
+                                        <SelectItem key={badge._id} value={badge._id} className="py-2 cursor-pointer">
+                                            <BadgeOption image={badge.image} label={badge.name} hint={badge.alt || undefined} />
+                                        </SelectItem>
+                                    ))}
+                                    {/* picked badge was deleted from the list: keep the value selectable so it is visible */}
+                                    {badgeId && !badgeList.some((b) => b._id === badgeId) && (
+                                        <SelectItem value={badgeId} className="py-2 cursor-pointer">
+                                            <BadgeOption label="Deleted certification" hint="Card shows no badge" />
+                                        </SelectItem>
+                                    )}
+                                </SelectContent>
+                            </Select>
+                            {badgeList.length === 0 && (
+                                <p className="text-xs text-black/45">No certifications yet. Add them in Projects &gt; Certifications.</p>
+                            )}
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -1498,23 +1544,22 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                         Certification Badge
                     </Label>
                     <div className="p-5 rounded-md flex flex-col gap-2">
-                        <p className="text-sm text-black/60">Same badge as the English side; upload or remove it there.</p>
+                        <p className="text-sm text-black/60">
+                            Same badge as the English side; choose it there. The Arabic alt text is set in Projects &gt;
+                            Certifications.
+                        </p>
                         <div>
                             <Label className="">Badge</Label>
-                            {watch("certificationBadge") ? (
+                            {chosenBadgeImage ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
-                                    src={watch("certificationBadge")}
+                                    src={chosenBadgeImage}
                                     alt=""
                                     className="h-20 w-auto object-contain border border-black/10 rounded-md p-2 bg-white"
                                 />
                             ) : (
                                 <p className="text-sm text-black/40">No badge</p>
                             )}
-                        </div>
-                        <div>
-                            <Label className="">Badge Alt</Label>
-                            <Input type="text" placeholder="Alt Tag" {...register("certificationBadgeAlt_ar")} />
                         </div>
                     </div>
                 </AdminItemContainer>
