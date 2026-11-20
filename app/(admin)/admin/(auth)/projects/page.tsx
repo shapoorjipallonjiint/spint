@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Search, Eye, EyeOff, MapPin } from "lucide-react";
+import { Search, Eye, EyeOff, MapPin, Plus, ArrowUpDown, Check } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -804,14 +804,17 @@ export default function Projects() {
                 )}
 
                 {activeTab === "projects" && (
-                <div className="h-full w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white flex flex-col">
-                    <div className="border-b-2 border-black/20 pb-3">
-                        <div className="flex justify-between items-center">
+                <div className="h-full w-full p-5 rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_10px_30px_-14px_rgba(15,23,42,0.14)] overflow-y-hidden flex flex-col">
+                    <div className="border-b border-slate-100 pb-4">
+                        <div className="flex justify-between items-center gap-4">
                             {/* LEFT: Title */}
-                            <Label className="text-sm font-bold">Projects</Label>
+                            <div className="relative ps-3">
+                                <span className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-full bg-gradient-to-b from-primary to-sky-400" />
+                                <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-slate-900">Projects</h2>
+                            </div>
 
                             {/* RIGHT: Controls */}
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2.5">
                                 {/* service filter: only narrows the list below; not shown while reordering (that uses the full list) */}
                                 {!reorderMode && (
                                     <Select
@@ -853,7 +856,7 @@ export default function Projects() {
 
                                 {hasSavedOrder && !reorderMode && (
                                     <Dialog>
-                                        <DialogTrigger className="border border-black/30 px-3 py-2 rounded-md text-sm">
+                                        <DialogTrigger className="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-[0_1px_2px_rgba(15,23,42,0.04)] hover:bg-slate-50 cursor-pointer">
                                             Reset to global
                                         </DialogTrigger>
                                         <DialogContent>
@@ -878,29 +881,33 @@ export default function Projects() {
                                     </Dialog>
                                 )}
 
-                                <Button
-                                    className={`text-white ${reorderMode ? "bg-yellow-700" : "bg-green-700"}`}
-                                    onClick={() => (reorderMode ? confirmProjectOrder() : startReorder())}
-                                >
-                                    {reorderMode ? "Done" : "Reorder"}
-                                </Button>
+                                {reorderMode ? (
+                                    <Button className="bg-amber-500 text-white hover:bg-amber-600" onClick={() => confirmProjectOrder()}>
+                                        <Check /> Done
+                                    </Button>
+                                ) : (
+                                    <Button variant="outline" onClick={() => startReorder()}>
+                                        <ArrowUpDown /> Reorder
+                                    </Button>
+                                )}
 
-                                <Button className="bg-black text-white" onClick={() => router.push("/admin/projects/add")}>
-                                    Add Project
+                                <Button className="text-white" onClick={() => router.push("/admin/projects/add")}>
+                                    <Plus /> Add Project
                                 </Button>
                             </div>
                         </div>
 
                         {/* SECOND LINE: Count */}
-                        <p className="text-sm text-muted-foreground mt-1">
-                            Count: {reorderMode ? reorderList.length : filteredProjects.length}
+                        <p className="text-[13px] text-slate-500 mt-1 ps-3">
+                            <span className="font-medium text-slate-700 tabular-nums">{reorderMode ? reorderList.length : filteredProjects.length}</span>{" "}
+                            {(reorderMode ? reorderList.length : filteredProjects.length) === 1 ? "project" : "projects"}
                             {!reorderMode && selectedOrderKey && (
                                 <span className="ml-2">
                                     · {hasSavedOrder ? "Custom order for its visitors" : "Visitors see the global order"}
                                 </span>
                             )}
                             {reorderMode && (
-                                <span className="ml-2 font-medium text-yellow-700">
+                                <span className="ml-2 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-amber-200">
                                     {selectedCountry === ALL_SCOPE
                                         ? "Reordering: Global order (all visitors)"
                                         : `Reordering: ${orderKeyLabel(selectedOrderKey)} order (visitors from ${orderKeyLabel(selectedOrderKey)})`}
@@ -909,7 +916,7 @@ export default function Projects() {
                         </p>
                     </div>
 
-                    <div className="relative mt-2 mb-4">
+                    <div className="relative mt-4 mb-3">
                         <Input
                             type="text"
                             placeholder={reorderMode ? "Find a project to move... (Enter = next match)" : "Search project..."}
@@ -937,7 +944,7 @@ export default function Projects() {
                                     focusNextMatch();
                                 }
                             }}
-                            className={`w-full text-sm ${reorderMode && search.trim() ? "pr-28" : "pr-10"}`}
+                            className={`h-10 w-full rounded-xl bg-slate-50/60 text-sm focus-visible:bg-white ${reorderMode && search.trim() ? "pr-28" : "pr-10"}`}
                         />
 
                         {reorderMode && search.trim() && (
@@ -953,21 +960,25 @@ export default function Projects() {
 
                     {/* list takes only the height left under the header + search, so the last rows aren't clipped */}
                     {!reorderMode && (
-                        <div className="mt-2 flex flex-col gap-2 overflow-y-scroll flex-1 min-h-0 pb-2">
+                        <div className="mt-1 flex flex-col gap-2 overflow-y-scroll flex-1 min-h-0 pb-2 pe-1">
                             {filteredProjects.map((item) => (
                                 <div
                                     key={item._id}
-                                    className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md"
+                                    className="group/row flex justify-between gap-4 rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 items-center shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:border-primary/25 hover:shadow-[0_6px_18px_-8px_rgba(30,69,162,0.25)]"
                                 >
                                     {/* hidden projects stay in the list (editable / reorderable), greyed out */}
-                                    <div className={item.isHidden ? "opacity-50" : ""}>
-                                        <span className="inline-block min-w-11 text-muted-foreground tabular-nums">
-                                            {positionById.get(item._id)}.
+                                    <div className={`min-w-0 ${item.isHidden ? "opacity-55" : ""}`}>
+                                        <span className="me-3 inline-flex h-7 min-w-8 items-center justify-center rounded-lg bg-slate-100 px-1.5 text-[12px] font-semibold tabular-nums text-slate-500 transition-colors group-hover/row:bg-primary/10 group-hover/row:text-primary">
+                                            {positionById.get(item._id)}
                                         </span>
-                                        {item.firstSection.title}
-                                        {item.isHidden && <span className="text-muted-foreground"> (Hidden)</span>}
+                                        <span className="text-[15px] font-medium text-slate-900">{item.firstSection.title}</span>
+                                        {item.isHidden && (
+                                            <span className="ms-2 rounded-full bg-slate-900/80 px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-white">
+                                                Hidden
+                                            </span>
+                                        )}
                                         {/* location / status / sector pills under the name, lined up with the title (past the number) */}
-                                        <div className="flex flex-wrap gap-1.5 mt-1 ps-11">
+                                        <div className="flex flex-wrap gap-1.5 mt-1.5 ps-11">
                                             {/* country pill with its flag, then the project's location (city / area) from its "Location" detail */}
                                             {item.secondSection?.location?.name && (
                                                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700 border border-gray-200">
@@ -987,7 +998,15 @@ export default function Projects() {
                                                 );
                                             })()}
                                             {item.firstSection.status && (
-                                                <span className="px-2 py-0.5 rounded-full text-xs bg-red-50 text-red-600 border border-red-200">
+                                                <span
+                                                    className={`px-2 py-0.5 rounded-full text-xs border ${
+                                                        /ongoing/i.test(item.firstSection.status)
+                                                            ? "bg-amber-50 text-amber-700 border-amber-200"
+                                                            : /completed/i.test(item.firstSection.status)
+                                                              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                                                              : "bg-slate-50 text-slate-600 border-slate-200"
+                                                    }`}
+                                                >
                                                     {item.firstSection.status}
                                                 </span>
                                             )}
@@ -1004,7 +1023,7 @@ export default function Projects() {
                                         </div>
                                     </div>
                                     {/* row actions: each icon has a tooltip (components/ui/tooltip) that fades in / out on hover */}
-                                    <div className="flex gap-5 items-center">
+                                    <div className="flex shrink-0 gap-1 items-center text-slate-500">
                                         {/* view the live project page in a new tab (read-only link, the admin page stays open) */}
                                         {item.slug ? (
                                             <Tooltip>
@@ -1014,7 +1033,7 @@ export default function Projects() {
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         aria-label={`View ${item.firstSection.title} on website`}
-                                                        className="cursor-pointer transition-transform duration-200 hover:scale-125"
+                                                        className="flex h-8 w-8 items-center justify-center rounded-lg cursor-pointer transition-colors duration-200 hover:bg-primary/[0.08] hover:text-primary"
                                                     >
                                                         <MdOpenInNew />
                                                     </a>
@@ -1024,7 +1043,7 @@ export default function Projects() {
                                         ) : (
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <span aria-label="No slug yet">
+                                                    <span aria-label="No slug yet" className="flex h-8 w-8 items-center justify-center">
                                                         <MdOpenInNew className="opacity-30" />
                                                     </span>
                                                 </TooltipTrigger>
@@ -1038,7 +1057,7 @@ export default function Projects() {
                                                     onClick={() => handleToggleVisibility(item)}
                                                     disabled={visibilityBusyId === item._id}
                                                     aria-label={item.isHidden ? `Show ${item.firstSection.title} on website` : `Hide ${item.firstSection.title} from website`}
-                                                    className="cursor-pointer transition-transform duration-200 hover:scale-125 disabled:opacity-40 disabled:cursor-default disabled:hover:scale-100"
+                                                    className="flex h-8 w-8 items-center justify-center rounded-lg cursor-pointer transition-colors duration-200 hover:bg-primary/[0.08] hover:text-primary disabled:opacity-40 disabled:cursor-default"
                                                 >
                                                     {item.isHidden ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                                 </button>
@@ -1051,7 +1070,7 @@ export default function Projects() {
                                                     type="button"
                                                     onClick={() => router.push(`/admin/projects/edit/${item._id}`)}
                                                     aria-label={`Edit ${item.firstSection.title}`}
-                                                    className="cursor-pointer transition-transform duration-200 hover:scale-125"
+                                                    className="flex h-8 w-8 items-center justify-center rounded-lg cursor-pointer transition-colors duration-200 hover:bg-primary/[0.08] hover:text-primary"
                                                 >
                                                     <MdEdit />
                                                 </button>
@@ -1065,7 +1084,7 @@ export default function Projects() {
                                                     // asks Yes / No first (dialog at the end of the page); nothing is deleted here
                                                     onClick={() => setProjectToDelete(item)}
                                                     aria-label={`Delete ${item.firstSection.title}`}
-                                                    className="cursor-pointer transition-transform duration-200 hover:scale-125"
+                                                    className="flex h-8 w-8 items-center justify-center rounded-lg cursor-pointer transition-colors duration-200 hover:bg-red-50 hover:text-red-600"
                                                 >
                                                     <MdDelete />
                                                 </button>

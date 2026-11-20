@@ -33,7 +33,7 @@ export default function ProjectCard({
             style={style}
             {...attributes}
             {...listeners}
-            className={`flex justify-between border p-2 items-center rounded-md shadow-md cursor-grab transition-colors ${
+            className={`flex justify-between gap-4 rounded-xl border border-slate-200/80 px-3 py-2.5 items-center shadow-[0_1px_2px_rgba(15,23,42,0.04)] cursor-grab active:cursor-grabbing transition-colors hover:border-primary/25 ${
                 highlight === "active"
                     ? "bg-yellow-100 ring-2 ring-yellow-500"
                     : highlight === "match"
@@ -43,12 +43,14 @@ export default function ProjectCard({
         >
             <span>
                 {serial !== undefined && (
-                    <span className="inline-block min-w-11 text-muted-foreground tabular-nums">{serial}.</span>
+                    <span className="me-3 inline-flex h-7 min-w-8 items-center justify-center rounded-lg bg-slate-100 px-1.5 text-[12px] font-semibold tabular-nums text-slate-500">
+                        {serial}
+                    </span>
                 )}
-                {title}
-                {country && <span className="text-muted-foreground"> - {country}</span>}
+                <span className="text-[15px] font-medium text-slate-900">{title}</span>
+                {country && <span className="text-slate-500"> · {country}</span>}
             </span>
-            <Move className="w-4 h-4 text-gray-500" />
+            <Move className="w-4 h-4 shrink-0 text-slate-400" />
         </div>
     );
 }
