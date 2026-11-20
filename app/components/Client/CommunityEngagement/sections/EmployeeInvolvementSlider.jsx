@@ -183,14 +183,14 @@ const EmployeeInvolvementSlider = ({ data }) => {
                                                 viewport={{ amount: 0.2, once: true }}
                                                 src={item.image}
                                                 alt={item.imageAlt}
-                                                className="w-full h-[300px] md:h-[350px] lg:h-[400px] 2xl:h-auto object-cover"
+                                                className="w-full h-auto aspect-[533/634] object-cover"
                                             /> */}
                                              <Image
                                                 height={900}
                                                 width={1000} 
                                                 src={item.image}
                                                 alt={item.imageAlt}
-                                                className="w-full h-[300px] md:h-[350px] lg:h-[400px] 2xl:h-auto object-cover"
+                                                className="w-full h-auto aspect-[533/634] object-cover"
                                             />
                                         </div>
                                         <div className="absolute bottom-0 left-0 right-0 px-5 lg:px-8 3xl:px-12">
