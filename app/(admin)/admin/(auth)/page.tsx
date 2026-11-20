@@ -10,7 +10,15 @@ import { SERVICE_REGISTRY } from "@/lib/serviceRegistry";
 // always read live numbers (the admin area is behind the auth check in proxy.ts)
 export const dynamic = "force-dynamic";
 
-type ProjectsDoc = { projects?: { isHidden?: boolean }[] };
+type ProjectsDoc = {
+    projects?: {
+        _id: unknown;
+        isHidden?: boolean;
+        thumbnail?: string;
+        firstSection?: { title?: string; status?: string };
+        secondSection?: { status?: string };
+    }[];
+};
 type NewsDoc = { news?: { _id: unknown; title?: string; date?: Date; thumbnail?: string }[] };
 type GalleryDoc = { gallery?: { isHidden?: boolean; categories?: { isHidden?: boolean; images?: string[] }[] }[] };
 type EnquiryDoc = { _id: unknown; name: string; email: string; subject: string; organization?: string; createdAt?: Date };
@@ -21,7 +29,17 @@ async function loadDashboard(): Promise<DashboardData> {
 
     const [projectsDoc, newsDoc, galleryDoc, enquiryTotal, enquiryRecentCount, recentEnquiries, hiddenServices] =
         await Promise.all([
-            Project.findOne({}, { "projects.isHidden": 1 }).lean<ProjectsDoc>(),
+            Project.findOne(
+                {},
+                {
+                    "projects._id": 1,
+                    "projects.isHidden": 1,
+                    "projects.thumbnail": 1,
+                    "projects.firstSection.title": 1,
+                    "projects.firstSection.status": 1,
+                    "projects.secondSection.status": 1,
+                }
+            ).lean<ProjectsDoc>(),
             News.findOne({}, { "news._id": 1, "news.title": 1, "news.date": 1, "news.thumbnail": 1 }).lean<NewsDoc>(),
             Gallery.findOne({}, { gallery: 1 }).lean<GalleryDoc>(),
             Enquiry.countDocuments(),
@@ -54,14 +72,18 @@ async function loadDashboard(): Promise<DashboardData> {
             organization: e.organization || "",
             createdAt: e.createdAt ? new Date(e.createdAt).toISOString() : null,
         })),
-        latestNews: [...news]
-            .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+        // newest first: a project's _id (ObjectId) carries the time it was added; the array itself is in display order
+        latestProjects: [...projects]
+            .map((p) => ({ p, id: String(p._id) }))
+            .sort((a, b) => (a.id < b.id ? 1 : a.id > b.id ? -1 : 0))
             .slice(0, 5)
-            .map((n) => ({
-                id: String(n._id),
-                title: n.title || "Untitled",
-                date: n.date ? new Date(n.date).toISOString() : null,
-                thumbnail: n.thumbnail || "",
+            .map(({ p, id }) => ({
+                id,
+                title: p.firstSection?.title || "Untitled",
+                status: p.secondSection?.status || p.firstSection?.status || "",
+                thumbnail: p.thumbnail || "",
+                isHidden: !!p.isHidden,
+                addedAt: /^[a-f0-9]{24}$/i.test(id) ? new Date(parseInt(id.slice(0, 8), 16) * 1000).toISOString() : null,
             })),
     };
 }
