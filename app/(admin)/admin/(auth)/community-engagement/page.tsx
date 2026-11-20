@@ -121,7 +121,7 @@ interface CommunityFormProps {
             description?: string;
             description_ar?: string;
 
-            date: string;
+            date?: string;
 
             image: string;
             imageAlt: string;
@@ -623,9 +623,7 @@ const CommunityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Date"
-                                                        {...register(`fourthSection.items.${index}.date`, {
-                                                            required: "Date is required",
-                                                        })}
+                                                        {...register(`fourthSection.items.${index}.date`)}
                                                     />
                                                     <FormError
                                                         error={errors.fourthSection?.items?.[index]?.date?.message}
@@ -1063,9 +1061,7 @@ const CommunityPage = () => {
                                                     <Input
                                                         type="text"
                                                         placeholder="Date"
-                                                        {...register(`fourthSection.items.${index}.date`, {
-                                                            required: "Date is required",
-                                                        })}
+                                                        {...register(`fourthSection.items.${index}.date`)}
                                                     />
                                                     <FormError
                                                         error={errors.fourthSection?.items?.[index]?.date?.message}
