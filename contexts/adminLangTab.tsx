@@ -5,8 +5,36 @@ import { usePathname } from "next/navigation";
 
 // English / Arabic tabs in the admin top bar: instead of the two columns side by side, an editor page shows one
 // language at a time. Both columns stay mounted (only hidden), so switching never loses typing and one Submit still
-// saves both languages. Trial: only the pages listed here use it; the rest keep the side-by-side columns.
-const LANG_TAB_PAGES = ["/admin/home"];
+// saves both languages. Only the pages listed here use it; the rest keep the side-by-side columns. Terms, Careers
+// and Leadership use TinyMCE, which can come up blank inside a display:none column, so those pages hide their
+// inactive column with visibility + 0 height instead (see their langColumn).
+const LANG_TAB_PAGES = [
+    "/admin/home",
+    "/admin/about",
+    "/admin/quality",
+    "/admin/community-engagement",
+    "/admin/hse",
+    "/admin/sustainability",
+    "/admin/accreditation",
+    "/admin/global-presence",
+    "/admin/projects/main",
+    "/admin/news/add",
+    "/admin/projects/add",
+    "/admin/contact",
+    "/admin/services/engineering-and-construction",
+    "/admin/services/mep",
+    "/admin/services/interior-design",
+    "/admin/services/facade",
+    "/admin/services/water",
+    "/admin/services/integrated-facility-management",
+    "/admin/services/design-studio",
+    "/admin/terms-and-conditions",
+    "/admin/careers",
+    "/admin/leadership",
+];
+
+// pages whose address carries a record id (e.g. /admin/news/edit/<id>): matched by prefix
+const LANG_TAB_PREFIXES = ["/admin/news/edit/", "/admin/projects/edit/"];
 
 export type AdminLang = "en" | "ar";
 
@@ -37,7 +65,7 @@ const AdminLangTabContext = createContext<AdminLangTabValue>({
 
 export const AdminLangTabProvider = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname() || "";
-    const enabled = LANG_TAB_PAGES.includes(pathname);
+    const enabled = LANG_TAB_PAGES.includes(pathname) || LANG_TAB_PREFIXES.some((prefix) => pathname.startsWith(prefix));
     const [lang, setLangState] = useState<AdminLang>("en");
 
     // on load and on every page change, open the tab named in the URL (English when there is none)

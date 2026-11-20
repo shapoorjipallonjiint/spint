@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useForm, useFieldArray, Controller, type Control, type UseFormRegister, type FieldErrors } from "react-hook-form";
+import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -211,6 +212,15 @@ const LeadershipAdminPage = () => {
         formState: { errors, isSubmitting },
     } = useForm<LeadershipFormProps>();
 
+    // English / Arabic tabs in the top bar (contexts/adminLangTab). The inactive column stays laid out but invisible and
+    // collapsed to 0 height (not display:none): TinyMCE builds its iframe on mount and can come up blank inside a
+    // display:none parent. Both columns stay mounted, so switching never loses typing; one Submit saves both.
+    const { enabled: langTabs, lang: activeLang, showErrors } = useAdminLangTab();
+    const langColumn = (column: Lang, base: string) =>
+        langTabs && activeLang !== column
+            ? `${base} invisible absolute inset-x-0 top-0 h-0 overflow-hidden pointer-events-none`
+            : base;
+
     const leaders = useFieldArray({ control, name: "leadershipPage.leaders" });
     const promoters = useFieldArray({ control, name: "leadershipPage.promoters.items" });
     const coreTeam = useFieldArray({ control, name: "leadershipPage.coreTeam.items" });
@@ -282,7 +292,7 @@ const LeadershipAdminPage = () => {
     const renderColumn = (lang: Lang) => {
         const en = lang === "en";
         return (
-            <div className="flex flex-col gap-5">
+            <div className={langColumn(lang, "flex flex-col gap-5")}>
                 <AdminItemContainer>
                     <Label main>Page Title</Label>
                     <div className="p-5">
@@ -415,14 +425,15 @@ const LeadershipAdminPage = () => {
     };
 
     return (
-        <form className="grid grid-cols-2 gap-10" onSubmit={handleSubmit(onSubmit)}>
+        <form id={LANG_TAB_FORM_ID} className={langTabs ? "relative grid grid-cols-1 gap-10" : "grid grid-cols-2 gap-10"} onSubmit={handleSubmit(onSubmit, showErrors)}>
             {/* English Version */}
             {renderColumn("en")}
 
             {/* Arabic Version */}
             {renderColumn("ar")}
 
-            <div className="col-span-2">
+            {/* with the language tabs, Submit sits in the top bar */}
+            <div className={langTabs ? "hidden" : "col-span-2"}>
                 <Button type="submit" disabled={isSubmitting} className="cursor-pointer text-white text-[16px] w-full">
                     {isSubmitting ? "Saving..." : "Submit"}
                 </Button>

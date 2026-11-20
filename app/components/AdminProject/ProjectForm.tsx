@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import React, { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
+import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
@@ -217,6 +218,11 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
         },
     });
 
+    // English / Arabic tabs in the top bar (contexts/adminLangTab): one language column at a time; both stay
+    // mounted (only hidden), so switching never loses typing and one Submit still saves both languages
+    const { enabled: langTabs, lang, showErrors } = useAdminLangTab();
+    const langColumn = (column: "en" | "ar", base: string) => `${base} ${langTabs && lang !== column ? "hidden" : ""}`;
+
     const {
         fields: secondSectionItems,
         append: secondSectionAppend,
@@ -427,9 +433,9 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
     }, [secondStatus, setValue]);
 
     return (
-        <form className="grid grid-cols-2 gap-10" onSubmit={handleSubmit(handleAddProject)}>
+        <form id={LANG_TAB_FORM_ID} className={langTabs ? "grid grid-cols-1 gap-10" : "grid grid-cols-2 gap-10"} onSubmit={handleSubmit(handleAddProject, showErrors)}>
             {/*English Version */}
-            <div className="flex flex-col gap-5 rounded-md">
+            <div className={langColumn("en", "flex flex-col gap-5 rounded-md")}>
                 <AdminItemContainer>
                     <Label className="" main>
                         First Section
@@ -1441,7 +1447,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
             </div>
 
             {/*Arabic Version */}
-            <div className="flex flex-col gap-5 rounded-md">
+            <div className={langColumn("ar", "flex flex-col gap-5 rounded-md")}>
                 <AdminItemContainer>
                     <Label className="" main>
                         First Section
@@ -2123,7 +2129,8 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                 </div>
             </div>
 
-            <div className="col-span-2">
+            {/* with the language tabs, Submit sits in the top bar */}
+            <div className={langTabs ? "hidden" : "col-span-2"}>
                 <Button type="submit" className="cursor-pointer text-white w-full">
                     Submit
                 </Button>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useForm, Controller, FormProvider } from "react-hook-form";
+import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,16 @@ const FIELDS: (keyof TermsAndConditionsFormProps)[] = [
 const TermsAndConditionsPage = () => {
     const methods = useForm<TermsAndConditionsFormProps>();
     const { register, handleSubmit, setValue, control } = methods;
+
+    // English / Arabic tabs in the top bar (contexts/adminLangTab). The inactive column is NOT display:none like on
+    // the other pages: it stays laid out but invisible and collapsed to 0 height, because TinyMCE builds its iframe
+    // when it mounts and can come up blank inside a display:none parent. Both columns stay mounted, so switching
+    // never loses typing and one Submit still saves both languages.
+    const { enabled: langTabs, lang, showErrors } = useAdminLangTab();
+    const langColumn = (column: "en" | "ar", base: string) =>
+        langTabs && lang !== column
+            ? `${base} invisible absolute inset-x-0 top-0 h-0 overflow-hidden pointer-events-none`
+            : base;
 
     // the editors only mount once the saved content is loaded, so they always start with the real content;
     // if loading fails, saving is blocked so an empty form can never overwrite the stored page
@@ -96,9 +107,9 @@ const TermsAndConditionsPage = () => {
 
     return (
         <FormProvider {...methods}>
-            <form className="grid grid-cols-2 gap-10" onSubmit={handleSubmit(onSubmit)}>
+            <form id={LANG_TAB_FORM_ID} className={langTabs ? "relative grid grid-cols-1 gap-10" : "grid grid-cols-2 gap-10"} onSubmit={handleSubmit(onSubmit, showErrors)}>
                 {/* English Version */}
-                <div className="flex flex-col gap-6">
+                <div className={langColumn("en", "flex flex-col gap-6")}>
                     <AdminItemContainer>
                         <Label main>Banner</Label>
                         <div className="flex gap-4 p-5">
@@ -151,18 +162,18 @@ const TermsAndConditionsPage = () => {
                 </div>
 
                 {/* Arabic Version */}
-                <div className="flex flex-col gap-6" dir="rtl">
+                <div className={langColumn("ar", "flex flex-col gap-6")}>
                     <AdminItemContainer>
                         <Label main>Banner</Label>
                         <div className="flex flex-col gap-4 p-5">
                             <p className="text-sm text-black/50">The banner image is shared with the English version.</p>
                             <div className="flex flex-col gap-1">
                                 <Label>Banner Alt</Label>
-                                <Input {...register("bannerAlt_ar")} />
+                                <Input dir="rtl" {...register("bannerAlt_ar")} />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <Label>Page Title</Label>
-                                <Input {...register("pageTitle_ar")} />
+                                <Input dir="rtl" {...register("pageTitle_ar")} />
                             </div>
                         </div>
                     </AdminItemContainer>
@@ -185,17 +196,18 @@ const TermsAndConditionsPage = () => {
                         <div className="flex flex-col gap-4 p-5">
                             <div className="flex flex-col gap-1">
                                 <Label>Title</Label>
-                                <Input {...register("metaTitle_ar")} />
+                                <Input dir="rtl" {...register("metaTitle_ar")} />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <Label>Description</Label>
-                                <Input {...register("metaDescription_ar")} />
+                                <Input dir="rtl" {...register("metaDescription_ar")} />
                             </div>
                         </div>
                     </AdminItemContainer>
                 </div>
 
-                <div className="col-span-2">
+                {/* with the language tabs, Submit sits in the top bar */}
+                <div className={langTabs ? "hidden" : "col-span-2"}>
                     <Button type="submit" className="w-full bg-primary text-white font-semibold hover:bg-primary/90">
                         Submit
                     </Button>
