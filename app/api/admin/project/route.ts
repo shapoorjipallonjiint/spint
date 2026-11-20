@@ -4,6 +4,8 @@ import Project from "@/app/models/Project";
 import Home from "@/app/models/Home";
 import { verifyAdmin } from "@/lib/verifyAdmin";
 import "@/app/models/Sector";
+import CertificationBadge from "@/app/models/CertificationBadge";
+import { resolveCertificationBadge, type CertificationBadgeLite } from "@/lib/resolveCertificationBadge";
 import "@/app/models/Service";
 import { getServiceMap } from "../../../../helpers/getServiceMap";
 import type { ProjectType } from "@/app/models/Project";
@@ -239,6 +241,10 @@ const services =
 
     if (request.nextUrl.searchParams.get("view") === "list") {
 
+      // card badge: the shared one picked from Projects > Certifications
+      const badgeDocs = await CertificationBadge.find({}).lean<CertificationBadgeLite[]>();
+      const badgeMap = new Map(badgeDocs.map((b) => [String(b._id), b]));
+
       const toListItem = (p: ProjectItem) => {
         const mapped = mapProject(p) as unknown as Loose;
         const second = (mapped.secondSection || {}) as Loose;
@@ -251,10 +257,8 @@ const services =
             "thumbnail",
             "thumbnailAlt",
             "thumbnailAlt_ar",
-            "certificationBadge",
-            "certificationBadgeAlt",
-            "certificationBadgeAlt_ar",
           ]),
+          ...resolveCertificationBadge(p, badgeMap),
           firstSection: pick(mapped.firstSection, ["title", "title_ar"]),
           secondSection: {
             ...pick(second, ["sector", "location", "status"]),
