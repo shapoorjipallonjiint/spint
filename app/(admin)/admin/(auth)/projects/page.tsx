@@ -22,6 +22,7 @@ import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { arrayMove } from "@dnd-kit/sortable";
 import ProjectCard from "./ProjectCard";
+import CertificationsTab from "./CertificationsTab";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { isValidOrderKey, normalizeCountryCode, orderKeyForCountry, orderKeyLabel } from "@/lib/countryCodes";
 
@@ -30,6 +31,8 @@ type ProjectListItem = {
     slug?: string;
     // hidden from the website; missing means visible
     isHidden?: boolean;
+    // shared badge from the Certifications tab
+    certificationBadgeId?: string;
     firstSection: {
         title: string;
         description: string;
@@ -95,6 +98,7 @@ const PAGE_TABS = [
     { key: "projects", label: "Projects" },
     { key: "sectors", label: "Sectors" },
     { key: "services", label: "Services" },
+    { key: "certifications", label: "Certifications" },
 ] as const;
 
 export default function Projects() {
@@ -124,6 +128,8 @@ export default function Projects() {
     // const [countryList, setCountryList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
     const [sectorList, setSectorList] = useState<{ _id: string; name: string; name_ar: string }[]>([]);
     const [serviceList, setServiceList] = useState<{ _id: string; pageTitle: string; name_ar: string }[]>([]);
+    // number of shared certification badges (tab counter); the tab itself loads the list
+    const [certificationCount, setCertificationCount] = useState(0);
 
     const router = useRouter();
 
@@ -313,6 +319,10 @@ export default function Projects() {
         handleFetchSector();
         // handleFetchCountry();
         handleFetchService();
+        fetch("/api/admin/project/certification", { cache: "no-store" })
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => setCertificationCount(data?.data?.length || 0))
+            .catch(() => {});
     }, []);
 
     // number of projects assigned to each sector, keyed by sector id (shown on the Sectors tab)
@@ -536,7 +546,9 @@ export default function Projects() {
                                 ? projectList.length
                                 : tab.key === "sectors"
                                   ? sectorList.length
-                                  : serviceList.length}
+                                  : tab.key === "certifications"
+                                    ? certificationCount
+                                    : serviceList.length}
                         </span>
                     </button>
                 ))}
@@ -545,6 +557,10 @@ export default function Projects() {
             <div className="flex-1 min-h-0">
                 {activeTab !== "projects" && (
                 <div className="h-full">
+                    {activeTab === "certifications" && (
+                        <CertificationsTab projects={projectList} onCountChange={setCertificationCount} />
+                    )}
+
                     {activeTab === "services" && (
                     <div className="h-full w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white flex flex-col">
                         <div className="flex justify-between border-b-2 border-black/20 pb-2">
