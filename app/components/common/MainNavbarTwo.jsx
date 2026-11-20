@@ -395,7 +395,7 @@ const MainNavbarTwo = () => {
                                                             transition: { duration: 0.25 },
                                                         },
                                                     }}
-                                                    className={`absolute ${isArabic ? "right-0" : "left-0"} top-7 overflow-hidden pt-2 w-52 xl:w-64 3xl:w-70 bg-white shadow-lg rounded-lg z-[999] origin-top`}
+                                                    className={`absolute ${isArabic ? "right-0" : "left-0"} top-7 overflow-hidden pt-2 w-[260px] xl:w-[300px] 3xl:w-[340px] bg-white shadow-lg rounded-lg z-[999] origin-top`}
                                                 >
                                                     <motion.ul className="py-2">
                                                         {item.submenu.map((subItem, subIndex) => (
