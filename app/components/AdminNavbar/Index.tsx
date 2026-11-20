@@ -82,7 +82,18 @@ const AdminNavbar = () => {
                 { name: "Community Engagement", href: "/admin/community-engagement", icon: UsersIcon },
                 { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
                 { name: "Sustainability", href: "/admin/sustainability", icon: LeafIcon },
-                { name: "Accreditation", href: "/admin/accreditation", icon: GiPaperBagFolded },
+                {
+                    name: "Accreditation",
+                    href: "#accreditation",
+                    icon: GiPaperBagFolded,
+                    hasChild: true,
+                    children: [
+                        // page content, second section and SEO
+                        { name: "Main", href: "/admin/accreditation" },
+                        // accreditations and categories
+                        { name: "List", href: "/admin/accreditation/list" },
+                    ],
+                },
                 { name: "Terms and Conditions", href: "/admin/terms-and-conditions", icon: FileText },
             ],
         },
