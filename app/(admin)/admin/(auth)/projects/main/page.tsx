@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
+import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 import { ImageUploader } from "@/components/ui/image-uploader";
 import { toast } from "sonner";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -40,6 +41,11 @@ export default function ProjectsMain() {
         control,
         formState: { errors },
     } = useForm<ProjectPageProps>();
+
+    // English / Arabic tabs in the top bar (contexts/adminLangTab): one language column at a time; both stay
+    // mounted (only hidden), so switching never loses typing and one Submit still saves both languages
+    const { enabled: langTabs, lang, showErrors } = useAdminLangTab();
+    const langColumn = (column: "en" | "ar", base: string) => `${base} ${langTabs && lang !== column ? "hidden" : ""}`;
 
     const {
         fields: firstSectionItems,
@@ -98,9 +104,9 @@ export default function ProjectsMain() {
 
     return (
         <div className="flex flex-col gap-5">
-                        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-10">
+            <form id={LANG_TAB_FORM_ID} onSubmit={handleSubmit(onSubmit, showErrors)} className={langTabs ? "grid grid-cols-1 gap-10" : "grid grid-cols-2 gap-10"}>
                 {/*English Version */}
-                <div className="flex flex-col gap-5">
+                <div className={langColumn("en", "flex flex-col gap-5")}>
                     <AdminItemContainer>
                         <Label className="" main>
                             Banner Section
@@ -227,7 +233,7 @@ export default function ProjectsMain() {
                 </div>
 
                 {/*Arabic Version */}
-                <div className="flex flex-col gap-5">
+                <div className={langColumn("ar", "flex flex-col gap-5")}>
                     <AdminItemContainer>
                         <Label className="" main>
                             Banner Section
@@ -339,7 +345,8 @@ export default function ProjectsMain() {
                     </AdminItemContainer>
                 </div>
 
-                <div className="col-span-2">
+                {/* with the language tabs, Submit sits in the top bar */}
+                <div className={langTabs ? "hidden" : "col-span-2"}>
                     <Button type="submit" className="cursor-pointer text-white text-[16px] w-full">
                         Submit
                     </Button>

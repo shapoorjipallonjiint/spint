@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 import { Button } from "@/components/ui/button";
 import { ImageUploader } from "@/components/ui/image-uploader";
 import { VideoUploader } from "@/components/ui/video-uploader";
@@ -132,6 +133,15 @@ const SustainabilityPage = () => {
         formState: { errors },
     } = useForm<CareerFormProps>();
 
+    // English / Arabic tabs in the top bar (contexts/adminLangTab). The inactive column stays laid out but invisible and
+    // collapsed to 0 height (not display:none): TinyMCE builds its iframe on mount and can come up blank inside a
+    // display:none parent. Both columns stay mounted, so switching never loses typing; one Submit saves both.
+    const { enabled: langTabs, lang, showErrors } = useAdminLangTab();
+    const langColumn = (column: "en" | "ar", base: string) =>
+        langTabs && lang !== column
+            ? `${base} invisible absolute inset-x-0 top-0 h-0 overflow-hidden pointer-events-none`
+            : base;
+
     const {
         fields: firstSectionItems,
         append: firstSectionAppend,
@@ -227,9 +237,9 @@ const SustainabilityPage = () => {
     }, []);
 
     return (
-        <form className="grid grid-cols-2 gap-10" onSubmit={handleSubmit(handleAddCareers)}>
+        <form id={LANG_TAB_FORM_ID} className={langTabs ? "relative grid grid-cols-1 gap-10" : "grid grid-cols-2 gap-10"} onSubmit={handleSubmit(handleAddCareers, showErrors)}>
             {/*English Version */}
-            <div className="flex flex-col gap-5">
+            <div className={langColumn("en", "flex flex-col gap-5")}>
                 <AdminItemContainer>
                     <Label className="" main>
                         Banner
@@ -758,7 +768,7 @@ const SustainabilityPage = () => {
             </div>
 
             {/*Arabic Version */}
-            <div className="flex flex-col gap-5">
+            <div className={langColumn("ar", "flex flex-col gap-5")}>
                 <AdminItemContainer>
                     <Label className="" main>
                         Banner
@@ -1205,7 +1215,8 @@ const SustainabilityPage = () => {
             </div>
 
             {/* Submit Btn */}
-            <div className="flex col-span-2">
+            {/* with the language tabs, Submit sits in the top bar */}
+            <div className={langTabs ? "hidden" : "flex col-span-2"}>
                 <Button type="submit" className="cursor-pointer text-white text-[16px] w-full text-center">
                     Submit
                 </Button>

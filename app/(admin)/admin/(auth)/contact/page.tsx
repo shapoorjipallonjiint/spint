@@ -8,6 +8,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
+import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 import { Button } from "@/components/ui/button";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Textarea } from "@/components/ui/textarea";
@@ -98,6 +99,11 @@ const ContactPage = () => {
             },
         },
     });
+
+    // English / Arabic tabs in the top bar (contexts/adminLangTab): one language column at a time; both stay
+    // mounted (only hidden), so switching never loses typing and one Submit still saves both languages
+    const { enabled: langTabs, lang, showErrors } = useAdminLangTab();
+    const langColumn = (column: "en" | "ar", base: string) => `${base} ${langTabs && lang !== column ? "hidden" : ""}`;
 
     const watchedFirstSection = useWatch({
         control,
@@ -241,9 +247,9 @@ const ContactPage = () => {
     }, []);
 
     return (
-        <form className="grid grid-cols-2 gap-10" onSubmit={handleSubmit(handleSubmitForm)}>
+        <form id={LANG_TAB_FORM_ID} className={langTabs ? "grid grid-cols-1 gap-10" : "grid grid-cols-2 gap-10"} onSubmit={handleSubmit(handleSubmitForm, showErrors)}>
             {/* English Version */}
-            <div className="flex flex-col gap-5">
+            <div className={langColumn("en", "flex flex-col gap-5")}>
                 {/* Page Title */}
                 <AdminItemContainer>
                     <Label main>Banner</Label>
@@ -409,7 +415,7 @@ const ContactPage = () => {
             </div>
 
             {/* Arabic Version */}
-            <div className="flex flex-col gap-5">
+            <div className={langColumn("ar", "flex flex-col gap-5")}>
                 {/* Page Title */}
                 <AdminItemContainer>
                     <Label main>Banner</Label>
@@ -582,7 +588,8 @@ const ContactPage = () => {
                 </AdminItemContainer>
             </div>
 
-            <div className="col-span-2">
+            {/* with the language tabs, Submit sits in the top bar */}
+            <div className={langTabs ? "hidden" : "col-span-2"}>
                 {isReordering && (
                     <p className="text-sm text-yellow-700 mb-2 text-center">
                         Click Done in the Regional Office Section to keep the new order, then Submit to save.

@@ -136,7 +136,7 @@ export default function MapSectionPage() {
     /* ---------------- UI ---------------- */
 
     return (
-        <div className="p-6 space-y-4 fixed w-[calc(100vw-300px)]">
+        <div className="p-6 space-y-4 fixed w-[calc(100vw-var(--admin-sidebar-w,272px)-28px)]">
             {/* HEADER */}
             <div className="flex justify-between items-center">
                 <h1 className="text-xl font-bold">Map Section</h1>

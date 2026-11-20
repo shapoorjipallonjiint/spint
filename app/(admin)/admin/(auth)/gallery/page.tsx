@@ -266,8 +266,9 @@ const AdminGallery = () => {
                 }
             />
 
-            <div role="tablist" className="flex gap-1 border-b border-black/10">
-                {TABS.map((t) => {
+            {/* same segmented tabs as the News and Projects pages */}
+            <div role="tablist" className="shrink-0 inline-flex w-fit rounded-md border overflow-hidden">
+                {TABS.map((t, index) => {
                     const active = tab === t.key;
                     return (
                         <button
@@ -276,11 +277,16 @@ const AdminGallery = () => {
                             role="tab"
                             aria-selected={active}
                             onClick={() => changeTab(t.key)}
-                            className={`px-5 py-2.5 text-sm font-medium -mb-px border-b-2 transition ${
-                                active ? "border-primary text-primary" : "border-transparent text-black/60 hover:text-black"
+                            className={`px-4 py-2 text-sm cursor-pointer ${index > 0 ? "border-l" : ""} ${
+                                active ? "bg-primary text-white" : "bg-white"
                             }`}
                         >
                             {t.label}
+                            {t.key === "gallery" && !loading && (
+                                <span className={`ms-1.5 text-xs ${active ? "text-white/70" : "text-black/40"}`}>
+                                    {sections.length}
+                                </span>
+                            )}
                         </button>
                     );
                 })}

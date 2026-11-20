@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useForm, useFieldArray, Controller, FormProvider } from "react-hook-form";
+import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -60,6 +61,11 @@ const GlobalPresencePage = () => {
         control,
         formState: { errors },
     } = methods;
+
+    // English / Arabic tabs in the top bar (contexts/adminLangTab): one language column at a time; both stay
+    // mounted (only hidden), so switching never loses typing and one Submit still saves both languages
+    const { enabled: langTabs, lang, showErrors } = useAdminLangTab();
+    const langColumn = (column: "en" | "ar", base: string) => `${base} ${langTabs && lang !== column ? "hidden" : ""}`;
 
     const { fields, append, remove, replace } = useFieldArray({
         control,
@@ -127,14 +133,15 @@ const GlobalPresencePage = () => {
     return (
         <FormProvider {...methods}>
             <form
-                className="grid grid-cols-2 gap-10"
+                id={LANG_TAB_FORM_ID}
+                className={langTabs ? "grid grid-cols-1 gap-10" : "grid grid-cols-2 gap-10"}
                 onSubmit={(e) => {
                     e.preventDefault();
-                    handleSubmit(onSubmit)(e);
+                    handleSubmit(onSubmit, showErrors)(e);
                 }}
             >
                 {/* English Version */}
-                <div className="flex flex-col gap-6">
+                <div className={langColumn("en", "flex flex-col gap-6")}>
                     {/* BANNER */}
                     <AdminItemContainer>
                         <Label main>Banner</Label>
@@ -256,7 +263,7 @@ const GlobalPresencePage = () => {
                     </AdminItemContainer>
                 </div>
 
-                <div className="flex flex-col gap-6">
+                <div className={langColumn("ar", "flex flex-col gap-6")}>
                     {/* BANNER */}
                     <AdminItemContainer>
                         <Label main>Banner</Label>
@@ -357,8 +364,8 @@ const GlobalPresencePage = () => {
                     </AdminItemContainer>
                 </div>
 
-                {/* SUBMIT */}
-                <div className="col-span-2">
+                {/* SUBMIT (with the language tabs, Submit sits in the top bar) */}
+                <div className={langTabs ? "hidden" : "col-span-2"}>
                     <Button type="submit" className="w-full bg-primary text-white font-semibold hover:bg-primary/90">
                         Submit
                     </Button>

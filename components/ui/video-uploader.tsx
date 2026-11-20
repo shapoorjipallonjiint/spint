@@ -105,7 +105,7 @@ export function VideoUploader({ value, onChange, className, deleteAfterUpload = 
   return (
     <div className={cn("space-y-4 w-full", className)}>
       {displayUrl && isUploadComplete ? (
-        <div className="relative w-full max-w-[400px] aspect-video overflow-hidden rounded-lg border border-black/20">
+        <div className="relative w-full max-w-[400px] aspect-video overflow-hidden rounded-xl border border-slate-200 shadow-[0_1px_3px_rgba(15,23,42,0.08)]">
           <video src={value ? value : `{${displayUrl}?t=${Date.now()}`} onError={() => {
             setLocalVideoUrl(null);
             setIsUploadComplete(false);
@@ -125,7 +125,7 @@ export function VideoUploader({ value, onChange, className, deleteAfterUpload = 
         <div
           {...getRootProps()}
           className={cn(
-            "border-2 border-dashed rounded-lg p-8 transition-colors hover:border-gray-400",
+            "border-2 border-dashed border-slate-200 bg-slate-50/60 rounded-xl p-8 transition-colors hover:border-primary/40 hover:bg-primary/[0.03]",
             "flex flex-col items-center justify-center gap-2 cursor-pointer",
             isDragActive && "border-blue-500 bg-blue-50",
             isUploading && "pointer-events-none opacity-60"

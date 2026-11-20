@@ -15,6 +15,7 @@ import {
 import { FileText, GalleryThumbnails, LayoutDashboard, HeartHandshake, LeafIcon, PanelBottom, PanelTop, Settings, ThumbsUp, Workflow } from "lucide-react";
 import { GiPaperBagFolded } from "react-icons/gi";
 import { normalizeServiceOrder, SERVICE_REGISTRY, sortByServiceOrder } from "@/lib/serviceRegistry";
+import { useAdminSidebar } from "@/contexts/adminSidebar";
 
 // fired by the Services > Main page after a show/hide or reorder so the sidebar updates
 export const SERVICE_VISIBILITY_EVENT = "service-visibility-changed";
@@ -33,6 +34,7 @@ const AdminNavbar = () => {
     const [openLink, setOpenLink] = useState<string | null>(null);
     const [hiddenServices, setHiddenServices] = useState<string[]>([]);
     const [serviceOrder, setServiceOrder] = useState<string[]>([]);
+    const { collapsed } = useAdminSidebar();
 
     // which services are hidden on the website and their order (refreshed when Services > Main changes something)
     useEffect(() => {
@@ -80,7 +82,18 @@ const AdminNavbar = () => {
                 { name: "Community Engagement", href: "/admin/community-engagement", icon: UsersIcon },
                 { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
                 { name: "Sustainability", href: "/admin/sustainability", icon: LeafIcon },
-                { name: "Accreditation", href: "/admin/accreditation", icon: GiPaperBagFolded },
+                {
+                    name: "Accreditation",
+                    href: "#accreditation",
+                    icon: GiPaperBagFolded,
+                    hasChild: true,
+                    children: [
+                        // page content, second section and SEO
+                        { name: "Main", href: "/admin/accreditation" },
+                        // accreditations and categories
+                        { name: "List", href: "/admin/accreditation/list" },
+                    ],
+                },
                 { name: "Terms and Conditions", href: "/admin/terms-and-conditions", icon: FileText },
             ],
         },
@@ -145,9 +158,14 @@ const AdminNavbar = () => {
         <div className="flex flex-col gap-5">
             {navGroups.map((group) => (
                 <div key={group.label}>
-                    <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-gray-400">
-                        {group.label}
-                    </p>
+                    {collapsed ? (
+                        // collapsed: a short divider instead of the group label
+                        <div className="mx-auto mb-2 h-px w-6 bg-white/15" aria-hidden />
+                    ) : (
+                        <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-white/40 whitespace-nowrap">
+                            {group.label}
+                        </p>
+                    )}
                     <div className="flex flex-col gap-0.5">
                         {group.items.map((item) => {
                             const Icon = item.icon;

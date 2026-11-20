@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 import { Button } from "@/components/ui/button";
 import { ImageUploader } from "@/components/ui/image-uploader";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -175,6 +176,11 @@ const CommunityPage = () => {
         },
     });
 
+    // English / Arabic tabs in the top bar (contexts/adminLangTab): one language column at a time; both stay
+    // mounted (only hidden), so switching never loses typing and one Submit still saves both languages
+    const { enabled: langTabs, lang, showErrors } = useAdminLangTab();
+    const langColumn = (column: "en" | "ar", base: string) => `${base} ${langTabs && lang !== column ? "hidden" : ""}`;
+
     const {
         fields: secondSectionItems,
         append: secondSectionAppend,
@@ -257,9 +263,9 @@ const CommunityPage = () => {
     }, []);
 
     return (
-        <form className="grid grid-cols-2 gap-10" onSubmit={handleSubmit(handleAddCommunity)}>
+        <form id={LANG_TAB_FORM_ID} className={langTabs ? "grid grid-cols-1 gap-10" : "grid grid-cols-2 gap-10"} onSubmit={handleSubmit(handleAddCommunity, showErrors)}>
             {/*English Version */}
-            <div className="flex flex-col gap-5">
+            <div className={langColumn("en", "flex flex-col gap-5")}>
                 <AdminItemContainer>
                     <Label className="" main>
                         Banner
@@ -717,7 +723,7 @@ const CommunityPage = () => {
             </div>
 
             {/*Arabic Version */}
-            <div className="flex flex-col gap-5">
+            <div className={langColumn("ar", "flex flex-col gap-5")}>
                 <AdminItemContainer>
                     <Label className="" main>
                         Banner
@@ -1153,7 +1159,7 @@ const CommunityPage = () => {
             </div>
 
             {/*First Section Image Layout */}
-            <div className="col-span-2">
+            <div className="col-span-full">
                 <AdminItemContainer>
                     <Label main>First Section – Image Layout</Label>
 
@@ -1268,7 +1274,8 @@ const CommunityPage = () => {
                 </AdminItemContainer>
             </div>
 
-            <div className="flex col-span-2">
+            {/* with the language tabs, Submit sits in the top bar */}
+            <div className={langTabs ? "hidden" : "flex col-span-2"}>
                 <Button type="submit" className="cursor-pointer text-white text-[16px] w-full text-center">
                     Submit
                 </Button>

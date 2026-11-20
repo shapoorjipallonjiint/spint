@@ -39,7 +39,7 @@ const toOptions = (list = [], labelKey = "name") => {
     return [ALL, ...bySlug.values()];
 };
 
-const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCountry, projectOrders, cardV2 = false }) => {
+const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCountry, projectOrders, countryFilterOrder, cardV2 = false }) => {
     const Card = cardV2 ? ProjectCardV2 : ProjectCard;
     const tData = useApplyLang(data);
     const pathname = usePathname();
@@ -60,7 +60,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
 
     // ---------- filter options (built from the untranslated data, so slugs are always English) ----------
     const sectorOptions = useMemo(() => toOptions(sectorData), [sectorData]);
-    // countries ordered by project volume (most projects first); ties fall back to the API's alphabetical order
+    // countries in the order set in admin Projects > Project List > Country Filter (the client's volume / cost order);
+    // countries not in that list (or every country, when no order is saved) follow by number of projects, most first;
+    // ties fall back to the API's alphabetical order
     const countryOptions = useMemo(() => {
         const [all, ...options] = toOptions((countryData || []).filter((c) => c?.showInProjectFilter));
         const countByLocation = new Map();
@@ -70,9 +72,11 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
         });
         const volume = (opt) => [...opt.ids].reduce((sum, id) => sum + (countByLocation.get(id) || 0), 0);
         const ranked = options.map((opt, i) => ({ opt, count: volume(opt), i }));
-        ranked.sort((a, b) => b.count - a.count || a.i - b.i);
+        const savedRank = new Map((countryFilterOrder || []).map((slug, index) => [slug, index]));
+        const rankOf = (opt) => (savedRank.has(opt.slug) ? savedRank.get(opt.slug) : Infinity);
+        ranked.sort((a, b) => rankOf(a.opt) - rankOf(b.opt) || b.count - a.count || a.i - b.i);
         return [all, ...ranked.map((r) => r.opt)];
-    }, [countryData, data]);
+    }, [countryData, data, countryFilterOrder]);
     const serviceOptions = useMemo(() => toOptions(serviceData, "title"), [serviceData]);
     const statusOptions = useMemo(
         () => toOptions(statusData.filter((item) => item.name && item.name.toLowerCase() !== "nill")),
