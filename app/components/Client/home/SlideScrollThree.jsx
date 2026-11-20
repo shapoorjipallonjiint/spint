@@ -2128,6 +2128,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 {tData.thirdSection?.video && (
                                 <video
                                     src={tData.thirdSection.video}
+                                    poster={tData.thirdSection.videoPosterImage || undefined}
                                     autoPlay
                                     loop
                                     muted

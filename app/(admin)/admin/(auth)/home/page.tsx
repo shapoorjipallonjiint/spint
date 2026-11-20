@@ -106,6 +106,7 @@ interface HomeFormProps {
 
         // right side background video (desktop)
         video?: string;
+        videoPosterImage?: string;
 
         // left side of the slide ("Our Credentials"); cubes order: lib/credentialsCubes.ts
         credentials?: {
@@ -689,6 +690,14 @@ const Home = () => {
                                     name="thirdSection.video"
                                     control={control}
                                     render={({ field }) => <VideoUploader value={field.value} onChange={field.onChange} />}
+                                />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Video Poster Image (shown until the video loads)</Label>
+                                <Controller
+                                    name="thirdSection.videoPosterImage"
+                                    control={control}
+                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                                 />
                             </div>
                         </div>
