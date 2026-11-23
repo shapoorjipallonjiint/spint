@@ -24,7 +24,8 @@ const NextProject = ({ slug, title, thumbnail }) => {
     const tTitle = useApplyLang(title);
     const isMobile = useMediaQuery({ maxWidth: 767 }); // < 768
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // 768 - 1023
-    const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
+    // how far the image drifts up as the section scrolls away (matches the extra height below the frame)
+    const imageDrift = isMobile ? 30 : isTablet ? 80 : 150;
     const imageContainerRef = useRef(null);
     const overlayRef = useRef(null);
 
@@ -33,7 +34,8 @@ const NextProject = ({ slug, title, thumbnail }) => {
         target: imageContainerRefTwo,
         offset: ["start end", "end start"],
     });
-    const imageY = useTransform(imageProgress, [0, 1], imageOffset);
+    // top of the image stays in view until the section is centred, then drifts up (object-top stays visible)
+    const imageY = useTransform(imageProgress, [0, 0.5, 1], [0, 0, -imageDrift]);
 
     useEffect(() => {
         const container = imageContainerRef.current;
@@ -114,12 +116,12 @@ const NextProject = ({ slug, title, thumbnail }) => {
                         </div>
                     </div>
                     <div ref={imageContainerRef} className="relative overflow-hidden">
-                        {/* Fixed-height frame; the image layer inside is taller than the frame by the
-                            parallax offset on each side, so it moves within the frame without gaps */}
+                        {/* Fixed-height frame; the image layer starts at the frame's top and is taller by the
+                            drift distance below, so the top of the image shows and it moves without gaps */}
                         <div className="relative overflow-hidden h-[420px] lg:h-[480px] xl:h-[603px]" ref={imageContainerRefTwo}>
                             <motion.div
                                 style={{ y: imageY }}
-                                className="absolute inset-x-0 -top-[30px] -bottom-[30px] md:-top-[80px] md:-bottom-[80px] lg:-top-[150px] lg:-bottom-[150px]"
+                                className="absolute inset-x-0 top-0 -bottom-[30px] md:-bottom-[80px] lg:-bottom-[150px]"
                             >
                                 <Image fill sizes="(min-width: 1024px) 50vw, 100vw" src={thumbnail} alt="" className="object-cover object-top" />
                             </motion.div>
