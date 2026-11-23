@@ -27,7 +27,6 @@ const NextProject = ({ slug, title, thumbnail }) => {
     const imageOffset = isMobile ? [-30, 30] : isTablet ? [-80, 80] : [-150, 150];
     const imageContainerRef = useRef(null);
     const overlayRef = useRef(null);
-    const MotionImage = motion.create(Image);
 
     const imageContainerRefTwo = useRef(null);
     const { scrollYProgress: imageProgress } = useScroll({
@@ -65,7 +64,7 @@ const NextProject = ({ slug, title, thumbnail }) => {
     return (
         <section className="py-80px">
             <div className="container">
-                <div className="grid grid-cols-1 lg:grid-cols-[auto_550px] xl:grid-cols-[auto_1fr] 3xl:grid-cols-[auto_961px] gap-4 lg:gap-20 xl:gap-[137px]">
+                <div className="grid grid-cols-1 lg:grid-cols-[auto_550px] xl:grid-cols-[auto_1fr] 3xl:grid-cols-[auto_963px] gap-4 lg:gap-20 xl:gap-[137px]">
                     <div className="mb-2 md:mb-3 lg:mb-10 xl:mb-[90px] flex flex-col justify-between items-left pt-0 2xl:pt-[45px] ">
                         <div className=" h-full">
                             <div className="text-20 2xl:text-29 font-light leading-[1.17] lg:pb-5 text-paragraph">
@@ -115,17 +114,15 @@ const NextProject = ({ slug, title, thumbnail }) => {
                         </div>
                     </div>
                     <div ref={imageContainerRef} className="relative overflow-hidden">
-                        <div className="relative overflow-hidden" ref={imageContainerRefTwo}>
-                            <MotionImage
-                                width={1000}
-                                height={800}
+                        {/* Fixed-height frame; the image layer inside is taller than the frame by the
+                            parallax offset on each side, so it moves within the frame without gaps */}
+                        <div className="relative overflow-hidden h-[420px] lg:h-[480px] xl:h-[603px]" ref={imageContainerRefTwo}>
+                            <motion.div
                                 style={{ y: imageY }}
-                                src={thumbnail}
-                                alt=""
-                                // 2xl and below: height capped a little (the image's own 4:5 ratio made the section very tall);
-                                // 3xl keeps the original 603px+ height and natural width
-                                className="max-3xl:w-full object-cover min-h-[250px] md:min-h-[300px] max-h-[420px] lg:max-h-[480px] xl:max-h-[550px] 2xl:min-h-[550px] 2xl:max-h-[560px] 3xl:min-h-[603px] 3xl:max-h-none"
-                            />
+                                className="absolute inset-x-0 -top-[30px] -bottom-[30px] md:-top-[80px] md:-bottom-[80px] lg:-top-[150px] lg:-bottom-[150px]"
+                            >
+                                <Image fill sizes="(min-width: 1024px) 50vw, 100vw" src={thumbnail} alt="" className="object-cover object-top" />
+                            </motion.div>
                         </div>
                         {/* Overlay that reveals from right to left */}
                         <div ref={overlayRef} className="absolute inset-0 bg-white" />

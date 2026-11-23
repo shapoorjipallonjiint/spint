@@ -22,12 +22,15 @@ const legacyData = [
   { image: "/assets/images/project-details/abtsl2.jpg" },
 ];
 
+// Created once at module level — defining this inside the component made a new
+// component type on every render, remounting all slides on each slide change.
+const MotionImage = motion.create(Image);
+
 const ProjectSlider = ({data}) => {
   const swiperRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(1);
   const containerRef = useRef(null);
   const targetRef = useRef(null);
-  const MotionImage = motion.create(Image);
 
   useEffect(() => {
     const containerEl = containerRef.current;
@@ -56,7 +59,7 @@ const ProjectSlider = ({data}) => {
   }, []);
 
   return (
-    <section className="pb25 relative bg-f5f5">
+    <section className="py-80px relative bg-f5f5">
       <div className="container  " ref={containerRef}></div>
       <div className=" px-[15px] md:pe-0 relative" ref={targetRef}>
         {/* Counter + Arrows */}
@@ -97,7 +100,7 @@ const ProjectSlider = ({data}) => {
                 nextEl: ".custom-next",
               }}
               onSlideChange={(swiper) =>
-                setCurrentSlide((swiper.realIndex % legacyData.length) + 1)
+                setCurrentSlide(swiper.realIndex + 1)
               }
               autoplay={{
                 delay: 4000,
@@ -113,8 +116,9 @@ const ProjectSlider = ({data}) => {
             >
               {data.map((item, i) => (
                 <SwiperSlide key={i}>
-                  <div className="overflow-hidden ">
-                    <MotionImage width={1500} height={1000} variants={moveUp(0.1*i)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} src={item} alt={`slide-${i}`} className="w-full h-auto object-cover" />
+                  {/* Fixed frame so every slide has the same height before and after images load */}
+                  <div className="relative overflow-hidden aspect-[3/2] md:aspect-[2/1]">
+                    <MotionImage fill sizes="(min-width: 768px) 75vw, 100vw" variants={moveUp(0.1*i)} initial="hidden" whileInView="show" viewport={{amount: 0.2, once: true}} src={item} alt={`slide-${i}`} className="object-cover" />
                   </div>
                 </SwiperSlide>
               ))}
