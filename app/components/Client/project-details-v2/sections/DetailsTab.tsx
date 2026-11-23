@@ -168,6 +168,13 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     return defaultIndex >= 0 ? defaultIndex : 1;
   });
   const [activeImage, setActiveImage] = useState(0);
+  // the slide shown before the current one - kept visible underneath while the new slide fades in
+  const lastImageRef = useRef(activeImage);
+  const prevImageRef = useRef<number | null>(null);
+  if (lastImageRef.current !== activeImage) {
+    prevImageRef.current = lastImageRef.current;
+    lastImageRef.current = activeImage;
+  }
   // coming from a service page (?service=<slug>, added by its Featured Projects slider): open that service's tab
   // (desktop tab + mobile accordion). Unknown slug or a service this project doesn't show: default tab stays.
   // Read from window after mount so the page stays statically rendered.
@@ -242,7 +249,7 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
   };
 
   useEffect(() => {
-    if (!activeImages.length) return;
+    if (activeImages.length < 2) return; // nothing to cycle through
 
     const interval = setInterval(() => {
       setDirection(1); // always forward
@@ -252,7 +259,8 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [activeImages]);
+    // activeImage restarts the timer on every change, so a nav click gets a full 4s before autoplay moves on
+  }, [activeImages, activeImage]);
 
   const renderAccordionContent = (section: WorkSection) => {
     // if (!section.items.length) return null;
@@ -496,29 +504,41 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
 
     return images.length ? (
       <div className="relative mt-8 lg:mt-15 overflow-hidden aspect-[1207/600] max-h-[600px]">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={activeImage}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={images[activeImage]}
-              alt={`${tab.title} work reference`}
-              width={1207}
-              height={600}
-              className="w-full aspect-[1207/600] object-cover max-h-[600px]"
-            />
-          </motion.div>
-        </AnimatePresence>
+        {/* Crossfade: every image stays mounted (so it is already loaded), the active one fades in on
+            top while the previous one stays fully visible underneath - no blank frame between slides */}
+        {images.map((src, index) => {
+          const isActive = index === activeImage;
+          const isPrevious = index === prevImageRef.current;
+          return (
+            <div
+              key={`${src}-${index}`}
+              aria-hidden={!isActive}
+              className={`absolute inset-0 overflow-hidden ${isActive
+                ? "z-[2] opacity-100 details-slide-in"
+                : isPrevious
+                  ? "z-[1] opacity-100"
+                  : "z-0 opacity-0"
+                }`}
+            >
+              {/* details-slide-in (globals.css): dissolve + slight zoom-settle, replayed on every change */}
+              <Image
+                src={src}
+                alt={`${tab.title} work reference`}
+                width={1207}
+                height={600}
+                className="w-full aspect-[1207/600] object-cover max-h-[600px]"
+              />
+            </div>
+          );
+        })}
+        {/* arrows only when there is something to switch to */}
+        {images.length > 1 && (
+        <>
         <button
           type="button"
           onClick={showPreviousImage}
           aria-label="Previous image"
-          className="absolute left-5 top-1/2 -translate-y-1/2 w-8 h-8 xl:w-10 xl:h-10 2xl:h-[50px] 2xl:w-[50px] rounded-full border border-white/70 bg-black/20 text-white flex items-center justify-center hover:bg-secondary transition-colors group cursor-pointer"
+          className="absolute z-[3] left-5 top-1/2 -translate-y-1/2 w-8 h-8 xl:w-10 xl:h-10 2xl:h-[50px] 2xl:w-[50px] rounded-full border border-white/70 bg-black/20 text-white flex items-center justify-center hover:bg-secondary transition-colors group cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 xl:w-auto xl:h-auto text-secondary group-hover:text-white group-hover:-translate-x-[1px] transition transition-all linear" strokeWidth={1.7} />
         </button>
@@ -526,10 +546,12 @@ const DetailsTab = ({ defaultOpenTitle = "Electrical", data }: DetailsTabProps) 
           type="button"
           onClick={showNextImage}
           aria-label="Next image"
-          className="absolute right-5 top-1/2 -translate-y-1/2 w-8 h-8 xl:w-10 xl:h-10 2xl:h-[50px] 2xl:w-[50px] rounded-full border border-white/70 bg-black/20 text-white flex items-center justify-center hover:bg-secondary transition-colors group cursor-pointer"
+          className="absolute z-[3] right-5 top-1/2 -translate-y-1/2 w-8 h-8 xl:w-10 xl:h-10 2xl:h-[50px] 2xl:w-[50px] rounded-full border border-white/70 bg-black/20 text-white flex items-center justify-center hover:bg-secondary transition-colors group cursor-pointer"
         >
           <ArrowRight className="w-4 h-4 xl:w-auto xl:h-auto text-secondary group-hover:text-white group-hover:translate-x-[1px] transition transition-all linear" strokeWidth={1.7} />
         </button>
+        </>
+        )}
       </div>
     ) : null;
   };
