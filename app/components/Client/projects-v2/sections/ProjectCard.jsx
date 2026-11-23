@@ -17,9 +17,10 @@ const ArrowIcon = ({ className = "", size = 35 }) => (
 );
 
 // One project in the /projects listing. variant "grid" = image card, "list" = row with details.
-const ProjectCard = ({ item, variant = "grid", isArabic = false, revealDelay = 0 }) => {
+// serviceSlug: the listing's active service filter, passed on so the project page opens that service's tab
+const ProjectCard = ({ item, variant = "grid", isArabic = false, revealDelay = 0, serviceSlug = "" }) => {
     const title = item?.firstSection?.title;
-    const href = `/projects/${item?.slug}`;
+    const href = `/projects/${item?.slug}${serviceSlug ? `?service=${encodeURIComponent(serviceSlug)}` : ""}`;
 
     if (variant === "list") {
         // sector is an array of sectors on the project
