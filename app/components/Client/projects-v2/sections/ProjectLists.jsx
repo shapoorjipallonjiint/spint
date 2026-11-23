@@ -11,6 +11,7 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import { slugify } from "@/lib/slugify";
 import { orderKeyForCountry } from "@/lib/countryCodes";
+import { useServiceVisibility } from "@/contexts/serviceVisibility";
 import ProjectCard from "./ProjectCard";
 import ProjectCardV2 from "./ProjectCardV2";
 import Pagination from "./Pagination";
@@ -91,6 +92,9 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
     const selectedStatus = pick(statusOptions, searchParams.get("status") || "");
     const selectedCountry = pick(countryOptions, searchParams.get("country") || "");
     const selectedService = pick(serviceOptions, searchParams.get("service") || "");
+    // the selected service's fixed slug (from its link), which the project page matches to open that service's tab
+    const { serviceIdSlugs } = useServiceVisibility();
+    const selectedServiceSlug = [...selectedService.ids].map((id) => serviceIdSlugs[id]).find(Boolean) || "";
     const view = searchParams.get("view") === "list" ? "list" : "grid";
     const requestedPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
 
@@ -584,7 +588,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
                     }}
                 >
                     {currentItems.map((item) => (
-                        <Card key={item._id} item={item} variant="grid" isArabic={isArabic} revealDelay={cardRevealDelay} />
+                        <Card key={item._id} item={item} variant="grid" isArabic={isArabic} revealDelay={cardRevealDelay} serviceSlug={selectedServiceSlug} />
                     ))}
 
                     {currentItems.length === 0 && (
@@ -605,7 +609,7 @@ const ProjectLists = ({ sectorData, countryData, serviceData, data, visitorCount
                     }}
                 >
                     {currentItems.map((item) => (
-                        <Card key={item._id} item={item} variant="list" isArabic={isArabic} revealDelay={cardRevealDelay} />
+                        <Card key={item._id} item={item} variant="list" isArabic={isArabic} revealDelay={cardRevealDelay} serviceSlug={selectedServiceSlug} />
                     ))}
 
                     {currentItems.length === 0 && (
