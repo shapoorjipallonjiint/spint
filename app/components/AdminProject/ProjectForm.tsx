@@ -612,7 +612,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                 <SelectTrigger className="h-auto min-h-14 py-2 bg-white shadow-sm hover:border-black/40 transition-colors">
                                     <SelectValue placeholder="No badge" />
                                 </SelectTrigger>
-                                <SelectContent className="max-h-80">
+                                <SelectContent className="max-h-80 bg-white">
                                     <SelectItem value="none" className="py-2 cursor-pointer">
                                         <BadgeOption label="No badge" hint="Card shows no certification" />
                                     </SelectItem>
@@ -640,7 +640,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                     <Label className="" main>
                         Second Section
                     </Label>
-                    <div className="p-5 rounded-md flex flex-col gap-5">
+                    <div className="p-5 rounded-md flex flex-col gap-7">
                         {/* <div>
                             <Label className="">Title</Label>
                             <Input
@@ -653,6 +653,8 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                             )}
                         </div> */}
 
+                        {/* basics: country, status and project name side by side */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="flex flex-col gap-2">
                             <Label className="">Country</Label>
                             <Controller
@@ -680,18 +682,54 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                         </div>
 
                         <div className="flex flex-col gap-2">
+                            <Label className="">Status</Label>
+                            <Controller
+                                name="secondSection.status"
+                                control={control}
+                                rules={{ required: "Status is required" }}
+                                render={({ field }) => (
+                                    <Select onValueChange={field.onChange} value={field.value} defaultValue="">
+                                        <SelectTrigger className="w-full bg-white">
+                                            <SelectValue placeholder="Select Status" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-white">
+                                            {statusData.map((item, index) => (
+                                                <SelectItem key={index} value={item.name} className="hover:bg-gray-200">
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
+                            {errors.secondSection?.status && (
+                                <p className="text-red-500">{errors.secondSection.status.message}</p>
+                            )}
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Label className="">Project</Label>
+                            <Input
+                                type="text"
+                                placeholder="Project"
+                                {...register("secondSection.project")}
+                            />
+                        </div>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
                             <Label className="">Sector</Label>
                             <Controller
                                 name="secondSection.sector"
                                 control={control}
                                 rules={{ required: "Select at least one sector" }}
                                 render={({ field }) => (
-                                    <div className="flex flex-col gap-2">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
                                         {sectorList.map((item) => {
                                             const selected = field.value?.includes(item._id);
 
                                             return (
-                                                <label key={item._id} className="flex items-center gap-2">
+                                                <label key={item._id} className={`flex items-center gap-2.5 rounded-md border px-3 py-2.5 text-sm cursor-pointer transition-colors ${selected ? "border-primary bg-primary/5 text-black" : "border-gray-200 bg-white hover:bg-gray-50"}`}>
                                                     <input
                                                         type="checkbox"
                                                         checked={selected}
@@ -741,7 +779,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                 control={control}
 
                                 render={({ field }) => (
-                                    <div className="flex flex-col gap-2">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
                                         {serviceList.map((item, index) => {
                                             const serviceIndex = field.value?.findIndex(
                                                 (s) => s.serviceId === item._id
@@ -752,8 +790,8 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
 
 
                                             return (
-                                                <div className="flex justify-between">
-                                                    <label key={item._id} className="flex items-center gap-2">
+                                                <div key={item._id} className={`flex items-center justify-between gap-3 rounded-md border px-3 py-2.5 text-sm transition-colors ${selected ? "border-primary bg-primary/5" : "border-gray-200 bg-white hover:bg-gray-50"}`}>
+                                                    <label key={item._id} className="flex items-center gap-2.5 cursor-pointer">
                                                         <input
                                                             type="checkbox"
                                                             checked={selected}
@@ -952,7 +990,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                                     {!item.pageTitle.includes("MEP") && <Sheet open={openIndex === serviceIndex}
                                                         onOpenChange={(open) => setOpenIndex(open ? serviceIndex : null)}>
                                                         <SheetTrigger asChild>
-                                                            {serviceIndex !== -1 && <FaRegEdit />}
+                                                            {serviceIndex !== -1 && <FaRegEdit className="cursor-pointer" />}
                                                         </SheetTrigger>
                                                         <SheetContent className="h-[400px] overflow-y-auto">
                                                             <SheetHeader>
@@ -1090,44 +1128,12 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <Label className="">Status</Label>
-                            <Controller
-                                name="secondSection.status"
-                                control={control}
-                                rules={{ required: "Status is required" }}
-                                render={({ field }) => (
-                                    <Select onValueChange={field.onChange} value={field.value} defaultValue="">
-                                        <SelectTrigger className="w-full bg-white">
-                                            <SelectValue placeholder="Select Status" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {statusData.map((item, index) => (
-                                                <SelectItem key={index} value={item.name} className="hover:bg-gray-200">
-                                                    {item.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                )}
-                            />
-                            {errors.secondSection?.status && (
-                                <p className="text-red-500">{errors.secondSection.status.message}</p>
-                            )}
-                        </div>
-
-                        <Label className=" font-bold">Project</Label>
-                        <Input
-                            type="text"
-                            placeholder="Project"
-                            {...register("secondSection.project")}
-                        />
-
-                        <div className="flex flex-col gap-2">
-                            <Label className=" font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <Label className="">Items</Label>
+                            <div className="flex flex-col gap-3">
                                 {secondSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b  pb-5">
-                                        <div className="absolute top-2 right-2 flex items-center gap-2">
+                                    <div key={field.id} className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 relative rounded-md border border-gray-200 bg-gray-50/60 p-4 pt-9">
+                                        <span className="absolute top-3 left-4 text-xs font-medium text-gray-500">Item {index + 1}</span>
+                                        <div className="absolute top-3 right-4 flex items-center gap-3">
                                             {/* eye: hide/show this row on the site; the key and value stay saved (shared by English and Arabic) */}
                                             <Controller
                                                 name={`secondSection.items.${index}.hidden`}
@@ -1574,12 +1580,14 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                     <Label className="" main>
                         Second Section
                     </Label>
-                    <div className="p-5 rounded-md flex flex-col gap-5">
+                    <div className="p-5 rounded-md flex flex-col gap-7">
                         {/* <div>
                             <Label className="">Title</Label>
                             <Input type="text" placeholder="Title" {...register("secondSection.title_ar")} />
                         </div> */}
 
+                        {/* basics: country, status and project name side by side */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="flex flex-col gap-2">
                             <Label className="">Country</Label>
                             <Controller
@@ -1609,18 +1617,56 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                         </div>
 
                         <div className="flex flex-col gap-2">
+                            <Label className="">Status</Label>
+                            <Controller
+                                name="firstSection.status"
+                                control={control}
+                                rules={{ required: "Status is required" }}
+                                render={({ field }) => (
+                                    <Select disabled onValueChange={field.onChange} value={field.value} defaultValue="">
+                                        <SelectTrigger className="w-full bg-white">
+                                            <SelectValue placeholder="Select Status" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-white">
+                                            {statusData.map((item, index) => (
+                                                <SelectItem key={index} value={item.name}>
+                                                    {item.name_ar?.trim()
+                                                        ? `${item.name_ar} (${item.name})`
+                                                        : `${item.name}`}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
+                            {errors.firstSection?.status && (
+                                <p className="text-red-500">{errors.firstSection.status.message}</p>
+                            )}
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Label className="">Project</Label>
+                            <Input
+                                type="text"
+                                placeholder="Project"
+                                {...register("secondSection.project_ar")}
+                            />
+                        </div>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
                             <Label className="">Sector</Label>
                             <Controller
                                 name="secondSection.sector"
                                 control={control}
                                 rules={{ required: "Select at least one sector" }}
                                 render={({ field }) => (
-                                    <div className="flex flex-col gap-2">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
                                         {sectorList.map((item) => {
                                             const selected = field.value?.includes(item._id);
 
                                             return (
-                                                <label key={item._id} className="flex items-center gap-2">
+                                                <label key={item._id} className={`flex items-center gap-2.5 rounded-md border px-3 py-2.5 text-sm cursor-pointer transition-colors ${selected ? "border-primary bg-primary/5 text-black" : "border-gray-200 bg-white hover:bg-gray-50"}`}>
                                                     <input
                                                         type="checkbox"
                                                         checked={selected}
@@ -1655,7 +1701,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                         value?.length > 0 || "Select at least one service",
                                 }}
                                 render={({ field }) => (
-                                    <div className="flex flex-col gap-2">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
                                         {serviceList.map((item, index) => {
                                             const serviceIndex = field.value?.findIndex(
                                                 (s) => s.serviceId === item._id
@@ -1664,8 +1710,8 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                                             const selected = serviceIndex !== -1;
 
                                             return (
-                                                <div className="flex justify-between">
-                                                    <label key={item._id} className="flex items-center gap-2">
+                                                <div key={item._id} className={`flex items-center justify-between gap-3 rounded-md border px-3 py-2.5 text-sm transition-colors ${selected ? "border-primary bg-primary/5" : "border-gray-200 bg-white hover:bg-gray-50"}`}>
+                                                    <label key={item._id} className="flex items-center gap-2.5 cursor-pointer">
                                                         <input
                                                             type="checkbox"
                                                             checked={selected}
@@ -1816,46 +1862,12 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <Label className="">Status</Label>
-                            <Controller
-                                name="firstSection.status"
-                                control={control}
-                                rules={{ required: "Status is required" }}
-                                render={({ field }) => (
-                                    <Select disabled onValueChange={field.onChange} value={field.value} defaultValue="">
-                                        <SelectTrigger className="w-full bg-white">
-                                            <SelectValue placeholder="Select Status" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {statusData.map((item, index) => (
-                                                <SelectItem key={index} value={item.name}>
-                                                    {item.name_ar?.trim()
-                                                        ? `${item.name_ar} (${item.name})`
-                                                        : `${item.name}`}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                )}
-                            />
-                            {errors.firstSection?.status && (
-                                <p className="text-red-500">{errors.firstSection.status.message}</p>
-                            )}
-                        </div>
-
-                        <Label className=" font-bold">Project</Label>
-                        <Input
-                            type="text"
-                            placeholder="Project"
-                            {...register("secondSection.project_ar")}
-                        />
-
-                        <div className="flex flex-col gap-2">
-                            <Label className=" font-bold">Items</Label>
-                            <div className="border p-2 rounded-md flex flex-col gap-5">
+                            <Label className="">Items</Label>
+                            <div className="flex flex-col gap-3">
                                 {secondSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b  pb-5">
-                                        <div className="absolute top-2 right-2 flex items-center gap-2">
+                                    <div key={field.id} className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 relative rounded-md border border-gray-200 bg-gray-50/60 p-4 pt-9">
+                                        <span className="absolute top-3 left-4 text-xs font-medium text-gray-500">Item {index + 1}</span>
+                                        <div className="absolute top-3 right-4 flex items-center gap-3">
                                             {/* eye: hide/show this row on the site; the key and value stay saved (shared by English and Arabic) */}
                                             <Controller
                                                 name={`secondSection.items.${index}.hidden`}
