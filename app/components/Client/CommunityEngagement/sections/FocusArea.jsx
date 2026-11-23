@@ -66,11 +66,15 @@ const FocusArea = ({ data }) => {
         // Handle main scroll to control internal scroll
         function handleScroll() {
             const wrapperRect = wrapper.getBoundingClientRect();
+            // the section sticks just below the fixed navbar (its CSS top), not at 0
+            const stickTop = parseFloat(getComputedStyle(section).top) || 0;
+            const scrolled = stickTop - wrapperRect.top;
+            const range = wrapper.offsetHeight - section.offsetHeight;
 
-            // Check if section is stuck at top
-            if (wrapperRect.top <= 0 && wrapperRect.bottom > window.innerHeight) {
+            // Check if section is stuck below the navbar
+            if (range > 0 && scrolled >= 0 && scrolled <= range) {
                 // Calculate scroll progress within the wrapper
-                const scrollProgress = Math.abs(wrapperRect.top) / (wrapper.offsetHeight - window.innerHeight);
+                const scrollProgress = scrolled / range;
                 const maxScrollRight = right.scrollHeight - right.clientHeight;
 
                 // Scroll the right column based on progress
@@ -126,7 +130,7 @@ useEffect(() => {
 
     return (
         <div ref={wrapperRef} style={{ height: wrapperHeight }} className="relative">
-            <section className="lg:sticky top-0 lg:h-screen section-spacing bg-f5f5 overflow-hidden" ref={sectionRef}>
+            <section className="lg:sticky top-0 lg:top-[var(--nav-h,0px)] lg:h-[calc(100vh-var(--nav-h,0px))] section-spacing bg-f5f5 overflow-hidden" ref={sectionRef}>
                 <div className="container relative h-full">
                     <div
                         className={`w-[800px] 2xl:w-[1016px] 3xl:w-[1316px] flex ${
@@ -156,7 +160,7 @@ useEffect(() => {
                         {/* Left column */}
                         <div
                             ref={leftRef}
-                            className="lg:max-h-screen overflow-y-auto scrollbar-hidden hidden lg:block lg:pt-[100px] 2xl:pt-25 3xl:pt-[180px] pb-12 xl:pb-20"
+                            className="lg:max-h-[calc(100vh-var(--nav-h,0px))] overflow-y-auto scrollbar-hidden hidden lg:block lg:pt-[100px] 2xl:pt-25 3xl:pt-[180px] pb-12 xl:pb-20"
                         >
                             {t.items.map((area, i) => (
                                 <div
@@ -172,7 +176,7 @@ useEffect(() => {
                         </div>
 
                         {/* Right column */}
-                        <div ref={rightRef} className="w-[1316px] lg:pb-2 lg:max-h-screen overflow-y-auto custom-scroll-left">
+                        <div ref={rightRef} className="w-[1316px] lg:pb-2 lg:max-h-[calc(100vh-var(--nav-h,0px))] overflow-y-auto custom-scroll-left">
                             <div
                                 className={`pl-2 lg:pl-10 2xl:pl-[107px] lg:pt-[100px] 2xl:pt-25 3xl:pt-[180px] lg:pb-20 xl:pb-20
     ${isArabic ? "pr-2 lg:pr-10 2xl:pr-[107px] pl-0 text-right" : ""}
