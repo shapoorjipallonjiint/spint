@@ -57,16 +57,9 @@ const FeaturedProjectCardSlider = ({ data = [] }) => {
 
     const handleSlideChange = (swiper) => {
         const activeIndex = swiper.realIndex;
-        const slidesPerView = window.innerWidth >= 768 ? 2 : 1;
-
-        let slideToAnimate;
-        if (slidesPerView === 2) {
-            // On 2-slide view: animate the slide next to active
-            slideToAnimate = (activeIndex + 1) % t.length;
-        } else {
-            // On 1-slide view: animate the active slide
-            slideToAnimate = activeIndex;
-        }
+        // animate the slide that just came into view: the last visible one (1, 2 or 3 per view)
+        const slidesPerView = Math.max(1, Math.ceil(Number(swiper.params.slidesPerView) || 1));
+        const slideToAnimate = (activeIndex + slidesPerView - 1) % t.length;
 
         setAnimatingSlide(slideToAnimate);
         setTimeout(() => setAnimatingSlide(null), 1200);
@@ -109,7 +102,9 @@ const FeaturedProjectCardSlider = ({ data = [] }) => {
                         <Swiper
                             ref={swiperRef}
                             modules={[EffectFade, Autoplay, Navigation]}
-                            spaceBetween={10}
+                            // cards per view and gaps match the /projects grid (1 / 2 from sm / 3 from 2xl;
+                            // 20px gap, 30px from 3xl) so a featured card is the same size as a projects card
+                            spaceBetween={20}
                             slidesPerView={1}
                             loop={true}
                             // keep one extra slide after the visible ones, otherwise the peeking slide on the right is
@@ -130,17 +125,17 @@ const FeaturedProjectCardSlider = ({ data = [] }) => {
                                 waitForTransition: true,
                             }}
                             breakpoints={{
-                                600: {
-                                    slidesPerView: 1.2,
+                                640: {
+                                    slidesPerView: 2,
                                     spaceBetween: 20,
                                 },
-                                768: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 30,
+                                1360: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 20,
                                 },
-                                1024: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 40,
+                                1680: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 30,
                                 },
                             }}
                             className="!overflow-visible"
@@ -155,7 +150,7 @@ const FeaturedProjectCardSlider = ({ data = [] }) => {
 
                                         {/* Animated wrapper: image + overlay move together */}
                                         <div
-                                            className={`relative ${!hasScrolledIntoView
+                                            className={`relative w-full aspect-[16/10] sm:aspect-[4/3] xl:aspect-[520/500] ${!hasScrolledIntoView
                                                     ? "initial-hidden-img"
                                                     : animatingSlide === i || initialAnimating
                                                         ? "animate-slide-img"
@@ -164,14 +159,14 @@ const FeaturedProjectCardSlider = ({ data = [] }) => {
                                         >
                                             {hasValidImage(item.image) ? (
                                                 <Image
-                                                    width={700}
-                                                    height={500}
+                                                    fill
+                                                    sizes="(min-width: 1360px) 33vw, (min-width: 640px) 50vw, 100vw"
                                                     src={item.image}
                                                     alt={item.imageAlt || item.title || "Project image"}
-                                                    className="w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] object-cover"
+                                                    className="object-cover"
                                                 />
                                             ) : (
-                                                <div className="w-full h-[230px] md:h-[300px] lg:h-[350px] 2xl:h-[400px] 3xl:h-[520px] bg-primary flex items-center justify-center text-white">
+                                                <div className="absolute inset-0 bg-primary flex items-center justify-center text-white">
                                                     <span className="text-29 font-medium"> 700 × 500 </span>
                                                 </div>
                                             )}
@@ -181,16 +176,16 @@ const FeaturedProjectCardSlider = ({ data = [] }) => {
                                                 className="absolute inset-0 pointer-events-none"
                                                 style={{
                                                     background:
-                                                        "linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 100%)",
+                                                        "linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.9) 100%)",
                                                 }}
                                             />
                                         </div>
 
                                         {/* Title: keeps its own text animation, sits above the wrapper */}
-                                        <div className="absolute bottom-0 start-0 w-full p-40px">
+                                        <div className="absolute bottom-0 start-0 w-full p-5 md:p-6 xl:p-10">
                                             <div className="overflow-hidden">
                                                 <h3
-                                                    className={`text-white text-29 leading-[1.344827586206897] font-light ${!hasScrolledIntoView
+                                                    className={`text-white text-[20px] lg:text-24 2xl:text-29 leading-[1.344827586206897] font-light ${!hasScrolledIntoView
                                                             ? "initial-hidden-text"
                                                             : animatingSlide === i || initialAnimating
                                                                 ? "animate-slide-text-1"
