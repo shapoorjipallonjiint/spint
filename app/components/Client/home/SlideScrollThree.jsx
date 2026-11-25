@@ -33,6 +33,7 @@ import { useApplyLang } from "@/lib/applyLang";
 import { slugify } from "@/lib/slugify";
 import SocialIcons from "@/app/components/common/SocialIcons";
 import { DEFAULT_FOOTER } from "@/lib/footer";
+import StatSuffix from "@/app/components/common/StatSuffix";
 
 // Small prev / next arrows for the mobile freeMode tab strips: each tap scrolls the strip by ~60% of its
 // visible width (clamped to the ends), and the arrow fades when there is nothing more in that direction.
@@ -2016,7 +2017,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     <div key={index}>
                                         <h3 className="text-24 xl:text-40 font-light mb-[5px]">
                                             <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />
-                                            {getSuffix(item.value)}
+                                            <StatSuffix value={item.value} />
                                         </h3>
 
                                         <p className="text-16 xl:text-18 font-light leading-[1.555555555555556]">
@@ -2054,7 +2055,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 >
                                     <h3 className="text-26 md:text-40 xl:text-40 font-light leading-[auto] mb-[5px]">
                                         <CountUp value={item.value} trigger={currentVisibleSlide === "section2"} />
-                                        {getSuffix(item.value)}
+                                        <StatSuffix value={item.value} />
                                     </h3>
                                     <p className="text-[14px] md:text-[18px]  font-light leading-[1.555555555555556]">
                                         {item.key}

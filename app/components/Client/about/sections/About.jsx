@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { assets } from "@/app/assets";
 import InsideCounter from "../../../InsideCounter";
 import Image from "next/image";
-import { getSuffix } from "@/helpers/getSuffix.ts";
+import StatSuffix from "@/app/components/common/StatSuffix";
 import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 
@@ -94,7 +94,7 @@ const About = ({ data }) => {
                         delay={i == 2 ? 20 : 800}
                         nozero={true}
                       />
-                      {getSuffix(item.number)}
+                      <StatSuffix value={item.number} />
                     </h3>
                     <p className="text-19 font-light leading-[1.474] text-white/70">
                       {item.value}
