@@ -89,9 +89,9 @@ const TabStripArrows = ({ swiper, className = "" }) => {
     );
 };
 
-// heroVideo / heroPoster: only passed by /home-v2 (rotating hero video + its poster). Not passed (the main home) = the
-// CMS First Section video, no poster (as before); heroVideo null = not picked yet (the pick happens in the browser),
-// so no video loads until it is known.
+// heroVideo / heroPoster: the rotating hero video + its poster, picked per visit by HomeV2 (used by / and /home-v2).
+// Not passed = the CMS First Section video, no poster; heroVideo null = not picked yet (the pick happens in the
+// browser), so no video loads until it is known.
 const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData, socials = DEFAULT_FOOTER.socials, heroVideo, heroPoster }) => {
     const tData = useApplyLang(data);
     const heroVideoSrc = (heroVideo === undefined ? tData.firstSection.video : heroVideo) || undefined;

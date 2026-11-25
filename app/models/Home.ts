@@ -48,7 +48,7 @@ const homeSchema = new mongoose.Schema({
         videoPosterImageAlt_ar: {
             type: String
         },
-        // /home-v2 only: hero videos shown one per visit in this order (visit 1 -> video 1, visit 2 -> video 2, ...,
+        // home hero (/ and /home-v2): videos shown one per visit in this order (visit 1 -> video 1, visit 2 -> video 2, ...,
         // then back to video 1). Empty / missing = the single `video` above. No default, so existing data is untouched.
         // poster: optional image shown while that video loads
         rotatingVideos: {
