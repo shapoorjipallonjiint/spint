@@ -89,8 +89,13 @@ const TabStripArrows = ({ swiper, className = "" }) => {
     );
 };
 
-const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData, socials = DEFAULT_FOOTER.socials }) => {
+// heroVideo / heroPoster: only passed by /home-v2 (rotating hero video + its poster). Not passed (the main home) = the
+// CMS First Section video, no poster (as before); heroVideo null = not picked yet (the pick happens in the browser),
+// so no video loads until it is known.
+const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, setIndexToScroll, projectsData, socials = DEFAULT_FOOTER.socials, heroVideo, heroPoster }) => {
     const tData = useApplyLang(data);
+    const heroVideoSrc = (heroVideo === undefined ? tData.firstSection.video : heroVideo) || undefined;
+    const heroPosterSrc = (heroVideo === undefined ? undefined : heroPoster) || undefined;
     const tServiceData = useApplyLang(serviceData);
     const tProjectsData = useApplyLang(projectsData);
 
@@ -1727,7 +1732,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                 <div className="h-full absolute top-0 left-0 w-full bg-amber-50">
                     <video
-                        src={tData.firstSection.video}
+                        src={heroVideoSrc}
+                        poster={heroPosterSrc}
                         autoPlay
                         loop
                         muted
@@ -1769,7 +1775,8 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                         <div className="h-screen w-full relative overflow-hidden z-10">
                             {/* One single video playing in background */}
                             <video
-                                src={tData.firstSection.video}
+                                src={heroVideoSrc}
+                                poster={heroPosterSrc}
                                 autoPlay
                                 loop
                                 muted

@@ -42,6 +42,9 @@ interface HomeFormProps {
         videoPosterImage?: string;
         videoPosterImageAlt?: string;
         videoPosterImageAlt_ar?: string;
+
+        // /home-v2 only: one video per visit, in this order
+        rotatingVideos?: { video: string; poster?: string }[];
     };
 
     secondSection: {
@@ -206,6 +209,15 @@ const Home = () => {
     const credentialColumns = watch("thirdSection.credentials.columns");
 
     const {
+        fields: rotatingVideoItems,
+        append: rotatingVideoAppend,
+        remove: rotatingVideoRemove,
+    } = useFieldArray({
+        control,
+        name: "firstSection.rotatingVideos",
+    });
+
+    const {
         fields: secondSectionItems,
         append: secondSectionAppend,
         remove: secondSectionRemove,
@@ -283,6 +295,7 @@ const Home = () => {
                 setValue("metaTitle", data.data.metaTitle);
                 setValue("metaDescription", data.data.metaDescription);
                 setValue("firstSection", data.data.firstSection);
+                setValue("firstSection.rotatingVideos", data.data.firstSection?.rotatingVideos || []);
                 setValue("secondSection", data.data.secondSection);
                 setValue("secondSection.items", data.data.secondSection.items);
                 setValue("secondSection.highlights", data.data.secondSection?.highlights || []);
@@ -413,6 +426,57 @@ const Home = () => {
                                         {...register(`firstSection.videoPosterImageAlt`)}
                                     />
                                     <FormError error={errors.firstSection?.videoPosterImageAlt?.message} />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <Label className="font-bold">Rotating Videos (/home-v2 only)</Label>
+                            <p className="text-xs text-black/60 mt-0.5">
+                                One video per visit, in this order: a visitor&apos;s 1st visit plays Video 1, the next visit Video 2,
+                                and so on, then it starts again from Video 1. Each video&apos;s poster shows while it loads. Leave
+                                empty to use the Video and Poster Image above. The main home page is not affected.
+                            </p>
+                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-2">
+                                {rotatingVideoItems.map((field, index) => (
+                                    <div key={field.id} className="flex flex-col gap-2 relative border-b border-black/20 pb-5">
+                                        <div className="absolute top-2 right-2">
+                                            <RiDeleteBinLine
+                                                onClick={() => rotatingVideoRemove(index)}
+                                                className="cursor-pointer text-red-600"
+                                            />
+                                        </div>
+                                        <Label className="font-bold">Video {index + 1}</Label>
+                                        <div className="flex gap-4 justify-between">
+                                            <div className="flex flex-col w-1/2 gap-2">
+                                                <Label className="font-bold">Video</Label>
+                                                <Controller
+                                                    name={`firstSection.rotatingVideos.${index}.video`}
+                                                    control={control}
+                                                    rules={{ required: "Upload a video or remove this row" }}
+                                                    render={({ field }) => (
+                                                        <VideoUploader value={field.value} onChange={field.onChange} />
+                                                    )}
+                                                />
+                                                <FormError error={errors.firstSection?.rotatingVideos?.[index]?.video?.message} />
+                                            </div>
+                                            <div className="flex flex-col w-1/2 gap-2">
+                                                <Label className="font-bold">Poster Image (optional)</Label>
+                                                <Controller
+                                                    name={`firstSection.rotatingVideos.${index}.poster`}
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <ImageUploader value={field.value} onChange={field.onChange} />
+                                                    )}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                <div className="flex justify-end">
+                                    <Button type="button" addItem onClick={() => rotatingVideoAppend({ video: "", poster: "" })}>
+                                        Add Video
+                                    </Button>
                                 </div>
                             </div>
                         </div>
