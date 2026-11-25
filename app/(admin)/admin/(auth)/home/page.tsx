@@ -2,8 +2,13 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
+import Image from "next/image";
+import { Move } from "lucide-react";
+import { DndContext, closestCenter, DragEndEvent, Modifier, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
 import { ImageUploader } from "@/components/ui/image-uploader";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -43,7 +48,7 @@ interface HomeFormProps {
         videoPosterImageAlt?: string;
         videoPosterImageAlt_ar?: string;
 
-        // /home-v2 only: one video per visit, in this order
+        // home hero (/ and /home-v2): one video per visit, in this order
         rotatingVideos?: { video: string; poster?: string }[];
     };
 
@@ -189,11 +194,57 @@ interface HomeFormProps {
     };
 }
 
+// the reorder list only moves up/down: drop the sideways part of the drag
+const restrictToVerticalAxis: Modifier = ({ transform }) => ({ ...transform, x: 0 });
+
+// ".../1712345678901clip.mp4?rlkey=..." -> "clip.mp4" (uploads are stored as <timestamp><original file name>)
+const videoFileName = (url?: string) => {
+    if (!url) return "";
+    try {
+        const last = new URL(url).pathname.split("/").pop() || "";
+        return decodeURIComponent(last).replace(/^\d{13}/, "");
+    } catch {
+        return url;
+    }
+};
+
+// one rotating video in the reorder list: its poster (or the video's first frame) + file name, dragged into place
+const SortableVideoRow = ({ id, serial, video, poster }: { id: string; serial: number; video?: string; poster?: string }) => {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+    const name = videoFileName(video);
+    return (
+        <div
+            ref={setNodeRef}
+            style={{ transform: CSS.Transform.toString(transform), transition }}
+            {...attributes}
+            {...listeners}
+            className={`flex items-center gap-3 px-3 py-2 bg-white cursor-grab active:cursor-grabbing touch-none ${
+                isDragging ? "relative z-10 shadow-md" : ""
+            }`}
+        >
+            <span className="min-w-7 text-sm text-black/50 tabular-nums">{serial}.</span>
+            {/* pointer-events-none: the thumbnail never starts the browser's own image drag */}
+            <div className="relative w-24 aspect-video shrink-0 rounded overflow-hidden bg-black/10 pointer-events-none">
+                {poster ? (
+                    <Image src={poster} alt="" fill sizes="96px" draggable={false} className="object-cover" />
+                ) : video ? (
+                    <video src={`${video}#t=0.1`} muted preload="metadata" className="w-full h-full object-cover" />
+                ) : null}
+            </div>
+            <span className={`flex-1 min-w-0 truncate text-sm ${name ? "" : "text-black/40 italic"}`}>
+                {name || "(no video uploaded)"}
+            </span>
+            <Move className="w-4 h-4 text-gray-500 shrink-0" />
+        </div>
+    );
+};
+
 const Home = () => {
     const {
         register,
         handleSubmit,
         setValue,
+        getValues,
         control,
         watch,
         formState: { errors },
@@ -212,10 +263,44 @@ const Home = () => {
         fields: rotatingVideoItems,
         append: rotatingVideoAppend,
         remove: rotatingVideoRemove,
+        replace: rotatingVideoReplace,
     } = useFieldArray({
         control,
         name: "firstSection.rotatingVideos",
     });
+
+    // ---------- rotating videos reorder (same flow as Contact > Regional Office) ----------
+    // Reorder shows a draggable list (poster + file name). Done applies the new order to the form; nothing is
+    // written until Submit. null = not reordering, otherwise the draft order as field ids.
+    const [videoReorderIds, setVideoReorderIds] = useState<string[] | null>(null);
+    const isReorderingVideos = videoReorderIds !== null;
+    const watchedRotatingVideos = watch("firstSection.rotatingVideos");
+
+    // small move threshold so a click on a row doesn't start a drag
+    const reorderSensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+    const startVideoReorder = () => setVideoReorderIds(rotatingVideoItems.map((f) => f.id));
+    const cancelVideoReorder = () => setVideoReorderIds(null);
+
+    const handleVideoReorderDragEnd = ({ active, over }: DragEndEvent) => {
+        if (!over || active.id === over.id) return;
+        setVideoReorderIds((ids) =>
+            ids ? arrayMove(ids, ids.indexOf(String(active.id)), ids.indexOf(String(over.id))) : ids
+        );
+    };
+
+    const finishVideoReorder = () => {
+        if (!videoReorderIds) return;
+        const indexById = new Map(rotatingVideoItems.map((f, i) => [f.id, i]));
+        const unchanged = videoReorderIds.every((id, i) => indexById.get(id) === i);
+        if (!unchanged) {
+            // current values (incl. unsaved uploads), in the new order
+            const videos = getValues("firstSection.rotatingVideos") || [];
+            rotatingVideoReplace(videoReorderIds.map((id) => videos[indexById.get(id) as number]));
+            toast.success("Order updated - click Submit to save");
+        }
+        setVideoReorderIds(null);
+    };
 
     const {
         fields: secondSectionItems,
@@ -430,12 +515,52 @@ const Home = () => {
                             </div>
                         </div>
                         <div>
-                            <Label className="font-bold">Rotating Videos (/home-v2 only)</Label>
+                            <div className="flex items-center justify-between gap-3">
+                                <Label className="font-bold">Rotating Videos</Label>
+                                {isReorderingVideos ? (
+                                    <div className="flex items-center gap-2">
+                                        <Button type="button" size="sm" variant="outline" onClick={cancelVideoReorder}>
+                                            Cancel
+                                        </Button>
+                                        <Button type="button" size="sm" className="text-white bg-yellow-700" onClick={finishVideoReorder}>
+                                            Done
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    <Button
+                                        type="button"
+                                        size="sm"
+                                        className="text-white bg-green-700"
+                                        disabled={rotatingVideoItems.length < 2}
+                                        onClick={startVideoReorder}
+                                    >
+                                        Reorder
+                                    </Button>
+                                )}
+                            </div>
                             <p className="text-xs text-black/60 mt-0.5">
-                                One video per visit, in this order: a visitor&apos;s 1st visit plays Video 1, the next visit Video 2,
-                                and so on, then it starts again from Video 1. Each video&apos;s poster shows while it loads. Leave
-                                empty to use the Video and Poster Image above. The main home page is not affected.
+                                Home page hero: one video per visit, in this order. A visitor&apos;s 1st visit plays Video 1, the
+                                next visit Video 2, and so on, then it starts again from Video 1. Each video&apos;s poster shows
+                                while it loads. Leave empty to use the Video and Poster Image above.
                             </p>
+                            {isReorderingVideos ? (
+                            <div className="border border-black/20 rounded-md overflow-hidden divide-y divide-black/10 mt-2">
+                                <DndContext
+                                    sensors={reorderSensors}
+                                    collisionDetection={closestCenter}
+                                    modifiers={[restrictToVerticalAxis]}
+                                    onDragEnd={handleVideoReorderDragEnd}
+                                >
+                                    <SortableContext items={videoReorderIds || []} strategy={verticalListSortingStrategy}>
+                                        {(videoReorderIds || []).map((id, i) => {
+                                            const index = rotatingVideoItems.findIndex((f) => f.id === id);
+                                            const item = watchedRotatingVideos?.[index];
+                                            return <SortableVideoRow key={id} id={id} serial={i + 1} video={item?.video} poster={item?.poster} />;
+                                        })}
+                                    </SortableContext>
+                                </DndContext>
+                            </div>
+                            ) : (
                             <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-2">
                                 {rotatingVideoItems.map((field, index) => (
                                     <div key={field.id} className="flex flex-col gap-2 relative border-b border-black/20 pb-5">
@@ -479,6 +604,7 @@ const Home = () => {
                                     </Button>
                                 </div>
                             </div>
+                            )}
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -1846,7 +1972,12 @@ const Home = () => {
 
             {/* with the language tabs, Submit sits in the top bar */}
             <div className={langTabs ? "hidden" : "col-span-2"}>
-                <Button type="submit" className="cursor-pointer text-white text-[16px] w-full">
+                {isReorderingVideos && (
+                    <p className="text-sm text-yellow-700 mb-2 text-center">
+                        Click Done in Rotating Videos (First Section) to keep the new order, then Submit to save.
+                    </p>
+                )}
+                <Button type="submit" className="cursor-pointer text-white text-[16px] w-full" disabled={isReorderingVideos}>
                     Submit
                 </Button>
             </div>

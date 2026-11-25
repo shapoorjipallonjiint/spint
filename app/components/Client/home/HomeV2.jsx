@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 import Index from "./Index";
 
-// /home-v2: the home page with a rotating hero video, one per visit, in the admin order
+// Home page (/, /ar, and the /home-v2 preview): the home with a rotating hero video, one per visit, in the admin order
 // (admin: Home > First Section > Rotating Videos). Visit 1 -> video 1, visit 2 -> video 2, ... then back to video 1.
 //  - localStorage keeps the video shown on the visitor's previous visit (survives closing the browser)
 //  - sessionStorage keeps this visit's pick, so going around the site (Home -> About -> Home) or refreshing in the

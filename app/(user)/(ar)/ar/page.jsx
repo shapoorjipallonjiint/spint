@@ -1,4 +1,4 @@
-import Index from "@/app/components/Client/home/Index";
+import HomeV2 from "@/app/components/Client/home/HomeV2";
 import { fetchFooter } from "@/lib/footer";
 
 const page = async () => {
@@ -15,7 +15,8 @@ const page = async () => {
     const projectData = await projectResponse.json();
 
     // services hidden in admin (Services > Main) are not listed
-    return <Index data={data.data} serviceData={(serviceData.data || []).filter((s) => !s.hidden)} projectsData={projectData.data} socials={footer.socials} />;
+    // hero video rotates per visit (admin: Home > First Section > Rotating Videos), see HomeV2
+    return <HomeV2 data={data.data} serviceData={(serviceData.data || []).filter((s) => !s.hidden)} projectsData={projectData.data} socials={footer.socials} />;
 };
 
 export default page;

@@ -4,7 +4,7 @@ import  { useRef, useState } from 'react'
 import HeaderTw from '../../HeaderTw'
 import SlideScrollThree from '../home/SlideScrollThree'
 
-// heroVideo / heroPoster: only from /home-v2 (see SlideScrollThree); the main home doesn't pass them
+// heroVideo / heroPoster: the rotating hero video picked by HomeV2 (see SlideScrollThree)
 const IndexV2 = ({data,serviceData, projectsData, socials, heroVideo, heroPoster}) => {
    const [activeSection, setActiveSection] = useState("section1");
     const [indexToScroll, setIndexToScroll] = useState(0);
