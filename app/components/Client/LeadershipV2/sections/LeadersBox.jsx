@@ -68,7 +68,7 @@ const LeaderBox = ({data,big}) => {
     return (
         <section className="relative" ref={sectionRef}>
             <div className="container">
-                <div className="border-b py-80px border-cmnbdr relative overflow-hidden " ref={imageContainerRef}>
+                <div className="border-b py-60px border-cmnbdr relative overflow-hidden " ref={imageContainerRef}>
                    {/* ================= LEADER ================= */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-[594px_auto] gap-y-6 lg:gap-y-10 gap-x-100px">
 
@@ -109,7 +109,10 @@ const LeaderBox = ({data,big}) => {
 
                         </div> */}
 
-                        <div className="relative flex flex-col items-center justify-end w-full max-w-[594px] overflow-x-hidden">
+                        {/* lg:self-start: the column is only as tall as the image and sits at the top of the row, so the
+                            image's top lines up with the name on the right (it used to stretch to the text height and
+                            push the image to the bottom when the description was long) */}
+                        <div className="relative flex flex-col items-center justify-end w-full max-w-[594px] overflow-x-hidden lg:self-start">
 
                             <MotionImage
                                 width={1000}
