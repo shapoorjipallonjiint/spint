@@ -50,7 +50,8 @@ const CoreValues = ({ data }) => {
                             src={t.image}
                             width={658}
                             height={545}
-                            alt=""
+                            // admin: Quality > First Section > Image Alt Tag (empty = no alt, as before)
+                            alt={t.imageAlt?.trim() || ""}
                             className="w-full h-[200px] xs:h-[250px] md:h-[300px] lg:h-[400px] 2xl:h-[545px] object-cover"
                         />
                     </div>
