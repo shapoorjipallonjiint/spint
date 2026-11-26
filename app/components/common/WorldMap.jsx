@@ -18,7 +18,10 @@ import useIsPreferredLanguageArabic from "@/lib/getPreferredLanguage";
 import { useApplyLang } from "@/lib/applyLang";
 import { slugify } from "@/lib/slugify";
 
-const WorldMap = ({ cities = [], projectsData }) => {
+// legend: { spGroup, spInternational } from admin (Home > Sixth Section > Legend); empty = the original labels
+const WorldMap = ({ cities = [], legend, projectsData }) => {
+    const legendSpGroup = legend?.spGroup?.trim() || "SP Group";
+    const legendSpInternational = legend?.spInternational?.trim() || "SP International";
     const isArabic = useIsPreferredLanguageArabic();
     const tCities = useApplyLang(cities);
     const tProjectsData = useApplyLang(projectsData || {});
@@ -106,11 +109,11 @@ const WorldMap = ({ cities = [], projectsData }) => {
                     <div className="flex justify-end items-center">
                         <div className="flex items-center gap-[5px] md:gap-2 me-3">
                             <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px] pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-[#30B6F9] border border-[#97DCFF] scale-85"></div>
-                            <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP Group</p>
+                            <p className="text-paragraph font-light text-[11px] lg:text-[16px]">{legendSpGroup}</p>
                         </div>
                         <div className="flex items-center gap-[5px] md:gap-2">
                             <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px] pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-primary border border-white scale-85"></div>
-                            <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP International</p>
+                            <p className="text-paragraph font-light text-[11px] lg:text-[16px]">{legendSpInternational}</p>
                         </div>
                     </div>
                 </div>
@@ -165,7 +168,7 @@ const WorldMap = ({ cities = [], projectsData }) => {
                                     <div className="relative">
                                         <div className="absolute -left-8 top-1 flex flex-col items-center gap-[7px] pointer-events-none">
                                             {city.groupId === "sp-group" && activeDot === city.id && (
-                                                <span className="text-13 font-semibold uppercase text-primary">SP Group</span>
+                                                <span className="text-13 font-semibold uppercase text-primary">{legendSpGroup}</span>
                                             )}
                                             <span
                                                 className={`border border-[#30F95533] min-w-[125px] lg:min-w-[150px] text-center backdrop-blur-[10px] uppercase bg-[#0015FF99] text-white text-[14px] font-bold px-2 py-[2px] rounded-full transition-all duration-500 ${activeDot === city.id ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}

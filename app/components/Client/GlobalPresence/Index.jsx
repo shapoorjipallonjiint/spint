@@ -5,14 +5,15 @@ import ExpandingHorizons from "./sections/ExpandingHorizons";
 import WorldMap from "../../common/WorldMap";
 // import { globalPresenceData } from "./data";
 
-const Index = ({ data, mapCities, projectsData }) => {
+// mapLegend: optional (the Arabic page does not pass it; the map then shows its original labels)
+const Index = ({ data, mapCities, mapLegend = undefined, projectsData }) => {
     return (
         <>
             <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
             <ExpandingHorizons data={data.firstSection} />
             {/* <Horizons data={data.secondSection} /> */}
             <section className="pt-50px pb-80px bg-f5f5 relative overflow-hidden">
-                <WorldMap cities={mapCities} projectsData={projectsData} />
+                <WorldMap cities={mapCities} legend={mapLegend} projectsData={projectsData} />
             </section>
         </>
     );
