@@ -19,7 +19,7 @@ const Certifications = ({ data }) => {
               <div key={index}>
                 <motion.div variants={moveUp(0.4 + 0.1 * index)} initial="hidden" whileInView="show" viewport={{ amount: 0.2, once: true }}>
                   <div className="border-b border-cmnbdr pb-30px mb-4">
-                    <Image src={item.icon} alt="" width={360} height={360} className="w-auto h-28 md:h-36 2xl:h-[180px] max-w-full object-contain" />
+                    <Image src={item.icon} alt={item.iconAlt?.trim() || ""} width={360} height={360} className="w-auto h-28 md:h-36 2xl:h-[180px] max-w-full object-contain" />
                   </div>
                   <h3 className="text-20 md:text-26 leading-[1.2] 2xl:leading-[1.4] font-light font-title max-w-[85%]">{item.title}</h3>
                 </motion.div>

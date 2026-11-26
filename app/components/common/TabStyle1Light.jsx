@@ -122,7 +122,7 @@ export default function TabStyle1Light({ data }) {
             >
               <ParallaxImage 
                 src={activeTab.image} 
-                alt={activeTab.title} 
+                alt={activeTab.imageAlt?.trim() || activeTab.title} // admin alt tag; the title as before when empty 
                 imageOffset={imageOffset}
               />
             </motion.div>

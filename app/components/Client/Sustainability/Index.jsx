@@ -13,7 +13,12 @@ const Index = (props) => {
   return (
     <>
       <Banner title={data.pageTitle} image={data.banner} imageAlt={data.bannerAlt} />
-      <VdoSection data={data.firstSection} maxW="max-w-[18ch]" />
+      {/* poster: admin Sustainability > First Section > Poster Image (stored as videoPosterImage; the shared video
+          section reads `poster`), shown while the video loads */}
+      <VdoSection
+        data={{ ...data.firstSection, poster: data.firstSection?.poster || data.firstSection?.videoPosterImage }}
+        maxW="max-w-[18ch]"
+      />
       <ExpertiseSec data={data.secondSection} />
       {/* <OngoingInitiatives data={data.thirdSection} />  */}
       <Certifications data={data.fourthSection} />
