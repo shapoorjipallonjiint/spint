@@ -18,15 +18,14 @@ export async function generateMetadata() {
 }
 
 const page = async() => {
-  const response = await fetch(`${process.env.BASE_URL}/api/admin/global-presence`, { next: { revalidate: 60 } });
-  const data = await response.json();
-
-  // the world map uses the same data as the homepage map: home sixthSection.cities + projects (for clickable cities)
-  const homeResponse = await fetch(`${process.env.BASE_URL}/api/admin/home`, { next: { revalidate: 60 } });
-  const homeData = await homeResponse.json();
-
-  const projectResponse = await fetch(`${process.env.BASE_URL}/api/admin/project?view=summary`, { next: { revalidate: 60 } }); // only status / sector / location (see the API)
-  const projectData = await projectResponse.json();
+  // the three requests don't depend on each other, so they run at the same time (the page waits for the slowest
+  // one instead of all three in a row). The world map uses the same data as the homepage map: home
+  // sixthSection.cities + projects (for clickable cities); the project summary is only status / sector / location.
+  const [data, homeData, projectData] = await Promise.all([
+    fetch(`${process.env.BASE_URL}/api/admin/global-presence`, { next: { revalidate: 60 } }).then((res) => res.json()),
+    fetch(`${process.env.BASE_URL}/api/admin/home`, { next: { revalidate: 60 } }).then((res) => res.json()),
+    fetch(`${process.env.BASE_URL}/api/admin/project?view=summary`, { next: { revalidate: 60 } }).then((res) => res.json()),
+  ]);
 
   return (
     // map legend labels: the same CMS fields as the homepage map (admin: Home > Sixth Section > Legend)

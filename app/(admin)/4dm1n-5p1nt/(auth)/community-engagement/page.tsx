@@ -11,7 +11,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { Textarea } from "@/components/ui/textarea";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
-import { ImageZone } from "@/app/components/Community/ImageZone";
+import { CollageZones } from "@/app/components/Community/CollageZones";
 
 interface CommunityFormProps {
     metaTitle: string;
@@ -332,9 +332,22 @@ const CommunityPage = () => {
                                 <FormError error={errors.firstSection?.description?.message} />
                             </div>
                         </div>
-                        <Label className="text-primary font-medium">
-                            NB: The image layout is at the bottom of this page.
-                        </Label>
+                        {/* collage images (shared by both languages), in the website's left-to-right order */}
+                        <div className="flex flex-col gap-2 border-t border-slate-200 pt-4 mt-2">
+                            <Label className="font-bold">Image Layout</Label>
+                            <p className="text-sm text-slate-500">
+                                Laid out like the website: click a zone to add or remove its images (each zone rotates through
+                                its images). Shared by both languages, saved with Submit.
+                            </p>
+                            <CollageZones
+                                control={control}
+                                labels={
+                                    Object.fromEntries(
+                                        Object.entries(FIRST_SECTION_ZONES).map(([key, zone]) => [key, zone.label])
+                                    ) as Record<FirstSectionZoneKey, string>
+                                }
+                            />
+                        </div>
                     </div>
                 </AdminItemContainer>
 
@@ -356,10 +369,11 @@ const CommunityPage = () => {
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                         {secondSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                                <div className="absolute top-2 right-2">
+                                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3">
+                                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Focus Area {index + 1}</span>
+                                                <div className="absolute top-3 right-3">
                                                     <RiDeleteBinLine
                                                         onClick={() => secondSectionRemove(index)}
                                                         className="cursor-pointer text-red-600"
@@ -448,7 +462,7 @@ const CommunityPage = () => {
                                             </div>
                                         ))}
 
-                                        <div className="flex justify-end">
+                                        <div className="col-span-full flex justify-end">
                                             <Button
                                                 type="button"
                                                 className=""
@@ -497,13 +511,14 @@ const CommunityPage = () => {
                         </div>
 
                         <Label>Items</Label>
-                        <div className="border border-black/20 p-2 rounded-md">
+                        <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                             {thirdSectionItems.map((field, index) => (
                                 <div
                                     key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
+                                    className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                 >
-                                    <div className="absolute top-2 right-2">
+                                    <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Program {index + 1}</span>
+                                    <div className="absolute top-3 right-3">
                                         <RiDeleteBinLine
                                             onClick={() => thirdSectionRemove(index)}
                                             className="cursor-pointer text-red-600"
@@ -597,10 +612,11 @@ const CommunityPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {fourthSectionItems.map((field, index) => (
-                                    <div key={field.id} className="relative border-b border-black/20 pb-5 last:border-b-0">
-                                        <div className="absolute top-2 right-2">
+                                    <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fourthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -787,9 +803,9 @@ const CommunityPage = () => {
                                 <FormError error={errors.firstSection?.description_ar?.message} />
                             </div>
                         </div>
-                        <Label className="text-primary font-medium">
-                            NB: The image layout is at the bottom of this page.
-                        </Label>
+                        <p className="text-sm text-slate-500">
+                            The image layout (shared by both languages) is edited in the English column.
+                        </p>
                     </div>
                 </AdminItemContainer>
 
@@ -809,10 +825,11 @@ const CommunityPage = () => {
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                         {secondSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                                <div className="absolute top-2 right-2">
+                                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3">
+                                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Focus Area {index + 1}</span>
+                                                <div className="absolute top-3 right-3">
                                                     <RiDeleteBinLine
                                                         onClick={() => secondSectionRemove(index)}
                                                         className="cursor-pointer text-red-600"
@@ -892,7 +909,7 @@ const CommunityPage = () => {
                                             </div>
                                         ))}
 
-                                        <div className="flex justify-end">
+                                        <div className="col-span-full flex justify-end">
                                             <Button
                                                 type="button"
                                                 className=""
@@ -939,13 +956,14 @@ const CommunityPage = () => {
                         </div>
 
                         <Label>Items</Label>
-                        <div className="border border-black/20 p-2 rounded-md">
+                        <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                             {thirdSectionItems.map((field, index) => (
                                 <div
                                     key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
+                                    className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                 >
-                                    <div className="absolute top-2 right-2">
+                                    <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Program {index + 1}</span>
+                                    <div className="absolute top-3 right-3">
                                         <RiDeleteBinLine
                                             onClick={() => thirdSectionRemove(index)}
                                             className="cursor-pointer text-red-600"
@@ -1037,10 +1055,11 @@ const CommunityPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {fourthSectionItems.map((field, index) => (
-                                    <div key={field.id} className="relative border-b border-black/20 pb-5 last:border-b-0">
-                                        <div className="absolute top-2 right-2">
+                                    <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fourthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1158,121 +1177,6 @@ const CommunityPage = () => {
                 </AdminItemContainer>
             </div>
 
-            {/*First Section Image Layout */}
-            <div className="col-span-full">
-                <AdminItemContainer>
-                    <Label main>First Section – Image Layout</Label>
-
-                    <div className="grid grid-cols-7 gap-5 p-5 place-items-center">
-                        {/* COL 1 — Left Most */}
-                        <Controller
-                            name="firstSection.items.leftMost"
-                            control={control}
-                            render={({ field }) => (
-                                <ImageZone label={FIRST_SECTION_ZONES.leftMost.label} zoneKey="leftMost" field={field} />
-                            )}
-                        />
-
-                        {/* COL 2 — Left Top + Bottom */}
-                        <div className="flex flex-col gap-4">
-                            <Controller
-                                name="firstSection.items.leftColTop"
-                                control={control}
-                                render={({ field }) => (
-                                    <ImageZone
-                                        label={FIRST_SECTION_ZONES.leftColTop.label}
-                                        zoneKey="leftColTop"
-                                        field={field}
-                                    />
-                                )}
-                            />
-
-                            <Controller
-                                name="firstSection.items.leftColBottom"
-                                control={control}
-                                render={({ field }) => (
-                                    <ImageZone
-                                        label={FIRST_SECTION_ZONES.leftColBottom.label}
-                                        zoneKey="leftColBottom"
-                                        field={field}
-                                    />
-                                )}
-                            />
-                        </div>
-
-                        {/* COL 3 — Left of Center */}
-                        <Controller
-                            name="firstSection.items.leftOfCenter"
-                            control={control}
-                            render={({ field }) => (
-                                <ImageZone
-                                    label={FIRST_SECTION_ZONES.leftOfCenter.label}
-                                    zoneKey="leftOfCenter"
-                                    field={field}
-                                />
-                            )}
-                        />
-
-                        {/* COL 4 — Center */}
-                        <Controller
-                            name="firstSection.items.center"
-                            control={control}
-                            render={({ field }) => (
-                                <ImageZone label={FIRST_SECTION_ZONES.center.label} zoneKey="center" field={field} />
-                            )}
-                        />
-
-                        {/* COL 5 — Right of Center */}
-                        <Controller
-                            name="firstSection.items.rightOfCenter"
-                            control={control}
-                            render={({ field }) => (
-                                <ImageZone
-                                    label={FIRST_SECTION_ZONES.rightOfCenter.label}
-                                    zoneKey="rightOfCenter"
-                                    field={field}
-                                />
-                            )}
-                        />
-
-                        {/* COL 6 — Right Top + Bottom */}
-                        <div className="flex flex-col gap-4">
-                            <Controller
-                                name="firstSection.items.rightColTop"
-                                control={control}
-                                render={({ field }) => (
-                                    <ImageZone
-                                        label={FIRST_SECTION_ZONES.rightColTop.label}
-                                        zoneKey="rightColTop"
-                                        field={field}
-                                    />
-                                )}
-                            />
-
-                            <Controller
-                                name="firstSection.items.rightColBottom"
-                                control={control}
-                                render={({ field }) => (
-                                    <ImageZone
-                                        label={FIRST_SECTION_ZONES.rightColBottom.label}
-                                        zoneKey="rightColBottom"
-                                        field={field}
-                                    />
-                                )}
-                            />
-                        </div>
-
-                        {/* COL 7 — Right Most */}
-                        <Controller
-                            name="firstSection.items.rightMost"
-                            control={control}
-                            render={({ field }) => (
-                                <ImageZone label={FIRST_SECTION_ZONES.rightMost.label} zoneKey="rightMost" field={field} />
-                            )}
-                        />
-                    </div>
-                </AdminItemContainer>
-            </div>
 
             {/* with the language tabs, Submit sits in the top bar */}
             <div className={langTabs ? "hidden" : "flex col-span-2"}>
