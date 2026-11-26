@@ -183,7 +183,7 @@ const SaftySlider = ({ data }) => {
                                         src={img.image}
                                         width={900}
                                         height={600}
-                                        alt={`slide-${i}`}
+                                        alt={img.imageAlt?.trim() || `slide-${i}`} // admin: HSE > Fifth Section > image Alt Tag
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
