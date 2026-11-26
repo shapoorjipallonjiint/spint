@@ -652,7 +652,7 @@ const AccreditationPage = ({ view = "main" }: { view?: "main" | "list" }) => {
                     ))}
                 </div>
                 <div>
-                <div className={`flex flex-col gap-2 h-[calc(100vh-150px)] ${listTab === "category" ? "" : "hidden"}`}>
+                <div className={`flex flex-col gap-2 h-[calc(100vh-158px)] ${listTab === "category" ? "" : "hidden"}`}>
                     <div className="h-full w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white">
                         <div className="flex justify-between border-b-2 border-black/20 pb-2">
                             <Label className="text-sm font-bold">Category</Label>
@@ -910,7 +910,7 @@ const AccreditationPage = ({ view = "main" }: { view?: "main" | "list" }) => {
           </div> */}
                 </div>
 
-                <div className={`h-[calc(100vh-150px)] w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white ${listTab === "accreditations" ? "" : "hidden"}`}>
+                <div className={`h-[calc(100vh-158px)] w-full p-5 shadow-md border-black/20 rounded-md overflow-y-hidden bg-white ${listTab === "accreditations" ? "" : "hidden"}`}>
                     <div className="border-b-2 border-black/20 pb-3">
                         <div className="flex justify-between items-center">
                             {/* LEFT: Title */}

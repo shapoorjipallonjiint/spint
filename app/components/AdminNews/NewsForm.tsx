@@ -166,7 +166,7 @@ useEffect(() => {
             {/*English Version */}
             <div className={langColumn("en", "flex flex-col gap-5 rounded-md")}>
 
-                <AdminItemContainer>
+                <AdminItemContainer expansion={false}>
                     <div className='p-5 rounded-md flex flex-col gap-5'>
                         <div>
                             <Label className=''>Title</Label>
@@ -299,7 +299,7 @@ useEffect(() => {
             {/*Arabic Version */}
             <div className={langColumn("ar", "flex flex-col gap-5 rounded-md")}>
 
-                <AdminItemContainer>
+                <AdminItemContainer expansion={false}>
                     <div className='p-5 rounded-md flex flex-col gap-5'>
                         <div>
                             <Label className=''>Title</Label>

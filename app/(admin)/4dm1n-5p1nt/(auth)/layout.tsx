@@ -81,7 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <AdminTopBar />
 
                 {/* Scrollable Content (relative: absolute children such as Radix's hidden <select> stay inside this scroller instead of stretching the page) */}
-                <div className="relative mt-14 h-[calc(100vh-56px)] overflow-y-auto p-4">{children}</div>
+                <div className="relative mt-16 h-[calc(100vh-64px)] overflow-y-auto no-scrollbar p-4">{children}</div>
             </main>
             </AdminLangTabProvider>
         </AdminShell>

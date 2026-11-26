@@ -214,7 +214,7 @@ const AlbumPhotos = () => {
                 </div>
             )}
 
-            <AdminItemContainer>
+            <AdminItemContainer expansion={false}>
                 <div className="p-5 border-b border-black/10 flex flex-col gap-1">
                     <p className="font-semibold text-lg">Upload photos</p>
                     <p className="text-sm text-black/60">You can select several files at once. New photos are added to the end.</p>
@@ -224,7 +224,7 @@ const AlbumPhotos = () => {
                 </div>
             </AdminItemContainer>
 
-            <AdminItemContainer>
+            <AdminItemContainer expansion={false}>
                 <div className="p-5 border-b border-black/10 flex flex-col gap-2">
                     <p className="font-semibold text-lg">
                         Photos <span className="text-black/50 font-normal">({photos.length})</span>

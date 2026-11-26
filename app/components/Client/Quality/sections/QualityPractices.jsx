@@ -184,12 +184,8 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
 
                                     {/* TITLE */}
                                     <span
-                                        className={`inline-block transition-transform pe-[20px] lg:pe-0 ${
-                                            isActive(index)
-                                                ? isArabic
-                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]  "
-                                                    : "translate-x-[20px] xl:translate-x-[43px] "
-                                                : "translate-x-0"
+                                        className={`inline-block transition-[padding] duration-300 pe-[20px] lg:pe-0 ${
+                                            isActive(index) ? "ps-[20px] xl:ps-[43px]" : "ps-0"
                                         }`}
                                     >
                                         {item.title}
@@ -220,12 +216,10 @@ const QualityPractices = ({ data, bgColor = "", sectionSpacing = "" }) => {
                                             marginTop: isActive(index) ? 10 : 0,
                                         }}
                                         transition={{ duration: 0.25, ease: "easeOut" }}
-                                        className={`overflow-hidden text-sm lg:text-base text-paragraph font-light leading-relaxed pe-[20px] lg:pe-0 ${
-                                            isActive(index)
-                                                ? isArabic
-                                                    ? "-translate-x-[20px] xl:-translate-x-[43px]  "
-                                                    : "translate-x-[20px] xl:translate-x-[43px]  "
-                                                : "translate-x-0 "
+                                        // indent with padding (not translate) so the text wraps inside the column instead of
+                                        // being pushed past it and clipped; ps- is the start side, so it flips for Arabic
+                                        className={`overflow-hidden text-sm lg:text-base text-paragraph font-light leading-relaxed pe-[20px] lg:pe-0 transition-[padding] duration-300 ${
+                                            isActive(index) ? "ps-[20px] xl:ps-[43px]" : "ps-0"
                                         }`}
                                     >
                                         {item.description}

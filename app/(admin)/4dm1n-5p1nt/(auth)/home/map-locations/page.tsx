@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Trash2, Pencil, Move, Briefcase, Users } from "lucide-react";
+import { Trash2, Pencil, Move, Briefcase } from "lucide-react";
 import MapPointPicker, { cityMapPoint } from "./MapPointPicker";
 import { hasMapPoint } from "@/lib/mapDataHelper";
 import { COUNTRY_OPTIONS } from "@/lib/countryCodes";
@@ -25,6 +25,7 @@ type City = {
     x?: number;
     y?: number;
     completedProjects?: string;
+    // no longer edited here (not shown on the site); kept on saved records, which edits merge onto (see onSubmit)
     employees?: string;
     showInProjectFilter?: boolean;
     code?: string;
@@ -290,10 +291,6 @@ export default function MapSectionPage() {
                                     <Input {...register("completedProjects", { required: true })} />
                                 </div>
 
-                                <div>
-                                    <Label>Employees</Label>
-                                    <Input {...register("employees", { required: true })} />
-                                </div>
                             </>
                         )}
 
@@ -371,7 +368,7 @@ function Column({
     showStats,
 }: ColumnProps) {
     return (
-        <div className="border rounded-md flex flex-col h-[calc(100vh-180px)]">
+        <div className="border rounded-md flex flex-col h-[calc(100vh-188px)]">
             {/* HEADER */}
             <div className="px-4 py-3 border-b bg-muted/40 space-y-2 sticky top-0 z-10">
                 <div className="flex justify-between">
@@ -412,12 +409,6 @@ function Column({
                                         </div>
                                     )}
 
-                                    {showStats && loc.employees && (
-                                        <div className="flex items-center gap-1">
-                                            <Users className="w-3.5 h-3.5" />
-                                            {loc.employees}
-                                        </div>
-                                    )}
                                 </div>
                             </div>
 

@@ -295,7 +295,7 @@ const AdminGallery = () => {
             {/* ---------------- Gallery tab ---------------- */}
             <div role="tabpanel" hidden={tab !== "gallery"} className="flex-col gap-6 [&:not([hidden])]:flex">
             {/* ---- "All" tab order ---- */}
-            <AdminItemContainer>
+            <AdminItemContainer expansion={false}>
                 <div className="flex justify-between items-center gap-4 p-5 border-b border-black/10 flex-wrap">
                     <div>
                         <p className="font-semibold text-lg">&quot;All&quot; tab order</p>
@@ -362,7 +362,7 @@ const AdminGallery = () => {
                 )}
             </AdminItemContainer>
 
-            <AdminItemContainer>
+            <AdminItemContainer expansion={false}>
                 <div className="flex justify-between items-center gap-4 p-5 border-b border-black/10 flex-wrap">
                     <div>
                         <p className="font-semibold text-lg">Sections</p>
@@ -504,7 +504,7 @@ const AdminGallery = () => {
 
             {/* ---------------- Page tab (kept mounted so unsaved form values survive tab switches) ---------------- */}
             <div role="tabpanel" hidden={tab !== "page"}>
-            <AdminItemContainer>
+            <AdminItemContainer expansion={false}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="p-5 border-b border-black/10">
                         <p className="font-semibold text-lg">Page settings</p>

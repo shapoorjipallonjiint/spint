@@ -50,6 +50,10 @@ interface HomeFormProps {
 
         // home hero (/ and /home-v2): one video per visit, in this order
         rotatingVideos?: { video: string; poster?: string }[];
+
+        // label above the hero social icons; empty = "Stay Connected"
+        socialLabel?: string;
+        socialLabel_ar?: string;
     };
 
     secondSection: {
@@ -81,6 +85,14 @@ interface HomeFormProps {
             value_ar?: string;
         }[];
 
+        // READ MORE button; empty text = "READ MORE", empty link = the third section's link
+        button?: {
+            text?: string;
+            text_ar?: string;
+            link?: string;
+            link_ar?: string;
+        };
+
         // highlights cycling above the stats (homepage slide 2)
         highlights?: {
             title?: string;
@@ -100,6 +112,10 @@ interface HomeFormProps {
 
         link?: string;
         link_ar?: string;
+
+        // READ MORE text; empty = "READ MORE"
+        buttonText?: string;
+        buttonText_ar?: string;
 
         image: string;
         imageAlt: string;
@@ -158,6 +174,14 @@ interface HomeFormProps {
     sixthSection: {
         title: string;
         title_ar?: string;
+
+        // map legend; spGroup is also the label on the SP Group map dot. Empty = "SP Group" / "SP International"
+        legend?: {
+            spGroup?: string;
+            spGroup_ar?: string;
+            spInternational?: string;
+            spInternational_ar?: string;
+        };
 
         cities: {
             id?: string;
@@ -355,6 +379,7 @@ const Home = () => {
             const payload: Record<string, unknown> = { ...rest };
             if (sixthSection?.title !== undefined) payload["sixthSection.title"] = sixthSection.title;
             if (sixthSection?.title_ar !== undefined) payload["sixthSection.title_ar"] = sixthSection.title_ar;
+            if (sixthSection?.legend !== undefined) payload["sixthSection.legend"] = sixthSection.legend;
 
             const response = await fetch(`/api/admin/home`, {
                 method: "PATCH",
@@ -465,54 +490,9 @@ const Home = () => {
                             />
                             <FormError error={errors.firstSection?.subTitle?.link?.message} />
                         </div>
-                        <div className="flex gap-4 justify-between">
-                            <div className="flex flex-col w-1/2 gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">Video</Label>
-                                    <Controller
-                                        name={`firstSection.video`}
-                                        control={control}
-                                        rules={{ required: "Video is required" }}
-                                        render={({ field }) => (
-                                            <VideoUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                    <FormError error={errors.firstSection?.video?.message} />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col gap-2">
-                                        <Label className=" font-bold">Video Alt Tag</Label>
-                                        <Input
-                                            type="text"
-                                            placeholder="Video Alt Tag"
-                                            {...register(`firstSection.videoAlt`)}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex flex-col w-1/2 gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">Poster Image</Label>
-                                    <Controller
-                                        name={`firstSection.videoPosterImage`}
-                                        control={control}
-                                        rules={{ required: "PosterImage is required" }}
-                                        render={({ field }) => (
-                                            <ImageUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                    <FormError error={errors.firstSection?.videoPosterImage?.message} />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">PosterImage Alt Tag</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="PosterImage Alt Tag"
-                                        {...register(`firstSection.videoPosterImageAlt`)}
-                                    />
-                                    <FormError error={errors.firstSection?.videoPosterImageAlt?.message} />
-                                </div>
-                            </div>
+                        <div className="flex flex-col gap-1">
+                            <Label className=" font-bold">Social Icons Label</Label>
+                            <Input type="text" placeholder="Stay Connected" {...register("firstSection.socialLabel")} />
                         </div>
                         <div>
                             <div className="flex items-center justify-between gap-3">
@@ -564,7 +544,7 @@ const Home = () => {
                             <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-2">
                                 {rotatingVideoItems.map((field, index) => (
                                     <div key={field.id} className="flex flex-col gap-2 relative border-b border-black/20 pb-5">
-                                        <div className="absolute top-2 right-2">
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => rotatingVideoRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -653,71 +633,35 @@ const Home = () => {
                                 <FormError error={errors.secondSection?.imageAlt?.message} />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
-                            <Label className="font-bold">Description</Label>
-                            <Textarea
-                                placeholder="Description"
-                                {...register("secondSection.description", {
-                                    required: "Description is required",
-                                })}
+                        <div className="flex flex-col gap-2 w-1/2">
+                            <Label className=" font-bold">Video</Label>
+                            <Controller
+                                name={`secondSection.video`}
+                                control={control}
+                                rules={{ required: "Video is required" }}
+                                render={({ field }) => (
+                                    <VideoUploader value={field.value} onChange={field.onChange} />
+                                )}
                             />
-                            <FormError error={errors.secondSection?.description?.message} />
+                            <FormError error={errors.secondSection?.video?.message} />
                         </div>
-                        <div className="flex gap-4 justify-between">
-                            <div className="flex flex-col w-1/2 gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">Video</Label>
-                                    <Controller
-                                        name={`secondSection.video`}
-                                        control={control}
-                                        rules={{ required: "Video is required" }}
-                                        render={({ field }) => (
-                                            <VideoUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                    <FormError error={errors.secondSection?.video?.message} />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col gap-2">
-                                        <Label className=" font-bold">Video Alt Tag</Label>
-                                        <Input
-                                            type="text"
-                                            placeholder="Video Alt Tag"
-                                            {...register(`secondSection.videoAlt`)}
-                                        />
-                                    </div>
-                                </div>
+                        <div className="flex gap-4">
+                            <div className="flex flex-col gap-1 w-1/2">
+                                <Label className=" font-bold">Button Text</Label>
+                                <Input type="text" placeholder="READ MORE" {...register("secondSection.button.text")} />
                             </div>
-                            <div className="flex flex-col w-1/2 gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">Video Poster Image</Label>
-                                    <Controller
-                                        name={`secondSection.videoPosterImage`}
-                                        control={control}
-                                        rules={{ required: "PosterImage is required" }}
-                                        render={({ field }) => (
-                                            <ImageUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                    <FormError error={errors.secondSection?.videoPosterImage?.message} />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">PosterImage Alt Tag</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="PosterImage Alt Tag"
-                                        {...register(`secondSection.videoPosterImageAlt`)}
-                                    />
-                                    <FormError error={errors.secondSection?.videoPosterImageAlt?.message} />
-                                </div>
+                            <div className="flex flex-col gap-1 w-1/2">
+                                <Label className=" font-bold">Button Link (empty = Third Section link)</Label>
+                                <Input type="text" placeholder="Link" {...register("secondSection.button.link")} />
                             </div>
                         </div>
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                 {secondSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                        <div className="absolute top-2 right-2">
+                                    <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Stat {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => secondSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -752,7 +696,7 @@ const Home = () => {
                                     </div>
                                 ))}
 
-                                <div className="flex justify-end">
+                                <div className="col-span-full flex justify-end">
                                     <Button
                                         type="button"
                                         className=""
@@ -776,27 +720,30 @@ const Home = () => {
                         <p className="text-sm text-black/50">
                             The icon + title that cycle above the stats on the homepage.
                         </p>
+                        <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
                         {highlightItems.map((field, index) => (
-                            <div key={field.id} className="relative grid grid-cols-1 gap-2 border-b border-black/20 pb-4 last:border-b-0">
+                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Highlight {index + 1}</span>
                                     <RiDeleteBinLine
                                         onClick={() => highlightRemove(index)}
-                                        className="absolute top-2 right-2 cursor-pointer text-red-600"
+                                        className="absolute top-3 right-3 cursor-pointer text-red-600"
                                     />
                                     <Controller
                                         name={`secondSection.highlights.${index}.icon`}
                                         control={control}
-                                        render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
+                                        render={({ field }) => <ImageUploader isLogo value={field.value} onChange={field.onChange} />}
                                     />
                                 <div className="flex flex-col gap-1">
                                     <Label>Icon Alt</Label>
                                     <Input type="text" placeholder="Alt Tag" {...register(`secondSection.highlights.${index}.iconAlt`)} />
                                 </div>
                                 <div className="flex flex-col gap-1">
-                                    <Label>Highlight {index + 1} Title</Label>
+                                    <Label>Title</Label>
                                     <Input type="text" placeholder="Title" {...register(`secondSection.highlights.${index}.title`)} />
                                 </div>
                             </div>
                         ))}
+                        </div>
                         <div className="flex justify-end">
                             <Button
                                 type="button"
@@ -875,6 +822,10 @@ const Home = () => {
                                 <FormError error={errors.thirdSection?.link?.message} />
                             </div>
                             <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Button Text</Label>
+                                <Input type="text" placeholder="READ MORE" {...register("thirdSection.buttonText")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
                                 <Label className=" font-bold">Background Video (desktop, used for both languages)</Label>
                                 <Controller
                                     name="thirdSection.video"
@@ -930,13 +881,14 @@ const Home = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {fifthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-4"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Sector {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fifthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1087,13 +1039,23 @@ const Home = () => {
                             />
                             <FormError error={errors.sixthSection?.title?.message} />
                         </div>
+                        <div className="flex gap-4">
+                            <div className="flex flex-col gap-1 w-1/2">
+                                <Label className=" font-bold">Legend: SP Group (also on the map dot)</Label>
+                                <Input type="text" placeholder="SP Group" {...register("sixthSection.legend.spGroup")} />
+                            </div>
+                            <div className="flex flex-col gap-1 w-1/2">
+                                <Label className=" font-bold">Legend: SP International</Label>
+                                <Input type="text" placeholder="SP International" {...register("sixthSection.legend.spInternational")} />
+                            </div>
+                        </div>
                     </div>
                     {/* <div className="px-5 pb-5">
                         <Label className="font-bold">Items</Label>
                         <div className="border p-5 rounded-md flex flex-col gap-5 mt-0.5">
                             {sixthSectionCities.map((field, index) => (
                                 <div key={field.id} className="grid grid-cols-2 gap-4 p-2 relative border-b pb-5">
-                                    <div className="absolute top-2 right-2">
+                                    <div className="absolute top-3 right-3">
                                         <RiDeleteBinLine
                                             onClick={() => sixthSectionCitiesRemove(index)}
                                             className="cursor-pointer text-red-600"
@@ -1270,10 +1232,11 @@ const Home = () => {
                         </div>
                     </div>
                     <Label className="mx-5 font-bold">Items</Label>
-                    <div className="border border-black/20 m-5 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                    <div className="m-5 mt-1 grid grid-cols-2 gap-4">
                         {seventhSectionItems.map((field, index) => (
-                            <div key={field.id} className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-5">
-                                <div className="absolute top-2 right-2">
+                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                <div className="absolute top-3 right-3">
                                     <RiDeleteBinLine
                                         onClick={() => seventhSectionRemove(index)}
                                         className="cursor-pointer text-red-600"
@@ -1304,7 +1267,7 @@ const Home = () => {
                             </div>
                         ))}
 
-                        <div className="flex justify-end">
+                        <div className="col-span-full flex justify-end">
                             <Button
                                 type="button"
                                 className=""
@@ -1366,52 +1329,9 @@ const Home = () => {
                                 {...register("firstSection.subTitle.link_ar")}
                             />
                         </div>
-                        <div className="flex gap-4 justify-between">
-                            <div className="flex flex-col w-1/2 gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">Video</Label>
-                                    <Controller
-                                        name={`firstSection.video`}
-                                        control={control}
-                                        rules={{ required: "Video is required" }}
-                                        render={({ field }) => (
-                                            <VideoUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                    <FormError error={errors.firstSection?.video?.message} />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col gap-2">
-                                        <Label className=" font-bold">Video Alt Tag</Label>
-                                        <Input
-                                            type="text"
-                                            placeholder="Video Alt Tag"
-                                            {...register(`firstSection.videoAlt_ar`)}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex flex-col w-1/2 gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">Poster Image</Label>
-                                    <Controller
-                                        name={`firstSection.videoPosterImage`}
-                                        control={control}
-                                        rules={{ required: "PosterImage is required" }}
-                                        render={({ field }) => (
-                                            <ImageUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">PosterImage Alt Tag</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="PosterImage Alt Tag"
-                                        {...register(`firstSection.videoPosterImageAlt_ar`)}
-                                    />
-                                </div>
-                            </div>
+                        <div className="flex flex-col gap-1">
+                            <Label className=" font-bold">Social Icons Label</Label>
+                            <Input type="text" placeholder="Stay Connected" {...register("firstSection.socialLabel_ar")} />
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -1445,64 +1365,35 @@ const Home = () => {
                                 <Input type="text" placeholder="Image Alt Tag" {...register(`secondSection.imageAlt_ar`)} />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
-                            <Label className="font-bold">Description</Label>
-                            <Textarea placeholder="Description" {...register("secondSection.description_ar")} />
+                        <div className="flex flex-col gap-2 w-1/2">
+                            <Label className=" font-bold">Video</Label>
+                            <Controller
+                                name={`secondSection.video`}
+                                control={control}
+                                rules={{ required: "Video is required" }}
+                                render={({ field }) => (
+                                    <VideoUploader value={field.value} onChange={field.onChange} />
+                                )}
+                            />
+                            <FormError error={errors.secondSection?.video?.message} />
                         </div>
-                        <div className="flex gap-4 justify-between">
-                            <div className="flex flex-col w-1/2 gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">Video</Label>
-                                    <Controller
-                                        name={`secondSection.video`}
-                                        control={control}
-                                        rules={{ required: "Video is required" }}
-                                        render={({ field }) => (
-                                            <VideoUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                    <FormError error={errors.secondSection?.video?.message} />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col gap-2">
-                                        <Label className=" font-bold">Video Alt Tag</Label>
-                                        <Input
-                                            type="text"
-                                            placeholder="Video Alt Tag"
-                                            {...register(`secondSection.videoAlt_ar`)}
-                                        />
-                                    </div>
-                                </div>
+                        <div className="flex gap-4">
+                            <div className="flex flex-col gap-1 w-1/2">
+                                <Label className=" font-bold">Button Text</Label>
+                                <Input type="text" placeholder="READ MORE" {...register("secondSection.button.text_ar")} />
                             </div>
-                            <div className="flex flex-col w-1/2 gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">Video Poster Image</Label>
-                                    <Controller
-                                        name={`secondSection.videoPosterImage`}
-                                        control={control}
-                                        rules={{ required: "PosterImage is required" }}
-                                        render={({ field }) => (
-                                            <ImageUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                    <FormError error={errors.secondSection?.videoPosterImage?.message} />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Label className=" font-bold">PosterImage Alt Tag</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="PosterImage Alt Tag"
-                                        {...register(`secondSection.videoPosterImageAlt_ar`)}
-                                    />
-                                </div>
+                            <div className="flex flex-col gap-1 w-1/2">
+                                <Label className=" font-bold">Button Link (empty = Third Section link)</Label>
+                                <Input type="text" placeholder="Link" {...register("secondSection.button.link_ar")} />
                             </div>
                         </div>
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                 {secondSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                        <div className="absolute top-2 right-2">
+                                    <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Stat {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => secondSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1531,7 +1422,7 @@ const Home = () => {
                                     </div>
                                 ))}
 
-                                <div className="flex justify-end">
+                                <div className="col-span-full flex justify-end">
                                     <Button
                                         type="button"
                                         className=""
@@ -1552,18 +1443,21 @@ const Home = () => {
                         </div>
                         <div className="flex flex-col gap-4 border-t border-black/20 pt-5 mt-2">
                             <Label className="font-bold">Highlights</Label>
+                        <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
                         {highlightItems.map((field, index) => (
-                            <div key={field.id} className="relative grid grid-cols-1 gap-2 border-b border-black/20 pb-4 last:border-b-0">
+                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Highlight {index + 1}</span>
                                 <div className="flex flex-col gap-1">
                                     <Label>Icon Alt</Label>
                                     <Input type="text" placeholder="Alt Tag" {...register(`secondSection.highlights.${index}.iconAlt_ar`)} />
                                 </div>
                                 <div className="flex flex-col gap-1">
-                                    <Label>Highlight {index + 1} Title</Label>
+                                    <Label>Title</Label>
                                     <Input type="text" placeholder="Title" {...register(`secondSection.highlights.${index}.title_ar`)} />
                                 </div>
                             </div>
                         ))}
+                        </div>
                         <p className="text-sm text-black/50">Highlights are added, removed and given icons in the English column.</p>
                         </div>
                     </div>
@@ -1612,6 +1506,10 @@ const Home = () => {
                                 <Label className=" font-bold">Link (Read More)</Label>
                                 <Input type="text" placeholder="Link" {...register("thirdSection.link_ar")} />
                             </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className=" font-bold">Button Text</Label>
+                                <Input type="text" placeholder="READ MORE" {...register("thirdSection.buttonText_ar")} />
+                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -1640,13 +1538,14 @@ const Home = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {fifthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-4"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Sector {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fifthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1770,13 +1669,23 @@ const Home = () => {
                             <Label className=" font-bold">Title</Label>
                             <Input type="text" placeholder="Main Title" {...register("sixthSection.title_ar")} />
                         </div>
+                        <div className="flex gap-4">
+                            <div className="flex flex-col gap-1 w-1/2">
+                                <Label className=" font-bold">Legend: SP Group (also on the map dot)</Label>
+                                <Input type="text" placeholder="SP Group" {...register("sixthSection.legend.spGroup_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-1 w-1/2">
+                                <Label className=" font-bold">Legend: SP International</Label>
+                                <Input type="text" placeholder="SP International" {...register("sixthSection.legend.spInternational_ar")} />
+                            </div>
+                        </div>
                     </div>
                     {/* <div className="px-5 pb-5">
                         <Label className="font-bold">Items</Label>
                         <div className="border p-5 rounded-md flex flex-col gap-5 mt-0.5">
                             {sixthSectionCities.map((field, index) => (
                                 <div key={field.id} className="grid grid-cols-2 gap-4 p-2 relative border-b pb-5">
-                                    <div className="absolute top-2 right-2">
+                                    <div className="absolute top-3 right-3">
                                         <RiDeleteBinLine
                                             onClick={() => sixthSectionCitiesRemove(index)}
                                             className="cursor-pointer text-red-600"
@@ -1907,10 +1816,11 @@ const Home = () => {
                         </div>
                     </div>
                     <Label className="mx-5 font-bold">Items</Label>
-                    <div className="border border-black/20 m-5 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                    <div className="m-5 mt-1 grid grid-cols-2 gap-4">
                         {seventhSectionItems.map((field, index) => (
-                            <div key={field.id} className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-5">
-                                <div className="absolute top-2 right-2">
+                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                <div className="absolute top-3 right-3">
                                     <RiDeleteBinLine
                                         onClick={() => seventhSectionRemove(index)}
                                         className="cursor-pointer text-red-600"
@@ -1935,7 +1845,7 @@ const Home = () => {
                             </div>
                         ))}
 
-                        <div className="flex justify-end">
+                        <div className="col-span-full flex justify-end">
                             <Button
                                 type="button"
                                 className=""

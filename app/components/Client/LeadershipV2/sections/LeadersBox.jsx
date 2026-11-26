@@ -68,7 +68,11 @@ const LeaderBox = ({data,big}) => {
     return (
         <section className="relative" ref={sectionRef}>
             <div className="container">
-                <div className="border-b py-60px border-cmnbdr relative overflow-hidden " ref={imageContainerRef}>
+                {/* first leader (big, right under the page title): 40px top; the others keep 80px top and bottom */}
+                <div
+                    className={`border-b ${big ? "pt-40px pb-80px" : "py-80px"} border-cmnbdr relative overflow-hidden`}
+                    ref={imageContainerRef}
+                >
                    {/* ================= LEADER ================= */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-[594px_auto] gap-y-6 lg:gap-y-10 gap-x-100px">
 

@@ -177,7 +177,7 @@ const SectionAlbums = () => {
                 </div>
             )}
 
-            <AdminItemContainer>
+            <AdminItemContainer expansion={false}>
                 <div className="flex justify-between items-center gap-4 p-5 border-b border-black/10 flex-wrap">
                     <div>
                         <p className="font-semibold text-lg">Albums {!loading && <span className="text-black/50 font-normal">({albums.length})</span>}</p>

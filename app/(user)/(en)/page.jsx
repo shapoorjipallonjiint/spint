@@ -1,6 +1,23 @@
 import HomeV2 from "@/app/components/Client/home/HomeV2";
 import { fetchFooter } from "@/lib/footer";
 
+// SEO from admin: Home > SEO. Empty fields are left out, so the layout's defaults ("Shapoorji Pallonji", no description) stay.
+// Same request as the page below (same URL and options), so Next.js fetches it once.
+export async function generateMetadata() {
+    try {
+        const response = await fetch(`${process.env.BASE_URL}/api/admin/home`, { next: { revalidate: 60 } });
+        const { data } = await response.json();
+        const title = data?.metaTitle?.trim();
+        const description = data?.metaDescription?.trim();
+        return {
+            ...(title ? { title } : {}),
+            ...(description ? { description } : {}),
+        };
+    } catch {
+        return {};
+    }
+}
+
 const page = async () => {
     // "Stay Connected" icons use the same socials as the footer (admin > Footer)
     const footer = await fetchFooter();
