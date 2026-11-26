@@ -265,7 +265,7 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
             if (response.ok) {
                 const data = await response.json();
                 toast.success(data.message);
-                router.push("/admin/projects");
+                router.push("/4dm1n-5p1nt/projects");
             }
         } catch (error) {
             console.log("Error in adding project", error);

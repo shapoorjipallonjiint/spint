@@ -30,12 +30,12 @@ const formatDate = (iso: string | null) =>
     iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—";
 
 const QUICK_ACTIONS = [
-    { label: "Add project", href: "/admin/projects/add", icon: Plus },
-    { label: "Add news article", href: "/admin/news/add", icon: PenSquare },
-    { label: "Manage gallery", href: "/admin/gallery", icon: Images },
-    { label: "Edit home page", href: "/admin/home", icon: Home },
-    { label: "Service visibility", href: "/admin/services/main", icon: Eye },
-    { label: "Site settings", href: "/admin/settings", icon: Settings },
+    { label: "Add project", href: "/4dm1n-5p1nt/projects/add", icon: Plus },
+    { label: "Add news article", href: "/4dm1n-5p1nt/news/add", icon: PenSquare },
+    { label: "Manage gallery", href: "/4dm1n-5p1nt/gallery", icon: Images },
+    { label: "Edit home page", href: "/4dm1n-5p1nt/home", icon: Home },
+    { label: "Service visibility", href: "/4dm1n-5p1nt/services/main", icon: Eye },
+    { label: "Site settings", href: "/4dm1n-5p1nt/settings", icon: Settings },
 ];
 
 // one accent per KPI card (icon chip, progress bar, top glow)
@@ -114,7 +114,7 @@ const Dashboard = ({ data }: { data: DashboardData }) => {
             detail: `${data.projects.visible} live on website`,
             progress: pct(data.projects.visible, data.projects.total),
             icon: Workflow,
-            href: "/admin/projects",
+            href: "/4dm1n-5p1nt/projects",
             tone: TONES.blue,
         },
         {
@@ -123,7 +123,7 @@ const Dashboard = ({ data }: { data: DashboardData }) => {
             detail: `of ${data.services.total} visible`,
             progress: pct(data.services.live, data.services.total),
             icon: Briefcase,
-            href: "/admin/services/main",
+            href: "/4dm1n-5p1nt/services/main",
             tone: TONES.violet,
         },
         {
@@ -131,7 +131,7 @@ const Dashboard = ({ data }: { data: DashboardData }) => {
             value: data.news.total,
             detail: "Published articles",
             icon: Newspaper,
-            href: "/admin/news",
+            href: "/4dm1n-5p1nt/news",
             tone: TONES.amber,
         },
         {
@@ -139,7 +139,7 @@ const Dashboard = ({ data }: { data: DashboardData }) => {
             value: data.gallery.albums,
             detail: `${data.gallery.photos.toLocaleString()} photos across albums`,
             icon: Images,
-            href: "/admin/gallery",
+            href: "/4dm1n-5p1nt/gallery",
             tone: TONES.emerald,
         },
         {
@@ -147,7 +147,7 @@ const Dashboard = ({ data }: { data: DashboardData }) => {
             value: data.enquiries.total,
             detail: `${data.enquiries.last30Days} in the last 30 days`,
             icon: Inbox,
-            href: "/admin/contact/enquiries",
+            href: "/4dm1n-5p1nt/contact/enquiries",
             tone: TONES.sky,
         },
     ];
@@ -193,7 +193,7 @@ const Dashboard = ({ data }: { data: DashboardData }) => {
                             <ExternalLink className="h-3.5 w-3.5" /> View website
                         </Link>
                         <Link
-                            href="/admin/projects/add"
+                            href="/4dm1n-5p1nt/projects/add"
                             className="flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-[13px] font-medium text-primary shadow-sm transition-colors hover:bg-white/90"
                         >
                             <Plus className="h-3.5 w-3.5" /> Add project
@@ -243,7 +243,7 @@ const Dashboard = ({ data }: { data: DashboardData }) => {
                     <SectionHeader
                         title="Recent enquiries"
                         subtitle="The latest messages from the contact form"
-                        href="/admin/contact/enquiries"
+                        href="/4dm1n-5p1nt/contact/enquiries"
                         linkLabel="View all"
                     />
                     {data.recentEnquiries.length === 0 ? (
@@ -341,7 +341,7 @@ const Dashboard = ({ data }: { data: DashboardData }) => {
                 <SectionHeader
                     title="Latest projects"
                     subtitle="Most recently added projects"
-                    href="/admin/projects"
+                    href="/4dm1n-5p1nt/projects"
                     linkLabel="Manage projects"
                 />
                 {data.latestProjects.length === 0 ? (
@@ -356,7 +356,7 @@ const Dashboard = ({ data }: { data: DashboardData }) => {
                         {data.latestProjects.map((article) => (
                             <Link
                                 key={article.id}
-                                href={`/admin/projects/edit/${article.id}`}
+                                href={`/4dm1n-5p1nt/projects/edit/${article.id}`}
                                 className="group overflow-hidden rounded-xl border border-gray-100 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(15,23,42,0.08)]"
                             >
                                 <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">

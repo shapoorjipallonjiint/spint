@@ -11,13 +11,13 @@
 //   response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
 //   // Define protected routes
-//   const isProtectedRoute = path.startsWith("/admin") && !path.includes("/admin/login");
+//   const isProtectedRoute = path.startsWith("/4dm1n-5p1nt") && !path.includes("/4dm1n-5p1nt/login");
 
 //   if (isProtectedRoute) {
 //     const token = request.cookies.get("adminToken")?.value || "";
 
 //     if (!token) {
-//       return NextResponse.redirect(new URL("/admin/login", request.url));
+//       return NextResponse.redirect(new URL("/4dm1n-5p1nt/login", request.url));
 //     }
 
 //     try {
@@ -26,7 +26,7 @@
 //       return NextResponse.next();
 //     } catch (error) {
 //       console.log(error);
-//       return NextResponse.redirect(new URL("/admin/login", request.url));
+//       return NextResponse.redirect(new URL("/4dm1n-5p1nt/login", request.url));
 //     }
 //   }
 
@@ -34,7 +34,7 @@
 // }
 
 // export const config = {
-//   matcher: ["/api/:path*", "/admin/:path*"],
+//   matcher: ["/api/:path*", "/4dm1n-5p1nt/:path*"],
 // };
 
 import { NextResponse } from "next/server";
@@ -108,14 +108,15 @@ export async function proxy(request: NextRequest) {
   let response = NextResponse.next();
 
   // ---------- AUTH ----------
-  const isProtectedRoute =
-    path.startsWith("/admin") && !path.includes("/admin/login");
+  // admin console lives at /4dm1n-5p1nt (folder app/(admin)/4dm1n-5p1nt); everything there except the login page needs a valid token
+  const isAdminRoute = path === "/4dm1n-5p1nt" || path.startsWith("/4dm1n-5p1nt/");
+  const isProtectedRoute = isAdminRoute && path !== "/4dm1n-5p1nt/login";
 
   if (isProtectedRoute) {
     const token = request.cookies.get("adminToken")?.value || "";
 
     if (!token) {
-      response = NextResponse.redirect(new URL("/admin/login", request.url));
+      response = NextResponse.redirect(new URL("/4dm1n-5p1nt/login", request.url));
       return applySecurityHeaders(response, nonce);
     }
 
@@ -125,7 +126,7 @@ export async function proxy(request: NextRequest) {
       );
       await jose.jwtVerify(token, secret);
     } catch {
-      response = NextResponse.redirect(new URL("/admin/login", request.url));
+      response = NextResponse.redirect(new URL("/4dm1n-5p1nt/login", request.url));
       return applySecurityHeaders(response, nonce);
     }
   }

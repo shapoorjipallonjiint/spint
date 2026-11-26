@@ -33,24 +33,24 @@ const isId = (segment: string) => /^[a-f0-9]{24}$/i.test(segment) || /^\d+$/.tes
 
 // pages with no side-by-side English / Arabic columns (lists, tables, single-column settings): no column legend
 const NO_COLUMN_PAGES = [
-    "/admin/projects",
-    "/admin/accreditation/list",
-    "/admin/careers/enquiries",
-    "/admin/contact/enquiries",
-    "/admin/home/map-locations",
-    "/admin/settings",
-    "/admin/header",
-    "/admin/footer",
-    "/admin/services/main",
+    "/4dm1n-5p1nt/projects",
+    "/4dm1n-5p1nt/accreditation/list",
+    "/4dm1n-5p1nt/careers/enquiries",
+    "/4dm1n-5p1nt/contact/enquiries",
+    "/4dm1n-5p1nt/home/map-locations",
+    "/4dm1n-5p1nt/settings",
+    "/4dm1n-5p1nt/header",
+    "/4dm1n-5p1nt/footer",
+    "/4dm1n-5p1nt/services/main",
 ];
 // same, for every page under these (the gallery and its album pages)
-const NO_COLUMN_PREFIXES = ["/admin/gallery"];
+const NO_COLUMN_PREFIXES = ["/4dm1n-5p1nt/gallery"];
 
 // Top bar of every admin page: breadcrumb on the left; in the middle the English / Arabic tabs (pages that use
 // them) or a legend for the side-by-side columns; on the right "View site" and, with tabs, Submit.
 const AdminTopBar = () => {
     const pathname = usePathname() || "";
-    const isDashboard = pathname === "/admin";
+    const isDashboard = pathname === "/4dm1n-5p1nt";
     const { enabled: hasLangTabs, lang, setLang } = useAdminLangTab();
 
     const crumbs = pathname
@@ -94,7 +94,7 @@ const AdminTopBar = () => {
                     </>
                 ) : (
                     <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1.5 text-[13px]">
-                        <Link href="/admin" className="shrink-0 text-slate-400 transition-colors hover:text-primary">
+                        <Link href="/4dm1n-5p1nt" className="shrink-0 text-slate-400 transition-colors hover:text-primary">
                             Admin
                         </Link>
                         {crumbs.map((crumb, i) => {

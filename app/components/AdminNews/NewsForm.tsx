@@ -71,7 +71,7 @@ const NewsForm = ({ editMode }: { editMode?: boolean }) => {
             if (response.ok) {
                 const data = await response.json();
                 toast.success(data.message);
-                router.push("/admin/news");
+                router.push("/4dm1n-5p1nt/news");
             }
         } catch (error) {
             console.log("Error in adding news", error);

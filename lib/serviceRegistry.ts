@@ -1,13 +1,13 @@
 // The 7 services, identified by a fixed slug (= their page URL /services/<slug> and the `link` field stored on each
 // service document). Used by the show/hide feature (admin Services > Main) and everywhere services are listed.
 export const SERVICE_REGISTRY = [
-  { slug: "engineering-construction", name: "Engineering & Construction", adminHref: "/admin/services/engineering-and-construction" },
-  { slug: "mep", name: "MEP", adminHref: "/admin/services/mep" },
-  { slug: "design-studio", name: "Design Studio", adminHref: "/admin/services/design-studio" },
-  { slug: "interior-design", name: "Interior Design", adminHref: "/admin/services/interior-design" },
-  { slug: "facade", name: "Facade", adminHref: "/admin/services/facade" },
-  { slug: "integrated-facility-management", name: "Integrated Facility Management", adminHref: "/admin/services/integrated-facility-management" },
-  { slug: "water", name: "Water", adminHref: "/admin/services/water" },
+  { slug: "engineering-construction", name: "Engineering & Construction", adminHref: "/4dm1n-5p1nt/services/engineering-and-construction" },
+  { slug: "mep", name: "MEP", adminHref: "/4dm1n-5p1nt/services/mep" },
+  { slug: "design-studio", name: "Design Studio", adminHref: "/4dm1n-5p1nt/services/design-studio" },
+  { slug: "interior-design", name: "Interior Design", adminHref: "/4dm1n-5p1nt/services/interior-design" },
+  { slug: "facade", name: "Facade", adminHref: "/4dm1n-5p1nt/services/facade" },
+  { slug: "integrated-facility-management", name: "Integrated Facility Management", adminHref: "/4dm1n-5p1nt/services/integrated-facility-management" },
+  { slug: "water", name: "Water", adminHref: "/4dm1n-5p1nt/services/water" },
 ] as const;
 
 export type ServiceSlug = (typeof SERVICE_REGISTRY)[number]["slug"];
