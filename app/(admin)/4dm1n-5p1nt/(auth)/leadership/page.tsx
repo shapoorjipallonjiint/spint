@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageUploader } from "@/components/ui/image-uploader";
+import AdminLoader from "@/app/components/common/AdminLoader";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
 import { RiDeleteBinLine, RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
@@ -84,7 +85,7 @@ const ItemToolbar = ({
     preview?: React.ReactNode;
     badge?: string;
 }) => (
-    <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-gray-200 bg-gray-50">
+    <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-slate-200 bg-white/80">
         <div className="flex items-center gap-3 min-w-0">
             <span className="inline-flex items-center justify-center shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-semibold">
                 {index + 1}
@@ -148,7 +149,7 @@ const NamePreview = ({ control, path, lang }: { control: Control<LeadershipFormP
 
 // shown when a list has no one in it yet
 const EmptyList = ({ text }: { text: string }) => (
-    <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-8 text-center text-sm text-gray-500">{text}</div>
+    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50/70 px-4 py-8 text-center text-sm text-slate-500">{text}</div>
 );
 
 // photo column of a person card (photos are shared by both language columns)
@@ -227,11 +228,11 @@ const PeopleList = ({
     return (
         <div className="flex flex-col gap-4">
             {list.fields.length === 0 && <EmptyList text="No one added yet. Use “Add Person” to add the first one." />}
-            {/* two cards per row when the column is wide enough (single column view / language tabs) */}
+            {/* grid like the Home CMS: 2 per row on medium columns, 3 on wide ones (language tabs view) */}
             <div className="@container">
-                <div className="grid grid-cols-1 @5xl:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 @2xl:grid-cols-2 @6xl:grid-cols-3 gap-4">
                     {list.fields.map((field, index) => (
-                        <div key={field.id} className="@container rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+                        <div key={field.id} className="@container rounded-lg border border-slate-200 bg-slate-50/70 overflow-hidden">
                             <ItemToolbar
                                 label="Person"
                                 index={index}
@@ -363,7 +364,8 @@ const LeadershipAdminPage = () => {
     if (loadError) {
         return <p className="text-red-600 p-5">Could not load the Leadership page data. Please refresh - nothing has been changed.</p>;
     }
-    if (!loaded) return <p className="p-5 text-black/60">Loading...</p>;
+    // same spinner as the other CMS pages while the content loads
+    if (!loaded) return <AdminLoader />;
 
     // one language column (same sections in both, like the other CMS pages); lists and photos are shared
     const renderColumn = (lang: Lang) => {
@@ -390,7 +392,7 @@ const LeadershipAdminPage = () => {
                         </p>
                         {leaders.fields.length === 0 && <EmptyList text="No leaders added yet. Use “Add Leader” to add the first one." />}
                         {leaders.fields.map((field, index) => (
-                            <div key={field.id} className="@container rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+                            <div key={field.id} className="@container rounded-lg border border-slate-200 bg-slate-50/70 overflow-hidden">
                                 <ItemToolbar
                                     label="Leader"
                                     index={index}
@@ -495,13 +497,13 @@ const LeadershipAdminPage = () => {
                     <div className="p-5 flex flex-col gap-3">
                         <Field
                             label="Meta Title"
-                            reg={register(`metaTitle${sfx(lang)}` as "metaTitle", en ? { required: "Meta title is required" } : {})}
+                            reg={register(`metaTitle${sfx(lang)}` as "metaTitle")}
                             error={en ? errors.metaTitle?.message : undefined}
                         />
                         <Field
                             label="Meta Description"
                             textarea
-                            reg={register(`metaDescription${sfx(lang)}` as "metaDescription", en ? { required: "Meta description is required" } : {})}
+                            reg={register(`metaDescription${sfx(lang)}` as "metaDescription")}
                             error={en ? errors.metaDescription?.message : undefined}
                         />
                     </div>
