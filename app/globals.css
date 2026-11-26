@@ -1810,13 +1810,9 @@ body::-webkit-scrollbar {
    column layout; with the original 5 columns this gives exactly 5vw + 754px / 7.814vw + 877px. */
 .cred-layout {
   --cred-cols: 5;
-  --cred-left: 500px;
-}
-
-@media (min-width: 1200px) {
-  .cred-layout {
-    --cred-left: 600px;
-  }
+  /* 1024-1359px: at least 58% of the screen (was a fixed 500px / 600px, which left ~300px for the cubes once the
+     side header's padding is taken off, so the cube texts overflowed). From 1360px the cube-based formula below. */
+  --cred-left: max(500px, 58vw);
 }
 
 @media (min-width: 1360px) {
@@ -1942,20 +1938,22 @@ body::-webkit-scrollbar {
 /* Admin CMS content background (admin layout <main>; the scroller inside is transparent).
    Cool off-white base, soft brand-blue / sky glows in the top corners and a faint dot grid that fades out
    downwards. Painted on the non-scrolling <main>, so it stays still while pages scroll over it. */
+/* Admin content area: a light tone of the sidebar's navy (#0f2a6b), a little deeper next to the sidebar so the two
+   read as one frame, with a soft navy glow at the top left and a faint sky glow at the top right */
 .admin-canvas {
-  background-color: #f4f6fb;
+  background-color: #e9eef9;
   background-image:
-    radial-gradient(900px 520px at 0% 0%, rgba(30, 69, 162, 0.08), transparent 65%),
-    radial-gradient(760px 480px at 100% 0%, rgba(48, 182, 249, 0.09), transparent 62%),
-    radial-gradient(900px 600px at 55% 115%, rgba(30, 69, 162, 0.05), transparent 70%),
-    linear-gradient(180deg, #f7f9fd 0%, #f1f4fa 100%);
+    radial-gradient(820px 520px at 0% 0%, rgba(15, 42, 107, 0.12), transparent 65%),
+    radial-gradient(760px 460px at 100% 0%, rgba(56, 189, 248, 0.08), transparent 62%),
+    radial-gradient(900px 600px at 50% 115%, rgba(15, 42, 107, 0.07), transparent 70%),
+    linear-gradient(90deg, #e1e8f6 0%, #e9eef9 28%, #eef2fb 100%);
 }
 .admin-canvas::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(15, 42, 107, 0.08) 1px, transparent 1px);
   background-size: 22px 22px;
   -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.35) 45%, transparent 85%);
   mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.35) 45%, transparent 85%);

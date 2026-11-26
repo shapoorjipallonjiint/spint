@@ -14,10 +14,12 @@ interface ImageUploaderProps {
   className?: string;
   deleteAfterUpload?: boolean;
   isLogo?: boolean;
+  // show the whole image (icons, logos, graphics) instead of filling and cropping the box
+  contain?: boolean;
   multiple?: boolean;
 }
 
-export function ImageUploader({ value, onChange, className, deleteAfterUpload = false, isLogo = false, multiple = false }: ImageUploaderProps) {
+export function ImageUploader({ value, onChange, className, deleteAfterUpload = false, isLogo = false, contain = false, multiple = false }: ImageUploaderProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [localImageUrl, setLocalImageUrl] = useState<string | null>(null);
@@ -134,11 +136,11 @@ export function ImageUploader({ value, onChange, className, deleteAfterUpload = 
   return (
     <div className={cn("space-y-4 w-full", className)}>
       {displayUrl && isUploadComplete ? (
-        <div className={` relative w-full max-w-[300px] aspect-[4/3] overflow-hidden rounded-xl border border-slate-200 shadow-[0_1px_3px_rgba(15,23,42,0.08)] ${isLogo ? "max-w-[100px] h-[100px] bg-black" : "max-w-[300px]"}`}>
+        <div className={` relative w-full max-w-[300px] aspect-[4/3] overflow-hidden rounded-xl border border-slate-200 shadow-[0_1px_3px_rgba(15,23,42,0.08)] ${isLogo ? "max-w-[100px] h-[100px] bg-black" : "max-w-[300px] bg-slate-100"}`}>
           <Image
             src={value ? value : `{${displayUrl}?t=${Date.now()}`}
             alt="Uploaded image"
-            className={isLogo ? "object-contain p-2 bg-black" : "object-cover"}
+            className={isLogo ? "object-contain p-2 bg-black" : contain ? "object-contain p-4" : "object-cover"}
             fill
             onError={() => {
               setLocalImageUrl(null);

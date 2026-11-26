@@ -1,6 +1,6 @@
 "use client";
 
-import ClientSideLink from "@/app/(admin)/admin/client-side-link";
+import ClientSideLink from "@/app/(admin)/4dm1n-5p1nt/client-side-link";
 import { useEffect, useState } from "react";
 
 import {
@@ -54,7 +54,7 @@ const AdminNavbar = () => {
 
     const servicesChildren = [
         // show / hide services on the website
-        { name: "Main", href: "/admin/services/main" },
+        { name: "Main", href: "/4dm1n-5p1nt/services/main" },
         // in the website order; hidden services stay editable here, just marked and listed last
         ...sortByServiceOrder([...SERVICE_REGISTRY], serviceOrder, (service) => service.slug)
             .sort((a, b) => Number(hiddenServices.includes(a.slug)) - Number(hiddenServices.includes(b.slug)))
@@ -68,20 +68,20 @@ const AdminNavbar = () => {
     const navGroups: NavGroup[] = [
         {
             label: "Overview",
-            items: [{ name: "Dashboard", href: "/admin", icon: LayoutDashboard, exact: true }],
+            items: [{ name: "Dashboard", href: "/4dm1n-5p1nt", icon: LayoutDashboard, exact: true }],
         },
         {
             label: "Pages",
             items: [
-                // exact: Map Locations (/admin/home/map-locations) lives under Projects, so Home must not also light up there
-                { name: "Home", href: "/admin/home", icon: HomeIcon, exact: true },
-                { name: "About", href: "/admin/about", icon: UserGroupIcon },
-                { name: "Leadership & Team", href: "/admin/leadership", icon: UserGroupIcon },
-                { name: "Quality", href: "/admin/quality", icon: ThumbsUp },
-                { name: "Global Presence", href: "/admin/global-presence", icon: GlobeAltIcon },
-                { name: "Community Engagement", href: "/admin/community-engagement", icon: UsersIcon },
-                { name: "HSE", href: "/admin/hse", icon: HeartHandshake },
-                { name: "Sustainability", href: "/admin/sustainability", icon: LeafIcon },
+                // exact: Map Locations (/4dm1n-5p1nt/home/map-locations) lives under Projects, so Home must not also light up there
+                { name: "Home", href: "/4dm1n-5p1nt/home", icon: HomeIcon, exact: true },
+                { name: "About", href: "/4dm1n-5p1nt/about", icon: UserGroupIcon },
+                { name: "Leadership & Team", href: "/4dm1n-5p1nt/leadership", icon: UserGroupIcon },
+                { name: "Quality", href: "/4dm1n-5p1nt/quality", icon: ThumbsUp },
+                { name: "Global Presence", href: "/4dm1n-5p1nt/global-presence", icon: GlobeAltIcon },
+                { name: "Community Engagement", href: "/4dm1n-5p1nt/community-engagement", icon: UsersIcon },
+                { name: "HSE", href: "/4dm1n-5p1nt/hse", icon: HeartHandshake },
+                { name: "Sustainability", href: "/4dm1n-5p1nt/sustainability", icon: LeafIcon },
                 {
                     name: "Accreditation",
                     href: "#accreditation",
@@ -89,12 +89,12 @@ const AdminNavbar = () => {
                     hasChild: true,
                     children: [
                         // page content, second section and SEO
-                        { name: "Main", href: "/admin/accreditation" },
+                        { name: "Main", href: "/4dm1n-5p1nt/accreditation" },
                         // accreditations and categories
-                        { name: "List", href: "/admin/accreditation/list" },
+                        { name: "List", href: "/4dm1n-5p1nt/accreditation/list" },
                     ],
                 },
-                { name: "Terms and Conditions", href: "/admin/terms-and-conditions", icon: FileText },
+                { name: "Terms and Conditions", href: "/4dm1n-5p1nt/terms-and-conditions", icon: FileText },
             ],
         },
         {
@@ -107,16 +107,16 @@ const AdminNavbar = () => {
                     hasChild: true,
                     children: [
                         // projects page banner, first section and SEO
-                        { name: "Main", href: "/admin/projects/main" },
+                        { name: "Main", href: "/4dm1n-5p1nt/projects/main" },
                         // add / edit / hide / reorder projects (also highlighted on the add and edit pages)
-                        { name: "Project List", href: "/admin/projects" },
-                        // world map points (page lives under /admin/home; also linked from the Home page)
-                        { name: "Map Locations", href: "/admin/home/map-locations" },
+                        { name: "Project List", href: "/4dm1n-5p1nt/projects" },
+                        // world map points (page lives under /4dm1n-5p1nt/home; also linked from the Home page)
+                        { name: "Map Locations", href: "/4dm1n-5p1nt/home/map-locations" },
                     ],
                 },
                 { name: "Services", href: "#services", icon: BriefcaseIcon, hasChild: true, children: servicesChildren },
-                { name: "News", href: "/admin/news", icon: NewspaperIcon },
-                { name: "Gallery", href: "/admin/gallery", icon: GalleryThumbnails },
+                { name: "News", href: "/4dm1n-5p1nt/news", icon: NewspaperIcon },
+                { name: "Gallery", href: "/4dm1n-5p1nt/gallery", icon: GalleryThumbnails },
             ],
         },
         {
@@ -128,8 +128,8 @@ const AdminNavbar = () => {
                     icon: BriefcaseIcon,
                     hasChild: true,
                     children: [
-                        { name: "Main Page", href: "/admin/careers" },
-                        { name: "Enquiries", href: "/admin/careers/enquiries" },
+                        { name: "Main Page", href: "/4dm1n-5p1nt/careers" },
+                        { name: "Enquiries", href: "/4dm1n-5p1nt/careers/enquiries" },
                     ],
                 },
                 {
@@ -138,8 +138,8 @@ const AdminNavbar = () => {
                     icon: EnvelopeIcon,
                     hasChild: true,
                     children: [
-                        { name: "Main Page", href: "/admin/contact" },
-                        { name: "Enquiries", href: "/admin/contact/enquiries" },
+                        { name: "Main Page", href: "/4dm1n-5p1nt/contact" },
+                        { name: "Enquiries", href: "/4dm1n-5p1nt/contact/enquiries" },
                     ],
                 },
             ],
@@ -147,9 +147,9 @@ const AdminNavbar = () => {
         {
             label: "Site",
             items: [
-                { name: "Header", href: "/admin/header", icon: PanelTop },
-                { name: "Footer", href: "/admin/footer", icon: PanelBottom },
-                { name: "Settings", href: "/admin/settings", icon: Settings },
+                { name: "Header", href: "/4dm1n-5p1nt/header", icon: PanelTop },
+                { name: "Footer", href: "/4dm1n-5p1nt/footer", icon: PanelBottom },
+                { name: "Settings", href: "/4dm1n-5p1nt/settings", icon: Settings },
             ],
         },
     ];

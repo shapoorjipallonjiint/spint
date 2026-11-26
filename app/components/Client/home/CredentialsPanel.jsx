@@ -62,12 +62,13 @@ const Cube = ({ value, label, row, showTop, showSide, meetsSideFace }) => (
       >
         <div>
           <p
-            className="font-semibold text-[12px] md:text-[13px] lg:text-[17px] leading-[12px] md:leading-[13px] lg:leading-[1.34] mb-[2px] lg:mb-[3px] group-hover:animate-[cube-value-bob_0.8s_ease-in-out_infinite]"
+            // lg-2xl: sized from the cube width (--w) so long values ("500,000+") stay inside smaller cubes; 2xl+: 17px as designed
+            className="font-semibold text-[12px] md:text-[13px] lg:text-[length:min(17px,calc(var(--w)*0.16))] 2xl:text-[17px] leading-[12px] md:leading-[13px] lg:leading-[1.34] mb-[2px] lg:mb-[3px] group-hover:animate-[cube-value-bob_0.8s_ease-in-out_infinite]"
           >
             {value}
           </p>
           <p
-            className="font-light text-[8px] lg:text-[11px] leading-[9px] lg:leading-[1.39]"
+            className="font-light text-[8px] lg:text-[length:min(11px,calc(var(--w)*0.1))] 2xl:text-[11px] leading-[9px] lg:leading-[1.39]"
           >
             {label}
           </p>
@@ -111,7 +112,7 @@ const CredentialsPanel = ({ cubesRef, data }) => {
       {/* blur sits on the wrapper: clip-path is applied after filter, so on one element it would cut the blur off */}
       <span
         data-cred-glow="1"
-        className="hidden lg:block absolute top-[calc(100%-10px)] -end-4 lg:-end-8 xl:-end-10 2xl:-end-[50px] w-[83%] lg:w-[374px] xl:w-[448px] 2xl:w-[calc(var(--cred-left)*0.747)] aspect-[763/39] pointer-events-none rtl:-scale-x-100"
+        className="hidden lg:block absolute top-[calc(100%-10px)] -end-4 lg:-end-8 xl:-end-10 2xl:-end-[50px] w-[83%] lg:w-[calc(var(--cred-left)*0.747)] aspect-[763/39] pointer-events-none rtl:-scale-x-100"
         style={{ filter: "blur(30px)" }} // Figma layer blur 60.1
       >
         <span

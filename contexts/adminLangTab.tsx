@@ -9,32 +9,32 @@ import { usePathname } from "next/navigation";
 // and Leadership use TinyMCE, which can come up blank inside a display:none column, so those pages hide their
 // inactive column with visibility + 0 height instead (see their langColumn).
 const LANG_TAB_PAGES = [
-    "/admin/home",
-    "/admin/about",
-    "/admin/quality",
-    "/admin/community-engagement",
-    "/admin/hse",
-    "/admin/sustainability",
-    "/admin/accreditation",
-    "/admin/global-presence",
-    "/admin/projects/main",
-    "/admin/news/add",
-    "/admin/projects/add",
-    "/admin/contact",
-    "/admin/services/engineering-and-construction",
-    "/admin/services/mep",
-    "/admin/services/interior-design",
-    "/admin/services/facade",
-    "/admin/services/water",
-    "/admin/services/integrated-facility-management",
-    "/admin/services/design-studio",
-    "/admin/terms-and-conditions",
-    "/admin/careers",
-    "/admin/leadership",
+    "/4dm1n-5p1nt/home",
+    "/4dm1n-5p1nt/about",
+    "/4dm1n-5p1nt/quality",
+    "/4dm1n-5p1nt/community-engagement",
+    "/4dm1n-5p1nt/hse",
+    "/4dm1n-5p1nt/sustainability",
+    "/4dm1n-5p1nt/accreditation",
+    "/4dm1n-5p1nt/global-presence",
+    "/4dm1n-5p1nt/projects/main",
+    "/4dm1n-5p1nt/news/add",
+    "/4dm1n-5p1nt/projects/add",
+    "/4dm1n-5p1nt/contact",
+    "/4dm1n-5p1nt/services/engineering-and-construction",
+    "/4dm1n-5p1nt/services/mep",
+    "/4dm1n-5p1nt/services/interior-design",
+    "/4dm1n-5p1nt/services/facade",
+    "/4dm1n-5p1nt/services/water",
+    "/4dm1n-5p1nt/services/integrated-facility-management",
+    "/4dm1n-5p1nt/services/design-studio",
+    "/4dm1n-5p1nt/terms-and-conditions",
+    "/4dm1n-5p1nt/careers",
+    "/4dm1n-5p1nt/leadership",
 ];
 
-// pages whose address carries a record id (e.g. /admin/news/edit/<id>): matched by prefix
-const LANG_TAB_PREFIXES = ["/admin/news/edit/", "/admin/projects/edit/"];
+// pages whose address carries a record id (e.g. /4dm1n-5p1nt/news/edit/<id>): matched by prefix
+const LANG_TAB_PREFIXES = ["/4dm1n-5p1nt/news/edit/", "/4dm1n-5p1nt/projects/edit/"];
 
 export type AdminLang = "en" | "ar";
 

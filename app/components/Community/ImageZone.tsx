@@ -4,7 +4,7 @@ import { ControllerRenderProps, FieldPath, FieldValues } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FirstSectionZoneKey } from "@/app/(admin)/admin/(auth)/community-engagement/page";
+import { FirstSectionZoneKey } from "@/app/(admin)/4dm1n-5p1nt/(auth)/community-engagement/page";
 
 interface ImageItem {
     image: string;
@@ -29,7 +29,7 @@ export function ImageZone<TFieldValues extends FieldValues>({ label, zoneKey, fi
                     type="button"
                     className="text-white bg-black text-2xl w-6 h-8 pb-3 flex items-center justify-center"
                     variant="outline"
-                    onClick={() => router.push(`/admin/community-engagement/images?zone=${zoneKey}`)}
+                    onClick={() => router.push(`/4dm1n-5p1nt/community-engagement/images?zone=${zoneKey}`)}
                 >
                     +
                 </Button>

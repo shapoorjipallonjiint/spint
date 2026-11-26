@@ -54,7 +54,10 @@ const homeSchema = new mongoose.Schema({
         rotatingVideos: {
             type: [{ video: { type: String }, poster: { type: String } }],
             default: undefined,
-        }
+        },
+        // label above the social icons in the hero (desktop). Optional: empty = "Stay Connected"
+        socialLabel: { type: String },
+        socialLabel_ar: { type: String },
     },
     secondSection: {
         title: {
@@ -109,6 +112,13 @@ const homeSchema = new mongoose.Schema({
             value: { type: String },
             value_ar: { type: String }
         }],
+        // "READ MORE" button. Optional: empty text = "READ MORE", empty link = the third section's link (as before)
+        button: {
+            text: { type: String },
+            text_ar: { type: String },
+            link: { type: String },
+            link_ar: { type: String },
+        },
         // highlights that cycle above the stats (icon + title). New and optional: default undefined so the
         // existing document is not touched until they are saved; the homepage falls back to its defaults until then
         highlights: {
@@ -143,6 +153,9 @@ const homeSchema = new mongoose.Schema({
         link_ar: {
             type: String
         },
+        // text of the "READ MORE" button that uses `link`. Optional: empty = "READ MORE"
+        buttonText: { type: String },
+        buttonText_ar: { type: String },
         image: {
             type: String,
             required: true
@@ -226,6 +239,14 @@ const homeSchema = new mongoose.Schema({
         },
         title_ar: {
             type: String,
+        },
+        // map legend labels; spGroup is also the label on the SP Group map dot.
+        // Optional: empty = "SP Group" / "SP International"
+        legend: {
+            spGroup: { type: String },
+            spGroup_ar: { type: String },
+            spInternational: { type: String },
+            spInternational_ar: { type: String },
         },
         cities: [{
             id: { type: String },

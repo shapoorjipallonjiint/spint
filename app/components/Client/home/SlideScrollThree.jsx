@@ -1340,11 +1340,34 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                 slug,
                 icon: item.logo,
                 image: item.image,
+                // alt tags from the CMS; empty falls back to the generated text used before
+                imageAlt: item.imageAlt?.trim() || `${item.title} sector`,
+                iconAlt: item.logoAlt?.trim() || `${item.title} icon`,
                 projectsCompleted: Number(item.completedProjects),
                 ongoingProjects: ongoingBySector[slug] || 0,
             };
         }),
     ];
+    // CMS-driven links / labels; each falls back to the text the site showed before it was connected
+    // hero arrow (admin: Home > First Section > Sub Title Link); "#" placeholders count as not set
+    const heroArrowLink = (() => {
+        const link = tData.firstSection?.subTitle?.link?.trim();
+        return link && !link.startsWith("#") ? link : "/about-us";
+    })();
+    // careers button (admin: Home > Seventh Section > Button Text / Button Link)
+    const careersButtonText = tData.seventhSection?.button?.text?.trim() || "People & Careers";
+    const careersButtonLink = tData.seventhSection?.button?.link?.trim() || "/careers";
+    // label above the hero social icons (admin: Home > First Section > Social Icons Label)
+    const socialLabel = tData.firstSection?.socialLabel?.trim() || "Stay Connected";
+    // second section READ MORE (admin: Home > Second Section > Button); no link of its own = the third section's link
+    const secondButtonText = tData.secondSection?.button?.text?.trim() || "READ MORE";
+    const secondButtonLink = tData.secondSection?.button?.link?.trim() || tData.thirdSection.link;
+    // third section READ MORE text (admin: Home > Third Section > Button Text)
+    const thirdButtonText = tData.thirdSection?.buttonText?.trim() || "READ MORE";
+    // map legend; the SP Group label is also shown on the SP Group map dot (admin: Home > Sixth Section > Legend)
+    const legendSpGroup = tData.sixthSection?.legend?.spGroup?.trim() || "SP Group";
+    const legendSpInternational = tData.sixthSection?.legend?.spInternational?.trim() || "SP International";
+
     const [activeIndex, setActiveIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
     const [animationDirection, setAnimationDirection] = useState(0); // 1 for down, -1 for up
@@ -1818,7 +1841,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     ref={titleOneRef}
                                 >
                                     <h1
-                                        className={`text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] lg:leading-[80px] ${isArabic ? "ps-2" : "pe-2"
+                                        className={`text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] 2xl:leading-[80px] ${isArabic ? "ps-2" : "pe-2"
                                             }`}
                                     >
                                         {tData.firstSection.title}
@@ -1839,7 +1862,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     <h4 className="text-[22px] lg:text-32 font-light leading-[2.05] lg:leading-[1.407] lg:max-w-[13ch]">
                                         {tData.firstSection.subTitle.text}
                                     </h4>
-                                    <LangLink href={"/about-us"}>
+                                    <LangLink href={heroArrowLink}>
                                         <Image
                                             src="../assets/images/arrowbl.svg"
                                             alt="Logo"
@@ -1853,7 +1876,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
 
                                 <div className="hidden lg:flex flex-col items-center gap-3" ref={iconsRef}>
                                     <p className="text-13 uppercase font-light">
-                                        {isArabic ? "Stay Connected" : "Stay Connected"}
+                                        {socialLabel}
                                     </p>
                                     {/* same icons + links as the footer (admin > Footer > socials) */}
                                     <SocialIcons socials={socials} />
@@ -1949,10 +1972,10 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 />
                                 <LangLink
                                     ref={spbtn}
-                                    href={tData.thirdSection.link}
+                                    href={secondButtonLink}
                                     className="hidden lg:flex text-[14px] mb-4 lg:mb-0 mt-5  3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-white lg:text-white uppercase  items-center gap-2 cursor-pointer group "
                                 >
-                                    <span>{isArabic ? "READ MORE" : "READ MORE"}</span>
+                                    <span>{secondButtonText}</span>
                                     <svg
                                         width="27"
                                         height="18"
@@ -2178,7 +2201,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     href={tData.thirdSection.link}
                                     className="text-[14px] mt-5 3xl:mt-[65px] lg:text-16 leading-[1.75] font-light text-[#464646] lg:text-white uppercase flex items-center gap-2 cursor-pointer group "
                                 >
-                                    <span>{isArabic ? "READ MORE" : "READ MORE"}</span>
+                                    <span>{thirdButtonText}</span>
                                     <svg
                                         width="27"
                                         height="18"
@@ -2974,7 +2997,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                                 width={200}
                                                                 height={200}
                                                                 src={activeSector.icon}
-                                                                alt={`${activeSector.name} icon`}
+                                                                alt={activeSector.iconAlt}
                                                                 className="h-[40px]"
                                                             />
                                                         </motion.div>
@@ -3009,7 +3032,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                 width={1500}
                                                 height={1000}
                                                 src={sector.image}
-                                                alt={`${sector.name} sector`}
+                                                alt={sector.imageAlt}
                                                 className="object-cover w-full h-full"
                                             />
                                         </div>
@@ -3186,11 +3209,11 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                 <div ref={maplegend} className="flex justify-end items-center  ">
                                     <div className="flex items-center gap-[5px] md:gap-2 me-3">
                                         <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-[#30B6F9] border border-[#97DCFF] scale-85"></div>
-                                        <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP Group</p>
+                                        <p className="text-paragraph font-light text-[11px] lg:text-[16px]">{legendSpGroup}</p>
                                     </div>
                                     <div className="flex items-center gap-[5px] md:gap-2">
                                         <div className="w-[10px] h-[10px] lg:w-[15px] lg:h-[15px]    pointer-events-auto rounded-full transition-all duration-500 itmbsx backdrop-blur-[4px] bg-primary border border-white scale-85"></div>
-                                        <p className="text-paragraph font-light text-[11px] lg:text-[16px]">SP International</p>
+                                        <p className="text-paragraph font-light text-[11px] lg:text-[16px]">{legendSpInternational}</p>
                                     </div>
                                 </div>
                             </div>
@@ -3284,7 +3307,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                                         {/* SP GROUP LABEL */}
                                                         {city.groupId === "sp-group" && activeDot === city.id && (
                                                             <span className="text-13 font-semibold uppercase text-primary">
-                                                                {isArabic ? "SP Group" : "SP Group"}
+                                                                {legendSpGroup}
                                                             </span>
                                                         )}
 
@@ -3668,9 +3691,9 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                             ref={talentCareerMob}
                                             className={`py-3 w-fit ${isArabic ? "mr-auto" : "ml-auto"} lg:hidden`}
                                         >
-                                            <LangLink href="/careers">
+                                            <LangLink href={careersButtonLink}>
                                                 <div className="flex items-center gap-[6px]">
-                                                    <p className="text-white text-16 font-light uppercase">People & Careers</p>
+                                                    <p className="text-white text-16 font-light uppercase">{careersButtonText}</p>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="27"
@@ -3811,9 +3834,9 @@ transition-all duration-300 cursor-pointer ${activeItem.id === item.id
                                 // above ends exactly on the long horizontal line
                                 className="h-[207px] pt-[37px] px-4 lg:px-7 3xl:px-15"
                             >
-                                <LangLink href="/careers">
+                                <LangLink href={careersButtonLink}>
                                     <div className="flex items-center gap-[6px]">
-                                        <p className="text-white text-16 font-light uppercase">People & Careers</p>
+                                        <p className="text-white text-16 font-light uppercase">{careersButtonText}</p>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="27"

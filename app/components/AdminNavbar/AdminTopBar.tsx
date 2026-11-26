@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRight, ExternalLink, LayoutDashboard } from "lucide-react";
+import { ChevronRight, ExternalLink, Home, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LANG_TAB_FORM_ID, useAdminLangTab, type AdminLang } from "@/contexts/adminLangTab";
 
@@ -33,24 +33,24 @@ const isId = (segment: string) => /^[a-f0-9]{24}$/i.test(segment) || /^\d+$/.tes
 
 // pages with no side-by-side English / Arabic columns (lists, tables, single-column settings): no column legend
 const NO_COLUMN_PAGES = [
-    "/admin/projects",
-    "/admin/accreditation/list",
-    "/admin/careers/enquiries",
-    "/admin/contact/enquiries",
-    "/admin/home/map-locations",
-    "/admin/settings",
-    "/admin/header",
-    "/admin/footer",
-    "/admin/services/main",
+    "/4dm1n-5p1nt/projects",
+    "/4dm1n-5p1nt/accreditation/list",
+    "/4dm1n-5p1nt/careers/enquiries",
+    "/4dm1n-5p1nt/contact/enquiries",
+    "/4dm1n-5p1nt/home/map-locations",
+    "/4dm1n-5p1nt/settings",
+    "/4dm1n-5p1nt/header",
+    "/4dm1n-5p1nt/footer",
+    "/4dm1n-5p1nt/services/main",
 ];
 // same, for every page under these (the gallery and its album pages)
-const NO_COLUMN_PREFIXES = ["/admin/gallery"];
+const NO_COLUMN_PREFIXES = ["/4dm1n-5p1nt/gallery"];
 
 // Top bar of every admin page: breadcrumb on the left; in the middle the English / Arabic tabs (pages that use
 // them) or a legend for the side-by-side columns; on the right "View site" and, with tabs, Submit.
 const AdminTopBar = () => {
     const pathname = usePathname() || "";
-    const isDashboard = pathname === "/admin";
+    const isDashboard = pathname === "/4dm1n-5p1nt";
     const { enabled: hasLangTabs, lang, setLang } = useAdminLangTab();
 
     const crumbs = pathname
@@ -66,11 +66,11 @@ const AdminTopBar = () => {
         !NO_COLUMN_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
 
     return (
-        <div className="fixed top-0 left-[var(--admin-sidebar-w)] z-10 grid h-14 w-[calc(100vw-var(--admin-sidebar-w))] grid-cols-[1fr_auto_1fr] items-center gap-4 border-b border-slate-200/60 bg-white/75 px-6 shadow-[0_6px_20px_-14px_rgba(15,23,42,0.18)] backdrop-blur-xl backdrop-saturate-150 transition-[left,width] duration-300 ease-out group-data-[ready=false]/shell:transition-none">
-            {/* brand hairline along the bottom edge */}
+        <div className="fixed top-0 left-[var(--admin-sidebar-w)] z-10 grid h-16 w-[calc(100vw-var(--admin-sidebar-w))] grid-cols-[1fr_auto_1fr] items-center gap-4 bg-white px-8 shadow-[0_10px_28px_-18px_rgba(30,69,162,0.35)] transition-[left,width] duration-300 ease-out group-data-[ready=false]/shell:transition-none">
+            {/* bottom border: brand gradient, navy -> blue -> sky */}
             <span
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-primary via-[#3b6fd8] to-sky-400"
             />
 
             {/* LEFT: where you are */}
@@ -94,7 +94,13 @@ const AdminTopBar = () => {
                     </>
                 ) : (
                     <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1.5 text-[13px]">
-                        <Link href="/admin" className="shrink-0 text-slate-400 transition-colors hover:text-primary">
+                        <Link
+                            href="/4dm1n-5p1nt"
+                            className="group flex shrink-0 items-center gap-2 text-slate-500 transition-colors hover:text-primary"
+                        >
+                            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200/80 bg-white text-slate-500 shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-colors group-hover:border-primary/30 group-hover:text-primary">
+                                <Home className="h-3.5 w-3.5" />
+                            </span>
                             Admin
                         </Link>
                         {crumbs.map((crumb, i) => {
@@ -103,7 +109,11 @@ const AdminTopBar = () => {
                                 <span key={`${crumb}-${i}`} className="flex min-w-0 items-center gap-1.5">
                                     <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-300" />
                                     <span
-                                        className={`truncate ${last ? "font-semibold text-slate-900" : "text-slate-500"}`}
+                                        className={`truncate ${
+                                            last
+                                                ? "rounded-full bg-primary/[0.08] px-2.5 py-0.5 font-semibold text-primary ring-1 ring-primary/15"
+                                                : "text-slate-500"
+                                        }`}
                                         aria-current={last ? "page" : undefined}
                                     >
                                         {crumb}
@@ -196,7 +206,7 @@ const AdminTopBar = () => {
                         type="submit"
                         form={LANG_TAB_FORM_ID}
                         title="Saves both English and Arabic"
-                        className="h-9 cursor-pointer rounded-full px-6 text-[13px] text-white"
+                        className="h-9 cursor-pointer rounded-full bg-gradient-to-r from-primary to-[#2f6fd6] px-6 text-[13px] font-medium text-white shadow-[0_6px_16px_-6px_rgba(30,69,162,0.6)] transition-all hover:-translate-y-px hover:shadow-[0_8px_20px_-6px_rgba(30,69,162,0.7)]"
                     >
                         Submit
                     </Button>

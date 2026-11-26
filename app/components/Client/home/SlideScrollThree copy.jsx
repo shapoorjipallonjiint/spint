@@ -1661,7 +1661,7 @@ const SlideScrollThree = ({ data, serviceData, setActiveSection, indexToScroll, 
                                     ref={titleOneRef}
                                 >
                                     <h1
-                                        className={`text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] lg:leading-[80px] ${isArabic ? "ps-2" : "pe-2"
+                                        className={`text-[40px] lg:text-70 font-light text-[#FFFBFB] max-w-[17ch] leading-[1.15] 2xl:leading-[80px] ${isArabic ? "ps-2" : "pe-2"
                                             }`}
                                     >
                                         {tData.firstSection.title}
