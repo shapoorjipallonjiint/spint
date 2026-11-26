@@ -192,11 +192,11 @@ const AboutPage = () => {
                     <div>
                         <Label className="font-bold">Logos</Label>
                         <p className="text-xs text-black/60 mb-2">Shown in this order in the slider. The section is hidden on the website while there are no logos.</p>
-                        <div className="border border-black/20 p-2 rounded-md flex flex-col gap-4">
+                        <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                             {clientLogos.map((field, index) => (
-                                <div key={field.id} className="border-b border-black/20 pb-4 flex flex-col gap-2">
+                                <div key={field.id} className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4">
                                     <div className="flex items-center justify-between">
-                                        <span className="font-bold">Logo {index + 1}</span>
+                                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Logo {index + 1}</span>
                                         <div className="flex items-center gap-3">
                                             <button type="button" title="Move up" disabled={index === 0} onClick={() => clientLogoMove(index, index - 1)} className="disabled:opacity-30 cursor-pointer">
                                                 <RiArrowUpLine />
@@ -216,7 +216,7 @@ const AboutPage = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-2">
+                                    <div className="flex flex-col gap-3">
                                         <div className="flex flex-col gap-1">
                                             <Label className="font-bold">Logo</Label>
                                             <Controller
@@ -238,7 +238,7 @@ const AboutPage = () => {
                                     </div>
                                 </div>
                             ))}
-                            <div className="flex justify-end">
+                            <div className="col-span-full flex justify-end">
                                 <Button type="button" addItem onClick={() => clientLogoAppend({ logo: "", name: "", name_ar: "" })}>
                                     Add Logo
                                 </Button>
@@ -411,10 +411,11 @@ const AboutPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                 {firstSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                        <div className="absolute top-2 right-2">
+                                    <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Stat {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => firstSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -450,7 +451,7 @@ const AboutPage = () => {
                                     </div>
                                 ))}
 
-                                <div className="flex justify-end">
+                                <div className="col-span-full flex justify-end">
                                     <Button
                                         type="button"
                                         className=""
@@ -501,15 +502,16 @@ const AboutPage = () => {
 
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border border-black/20 p-3 rounded-md flex flex-col gap-4 mt-2">
+                                <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-4 last:border-b-0"
+                                            className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                         >
+                                            <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
                                             <RiDeleteBinLine
                                                 onClick={() => secondSectionRemove(index)}
-                                                className="absolute top-2 right-2 cursor-pointer text-red-600"
+                                                className="absolute top-3 right-3 cursor-pointer text-red-600"
                                             />
 
                                             <Input
@@ -584,13 +586,14 @@ const AboutPage = () => {
                         </div>
 
                         <Label>Items</Label>
-                        <div className="border border-black/20 p-2 rounded-md">
+                        <div className="mt-1 flex flex-col gap-4">
                             {thirdSectionItems.map((field, index) => (
                                 <div
                                     key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
+                                    className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                 >
-                                    <div className="absolute top-2 right-2">
+                                    <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Value {index + 1}</span>
+                                    <div className="absolute top-3 right-3">
                                         <RiDeleteBinLine
                                             onClick={() => thirdSectionRemove(index)}
                                             className="cursor-pointer text-red-600"
@@ -673,7 +676,7 @@ const AboutPage = () => {
                                     {reorderMode ? "Done" : "Reorder"}
                                 </Button>
                             </div>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 flex flex-col gap-4">
 
                                 {reorderMode && (
                                     <DndContext
@@ -694,9 +697,10 @@ const AboutPage = () => {
                                 {!reorderMode && fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Entry {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fourthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -793,7 +797,7 @@ const AboutPage = () => {
 
                                         {(watch(`fourthSection.items.${index}.images`) || []).map(
                                             (img, fileIndex) => (
-                                                <div key={fileIndex} className="relative p-2 rounded-md">
+                                                <div key={fileIndex} className="relative flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3">
                                                     <Controller
                                                         name={`fourthSection.items.${index}.images.${fileIndex}.image`}
                                                         control={control}
@@ -986,10 +990,11 @@ const AboutPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                            <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                 {firstSectionItems.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                        <div className="absolute top-2 right-2">
+                                    <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Stat {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => firstSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1018,7 +1023,7 @@ const AboutPage = () => {
                                     </div>
                                 ))}
 
-                                <div className="flex justify-end">
+                                <div className="col-span-full flex justify-end">
                                     <Button
                                         type="button"
                                         className=""
@@ -1061,15 +1066,16 @@ const AboutPage = () => {
 
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border border-black/20 p-3 rounded-md flex flex-col gap-4 mt-2">
+                                <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-4 relative border-b border-black/20 pb-4 last:border-b-0"
+                                            className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                         >
+                                            <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
                                             <RiDeleteBinLine
                                                 onClick={() => secondSectionRemove(index)}
-                                                className="absolute top-2 right-2 cursor-pointer text-red-600"
+                                                className="absolute top-3 right-3 cursor-pointer text-red-600"
                                             />
 
                                             <Input
@@ -1135,13 +1141,14 @@ const AboutPage = () => {
                         </div>
 
                         <Label>Items</Label>
-                        <div className="border border-black/20 p-2 rounded-md">
+                        <div className="mt-1 flex flex-col gap-4">
                             {thirdSectionItems.map((field, index) => (
                                 <div
                                     key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
+                                    className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                 >
-                                    <div className="absolute top-2 right-2">
+                                    <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Value {index + 1}</span>
+                                    <div className="absolute top-3 right-3">
                                         <RiDeleteBinLine
                                             onClick={() => thirdSectionRemove(index)}
                                             className="cursor-pointer text-red-600"
@@ -1205,13 +1212,14 @@ const AboutPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 flex flex-col gap-4">
                                 {fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Entry {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fourthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1291,7 +1299,7 @@ const AboutPage = () => {
 
                                         {(watch(`fourthSection.items.${index}.images`) || []).map(
                                             (img, fileIndex) => (
-                                                <div key={fileIndex} className="relative p-2 rounded-md">
+                                                <div key={fileIndex} className="relative flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3">
                                                     <Controller
                                                         name={`fourthSection.items.${index}.images.${fileIndex}.image`}
                                                         control={control}
