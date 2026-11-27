@@ -33,6 +33,8 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
         t?.items?.map((item) => ({
             text: item.title,
             image: item.image,
+            // admin image alt tag (empty = no alt, as before)
+            alt: item.imageAlt?.trim() || "",
         })) ??
         [];
 
@@ -103,7 +105,7 @@ const ImgPointsComponent = ({ data, bgColor = "", sectionSpacing = "" }) => {
                             // key={activeImage}
                             // src={activeImage} 
                             src={points[0].image}
-                            alt=""
+                            alt={points[0].alt || ""}
                             width={1920}
                             height={1000}
                             // style={{ y: imageY }}

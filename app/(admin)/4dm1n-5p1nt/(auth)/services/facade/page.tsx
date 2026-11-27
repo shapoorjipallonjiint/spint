@@ -210,7 +210,14 @@ const FacadePage = () => {
                     <Label className="" main>
                         Banner
                     </Label>
-                    <div className="p-5 rounded-md grid grid-cols-2 gap-5">
+                    <div className="p-5 flex flex-col gap-6">
+                        {/* the banner at the top of this service page */}
+                        <div className="flex flex-col gap-3">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Page Banner</p>
+                                <p className="text-xs text-slate-500">Shown at the top of this service page.</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
@@ -220,7 +227,7 @@ const FacadePage = () => {
                             />
                             {errors.banner && <p className="text-red-500">{errors.banner.message}</p>}
                         </div>
-                        <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-3">
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Alt Tag</Label>
                                 <Input type="text" placeholder="Alt Tag" {...register("bannerAlt")} />
@@ -229,14 +236,16 @@ const FacadePage = () => {
                                 <Label className="font-bold">Page Title</Label>
                                 <Input type="text" placeholder="Page Title" {...register("pageTitle")} />
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Title (for home and project page selector)</Label>
-                                <Input type="text" placeholder="Title" {...register("title")} />
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Description (for home)</Label>
-                                <Textarea {...register("description")} />
+                        </div>
+                        {/* not on this page: the Home page Services section and the Projects page service filter */}
+                        <div className="flex flex-col gap-3 border-t border-slate-200 pt-5">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Home Page &amp; Project Selector</p>
+                                <p className="text-xs text-slate-500">Used on the Home page&apos;s Services section and the Projects page service filter, not in this page&apos;s banner.</p>
                             </div>
+                            <div className="grid grid-cols-2 gap-5">
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col gap-2">
                                     <Label className="font-bold">Home Image</Label>
@@ -267,10 +276,20 @@ const FacadePage = () => {
                                     </div>
                                 </div>
                             </div>
-
+                                <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title (for home and project page selector)</Label>
+                                <Input type="text" placeholder="Title" {...register("title")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Description (for home)</Label>
+                                <Textarea {...register("description")} />
+                            </div>
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Link (for home)</Label>
                                 <Input type="text" placeholder="Link" {...register("link")} />
+                            </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -334,42 +353,6 @@ const FacadePage = () => {
                                     <p className="text-red-500">{errors.firstSection?.poster?.message}</p>
                                 )}
                             </div>
-                            <div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Name</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Name"
-                                        {...register("firstSection.headName")}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Designation</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Designation"
-                                        {...register("firstSection.headDesignation")}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Profile Picture</Label>
-                                    <Controller
-                                        name="firstSection.headProfilePic"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <ImageUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Label className="font-bold">Head Profile Picture Alt</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Profile Picture Alt"
-                                        {...register("firstSection.headProfilePicAlt")}
-                                    />
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -394,13 +377,14 @@ const FacadePage = () => {
 
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                                <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                            className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                         >
-                                            <div className="absolute top-2 right-2">
+                                            <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Expertise {index + 1}</span>
+                                            <div className="absolute top-3 right-3">
                                                 <RiDeleteBinLine
                                                     onClick={() => secondSectionRemove(index)}
                                                     className="cursor-pointer text-red-600"
@@ -504,13 +488,14 @@ const FacadePage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {thirdSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Point {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => thirdSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -586,52 +571,6 @@ const FacadePage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Fourth Section</Label>
-
-                    <div className="p-5 rounded-md flex flex-col gap-5">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Title</Label>
-                                <Input type="text" placeholder="Title" {...register(`fourthSection.title`)} />
-                            </div>
-                        </div>
-
-                        <div>
-                            <Label className="text-sm font-bold">Description</Label>
-                            <Controller
-                                name={`fourthSection.description`}
-                                control={control}
-                                render={({ field }) => {
-                                    return <Textarea value={field.value} onChange={field.onChange} />;
-                                }}
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Image</Label>
-                                <Controller
-                                    name={`fourthSection.image`}
-                                    control={control}
-                                    rules={{ required: "Image is required" }}
-                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
-                                />
-                                {errors.fourthSection?.image && (
-                                    <p className="text-red-500">{errors.fourthSection?.image.message}</p>
-                                )}
-                            </div>
-
-                            <div className="flex flex-col gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className="font-bold">Alt Tag</Label>
-                                    <Input type="text" placeholder="Alt Tag" {...register(`fourthSection.imageAlt`)} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </AdminItemContainer>
-
-                <AdminItemContainer>
                     <Label main>Facade, Glazing &amp; Metalwork Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
@@ -644,10 +583,11 @@ const FacadePage = () => {
                         </div>
                         <div className="flex flex-col gap-5">
                             {systemsSectionItems.map((field, index) => (
-                                <div key={field.id} className="relative flex flex-col gap-3 border-b border-black/20 pb-5 last:border-b-0">
+                                <div key={field.id} className="relative flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10">
+                                    <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">System {index + 1}</span>
                                     <RiDeleteBinLine
                                         onClick={() => systemsSectionRemove(index)}
-                                        className="absolute top-2 right-2 cursor-pointer text-red-600"
+                                        className="absolute top-3 right-3 cursor-pointer text-red-600"
                                     />
                                     <div className="flex flex-col gap-2">
                                         <Label className="font-bold">Item {index + 1} Title</Label>
@@ -701,7 +641,14 @@ const FacadePage = () => {
                     <Label className="" main>
                         Banner
                     </Label>
-                    <div className="p-5 rounded-md grid grid-cols-2 gap-5">
+                    <div className="p-5 flex flex-col gap-6">
+                        {/* the banner at the top of this service page */}
+                        <div className="flex flex-col gap-3">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Page Banner</p>
+                                <p className="text-xs text-slate-500">Shown at the top of this service page.</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
@@ -711,7 +658,7 @@ const FacadePage = () => {
                             />
                             {errors.banner && <p className="text-red-500">{errors.banner.message}</p>}
                         </div>
-                        <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-3">
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Alt Tag</Label>
                                 <Input type="text" placeholder="Alt Tag" {...register("bannerAlt_ar")} />
@@ -720,14 +667,16 @@ const FacadePage = () => {
                                 <Label className="font-bold">Page Title</Label>
                                 <Input type="text" placeholder="Page Title" {...register("pageTitle_ar")} />
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Title (for home and project page selector)</Label>
-                                <Input type="text" placeholder="Title" {...register("title_ar")} />
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Description (for home)</Label>
-                                <Textarea {...register("description_ar")} />
+                        </div>
+                        {/* not on this page: the Home page Services section and the Projects page service filter */}
+                        <div className="flex flex-col gap-3 border-t border-slate-200 pt-5">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Home Page &amp; Project Selector</p>
+                                <p className="text-xs text-slate-500">Used on the Home page&apos;s Services section and the Projects page service filter, not in this page&apos;s banner.</p>
                             </div>
+                            <div className="grid grid-cols-2 gap-5">
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col gap-2">
                                     <Label className="font-bold">Home Image</Label>
@@ -749,9 +698,20 @@ const FacadePage = () => {
                                     </div>
                                 </div>
 
+                            </div>
+                                <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title (for home and project page selector)</Label>
+                                <Input type="text" placeholder="Title" {...register("title_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Description (for home)</Label>
+                                <Textarea {...register("description_ar")} />
+                            </div>
                                 <div className="flex flex-col gap-1">
                                     <Label className="font-bold">Link (for home)</Label>
                                     <Input type="text" disabled placeholder="Link" />
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -806,42 +766,6 @@ const FacadePage = () => {
                                     <p className="text-red-500">{errors.firstSection?.poster?.message}</p>
                                 )}
                             </div>
-                            <div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Name</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Name"
-                                        {...register("firstSection.headName_ar")}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Designation</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Designation"
-                                        {...register("firstSection.headDesignation_ar")}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Profile Picture</Label>
-                                    <Controller
-                                        name="firstSection.headProfilePic"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <ImageUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Label className="font-bold">Head Profile Picture Alt</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Profile Picture Alt"
-                                        {...register("firstSection.headProfilePicAlt_ar")}
-                                    />
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -857,13 +781,14 @@ const FacadePage = () => {
 
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                                <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                            className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                         >
-                                            <div className="absolute top-2 right-2">
+                                            <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Expertise {index + 1}</span>
+                                            <div className="absolute top-3 right-3">
                                                 <RiDeleteBinLine
                                                     onClick={() => secondSectionRemove(index)}
                                                     className="cursor-pointer text-red-600"
@@ -959,13 +884,14 @@ const FacadePage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {thirdSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Point {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => thirdSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1041,52 +967,6 @@ const FacadePage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Fourth Section</Label>
-
-                    <div className="p-5 rounded-md flex flex-col gap-5">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Title</Label>
-                                <Input type="text" placeholder="Title" {...register(`fourthSection.title_ar`)} />
-                            </div>
-                        </div>
-
-                        <div>
-                            <Label className="text-sm font-bold">Description</Label>
-                            <Controller
-                                name={`fourthSection.description_ar`}
-                                control={control}
-                                render={({ field }) => {
-                                    return <Textarea value={field.value} onChange={field.onChange} />;
-                                }}
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Image</Label>
-                                <Controller
-                                    name={`fourthSection.image`}
-                                    control={control}
-                                    rules={{ required: "Image is required" }}
-                                    render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
-                                />
-                                {errors.fourthSection?.image && (
-                                    <p className="text-red-500">{errors.fourthSection?.image.message}</p>
-                                )}
-                            </div>
-
-                            <div className="flex flex-col gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <Label className="font-bold">Alt Tag</Label>
-                                    <Input type="text" placeholder="Alt Tag" {...register(`fourthSection.imageAlt_ar`)} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </AdminItemContainer>
-
-                <AdminItemContainer>
                     <Label main>Facade, Glazing &amp; Metalwork Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
@@ -1099,7 +979,8 @@ const FacadePage = () => {
                         </div>
                         <div className="flex flex-col gap-5">
                             {systemsSectionItems.map((field, index) => (
-                                <div key={field.id} className="relative flex flex-col gap-3 border-b border-black/20 pb-5 last:border-b-0">
+                                <div key={field.id} className="relative flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10">
+                                    <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">System {index + 1}</span>
                                     <div className="flex flex-col gap-2">
                                         <Label className="font-bold">Item {index + 1} Title</Label>
                                         <Input type="text" placeholder="Title" {...register(`systemsSection.items.${index}.title_ar`)} />
