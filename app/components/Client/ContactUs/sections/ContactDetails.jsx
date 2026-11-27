@@ -155,7 +155,8 @@ const ContactDetails = ({ data }) => {
                             viewport={{ amount: 0.2, once: true }}
                             className="text-19 font-light text-paragraph mb-3 lg:mb-6 "
                         >
-                            {isArabic ? "المقر الرئيسي" : "Head office"}
+                            {/* English: admin Contact > First Section > Title ("Head office" when empty). Arabic unchanged: its stored title is still a placeholder */}
+                                {isArabic ? "المقر الرئيسي" : data?.firstSection?.title?.trim() || "Head office"}
                         </motion.h3>
                         <motion.p
                             variants={moveUp(0.4)}
