@@ -18,11 +18,11 @@ export async function generateMetadata() {
 }
 
 const page = async() => {
-  const newsResponse = await fetch(`${process.env.BASE_URL}/api/admin/news`, { next: { revalidate: 60 } });
-  const newsData = await newsResponse.json();
-
-  const topicResponse = await fetch(`${process.env.BASE_URL}/api/admin/news/topic`, { next: { revalidate: 60 } });
-  const topicData = await topicResponse.json();
+  // independent requests: run them at the same time (faster render, title stays in <head>)
+  const [newsData, topicData] = await Promise.all([
+    fetch(`${process.env.BASE_URL}/api/admin/news`, { next: { revalidate: 60 } }).then((res) => res.json()),
+    fetch(`${process.env.BASE_URL}/api/admin/news/topic`, { next: { revalidate: 60 } }).then((res) => res.json()),
+  ]);
 
   return (
     <Index newsData={newsData.data} topicData={topicData.data}/>
