@@ -180,7 +180,14 @@ const EngineeringAndConstructionPage = () => {
 
                 <AdminItemContainer>
                     <Label className="" main>Banner</Label>
-                    <div className='p-5 rounded-md grid grid-cols-2 gap-5'>
+                    <div className="p-5 flex flex-col gap-6">
+                        {/* the banner at the top of this service page */}
+                        <div className="flex flex-col gap-3">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Page Banner</p>
+                                <p className="text-xs text-slate-500">Shown at the top of this service page.</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
@@ -197,7 +204,7 @@ const EngineeringAndConstructionPage = () => {
                                 <p className="text-red-500">{errors.banner.message}</p>
                             )}
                         </div>
-                        <div className='flex flex-col gap-2'>
+                                <div className="flex flex-col gap-3">
                             <div className='flex flex-col gap-1'>
                                 <Label className='font-bold'>Alt Tag</Label>
                                 <Input type='text' placeholder='Alt Tag' {...register("bannerAlt")} />
@@ -206,14 +213,16 @@ const EngineeringAndConstructionPage = () => {
                                 <Label className='font-bold'>Page Title</Label>
                                 <Input type='text' placeholder='Page Title' {...register("pageTitle")} />
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title (for home and project page selector)</Label>
-                                <Input type='text' placeholder='Title' {...register("title")} />
+                                </div>
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Description (for home)</Label>
-                                <Textarea {...register("description")} />
+                        </div>
+                        {/* not on this page: the Home page Services section and the Projects page service filter */}
+                        <div className="flex flex-col gap-3 border-t border-slate-200 pt-5">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Home Page &amp; Project Selector</p>
+                                <p className="text-xs text-slate-500">Used on the Home page&apos;s Services section and the Projects page service filter, not in this page&apos;s banner.</p>
                             </div>
+                            <div className="grid grid-cols-2 gap-5">
                             <div className='flex flex-col gap-2'>
                                 <div className='flex flex-col gap-2'>
                                     <Label className='font-bold'>Home Image</Label>
@@ -245,12 +254,21 @@ const EngineeringAndConstructionPage = () => {
 
 
                             </div>
-
+                                <div className="flex flex-col gap-3">
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Title (for home and project page selector)</Label>
+                                <Input type='text' placeholder='Title' {...register("title")} />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Description (for home)</Label>
+                                <Textarea {...register("description")} />
+                            </div>
                             <div className='flex flex-col gap-1'>
                                 <Label className='font-bold'>Link (for home)</Label>
                                 <Input type='text' placeholder='Link' {...register("link")} />
                             </div>
-
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -555,7 +573,14 @@ const EngineeringAndConstructionPage = () => {
 
                 <AdminItemContainer>
                     <Label className="" main>Banner</Label>
-                    <div className='p-5 rounded-md grid grid-cols-2 gap-5'>
+                    <div className="p-5 flex flex-col gap-6">
+                        {/* the banner at the top of this service page */}
+                        <div className="flex flex-col gap-3">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Page Banner</p>
+                                <p className="text-xs text-slate-500">Shown at the top of this service page.</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
@@ -572,7 +597,7 @@ const EngineeringAndConstructionPage = () => {
                                 <p className="text-red-500">{errors.banner.message}</p>
                             )}
                         </div>
-                        <div className='flex flex-col gap-2'>
+                                <div className="flex flex-col gap-3">
                             <div className='flex flex-col gap-1'>
                                 <Label className='font-bold'>Alt Tag</Label>
                                 <Input type='text' placeholder='Alt Tag' {...register("bannerAlt_ar")} />
@@ -581,14 +606,16 @@ const EngineeringAndConstructionPage = () => {
                                 <Label className='font-bold'>Page Title</Label>
                                 <Input type='text' placeholder='Page Title' {...register("pageTitle_ar")} />
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title (for home and project page selector)</Label>
-                                <Input type='text' placeholder='Title' {...register("title_ar")} />
+                                </div>
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Description (for home)</Label>
-                                <Textarea {...register("description_ar")} />
+                        </div>
+                        {/* not on this page: the Home page Services section and the Projects page service filter */}
+                        <div className="flex flex-col gap-3 border-t border-slate-200 pt-5">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Home Page &amp; Project Selector</p>
+                                <p className="text-xs text-slate-500">Used on the Home page&apos;s Services section and the Projects page service filter, not in this page&apos;s banner.</p>
                             </div>
+                            <div className="grid grid-cols-2 gap-5">
                             <div className='flex flex-col gap-2'>
                                 <div className='flex flex-col gap-2'>
                                     <Label className='font-bold'>Home Image</Label>
@@ -617,12 +644,21 @@ const EngineeringAndConstructionPage = () => {
 
 
                             </div>
-
+                                <div className="flex flex-col gap-3">
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Title (for home and project page selector)</Label>
+                                <Input type='text' placeholder='Title' {...register("title_ar")} />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Description (for home)</Label>
+                                <Textarea {...register("description_ar")} />
+                            </div>
                             <div className='flex flex-col gap-1'>
                                 <Label className='font-bold'>Link (for home)</Label>
                                 <Input type='text' disabled placeholder='Link' />
                             </div>
-
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
