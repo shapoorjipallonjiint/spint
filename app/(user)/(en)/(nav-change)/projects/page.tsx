@@ -1,6 +1,23 @@
 import Index from '@/app/components/Client/projects-v2/Index'
 import { getVisitorCountry } from '@/lib/visitorCountry'
 
+// SEO from admin: Projects > Main > SEO. Empty fields are left out, so the layout's defaults ("Shapoorji Pallonji",
+// no description) stay. Same request as the page below (same URL and options), so Next.js fetches it once.
+export async function generateMetadata() {
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/api/admin/project?view=list`, { next: { revalidate: 60 } });
+    const { data } = await response.json();
+    const title = data?.metaTitle?.trim();
+    const description = data?.metaDescription?.trim();
+    return {
+      ...(title ? { title } : {}),
+      ...(description ? { description } : {}),
+    };
+  } catch {
+    return {};
+  }
+}
+
 const page = async({ searchParams }: { searchParams: Promise<{ geo?: string | string[] }> }) => {
     const visitorCountry = await getVisitorCountry((await searchParams).geo);
 
