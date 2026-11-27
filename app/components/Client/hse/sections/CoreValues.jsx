@@ -50,7 +50,8 @@ const CoreValues = ({ data }) => {
                             src={t.image}
                             width={658}
                             height={545}
-                            alt=""
+                            // admin: HSE > First Section > Image Alt Tag (empty = no alt, as before)
+                            alt={t.imageAlt?.trim() || ""}
                             className="hidden md:block w-full md:w-full h-[200px] xs:h-[250px] md:h-[450px] lg:h-[520px] 2xl:h-[580px] 3xl:h-[648px] object-cover"
                         />
                     </div>
@@ -70,7 +71,8 @@ const CoreValues = ({ data }) => {
                             src={t.image}
                             width={658}
                             height={545}
-                            alt=""
+                            // admin: HSE > First Section > Image Alt Tag (empty = no alt, as before)
+                            alt={t.imageAlt?.trim() || ""}
                             className="md:hidden w-full md:w-full h-[200px] xs:h-[250px] md:h-[450px] lg:h-[520px] 2xl:h-[580px] 3xl:h-[648px] object-cover mb-4  "
                         />
                     </div>

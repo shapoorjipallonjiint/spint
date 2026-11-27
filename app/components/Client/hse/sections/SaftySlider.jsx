@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useLayoutEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -35,6 +35,21 @@ const SaftySlider = ({ data }) => {
         offset: ["start end", "end start"],
     });
     const shapeY = useTransform(shapeProgress, [0, 1], [-200, 200]);
+
+    // slide height scale by screen width (same breakpoints as before). Read in the browser after mount instead of
+    // during render: `window` does not exist on the server, which made the server render of this section fail.
+    // Starts at 1 on the server and the first browser render (so they match), then the real value is set before the
+    // browser paints (layout effect), and kept up to date on resize.
+    const [heightScale, setHeightScale] = useState(1);
+    useLayoutEffect(() => {
+        const update = () => {
+            const w = window.innerWidth;
+            setHeightScale(w >= 1536 ? 1 : w >= 1280 ? 0.9 : w >= 1024 ? 0.8 : w >= 768 ? 0.7 : 0.6);
+        };
+        update();
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
+    }, []);
 
      const computeHeight = (i, scale = 1) => {
         const diff = Math.abs(activeIndex - i);
@@ -163,18 +178,7 @@ const SaftySlider = ({ data }) => {
                                     ref={imageContainerRefTwo}
                                     style={{
                                         // Dynamically scale height based on screen width
-                                        height: computeHeight(
-                                            i,
-                                            window.innerWidth >= 1536
-                                                ? 1
-                                                : window.innerWidth >= 1280
-                                                ? 0.9
-                                                : window.innerWidth >= 1024
-                                                ? 0.8
-                                                : window.innerWidth >= 768
-                                                ? 0.7
-                                                : 0.6,
-                                        ),
+                                        height: computeHeight(i, heightScale),
                                         width: "100%",
                                     }}
                                 >
@@ -183,7 +187,7 @@ const SaftySlider = ({ data }) => {
                                         src={img.image}
                                         width={900}
                                         height={600}
-                                        alt={`slide-${i}`}
+                                        alt={img.imageAlt?.trim() || `slide-${i}`} // admin: HSE > Fifth Section > image Alt Tag
                                         className="w-full h-full object-cover"
                                     />
                                 </div>

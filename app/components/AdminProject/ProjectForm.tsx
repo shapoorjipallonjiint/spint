@@ -1435,21 +1435,20 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                     </div>
                 </AdminItemContainer>
 
-                <div className="h-fit w-full p-2 border-2 border-gray-300 rounded-md mt-5">
-                    <div className="flex justify-between border-b-2 pb-2">
-                        <Label className="text-sm ">Meta Section</Label>
-                    </div>
-                    <div className="mt-2 grid grid-cols-1 gap-2  h-fit">
-                        <div>
-                            <Label>Meta title</Label>
-                            <Input type="text" {...register("metaTitle")} />
+                {/* SEO: same card as the other editors (used for this project's page title / description) */}
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="p-5 flex flex-col gap-3">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Meta Title</Label>
+                            <Input type="text" placeholder="Meta Title" {...register("metaTitle")} />
                         </div>
-                        <div>
-                            <Label>Meta Description</Label>
-                            <Input type="text" {...register("metaDescription")} />
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Meta Description</Label>
+                            <Input type="text" placeholder="Meta Description" {...register("metaDescription")} />
                         </div>
                     </div>
-                </div>
+                </AdminItemContainer>
             </div>
 
             {/*Arabic Version */}
@@ -2124,21 +2123,20 @@ const ProjectForm = ({ editMode }: { editMode?: boolean }) => {
                     </div>
                 </AdminItemContainer>
 
-                <div className="h-fit w-full p-2 border-2 border-gray-300 rounded-md mt-5">
-                    <div className="flex justify-between border-b-2 pb-2">
-                        <Label className="text-sm ">Meta Section</Label>
-                    </div>
-                    <div className="mt-2 grid grid-cols-1 gap-2  h-fit">
-                        <div>
-                            <Label>Meta title</Label>
-                            <Input type="text" {...register("metaTitle_ar")} />
+                {/* SEO: same card as the other editors (used for this project's page title / description) */}
+                <AdminItemContainer>
+                    <Label main>SEO</Label>
+                    <div className="p-5 flex flex-col gap-3">
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Meta Title</Label>
+                            <Input type="text" placeholder="Meta Title" {...register("metaTitle_ar")} />
                         </div>
-                        <div>
-                            <Label>Meta Description</Label>
-                            <Input type="text" {...register("metaDescription_ar")} />
+                        <div className="flex flex-col gap-2">
+                            <Label className="font-bold">Meta Description</Label>
+                            <Input type="text" placeholder="Meta Description" {...register("metaDescription_ar")} />
                         </div>
                     </div>
-                </div>
+                </AdminItemContainer>
             </div>
 
             {/* with the language tabs, Submit sits in the top bar */}

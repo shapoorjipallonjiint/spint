@@ -55,6 +55,9 @@ interface MEPFormProps {
             imageAlt_ar: string;
             title: string;
             title_ar: string;
+            // shown under the title on the website (ExpertiseSec reads item.desc)
+            desc?: string;
+            desc_ar?: string;
         }[];
     };
     thirdSection: {
@@ -122,14 +125,6 @@ const MEPPage = () => {
         name: "secondSection.items",
     });
 
-    const {
-        fields: thirdSectionItems,
-        append: thirdSectionAppend,
-        remove: thirdSectionRemove,
-    } = useFieldArray({
-        control,
-        name: "thirdSection.items",
-    });
 
     const {
         fields: fourthSectionItems,
@@ -208,7 +203,14 @@ const MEPPage = () => {
                     <Label className="" main>
                         Banner
                     </Label>
-                    <div className="p-5 rounded-md grid grid-cols-2 gap-5">
+                    <div className="p-5 flex flex-col gap-6">
+                        {/* the banner at the top of this service page */}
+                        <div className="flex flex-col gap-3">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Page Banner</p>
+                                <p className="text-xs text-slate-500">Shown at the top of this service page.</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
@@ -218,7 +220,7 @@ const MEPPage = () => {
                             />
                             {errors.banner && <p className="text-red-500">{errors.banner.message}</p>}
                         </div>
-                        <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-3">
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Alt Tag</Label>
                                 <Input type="text" placeholder="Alt Tag" {...register("bannerAlt")} />
@@ -227,14 +229,16 @@ const MEPPage = () => {
                                 <Label className="font-bold">Page Title</Label>
                                 <Input type="text" placeholder="Page Title" {...register("pageTitle")} />
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Title (for home and project page selector)</Label>
-                                <Input type="text" placeholder="Title" {...register("title")} />
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Description (for home)</Label>
-                                <Textarea {...register("description")} />
+                        </div>
+                        {/* not on this page: the Home page Services section and the Projects page service filter */}
+                        <div className="flex flex-col gap-3 border-t border-slate-200 pt-5">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Home Page &amp; Project Selector</p>
+                                <p className="text-xs text-slate-500">Used on the Home page&apos;s Services section and the Projects page service filter, not in this page&apos;s banner.</p>
                             </div>
+                            <div className="grid grid-cols-2 gap-5">
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col gap-2">
                                     <Label className="font-bold">Home Image</Label>
@@ -265,10 +269,20 @@ const MEPPage = () => {
                                     </div>
                                 </div>
                             </div>
-
+                                <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title (for home and project page selector)</Label>
+                                <Input type="text" placeholder="Title" {...register("title")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Description (for home)</Label>
+                                <Textarea {...register("description")} />
+                            </div>
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Link (for home)</Label>
                                 <Input type="text" placeholder="Link" {...register("link")} />
+                            </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -332,42 +346,6 @@ const MEPPage = () => {
                                     <p className="text-red-500">{errors.firstSection?.poster?.message}</p>
                                 )}
                             </div>
-                            <div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Name</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Name"
-                                        {...register("firstSection.headName")}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Designation</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Designation"
-                                        {...register("firstSection.headDesignation")}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Profile Picture</Label>
-                                    <Controller
-                                        name="firstSection.headProfilePic"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <ImageUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Label className="font-bold">Head Profile Picture Alt</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Profile Picture Alt"
-                                        {...register("firstSection.headProfilePicAlt")}
-                                    />
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -391,13 +369,14 @@ const MEPPage = () => {
                             </div>
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                                <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                            className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                         >
-                                            <div className="absolute top-2 right-2">
+                                            <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Expertise {index + 1}</span>
+                                            <div className="absolute top-3 right-3">
                                                 <RiDeleteBinLine
                                                     onClick={() => secondSectionRemove(index)}
                                                     className="cursor-pointer text-red-600"
@@ -458,6 +437,10 @@ const MEPPage = () => {
                                                             </p>
                                                         )}
                                                     </div>
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Description</Label>
+                                                        <Textarea placeholder="Description" {...register(`secondSection.items.${index}.desc`)} />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -486,121 +469,6 @@ const MEPPage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Third Section</Label>
-
-                    <div className="p-5 rounded-md flex flex-col gap-5">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register(`thirdSection.title`, {
-                                        required: "Value is required",
-                                    })}
-                                />
-                                {errors.thirdSection?.title && (
-                                    <p className="text-red-500">{errors.thirdSection?.title.message}</p>
-                                )}
-                            </div>
-                        </div>
-
-                        <div>
-                            <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
-                                {thirdSectionItems.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => thirdSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Image</Label>
-                                                <Controller
-                                                    name={`thirdSection.items.${index}.image`}
-                                                    control={control}
-                                                    rules={{ required: "Image is required" }}
-                                                    render={({ field }) => (
-                                                        <ImageUploader value={field.value} onChange={field.onChange} />
-                                                    )}
-                                                />
-                                                {errors.thirdSection?.items?.[index]?.image && (
-                                                    <p className="text-red-500">
-                                                        {errors.thirdSection?.items?.[index]?.image.message}
-                                                    </p>
-                                                )}
-                                            </div>
-
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Alt Tag</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Alt Tag"
-                                                        {...register(`thirdSection.items.${index}.imageAlt`, {
-                                                            required: "Value is required",
-                                                        })}
-                                                    />
-                                                    {errors.thirdSection?.items?.[index]?.imageAlt && (
-                                                        <p className="text-red-500">
-                                                            {errors.thirdSection?.items?.[index]?.imageAlt.message}
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Title</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Title"
-                                                        {...register(`thirdSection.items.${index}.title`, {
-                                                            required: "Value is required",
-                                                        })}
-                                                    />
-                                                    {errors.thirdSection?.items?.[index]?.title && (
-                                                        <p className="text-red-500">
-                                                            {errors.thirdSection?.items?.[index]?.title.message}
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        thirdSectionAppend({
-                                            title: "",
-                                            image: "",
-                                            imageAlt: "",
-                                            title_ar: "",
-                                            imageAlt_ar: "",
-                                        })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </AdminItemContainer>
-
-                <AdminItemContainer>
                     <Label main>Fourth Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-2">
                         <div className="flex flex-col gap-2">
@@ -621,13 +489,14 @@ const MEPPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fourthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -885,7 +754,14 @@ const MEPPage = () => {
                     <Label className="" main>
                         Banner
                     </Label>
-                    <div className="p-5 rounded-md grid grid-cols-2 gap-5">
+                    <div className="p-5 flex flex-col gap-6">
+                        {/* the banner at the top of this service page */}
+                        <div className="flex flex-col gap-3">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Page Banner</p>
+                                <p className="text-xs text-slate-500">Shown at the top of this service page.</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
@@ -895,7 +771,7 @@ const MEPPage = () => {
                             />
                             {errors.banner && <p className="text-red-500">{errors.banner.message}</p>}
                         </div>
-                        <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-3">
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Alt Tag</Label>
                                 <Input type="text" placeholder="Alt Tag" {...register("bannerAlt_ar")} />
@@ -904,14 +780,16 @@ const MEPPage = () => {
                                 <Label className="font-bold">Page Title</Label>
                                 <Input type="text" placeholder="Page Title" {...register("pageTitle_ar")} />
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Title (for home and project page selector)</Label>
-                                <Input type="text" placeholder="Title" {...register("title_ar")} />
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Description (for home)</Label>
-                                <Textarea {...register("description_ar")} />
+                        </div>
+                        {/* not on this page: the Home page Services section and the Projects page service filter */}
+                        <div className="flex flex-col gap-3 border-t border-slate-200 pt-5">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Home Page &amp; Project Selector</p>
+                                <p className="text-xs text-slate-500">Used on the Home page&apos;s Services section and the Projects page service filter, not in this page&apos;s banner.</p>
                             </div>
+                            <div className="grid grid-cols-2 gap-5">
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col gap-2">
                                     <Label className="font-bold">Home Image</Label>
@@ -933,10 +811,20 @@ const MEPPage = () => {
                                     </div>
                                 </div>
                             </div>
-
+                                <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Title (for home and project page selector)</Label>
+                                <Input type="text" placeholder="Title" {...register("title_ar")} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Label className="font-bold">Description (for home)</Label>
+                                <Textarea {...register("description_ar")} />
+                            </div>
                             <div className="flex flex-col gap-1">
                                 <Label className="font-bold">Link (for home)</Label>
                                 <Input type="text" placeholder="Link" disabled />
+                            </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -990,42 +878,6 @@ const MEPPage = () => {
                                     <p className="text-red-500">{errors.firstSection?.poster?.message}</p>
                                 )}
                             </div>
-                            <div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Name</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Name"
-                                        {...register("firstSection.headName_ar")}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Designation</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Designation"
-                                        {...register("firstSection.headDesignation_ar")}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <Label className="font-bold">Head Profile Picture</Label>
-                                    <Controller
-                                        name="firstSection.headProfilePic"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <ImageUploader value={field.value} onChange={field.onChange} />
-                                        )}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Label className="font-bold">Head Profile Picture Alt</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Head Profile Picture Alt"
-                                        {...register("firstSection.headProfilePicAlt_ar")}
-                                    />
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -1041,13 +893,14 @@ const MEPPage = () => {
 
                             <div>
                                 <Label className="font-bold">Items</Label>
-                                <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                                <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                     {secondSectionItems.map((field, index) => (
                                         <div
                                             key={field.id}
-                                            className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                            className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                         >
-                                            <div className="absolute top-2 right-2">
+                                            <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Expertise {index + 1}</span>
+                                            <div className="absolute top-3 right-3">
                                                 <RiDeleteBinLine
                                                     onClick={() => secondSectionRemove(index)}
                                                     className="cursor-pointer text-red-600"
@@ -1094,6 +947,10 @@ const MEPPage = () => {
                                                             {...register(`secondSection.items.${index}.title_ar`)}
                                                         />
                                                     </div>
+                                                    <div className="flex flex-col gap-2">
+                                                        <Label className="font-bold">Description</Label>
+                                                        <Textarea placeholder="Description" {...register(`secondSection.items.${index}.desc_ar`)} />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1122,98 +979,6 @@ const MEPPage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Third Section</Label>
-
-                    <div className="p-5 rounded-md flex flex-col gap-5">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Title</Label>
-                                <Input type="text" placeholder="Title" {...register(`thirdSection.title_ar`)} />
-                            </div>
-                        </div>
-
-                        <div>
-                            <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
-                                {thirdSectionItems.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => thirdSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Image</Label>
-                                                <Controller
-                                                    name={`thirdSection.items.${index}.image`}
-                                                    control={control}
-                                                    rules={{ required: "Image is required" }}
-                                                    render={({ field }) => (
-                                                        <ImageUploader value={field.value} onChange={field.onChange} />
-                                                    )}
-                                                />
-                                                {errors.thirdSection?.items?.[index]?.image && (
-                                                    <p className="text-red-500">
-                                                        {errors.thirdSection?.items?.[index]?.image.message}
-                                                    </p>
-                                                )}
-                                            </div>
-
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Alt Tag</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Alt Tag"
-                                                        {...register(`thirdSection.items.${index}.imageAlt_ar`)}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Title</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Title"
-                                                        {...register(`thirdSection.items.${index}.title_ar`)}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        thirdSectionAppend({
-                                            title: "",
-                                            image: "",
-                                            imageAlt: "",
-                                            title_ar: "",
-                                            imageAlt_ar: "",
-                                        })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </AdminItemContainer>
-
-                <AdminItemContainer>
                     <Label main>Fourth Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-2">
                         <div className="flex flex-col gap-2">
@@ -1225,13 +990,14 @@ const MEPPage = () => {
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {fourthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fourthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"

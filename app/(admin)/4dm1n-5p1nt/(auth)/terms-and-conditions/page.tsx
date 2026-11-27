@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ImageUploader } from "@/components/ui/image-uploader";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
+import AdminLoader from "@/app/components/common/AdminLoader";
 import TinyEditor from "@/app/components/TinyMce/TinyEditor";
 import { toast } from "sonner";
 
@@ -94,7 +95,8 @@ const TermsAndConditionsPage = () => {
     };
 
     if (status === "loading") {
-        return <div className="p-10 text-center text-black/60">Loading Terms and Conditions...</div>;
+        // same spinner as the other CMS pages while the content loads
+        return <AdminLoader />;
     }
 
     if (status === "error") {

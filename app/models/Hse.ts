@@ -117,6 +117,9 @@ const hseSchema = new mongoose.Schema({
         title_ar: {
             type: String,
         },
+        // text under the Safety slider title (frontend: hse/sections/SaftySlider). Optional, no default.
+        description: { type: String },
+        description_ar: { type: String },
         itemsOne: [{
             key: {
                 type: String,

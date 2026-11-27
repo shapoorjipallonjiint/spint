@@ -101,7 +101,8 @@ const ServicesMainPage = () => {
 
     return (
         <div className="flex flex-col gap-6">
-            <AdminItemContainer>
+            {/* the page's only section: always open (no collapse toggle) */}
+            <AdminItemContainer expansion={false}>
                 <Label main>Services - Show / Hide and Order on Website</Label>
                 <div className="p-5 flex flex-col gap-1">
                     <p className="text-sm text-black/60 mb-3">

@@ -122,16 +122,8 @@ const AdminNavbar = () => {
         {
             label: "Engagement",
             items: [
-                {
-                    name: "Careers",
-                    href: "#careers",
-                    icon: BriefcaseIcon,
-                    hasChild: true,
-                    children: [
-                        { name: "Main Page", href: "/4dm1n-5p1nt/careers" },
-                        { name: "Enquiries", href: "/4dm1n-5p1nt/careers/enquiries" },
-                    ],
-                },
+                // no Enquiries page: the careers site links out to the job portal, it has no application form
+                { name: "Careers", href: "/4dm1n-5p1nt/careers", icon: BriefcaseIcon },
                 {
                     name: "Contact",
                     href: "#contact",

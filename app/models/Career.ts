@@ -54,7 +54,10 @@ const careerSchema = new mongoose.Schema({
             link_ar: { type: String }
         },
         items: [{
-            image: { type: String }
+            image: { type: String },
+            // read by the Careers image carousel (Client/Careers/sections/ImageCarousel). Optional, no default.
+            imageAlt: { type: String },
+            imageAlt_ar: { type: String }
         }]
     },
     secondSection: {

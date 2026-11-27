@@ -45,6 +45,8 @@ interface CareerFormProps {
 
         items: {
             image?: string;
+            imageAlt?: string;
+            imageAlt_ar?: string;
         }[];
     };
 
@@ -307,22 +309,14 @@ const SustainabilityPage = () => {
                                     />
                                     <FormError error={errors.firstSection?.button?.text?.message} />
                                 </div>
-                                <div className="w-1/2">
-                                    <Label className="text-sm font-bold">Button Link</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Button Link"
-                                        {...register("firstSection.button.link")}
-                                    />
-                                    <FormError error={errors.firstSection?.button?.link?.message} />
-                                </div>
                             </div>
                             <div>
                                 <Label className="text-sm font-bold">Images</Label>
-                                <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                     {firstSectionItems.map((field, index) => (
-                                        <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                            <div className="absolute top-2 right-2">
+                                        <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                            <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Image {index + 1}</span>
+                                            <div className="absolute top-3 right-3">
                                                 <RiDeleteBinLine
                                                     onClick={() => firstSectionRemove(index)}
                                                     className="cursor-pointer text-red-600"
@@ -340,10 +334,14 @@ const SustainabilityPage = () => {
                                                 />
                                                 <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
                                             </div>
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Image Alt Tag</Label>
+                                                <Input type="text" placeholder="Alt Tag" {...register(`firstSection.items.${index}.imageAlt`)} />
+                                            </div>
                                         </div>
                                     ))}
 
-                                    <div className="flex justify-end">
+                                    <div className="col-span-full flex justify-end">
                                         <Button
                                             type="button"
                                             className=""
@@ -393,10 +391,11 @@ const SustainabilityPage = () => {
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                         {secondSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                                <div className="absolute top-2 right-2">
+                                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Stat {index + 1}</span>
+                                                <div className="absolute top-3 right-3">
                                                     <RiDeleteBinLine
                                                         onClick={() => secondSectionRemove(index)}
                                                         className="cursor-pointer text-red-600"
@@ -435,7 +434,7 @@ const SustainabilityPage = () => {
                                             </div>
                                         ))}
 
-                                        <div className="flex justify-end">
+                                        <div className="col-span-full flex justify-end">
                                             <Button
                                                 type="button"
                                                 className=""
@@ -477,13 +476,14 @@ const SustainabilityPage = () => {
                             </div>
                         </div>
                         <Label>Items</Label>
-                        <div className="border border-black/20 p-2 rounded-md">
+                        <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                             {thirdSectionItems.map((field, index) => (
                                 <div
                                     key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
+                                    className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                 >
-                                    <div className="absolute top-2 right-2">
+                                    <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                    <div className="absolute top-3 right-3">
                                         <RiDeleteBinLine
                                             onClick={() => thirdSectionRemove(index)}
                                             className="cursor-pointer text-red-600"
@@ -619,26 +619,17 @@ const SustainabilityPage = () => {
                                 />
                                 <FormError error={errors.fifthSection?.title?.message} />
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <Label className="font-bold">Description</Label>
-                                <Textarea
-                                    placeholder="Description"
-                                    {...register("fifthSection.description", {
-                                        required: "Description is required",
-                                    })}
-                                />
-                                <FormError error={errors.fifthSection?.description?.message} />
-                            </div>
                         </div>
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                 {fifthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Country {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fifthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -745,9 +736,6 @@ const SustainabilityPage = () => {
                                 render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                             />
                             <FormError error={errors.sixthSection?.image?.message} />
-                            <Label className="font-bold">Image Alt Tag</Label>
-                            <Input type="text" placeholder="Alt Tag" {...register(`sixthSection.imageAlt`)} />
-                            <FormError error={errors.sixthSection?.imageAlt?.message} />
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -823,21 +811,14 @@ const SustainabilityPage = () => {
                                         {...register("firstSection.button.text_ar")}
                                     />
                                 </div>
-                                <div className="w-1/2">
-                                    <Label className="text-sm font-bold">Button Link</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Button Link"
-                                        {...register("firstSection.button.link_ar")}
-                                    />
-                                </div>
                             </div>
                             <div className="">
                                 <Label className="text-sm font-bold">Images</Label>
-                                <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                     {firstSectionItems.map((field, index) => (
-                                        <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                            <div className="absolute top-2 right-2">
+                                        <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                            <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Image {index + 1}</span>
+                                            <div className="absolute top-3 right-3">
                                                 <RiDeleteBinLine
                                                     onClick={() => firstSectionRemove(index)}
                                                     className="cursor-pointer text-red-600"
@@ -855,10 +836,14 @@ const SustainabilityPage = () => {
                                                 />
                                                 <FormError error={errors.firstSection?.items?.[index]?.image?.message} />
                                             </div>
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="font-bold">Image Alt Tag</Label>
+                                                <Input type="text" placeholder="Alt Tag" {...register(`firstSection.items.${index}.imageAlt_ar`)} />
+                                            </div>
                                         </div>
                                     ))}
 
-                                    <div className="flex justify-end">
+                                    <div className="col-span-full flex justify-end">
                                         <Button
                                             disabled
                                             type="button"
@@ -900,10 +885,11 @@ const SustainabilityPage = () => {
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                         {secondSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                                <div className="absolute top-2 right-2">
+                                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3">
+                                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Stat {index + 1}</span>
+                                                <div className="absolute top-3 right-3">
                                                     <RiDeleteBinLine
                                                         onClick={() => secondSectionRemove(index)}
                                                         className="cursor-pointer text-red-600"
@@ -932,7 +918,7 @@ const SustainabilityPage = () => {
                                             </div>
                                         ))}
 
-                                        <div className="flex justify-end">
+                                        <div className="col-span-full flex justify-end">
                                             <Button
                                                 type="button"
                                                 disabled
@@ -968,13 +954,14 @@ const SustainabilityPage = () => {
                             </div>
                         </div>
                         <Label>Items</Label>
-                        <div className="border border-black/20 p-2 rounded-md">
+                        <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                             {thirdSectionItems.map((field, index) => (
                                 <div
                                     key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
+                                    className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                 >
-                                    <div className="absolute top-2 right-2">
+                                    <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                    <div className="absolute top-3 right-3">
                                         <RiDeleteBinLine
                                             onClick={() => thirdSectionRemove(index)}
                                             className="cursor-pointer text-red-600"
@@ -1084,20 +1071,17 @@ const SustainabilityPage = () => {
                                 <Input type="text" placeholder="Title" {...register("fifthSection.title_ar")} />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
-                            <Label className="font-bold">Description</Label>
-                            <Textarea placeholder="Description" {...register("fifthSection.description_ar")} />
-                        </div>
 
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                 {fifthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Country {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fifthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1193,8 +1177,6 @@ const SustainabilityPage = () => {
                                 rules={{ required: "Image is required" }}
                                 render={({ field }) => <ImageUploader value={field.value} onChange={field.onChange} />}
                             />
-                            <Label className="font-bold">Image Alt Tag</Label>
-                            <Input type="text" placeholder="Alt Tag" {...register(`sixthSection.imageAlt_ar`)} />
                         </div>
                     </div>
                 </AdminItemContainer>

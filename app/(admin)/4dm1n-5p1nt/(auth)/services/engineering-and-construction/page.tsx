@@ -109,10 +109,6 @@ const EngineeringAndConstructionPage = () => {
         name: "thirdSection.items"
     });
 
-    const { fields: fourthSectionItems, append: fourthSectionAppend, remove: fourthSectionRemove } = useFieldArray({
-        control,
-        name: "fourthSection.items"
-    });
 
 
     const handleAddEngineeringAndConstruction = async (data: EngineeringAndConstructionFormProps) => {
@@ -184,7 +180,14 @@ const EngineeringAndConstructionPage = () => {
 
                 <AdminItemContainer>
                     <Label className="" main>Banner</Label>
-                    <div className='p-5 rounded-md grid grid-cols-2 gap-5'>
+                    <div className="p-5 flex flex-col gap-6">
+                        {/* the banner at the top of this service page */}
+                        <div className="flex flex-col gap-3">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Page Banner</p>
+                                <p className="text-xs text-slate-500">Shown at the top of this service page.</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
@@ -201,7 +204,7 @@ const EngineeringAndConstructionPage = () => {
                                 <p className="text-red-500">{errors.banner.message}</p>
                             )}
                         </div>
-                        <div className='flex flex-col gap-2'>
+                                <div className="flex flex-col gap-3">
                             <div className='flex flex-col gap-1'>
                                 <Label className='font-bold'>Alt Tag</Label>
                                 <Input type='text' placeholder='Alt Tag' {...register("bannerAlt")} />
@@ -210,14 +213,16 @@ const EngineeringAndConstructionPage = () => {
                                 <Label className='font-bold'>Page Title</Label>
                                 <Input type='text' placeholder='Page Title' {...register("pageTitle")} />
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title (for home and project page selector)</Label>
-                                <Input type='text' placeholder='Title' {...register("title")} />
+                                </div>
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Description (for home)</Label>
-                                <Textarea {...register("description")} />
+                        </div>
+                        {/* not on this page: the Home page Services section and the Projects page service filter */}
+                        <div className="flex flex-col gap-3 border-t border-slate-200 pt-5">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Home Page &amp; Project Selector</p>
+                                <p className="text-xs text-slate-500">Used on the Home page&apos;s Services section and the Projects page service filter, not in this page&apos;s banner.</p>
                             </div>
+                            <div className="grid grid-cols-2 gap-5">
                             <div className='flex flex-col gap-2'>
                                 <div className='flex flex-col gap-2'>
                                     <Label className='font-bold'>Home Image</Label>
@@ -249,12 +254,21 @@ const EngineeringAndConstructionPage = () => {
 
 
                             </div>
-
+                                <div className="flex flex-col gap-3">
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Title (for home and project page selector)</Label>
+                                <Input type='text' placeholder='Title' {...register("title")} />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Description (for home)</Label>
+                                <Textarea {...register("description")} />
+                            </div>
                             <div className='flex flex-col gap-1'>
                                 <Label className='font-bold'>Link (for home)</Label>
                                 <Input type='text' placeholder='Link' {...register("link")} />
                             </div>
-
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -349,12 +363,13 @@ const EngineeringAndConstructionPage = () => {
 
                             <div>
                                 <Label className='font-bold'>Items</Label>
-                                <div className='border border-black/20 p-2 rounded-md flex flex-col gap-5'>
+                                <div className='mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2'>
 
 
                                     {secondSectionItems.map((field, index) => (
-                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
-                                            <div className='absolute top-2 right-2 flex items-center gap-2'>
+                                        <div key={field.id} className='relative grid grid-cols-2 gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10'>
+                                            <span className='absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500'>Expertise {index + 1}</span>
+                                            <div className='absolute top-3 right-3 flex items-center gap-2'>
                                                 {index > 0 && <RiArrowUpLine title='Move up' onClick={() => secondSectionMove(index, index - 1)} className='cursor-pointer' />}
                                                 {index < secondSectionItems.length - 1 && <RiArrowDownLine title='Move down' onClick={() => secondSectionMove(index, index + 1)} className='cursor-pointer' />}
                                                 <RiDeleteBinLine onClick={() => secondSectionRemove(index)} className='cursor-pointer text-red-600' />
@@ -452,12 +467,13 @@ const EngineeringAndConstructionPage = () => {
 
                         <div>
                             <Label className='font-bold'>Items</Label>
-                            <div className='border border-black/20 p-2 rounded-md flex flex-col gap-5'>
+                            <div className='mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2'>
 
 
                                 {thirdSectionItems.map((field, index) => (
-                                    <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
-                                        <div className='absolute top-2 right-2'>
+                                    <div key={field.id} className='relative grid grid-cols-2 gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10'>
+                                        <span className='absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500'>Approach {index + 1}</span>
+                                        <div className='absolute top-3 right-3'>
                                             <RiDeleteBinLine onClick={() => thirdSectionRemove(index)} className='cursor-pointer text-red-600' />
                                         </div>
 
@@ -534,78 +550,6 @@ const EngineeringAndConstructionPage = () => {
 
 
                 <AdminItemContainer>
-                    <Label main>Fourth Section</Label>
-                    <div className='p-5 rounded-md flex flex-col gap-2'>
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title</Label>
-                                <Input type='text' placeholder='Title' {...register("fourthSection.title", {
-                                    required: "Title is required"
-                                })} />
-                                {errors.fourthSection?.title && <p className='text-red-500'>{errors.fourthSection?.title.message}</p>}
-                            </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Description</Label>
-                                <Controller name="fourthSection.description" control={control} render={({ field }) => {
-                                    return <Textarea placeholder='Description' {...register("fourthSection.description", {
-                                        required: "Description is required"
-                                    })} />
-                                }} />
-                                {errors.fourthSection?.description && <p className='text-red-500'>{errors.fourthSection?.description.message}</p>}
-                            </div>
-
-                        </div>
-
-
-                        <div>
-                            <Label className='font-bold'>Items</Label>
-                            <div className='border border-black/20 p-2 rounded-md flex flex-col gap-5'>
-
-
-                                {fourthSectionItems.map((field, index) => (
-                                    <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
-                                        <div className='absolute top-2 right-2'>
-                                            <RiDeleteBinLine onClick={() => fourthSectionRemove(index)} className='cursor-pointer text-red-600' />
-                                        </div>
-
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Title</Label>
-                                                    <Input type='text' placeholder='Title' {...register(`fourthSection.items.${index}.title`, {
-                                                        required: "Value is required"
-                                                    })} />
-                                                    {errors.fourthSection?.items?.[index]?.title && <p className='text-red-500'>{errors.fourthSection?.items?.[index]?.title.message}</p>}
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <Label className='font-bold'>Description</Label>
-                                                <Controller name={`fourthSection.items.${index}.description`} control={control} render={({ field }) => {
-                                                    return <Textarea value={field.value} onChange={field.onChange} />
-                                                }} />
-                                                {errors.fourthSection?.items?.[index]?.description && <p className='text-red-500'>{errors.fourthSection?.items?.[index]?.description.message}</p>}
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                ))}
-
-
-
-                            </div>
-                            <div className='flex justify-end mt-2'>
-                                <Button type='button' addItem onClick={() => fourthSectionAppend({ title: "", description: "", title_ar: "", description_ar: "" })}>Add Item</Button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </AdminItemContainer>
-
-                <AdminItemContainer>
                     <Label main>SEO</Label>
                     <div className="flex flex-col gap-2 p-5">
                         <div className='flex flex-col gap-2'>
@@ -629,7 +573,14 @@ const EngineeringAndConstructionPage = () => {
 
                 <AdminItemContainer>
                     <Label className="" main>Banner</Label>
-                    <div className='p-5 rounded-md grid grid-cols-2 gap-5'>
+                    <div className="p-5 flex flex-col gap-6">
+                        {/* the banner at the top of this service page */}
+                        <div className="flex flex-col gap-3">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Page Banner</p>
+                                <p className="text-xs text-slate-500">Shown at the top of this service page.</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-5">
                         <div>
                             <Controller
                                 name="banner"
@@ -646,7 +597,7 @@ const EngineeringAndConstructionPage = () => {
                                 <p className="text-red-500">{errors.banner.message}</p>
                             )}
                         </div>
-                        <div className='flex flex-col gap-2'>
+                                <div className="flex flex-col gap-3">
                             <div className='flex flex-col gap-1'>
                                 <Label className='font-bold'>Alt Tag</Label>
                                 <Input type='text' placeholder='Alt Tag' {...register("bannerAlt_ar")} />
@@ -655,14 +606,16 @@ const EngineeringAndConstructionPage = () => {
                                 <Label className='font-bold'>Page Title</Label>
                                 <Input type='text' placeholder='Page Title' {...register("pageTitle_ar")} />
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title (for home and project page selector)</Label>
-                                <Input type='text' placeholder='Title' {...register("title_ar")} />
+                                </div>
                             </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Description (for home)</Label>
-                                <Textarea {...register("description_ar")} />
+                        </div>
+                        {/* not on this page: the Home page Services section and the Projects page service filter */}
+                        <div className="flex flex-col gap-3 border-t border-slate-200 pt-5">
+                            <div>
+                                <p className="text-sm font-semibold text-slate-800">Home Page &amp; Project Selector</p>
+                                <p className="text-xs text-slate-500">Used on the Home page&apos;s Services section and the Projects page service filter, not in this page&apos;s banner.</p>
                             </div>
+                            <div className="grid grid-cols-2 gap-5">
                             <div className='flex flex-col gap-2'>
                                 <div className='flex flex-col gap-2'>
                                     <Label className='font-bold'>Home Image</Label>
@@ -691,12 +644,21 @@ const EngineeringAndConstructionPage = () => {
 
 
                             </div>
-
+                                <div className="flex flex-col gap-3">
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Title (for home and project page selector)</Label>
+                                <Input type='text' placeholder='Title' {...register("title_ar")} />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <Label className='font-bold'>Description (for home)</Label>
+                                <Textarea {...register("description_ar")} />
+                            </div>
                             <div className='flex flex-col gap-1'>
                                 <Label className='font-bold'>Link (for home)</Label>
                                 <Input type='text' disabled placeholder='Link' />
                             </div>
-
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </AdminItemContainer>
@@ -785,12 +747,13 @@ const EngineeringAndConstructionPage = () => {
 
                             <div>
                                 <Label className='font-bold'>Items</Label>
-                                <div className='border border-black/20 p-2 rounded-md flex flex-col gap-5'>
+                                <div className='mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2'>
 
 
                                     {secondSectionItems.map((field, index) => (
-                                        <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
-                                            <div className='absolute top-2 right-2 flex items-center gap-2'>
+                                        <div key={field.id} className='relative grid grid-cols-2 gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10'>
+                                            <span className='absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500'>Expertise {index + 1}</span>
+                                            <div className='absolute top-3 right-3 flex items-center gap-2'>
                                                 {index > 0 && <RiArrowUpLine title='Move up' onClick={() => secondSectionMove(index, index - 1)} className='cursor-pointer' />}
                                                 {index < secondSectionItems.length - 1 && <RiArrowDownLine title='Move down' onClick={() => secondSectionMove(index, index + 1)} className='cursor-pointer' />}
                                                 <RiDeleteBinLine onClick={() => secondSectionRemove(index)} className='cursor-pointer text-red-600' />
@@ -878,12 +841,13 @@ const EngineeringAndConstructionPage = () => {
 
                         <div>
                             <Label className='font-bold'>Items</Label>
-                            <div className='border border-black/20 p-2 rounded-md flex flex-col gap-5'>
+                            <div className='mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2'>
 
 
                                 {thirdSectionItems.map((field, index) => (
-                                    <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
-                                        <div className='absolute top-2 right-2'>
+                                    <div key={field.id} className='relative grid grid-cols-2 gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10'>
+                                        <span className='absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500'>Approach {index + 1}</span>
+                                        <div className='absolute top-3 right-3'>
                                             <RiDeleteBinLine onClick={() => thirdSectionRemove(index)} className='cursor-pointer text-red-600' />
                                         </div>
 
@@ -951,68 +915,6 @@ const EngineeringAndConstructionPage = () => {
                     </div>
                 </AdminItemContainer>
 
-
-                <AdminItemContainer>
-                    <Label main>Fourth Section</Label>
-                    <div className='p-5 rounded-md flex flex-col gap-2'>
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Title</Label>
-                                <Input type='text' placeholder='Title' {...register("fourthSection.title_ar")} />
-                            </div>
-                            <div className='flex flex-col gap-1'>
-                                <Label className='font-bold'>Description</Label>
-                                <Controller name="fourthSection.description_ar" control={control} render={({ field }) => {
-                                    return <Textarea placeholder='Description' {...register("fourthSection.description_ar")} />
-                                }} />
-                            </div>
-
-                        </div>
-
-
-                        <div>
-                            <Label className='font-bold'>Items</Label>
-                            <div className='border border-black/20 p-2 rounded-md flex flex-col gap-5'>
-
-
-                                {fourthSectionItems.map((field, index) => (
-                                    <div key={field.id} className='grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0'>
-                                        <div className='absolute top-2 right-2'>
-                                            <RiDeleteBinLine onClick={() => fourthSectionRemove(index)} className='cursor-pointer text-red-600' />
-                                        </div>
-
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Label className='font-bold'>Title</Label>
-                                                    <Input type='text' placeholder='Title' {...register(`fourthSection.items.${index}.title_ar`)} />
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div className='flex flex-col gap-2'>
-                                            <div className='flex flex-col gap-2'>
-                                                <Label className='font-bold'>Description</Label>
-                                                <Controller name={`fourthSection.items.${index}.description_ar`} control={control} render={({ field }) => {
-                                                    return <Textarea value={field.value} onChange={field.onChange} />
-                                                }} />
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                ))}
-
-
-
-                            </div>
-                            <div className='flex justify-end mt-2'>
-                                <Button type='button' addItem onClick={() => fourthSectionAppend({ title: "", description: "", title_ar: "", description_ar: "" })}>Add Item</Button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </AdminItemContainer>
 
                 <AdminItemContainer>
                     <Label main>SEO</Label>

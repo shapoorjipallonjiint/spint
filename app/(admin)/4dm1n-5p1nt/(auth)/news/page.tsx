@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import AdminItemContainer from '@/app/components/common/AdminItemContainer';
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { LANG_TAB_FORM_ID, useAdminLangTabFor } from "@/contexts/adminLangTab";
 
 
 
@@ -60,6 +61,10 @@ const PAGE_TABS = [
 export default function Projects() {
 
   const [activeTab, setActiveTab] = useState<(typeof PAGE_TABS)[number]["key"]>("news");
+  // English / Arabic tabs in the top bar while the Page tab is open (one language at a time; both stay mounted,
+  // so switching never loses typing, and the top bar Submit saves both)
+  const { enabled: langTabs, lang, showErrors } = useAdminLangTabFor(activeTab === "page");
+  const langColumn = (column: "en" | "ar") => `flex flex-col gap-5 ${langTabs && lang !== column ? "hidden" : ""}`;
 
   const [topic, setTopic] = useState<string>("");
   const [topic_ar, setTopicAr] = useState<string>("");
@@ -260,9 +265,13 @@ export default function Projects() {
 
       <div className="flex-1 min-h-0">
       {/* Page: banner title + SEO. Hidden (not unmounted) on other tabs so unsaved edits are kept */}
-      <form onSubmit={handleSubmit(onSubmit)} className={`grid grid-cols-2 gap-10 pb-5 ${activeTab === "page" ? "" : "hidden"}`}>
+      <form
+        id={LANG_TAB_FORM_ID}
+        onSubmit={handleSubmit(onSubmit, showErrors)}
+        className={`grid ${langTabs ? "grid-cols-1" : "grid-cols-2"} gap-10 pb-5 ${activeTab === "page" ? "" : "hidden"}`}
+      >
         {/*English Version */}
-        <div className='flex flex-col gap-5'>
+        <div className={langColumn("en")}>
 
           <AdminItemContainer>
             <Label className='' main>First Section</Label>
@@ -275,7 +284,7 @@ export default function Projects() {
                   <Input type='text' placeholder='Title' {...register(`title`, {
                     required: "Title is required"
                   })} />
-                  {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+                  {errors.title && <p data-form-error className="text-red-500">{errors.title.message}</p>}
                 </div>
               </div>
             </div>
@@ -300,7 +309,7 @@ export default function Projects() {
 
 
         {/*Arabic Version */}
-        <div className='flex flex-col gap-5'>
+        <div className={langColumn("ar")}>
 
           <AdminItemContainer>
             <Label className='' main>First Section</Label>
@@ -335,7 +344,8 @@ export default function Projects() {
 
         </div>
 
-        <div className='col-span-2'>
+        {/* with the language tabs, Submit sits in the top bar */}
+        <div className={langTabs ? "hidden" : "col-span-2"}>
           <Button type='submit' className="cursor-pointer text-white text-[16px] w-full">Submit</Button>
         </div>
 

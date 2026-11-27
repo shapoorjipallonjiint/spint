@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
@@ -97,6 +98,61 @@ const AccreditationPage = ({ view = "main" }: { view?: "main" | "list" }) => {
     const [accreditationList, setAccreditationList] = useState<{ _id: string, fileImage: string, fileImageAlt: string, fileImageAlt_ar: string, title: string, title_ar: string, category: string, file: string }[]>([])
 
     const [toReorderCategory, setToReorderCategory] = useState<string>("")
+    // Accreditations tab: search by title and filter by category (display only)
+    const [accSearch, setAccSearch] = useState("")
+    const [accCategoryFilter, setAccCategoryFilter] = useState("all")
+    const accreditationsOf = (categoryId: string) => accreditationList.filter((a) => a.category === categoryId)
+    // Add / Edit accreditation popup body (shared). Same state and setters as before; Save needs a title and a category.
+    const canSaveAccreditation = !!title.trim() && !!selectedCategory
+    const accreditationForm = (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                    <Label className="font-bold">Certificate Image</Label>
+                    <ImageUploader contain value={fileImage} onChange={(url) => setFileImage(url)} />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1.5">
+                        <Label className="font-bold">Alt Tag</Label>
+                        <Input type="text" placeholder="Alt Tag" value={fileImageAlt} onChange={(e) => setFileImageAlt(e.target.value)} />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                        <Label className="font-bold">Alt Tag (Arabic)</Label>
+                        <Input type="text" dir="rtl" placeholder="Alt Tag" value={fileImageAlt_ar} onChange={(e) => setFileImageAlt_ar(e.target.value)} />
+                    </div>
+                </div>
+            </div>
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                    <Label className="font-bold">Title</Label>
+                    <Input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                    <Label className="font-bold">Title (Arabic)</Label>
+                    <Input type="text" dir="rtl" placeholder="Title" value={title_ar} onChange={(e) => setTitle_ar(e.target.value)} />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                    <Label className="font-bold">Category</Label>
+                    <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value)}>
+                        <SelectTrigger className="w-full text-sm">
+                            <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white max-h-[350px] overflow-y-scroll">
+                            {categoryList.map((category) => (
+                                <SelectItem key={category._id} value={category._id} className="hover:bg-gray-200">
+                                    {category.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                    <Label className="font-bold">File (PDF)</Label>
+                    <FileUploader value={file} onChange={(url) => setFile(url)} />
+                </div>
+            </div>
+        </div>
+    )
     const [reorderMode, setReorderMode] = useState(false)
 
 
@@ -718,11 +774,33 @@ const AccreditationPage = ({ view = "main" }: { view?: "main" | "list" }) => {
 
                             {!reorderMode && categoryList.map((item) => (
                                 <div
-                                    className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md hover:shadow-lg transition-all duration-300"
+                                    className="flex items-center gap-4 rounded-lg border border-slate-200 bg-slate-50/70 p-3 transition-colors hover:border-primary/30"
                                     key={item._id}
                                 >
-                                    <div className="text-[16px]">{item.name}</div>
-                                    <div className="flex gap-5">
+                                    {/* first few certificates of the category */}
+                                    <div className="flex shrink-0 -space-x-3">
+                                        {accreditationsOf(item._id).slice(0, 4).map((a) => (
+                                            <span key={a._id} className="relative h-12 w-12 overflow-hidden rounded-md border-2 border-white bg-white shadow-sm">
+                                                {a.fileImage && <Image src={a.fileImage} alt="" fill sizes="48px" className="object-contain p-0.5" />}
+                                            </span>
+                                        ))}
+                                        {accreditationsOf(item._id).length === 0 && (
+                                            <span className="flex h-12 w-12 items-center justify-center rounded-md border border-dashed border-slate-300 text-[10px] text-slate-400">
+                                                Empty
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <p className="truncate font-medium text-slate-900">{item.name}</p>
+                                        <p className="truncate text-xs text-slate-500">
+                                            {accreditationsOf(item._id).length} {accreditationsOf(item._id).length === 1 ? "accreditation" : "accreditations"}
+                                            {item.name_ar ? ` · ${item.name_ar}` : ""}
+                                        </p>
+                                    </div>
+                                    <div
+                                        className="flex shrink-0 items-center gap-4 [&_svg]:h-5 [&_svg]:w-5 [&_svg]:cursor-pointer [&_svg]:text-slate-500 [&_svg:hover]:text-primary"
+                                        title="Reorder accreditations · Edit · Delete"
+                                    >
 
                                         {/* reorder sheet for certificates inside*/}
                                         <Sheet>
@@ -810,17 +888,22 @@ const AccreditationPage = ({ view = "main" }: { view?: "main" | "list" }) => {
                                             </DialogTrigger>
                                             <DialogContent>
                                                 <DialogHeader>
-                                                    <DialogTitle>Are you sure?</DialogTitle>
+                                                    <DialogTitle>Delete the category &quot;{item.name}&quot;?</DialogTitle>
+                                                    <DialogDescription>
+                                                        {accreditationsOf(item._id).length > 0
+                                                            ? `Its ${accreditationsOf(item._id).length} ${accreditationsOf(item._id).length === 1 ? "accreditation is" : "accreditations are"} deleted with it. This cannot be undone.`
+                                                            : "This cannot be undone."}
+                                                    </DialogDescription>
                                                 </DialogHeader>
                                                 <div className="flex gap-2">
                                                     <DialogClose className="bg-black text-white px-2 py-1 rounded-md">
                                                         No
                                                     </DialogClose>
                                                     <DialogClose
-                                                        className="bg-black text-white px-2 py-1 rounded-md"
+                                                        className="bg-red-600 text-white px-2 py-1 rounded-md"
                                                         onClick={() => handleDeleteCategory(item._id)}
                                                     >
-                                                        Yes
+                                                        Yes, delete
                                                     </DialogClose>
                                                 </div>
                                             </DialogContent>
@@ -917,7 +1000,27 @@ const AccreditationPage = ({ view = "main" }: { view?: "main" | "list" }) => {
                             <Label className="text-sm font-bold">Accreditations</Label>
 
                             {/* RIGHT: Controls */}
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-3">
+                                <Input
+                                    type="search"
+                                    placeholder="Search accreditations"
+                                    value={accSearch}
+                                    onChange={(e) => setAccSearch(e.target.value)}
+                                    className="h-9 w-56"
+                                />
+                                <Select value={accCategoryFilter} onValueChange={setAccCategoryFilter}>
+                                    <SelectTrigger className="h-9 w-[200px] text-sm">
+                                        <SelectValue placeholder="All categories" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white max-h-[350px] overflow-y-scroll">
+                                        <SelectItem value="all" className="hover:bg-gray-200">All categories</SelectItem>
+                                        {categoryList.map((category) => (
+                                            <SelectItem key={category._id} value={category._id} className="hover:bg-gray-200">
+                                                {category.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                                 <Dialog>
                                     <DialogTrigger
                                         className="bg-black text-white px-2 py-1 rounded-md"
@@ -934,102 +1037,22 @@ const AccreditationPage = ({ view = "main" }: { view?: "main" | "list" }) => {
                                     >
                                         Add Accreditation
                                     </DialogTrigger>
-                                    <DialogContent>
+                                    <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
                                         <DialogHeader>
                                             <DialogTitle>Add Accreditation</DialogTitle>
-                                            <div className="p-5 rounded-md flex flex-col gap-5">
-                                                <div className="grid grid-cols-2 gap-2 relative pb-5">
-                                                    <div className="flex flex-col gap-2">
-                                                        <div className="flex flex-col gap-2">
-                                                            <Label className="font-bold">File Image</Label>
-
-                                                            <ImageUploader value={fileImage} onChange={(url) => setFileImage(url)} />
-
-
-                                                        </div>
-
-                                                        <div className="flex flex-col gap-2">
-                                                            <div className="flex flex-col gap-2">
-                                                                <Label className="font-bold">Alt Tag</Label>
-                                                                <Input
-                                                                    type="text"
-                                                                    placeholder="Alt Tag"
-                                                                    value={fileImageAlt}
-                                                                    onChange={(e) => setFileImageAlt(e.target.value)}
-                                                                />
-
-                                                            </div>
-
-                                                            <div className="flex flex-col gap-2">
-                                                                <Label className="font-bold">Alt Tag (Arabic)</Label>
-                                                                <Input
-                                                                    type="text"
-                                                                    placeholder="Alt Tag"
-                                                                    value={fileImageAlt_ar}
-                                                                    onChange={(e) => setFileImageAlt_ar(e.target.value)}
-                                                                />
-
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="flex flex-col gap-2">
-                                                        <div className="flex flex-col gap-2">
-                                                            <div className="flex flex-col gap-2">
-                                                                <Label className="font-bold">Title</Label>
-                                                                <Input
-                                                                    type="text"
-                                                                    placeholder="Title"
-                                                                    value={title}
-                                                                    onChange={(e) => setTitle(e.target.value)}
-                                                                />
-
-                                                            </div>
-
-                                                            <div className="flex flex-col gap-2">
-                                                                <Label className="font-bold">Title (Arabic)</Label>
-                                                                <Input
-                                                                    type="text"
-                                                                    placeholder="Title"
-                                                                    value={title_ar}
-                                                                    onChange={(e) => setTitle_ar(e.target.value)}
-                                                                />
-
-                                                            </div>
-
-                                                            <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value)}>
-                                                                <SelectTrigger className="w-[180px] text-sm">
-                                                                    <SelectValue placeholder="Select Category" />
-                                                                </SelectTrigger>
-                                                                <SelectContent className="bg-white max-h-[350px] overflow-y-scroll">
-                                                                    {categoryList.map((category) => (
-                                                                        <SelectItem key={category._id} value={category._id} className="hover:bg-gray-200">
-                                                                            {category.name}
-                                                                        </SelectItem>
-                                                                    ))}
-                                                                </SelectContent>
-                                                            </Select>
-
-                                                            <div className="flex flex-col gap-2">
-                                                                <Label className="font-bold">File</Label>
-
-                                                                <FileUploader value={file} onChange={(url) => setFile(url)} />
-
-
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <DialogDescription>Shown on the website under its category. Title and category are required.</DialogDescription>
                                         </DialogHeader>
-                                        <DialogClose
-                                            className="bg-black text-white px-2 py-1 rounded-md"
-                                            onClick={() => handleAddAccreditation()}
-                                        >
-                                            Save
-                                        </DialogClose>
+                                        {accreditationForm}
+                                        <div className="flex justify-end gap-2 border-t border-slate-200 pt-4">
+                                            <DialogClose className="cursor-pointer rounded-md border border-slate-200 px-4 py-2 text-sm hover:bg-slate-50">Cancel</DialogClose>
+                                            <DialogClose
+                                                disabled={!canSaveAccreditation}
+                                                className="cursor-pointer rounded-md bg-primary px-4 py-2 text-sm text-white disabled:cursor-not-allowed disabled:opacity-40"
+                                                onClick={() => handleAddAccreditation()}
+                                            >
+                                                Save
+                                            </DialogClose>
+                                        </div>
                                     </DialogContent>
                                 </Dialog>
                             </div>
@@ -1037,127 +1060,115 @@ const AccreditationPage = ({ view = "main" }: { view?: "main" | "list" }) => {
                     </div>
 
 
-                    <div className="mt-2 flex flex-col gap-2 overflow-y-scroll h-[90%]">
-                        {accreditationList.map((item) => (
-                            <div
-                                key={item._id}
-                                className="flex justify-between border border-black/20 p-2 items-center rounded-md shadow-md"
-                            >
-                                <div>
-                                    {categoryList.find(category => category._id === item.category)?.name ?? "Unknown Category"}
-                                    {" - "}
-                                    {item.title}
-                                </div>
-
-                                <div className="flex gap-5">
+                    {(() => {
+                        // display only: filter by category / search, then group in the website's category order
+                        const query = accSearch.trim().toLowerCase();
+                        const visible = accreditationList.filter(
+                            (item) =>
+                                (accCategoryFilter === "all" || item.category === accCategoryFilter) &&
+                                (!query || item.title?.toLowerCase().includes(query) || item.title_ar?.includes(accSearch.trim()))
+                        );
+                        const groups = [
+                            ...categoryList.map((category) => ({
+                                id: category._id,
+                                name: category.name,
+                                items: visible.filter((item) => item.category === category._id),
+                            })),
+                            {
+                                id: "unknown",
+                                name: "Unknown Category",
+                                items: visible.filter((item) => !categoryList.some((category) => category._id === item.category)),
+                            },
+                        ].filter((group) => group.items.length > 0);
+                        return (
+                            <div className="mt-3 flex h-[88%] flex-col gap-6 overflow-y-auto pe-1">
+                                {groups.length === 0 && (
+                                    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50/70 px-4 py-8 text-center text-sm text-slate-500">
+                                        {accreditationList.length === 0 ? "No accreditations yet. Use “Add Accreditation” to add the first one." : "No accreditations match the search."}
+                                    </div>
+                                )}
+                                {groups.map((group) => (
+                                    <section key={group.id} className="flex flex-col gap-3">
+                                        <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                                            {group.name}
+                                            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">{group.items.length}</span>
+                                        </h3>
+                                        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 2xl:grid-cols-4">
+                                            {group.items.map((item) => (
+                                                <div key={item._id} className="flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-slate-50/70 transition-colors hover:border-primary/30">
+                                                    <div className="relative aspect-[4/3] bg-white">
+                                                        {item.fileImage ? (
+                                                            <Image src={item.fileImage} alt={item.fileImageAlt || item.title} fill sizes="300px" className="object-contain p-3" />
+                                                        ) : (
+                                                            <span className="absolute inset-0 flex items-center justify-center text-xs text-slate-400">No image</span>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex items-start justify-between gap-2 border-t border-slate-200 p-3">
+                                                        <div className="min-w-0">
+                                                            <p className="line-clamp-2 text-sm font-medium text-slate-900">{item.title}</p>
+                                                            {item.file ? (
+                                                                <a href={item.file} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
+                                                                    View file
+                                                                </a>
+                                                            ) : (
+                                                                <span className="text-xs text-red-500">No file attached</span>
+                                                            )}
+                                                        </div>
+                                                        <div className="flex shrink-0 items-center gap-3 [&_svg]:h-5 [&_svg]:w-5 [&_svg]:cursor-pointer [&_svg]:text-slate-500 [&_svg:hover]:text-primary">
                                     <Dialog>
                                         <DialogTrigger
                                         >
                                             <MdEdit onClick={() => { setFileImage(item.fileImage); setFileImageAlt(item.fileImageAlt); setFileImageAlt_ar(item.fileImageAlt_ar); setTitle(item.title); setTitle_ar(item.title_ar); setSelectedCategory(item.category); setFile(item.file) }} />
                                         </DialogTrigger>
-                                        <DialogContent>
-                                            <DialogHeader>
-                                                <DialogTitle>Edit Accreditation</DialogTitle>
-                                                <div className="p-5 rounded-md flex flex-col gap-5">
-                                                    <div className="grid grid-cols-2 gap-2 relative pb-5">
-                                                        <div className="flex flex-col gap-2">
-                                                            <div className="flex flex-col gap-2">
-                                                                <Label className="font-bold">File Image</Label>
-
-                                                                <ImageUploader value={fileImage} onChange={(url) => setFileImage(url)} />
-
-
-                                                            </div>
-
-                                                            <div className="flex flex-col gap-2">
-                                                                <div className="flex flex-col gap-2">
-                                                                    <Label className="font-bold">Alt Tag</Label>
-                                                                    <Input
-                                                                        type="text"
-                                                                        placeholder="Alt Tag"
-                                                                        value={fileImageAlt}
-                                                                        onChange={(e) => setFileImageAlt(e.target.value)}
-                                                                    />
-
-                                                                </div>
-
-                                                                <div className="flex flex-col gap-2">
-                                                                    <Label className="font-bold">Alt Tag (Arabic)</Label>
-                                                                    <Input
-                                                                        type="text"
-                                                                        placeholder="Alt Tag"
-                                                                        value={fileImageAlt_ar}
-                                                                        onChange={(e) => setFileImageAlt_ar(e.target.value)}
-                                                                    />
-
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="flex flex-col gap-2">
-                                                            <div className="flex flex-col gap-2">
-                                                                <div className="flex flex-col gap-2">
-                                                                    <Label className="font-bold">Title</Label>
-                                                                    <Input
-                                                                        type="text"
-                                                                        placeholder="Title"
-                                                                        value={title}
-                                                                        onChange={(e) => setTitle(e.target.value)}
-                                                                    />
-
-                                                                </div>
-
-                                                                <div className="flex flex-col gap-2">
-                                                                    <Label className="font-bold">Title (Arabic)</Label>
-                                                                    <Input
-                                                                        type="text"
-                                                                        placeholder="Title"
-                                                                        value={title_ar}
-                                                                        onChange={(e) => setTitle_ar(e.target.value)}
-                                                                    />
-
-                                                                </div>
-
-                                                                <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value)}>
-                                                                    <SelectTrigger className="w-[180px] text-sm">
-                                                                        <SelectValue placeholder="Select country" />
-                                                                    </SelectTrigger>
-                                                                    <SelectContent className="bg-white max-h-[350px] overflow-y-scroll">
-                                                                        {categoryList.map((category) => (
-                                                                            <SelectItem key={category._id} value={category._id} className="hover:bg-gray-200">
-                                                                                {category.name}
-                                                                            </SelectItem>
-                                                                        ))}
-                                                                    </SelectContent>
-                                                                </Select>
-
-                                                                <div className="flex flex-col gap-2">
-                                                                    <Label className="font-bold">File</Label>
-
-                                                                    <FileUploader value={file} onChange={(url) => setFile(url)} />
-
-
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </DialogHeader>
+                                        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+                                        <DialogHeader>
+                                            <DialogTitle>Edit Accreditation</DialogTitle>
+                                            <DialogDescription>Shown on the website under its category. Title and category are required.</DialogDescription>
+                                        </DialogHeader>
+                                        {accreditationForm}
+                                        <div className="flex justify-end gap-2 border-t border-slate-200 pt-4">
+                                            <DialogClose className="cursor-pointer rounded-md border border-slate-200 px-4 py-2 text-sm hover:bg-slate-50">Cancel</DialogClose>
                                             <DialogClose
-                                                className="bg-black text-white px-2 py-1 rounded-md"
+                                                disabled={!canSaveAccreditation}
+                                                className="cursor-pointer rounded-md bg-primary px-4 py-2 text-sm text-white disabled:cursor-not-allowed disabled:opacity-40"
                                                 onClick={() => handleUpdateAccreditation(item._id)}
                                             >
                                                 Save
                                             </DialogClose>
-                                        </DialogContent>
+                                        </div>
+                                    </DialogContent>
                                     </Dialog>
-                                    <MdDelete onClick={() => handleDeleteAccreditation(item._id)} />
-                                </div>
+                                                            {/* delete asks first (it used to delete on the first click) */}
+                                                            <Dialog>
+                                                                <DialogTrigger title="Delete">
+                                                                    <MdDelete />
+                                                                </DialogTrigger>
+                                                                <DialogContent>
+                                                                    <DialogHeader>
+                                                                        <DialogTitle>Delete &quot;{item.title}&quot;?</DialogTitle>
+                                                                        <DialogDescription>It is removed from the website. This cannot be undone.</DialogDescription>
+                                                                    </DialogHeader>
+                                                                    <div className="flex gap-2">
+                                                                        <DialogClose className="bg-black text-white px-2 py-1 rounded-md">No</DialogClose>
+                                                                        <DialogClose
+                                                                            className="bg-red-600 text-white px-2 py-1 rounded-md"
+                                                                            onClick={() => handleDeleteAccreditation(item._id)}
+                                                                        >
+                                                                            Yes, delete
+                                                                        </DialogClose>
+                                                                    </div>
+                                                                </DialogContent>
+                                                            </Dialog>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </section>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        );
+                    })()}
 
                 </div>
                 </div>

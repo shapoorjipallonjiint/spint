@@ -128,7 +128,10 @@ const mepSchema = new mongoose.Schema({
                 },
                 title_ar:{
                     type:String
-                }
+                },
+                // text under the item title (frontend: services/mep/sections/ExpertiseSec reads item.desc). Optional.
+                desc:{ type:String },
+                desc_ar:{ type:String }
             }
         ]
     },

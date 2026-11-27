@@ -35,13 +35,14 @@ const isId = (segment: string) => /^[a-f0-9]{24}$/i.test(segment) || /^\d+$/.tes
 const NO_COLUMN_PAGES = [
     "/4dm1n-5p1nt/projects",
     "/4dm1n-5p1nt/accreditation/list",
-    "/4dm1n-5p1nt/careers/enquiries",
     "/4dm1n-5p1nt/contact/enquiries",
     "/4dm1n-5p1nt/home/map-locations",
     "/4dm1n-5p1nt/settings",
     "/4dm1n-5p1nt/header",
     "/4dm1n-5p1nt/footer",
     "/4dm1n-5p1nt/services/main",
+    // News: lists on two tabs, and the Page tab uses the English / Arabic tabs
+    "/4dm1n-5p1nt/news",
 ];
 // same, for every page under these (the gallery and its album pages)
 const NO_COLUMN_PREFIXES = ["/4dm1n-5p1nt/gallery"];

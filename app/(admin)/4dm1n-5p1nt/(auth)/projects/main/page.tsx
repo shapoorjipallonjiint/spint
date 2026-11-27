@@ -5,11 +5,10 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
-import { useForm, Controller, useFieldArray } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { LANG_TAB_FORM_ID, useAdminLangTab } from "@/contexts/adminLangTab";
 import { ImageUploader } from "@/components/ui/image-uploader";
 import { toast } from "sonner";
-import { RiDeleteBinLine } from "react-icons/ri";
 
 interface ProjectPageProps {
     metaTitle: string;
@@ -46,15 +45,6 @@ export default function ProjectsMain() {
     // mounted (only hidden), so switching never loses typing and one Submit still saves both languages
     const { enabled: langTabs, lang, showErrors } = useAdminLangTab();
     const langColumn = (column: "en" | "ar", base: string) => `${base} ${langTabs && lang !== column ? "hidden" : ""}`;
-
-    const {
-        fields: firstSectionItems,
-        append: firstSectionAppend,
-        remove: firstSectionRemove,
-    } = useFieldArray({
-        control,
-        name: "firstSection.items",
-    });
 
     const onSubmit = async (data: ProjectPageProps) => {
         try {
@@ -162,62 +152,6 @@ export default function ProjectsMain() {
                     </AdminItemContainer>
 
                     <AdminItemContainer>
-                        <Label className="" main>
-                            First Section
-                        </Label>
-                        <div className="p-5 flex flex-col gap-2">
-                            <Label>Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md">
-                                {firstSectionItems.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => firstSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="pl-3 font-bold">Number</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Title"
-                                                    {...register(`firstSection.items.${index}.number`)}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="pl-3 font-bold">Value</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Title"
-                                                    {...register(`firstSection.items.${index}.value`)}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        firstSectionAppend({ number: "", value: "", number_ar: "", value_ar: "" })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
-                            </div>
-                        </div>
-                    </AdminItemContainer>
-
-                    <AdminItemContainer>
                         <Label main>SEO</Label>
                         <div className="flex flex-col gap-2 p-5">
                             <div className="flex flex-col gap-2">
@@ -270,62 +204,6 @@ export default function ProjectsMain() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </AdminItemContainer>
-
-                    <AdminItemContainer>
-                        <Label className="" main>
-                            First Section
-                        </Label>
-                        <div className="p-5 flex flex-col gap-2">
-                            <Label>Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md">
-                                {firstSectionItems.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => firstSectionRemove(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="pl-3 font-bold">Number</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Title"
-                                                    {...register(`firstSection.items.${index}.number_ar`)}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="pl-3 font-bold">Value</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Title"
-                                                    {...register(`firstSection.items.${index}.value_ar`)}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        firstSectionAppend({ number: "", value: "", number_ar: "", value_ar: "" })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
                             </div>
                         </div>
                     </AdminItemContainer>

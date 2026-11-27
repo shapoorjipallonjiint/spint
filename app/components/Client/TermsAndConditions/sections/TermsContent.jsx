@@ -14,7 +14,9 @@ const TermsContent = ({ content }) => {
           variants={moveUp(0.2)}
           initial="hidden"
           whileInView="show"
-          viewport={{ amount: 0.1, once: true }}
+          // the whole document is one long block: start as soon as any of it is on screen (10% of a long
+          // document needed scrolling first, so the text stayed hidden under the banner)
+          viewport={{ amount: 0, once: true }}
           className={`${isArabic ? "our-values-about-ar" : "our-values-about"} wrap-break-word
             text-19 font-light leading-[1.474] text-paragraph
             [&_h2]:text-[1.7rem] xs:[&_h2]:text-[1.8rem] md:[&_h2]:text-[2rem] lg:[&_h2]:text-[2.3rem] xl:[&_h2]:text-[2.5rem] 2xl:[&_h2]:text-[2.6rem] 3xl:[&_h2]:text-60

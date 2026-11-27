@@ -60,8 +60,13 @@ export async function POST(request: Request) {
     }
 }
 
-export async function GET() {
+// admin only (the CMS Enquiries page): enquiries contain personal data (names, emails, messages)
+export async function GET(req: NextRequest) {
     try {
+        const isAdmin = await verifyAdmin(req);
+        if (!isAdmin) {
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        }
         await connectDB();
         const enquiry = await Enquiry.find();
         if (!enquiry) {

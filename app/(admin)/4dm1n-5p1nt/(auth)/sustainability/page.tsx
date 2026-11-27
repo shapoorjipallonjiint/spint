@@ -10,9 +10,6 @@ import { ImageUploader } from "@/components/ui/image-uploader";
 import { VideoUploader } from "@/components/ui/video-uploader";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Textarea } from "@/components/ui/textarea";
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
-import "react-quill-new/dist/quill.snow.css";
-import dynamic from "next/dynamic";
 import AdminItemContainer from "@/app/components/common/AdminItemContainer";
 import { FormError } from "@/app/components/common/FormError";
 
@@ -141,15 +138,6 @@ const SustainabilityPage = () => {
     });
 
     const {
-        fields: thirdSectionItems,
-        append: thirdSectionAppend,
-        remove: thirdSectionRemove,
-    } = useFieldArray({
-        control,
-        name: "thirdSection.items",
-    });
-
-    const {
         fields: fourthSectionItemsOne,
         append: fourthSectionAppendOne,
         remove: fourthSectionRemoveOne,
@@ -157,15 +145,6 @@ const SustainabilityPage = () => {
         control,
         name: "fourthSection.itemsOne",
     });
-    const {
-        fields: fourthSectionItemsTwo,
-        append: fourthSectionAppendTwo,
-        remove: fourthSectionRemoveTwo,
-    } = useFieldArray({
-        control,
-        name: "fourthSection.itemsTwo",
-    });
-
     const {
         fields: fifthSectionItems,
         append: fifthSectionItemsAppend,
@@ -302,9 +281,6 @@ const SustainabilityPage = () => {
                                         />
                                     </div>
                                     <FormError error={errors.firstSection?.video?.message} />
-                                    <Label className="font-bold">Video Alt Tag</Label>
-                                    <Input type="text" placeholder="Alt Tag" {...register("firstSection.videoAlt")} />
-                                    <FormError error={errors.firstSection?.videoAlt?.message} />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <Label className="font-bold">Video Poster Image</Label>
@@ -317,13 +293,6 @@ const SustainabilityPage = () => {
                                         )}
                                     />
                                     <FormError error={errors.firstSection?.videoPosterImage?.message} />
-                                    <Label className="font-bold">Video Poster Image Alt Tag</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Alt Tag"
-                                        {...register("firstSection.videoPosterImageAlt")}
-                                    />
-                                    <FormError error={errors.firstSection?.videoPosterImageAlt?.message} />
                                 </div>
                             </div>
                         </div>
@@ -363,10 +332,11 @@ const SustainabilityPage = () => {
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                         {secondSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                                <div className="absolute top-2 right-2">
+                                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3">
+                                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                                <div className="absolute top-3 right-3">
                                                     <RiDeleteBinLine
                                                         onClick={() => secondSectionRemove(index)}
                                                         className="cursor-pointer text-red-600"
@@ -425,7 +395,7 @@ const SustainabilityPage = () => {
                                             </div>
                                         ))}
 
-                                        <div className="flex justify-end">
+                                        <div className="col-span-full flex justify-end">
                                             <Button
                                                 type="button"
                                                 className=""
@@ -451,113 +421,6 @@ const SustainabilityPage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Third Section</Label>
-
-                    <div className="p-5 rounded-md flex flex-col gap-5">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Title</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="Title"
-                                    {...register(`thirdSection.title`, {
-                                        required: "Value is required",
-                                    })}
-                                />
-                                <FormError error={errors.thirdSection?.title?.message} />
-                            </div>
-                        </div>
-
-                        <Label>Items</Label>
-                        <div className="border border-black/20 p-2 rounded-md">
-                            {thirdSectionItems.map((field, index) => (
-                                <div
-                                    key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
-                                >
-                                    <div className="absolute top-2 right-2">
-                                        <RiDeleteBinLine
-                                            onClick={() => thirdSectionRemove(index)}
-                                            className="cursor-pointer text-red-600"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="pl-3 font-bold">Title</Label>
-                                            <Input
-                                                type="text"
-                                                placeholder="Title"
-                                                {...register(`thirdSection.items.${index}.title`)}
-                                            />
-                                            <FormError error={errors.thirdSection?.items?.[index]?.title?.message} />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="pl-3 font-bold">Description</Label>
-                                            <Controller
-                                                name={`thirdSection.items.${index}.description`}
-                                                control={control}
-                                                render={({ field }) => {
-                                                    return (
-                                                        <ReactQuill
-                                                            theme="snow"
-                                                            value={field.value}
-                                                            onChange={field.onChange}
-                                                        />
-                                                    );
-                                                }}
-                                            />
-
-                                            <FormError error={errors.thirdSection?.items?.[index]?.description?.message} />
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <Label className="font-bold">Image</Label>
-                                        <Controller
-                                            name={`thirdSection.items.${index}.image`}
-                                            control={control}
-                                            rules={{ required: "Image is required" }}
-                                            render={({ field }) => (
-                                                <ImageUploader value={field.value} onChange={field.onChange} />
-                                            )}
-                                        />
-                                        <FormError error={errors.thirdSection?.items?.[index]?.image?.message} />
-                                        <Label className="font-bold">Image Alt Tag</Label>
-                                        <Input
-                                            type="text"
-                                            placeholder="Alt Tag"
-                                            {...register(`thirdSection.items.${index}.imageAlt`)}
-                                        />
-                                        <FormError error={errors.thirdSection?.items?.[index]?.imageAlt?.message} />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="flex justify-end mt-2">
-                            <Button
-                                type="button"
-                                addItem
-                                onClick={() =>
-                                    thirdSectionAppend({
-                                        title: "",
-                                        description: "",
-                                        title_ar: "",
-                                        description_ar: "",
-                                        image: "",
-                                        imageAlt: "",
-                                        imageAlt_ar: "",
-                                    })
-                                }
-                            >
-                                Add Item
-                            </Button>
-                        </div>
-                    </div>
-                </AdminItemContainer>
-
-                <AdminItemContainer>
                     <Label main>Fourth Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-2">
                         <div className="flex flex-col gap-2">
@@ -576,13 +439,14 @@ const SustainabilityPage = () => {
 
                         <div>
                             <Label className="font-bold">First Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                 {fourthSectionItemsOne.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Certificate {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fourthSectionRemoveOne(index)}
                                                 className="cursor-pointer text-red-600"
@@ -612,7 +476,7 @@ const SustainabilityPage = () => {
                                                     control={control}
                                                     rules={{ required: "Image is required" }}
                                                     render={({ field }) => (
-                                                        <ImageUploader isLogo value={field.value} onChange={field.onChange} />
+                                                        <ImageUploader contain value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                                 <FormError error={errors.fourthSection?.itemsOne?.[index]?.icon?.message} />
@@ -655,69 +519,6 @@ const SustainabilityPage = () => {
                                 </Button>
                             </div>
                         </div>
-                        <div>
-                            <Label className="font-bold">Second Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
-                                {fourthSectionItemsTwo.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => fourthSectionRemoveTwo(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Value</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Value"
-                                                        {...register(`fourthSection.itemsTwo.${index}.value`, {
-                                                            required: "Value is required",
-                                                        })}
-                                                    />
-                                                    <FormError
-                                                        error={errors.fourthSection?.itemsTwo?.[index]?.value?.message}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Key</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Value"
-                                                    {...register(`fourthSection.itemsTwo.${index}.key`, {
-                                                        required: "Value is required",
-                                                    })}
-                                                />
-                                                <FormError error={errors.fourthSection?.itemsTwo?.[index]?.key?.message} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        fourthSectionAppendTwo({
-                                            value: "",
-                                            value_ar: "",
-                                            key: "",
-                                            key_ar: "",
-                                        })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
-                            </div>
-                        </div>
                     </div>
                 </AdminItemContainer>
 
@@ -739,13 +540,14 @@ const SustainabilityPage = () => {
                         </div>
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {fifthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Tab {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fifthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -767,25 +569,6 @@ const SustainabilityPage = () => {
                                                         error={errors.fifthSection?.items?.[index]?.title?.message}
                                                     />
                                                 </div>
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Icon</Label>
-                                                <Controller
-                                                    name={`fifthSection.items.${index}.icon`}
-                                                    control={control}
-                                                    rules={{ required: "Icon is required" }}
-                                                    render={({ field }) => (
-                                                        <ImageUploader isLogo value={field.value} onChange={field.onChange} />
-                                                    )}
-                                                />
-                                                <FormError error={errors.fifthSection?.items?.[index]?.icon?.message} />
-                                                <Label className="font-bold">Icon Alt Tag</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Alt Tag"
-                                                    {...register(`fifthSection.items.${index}.iconAlt`)}
-                                                />
-                                                <FormError error={errors.fifthSection?.items?.[index]?.iconAlt?.message} />
                                             </div>
                                             <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Description</Label>
@@ -924,8 +707,6 @@ const SustainabilityPage = () => {
                                     {errors.firstSection?.video && (
                                         <p className="text-red-500">{errors.firstSection?.video.message}</p>
                                     )}
-                                    <Label className="font-bold">Video Alt Tag</Label>
-                                    <Input type="text" placeholder="Alt Tag" {...register("firstSection.videoAlt_ar")} />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <Label className="font-bold">Video Poster Image</Label>
@@ -935,12 +716,6 @@ const SustainabilityPage = () => {
                                         render={({ field }) => (
                                             <ImageUploader value={field.value} onChange={field.onChange} />
                                         )}
-                                    />
-                                    <Label className="font-bold">Video Poster Image Alt Tag</Label>
-                                    <Input
-                                        type="text"
-                                        placeholder="Alt Tag"
-                                        {...register("firstSection.videoPosterImageAlt_ar")}
                                     />
                                 </div>
                             </div>
@@ -974,10 +749,11 @@ const SustainabilityPage = () => {
                                 </div>
                                 <div>
                                     <Label className="font-bold">Items</Label>
-                                    <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5 mt-0.5">
+                                    <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                         {secondSectionItems.map((field, index) => (
-                                            <div key={field.id} className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5">
-                                                <div className="absolute top-2 right-2">
+                                            <div key={field.id} className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3">
+                                                <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Item {index + 1}</span>
+                                                <div className="absolute top-3 right-3">
                                                     <RiDeleteBinLine
                                                         onClick={() => secondSectionRemove(index)}
                                                         className="cursor-pointer text-red-600"
@@ -1022,7 +798,7 @@ const SustainabilityPage = () => {
                                             </div>
                                         ))}
 
-                                        <div className="flex justify-end">
+                                        <div className="col-span-full flex justify-end">
                                             <Button
                                                 type="button"
                                                 className=""
@@ -1048,100 +824,6 @@ const SustainabilityPage = () => {
                 </AdminItemContainer>
 
                 <AdminItemContainer>
-                    <Label main>Third Section</Label>
-
-                    <div className="p-5 rounded-md flex flex-col gap-5">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-2">
-                                <Label className="font-bold">Title</Label>
-                                <Input type="text" placeholder="Title" {...register(`thirdSection.title_ar`)} />
-                            </div>
-                        </div>
-
-                        <Label>Items</Label>
-                        <div className="border border-black/20 p-2 rounded-md">
-                            {thirdSectionItems.map((field, index) => (
-                                <div
-                                    key={field.id}
-                                    className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-2 last:border-b-0"
-                                >
-                                    <div className="absolute top-2 right-2">
-                                        <RiDeleteBinLine
-                                            onClick={() => thirdSectionRemove(index)}
-                                            className="cursor-pointer text-red-600"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="pl-3 font-bold">Title</Label>
-                                            <Input
-                                                type="text"
-                                                placeholder="Title"
-                                                {...register(`thirdSection.items.${index}.title_ar`)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="pl-3 font-bold">Description</Label>
-                                            <Controller
-                                                name={`thirdSection.items.${index}.description_ar`}
-                                                control={control}
-                                                render={({ field }) => {
-                                                    return (
-                                                        <ReactQuill
-                                                            theme="snow"
-                                                            value={field.value}
-                                                            onChange={field.onChange}
-                                                        />
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <Label className="font-bold">Image</Label>
-                                        <Controller
-                                            name={`thirdSection.items.${index}.image`}
-                                            control={control}
-                                            render={({ field }) => (
-                                                <ImageUploader value={field.value} onChange={field.onChange} />
-                                            )}
-                                        />
-                                        <Label className="font-bold">Image Alt Tag</Label>
-                                        <Input
-                                            type="text"
-                                            placeholder="Alt Tag"
-                                            {...register(`thirdSection.items.${index}.imageAlt_ar`)}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="flex justify-end mt-2">
-                            <Button
-                                type="button"
-                                addItem
-                                onClick={() =>
-                                    thirdSectionAppend({
-                                        title: "",
-                                        description: "",
-                                        title_ar: "",
-                                        description_ar: "",
-                                        image: "",
-                                        imageAlt: "",
-                                        imageAlt_ar: "",
-                                    })
-                                }
-                            >
-                                Add Item
-                            </Button>
-                        </div>
-                    </div>
-                </AdminItemContainer>
-
-                <AdminItemContainer>
                     <Label main>Fourth Section</Label>
                     <div className="p-5 rounded-md flex flex-col gap-2">
                         <div className="flex flex-col gap-2">
@@ -1153,13 +835,14 @@ const SustainabilityPage = () => {
 
                         <div>
                             <Label className="font-bold">First Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-2 gap-4 xl:grid-cols-4">
                                 {fourthSectionItemsOne.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 flex flex-col gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Certificate {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fourthSectionRemoveOne(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1183,7 +866,7 @@ const SustainabilityPage = () => {
                                                     name={`fourthSection.itemsOne.${index}.icon`}
                                                     control={control}
                                                     render={({ field }) => (
-                                                        <ImageUploader isLogo value={field.value} onChange={field.onChange} />
+                                                        <ImageUploader contain value={field.value} onChange={field.onChange} />
                                                     )}
                                                 />
                                             </div>
@@ -1220,61 +903,6 @@ const SustainabilityPage = () => {
                                 </Button>
                             </div>
                         </div>
-                        <div>
-                            <Label className="font-bold">Second Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
-                                {fourthSectionItemsTwo.map((field, index) => (
-                                    <div
-                                        key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
-                                    >
-                                        <div className="absolute top-2 right-2">
-                                            <RiDeleteBinLine
-                                                onClick={() => fourthSectionRemoveTwo(index)}
-                                                className="cursor-pointer text-red-600"
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex flex-col gap-2">
-                                                    <Label className="font-bold">Value</Label>
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="Value"
-                                                        {...register(`fourthSection.itemsTwo.${index}.value_ar`)}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Key</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Value"
-                                                    {...register(`fourthSection.itemsTwo.${index}.key_ar`)}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-2">
-                                <Button
-                                    type="button"
-                                    addItem
-                                    onClick={() =>
-                                        fourthSectionAppendTwo({
-                                            value: "",
-                                            value_ar: "",
-                                            key: "",
-                                            key_ar: "",
-                                        })
-                                    }
-                                >
-                                    Add Item
-                                </Button>
-                            </div>
-                        </div>
                     </div>
                 </AdminItemContainer>
 
@@ -1289,13 +917,14 @@ const SustainabilityPage = () => {
                         </div>
                         <div>
                             <Label className="font-bold">Items</Label>
-                            <div className="border border-black/20 p-2 rounded-md flex flex-col gap-5">
+                            <div className="mt-1 grid grid-cols-1 gap-4 xl:grid-cols-2">
                                 {fifthSectionItems.map((field, index) => (
                                     <div
                                         key={field.id}
-                                        className="grid grid-cols-2 gap-2 relative border-b border-black/20 pb-5 last:border-b-0"
+                                        className="relative rounded-lg border border-slate-200 bg-slate-50/70 p-4 pt-10 grid grid-cols-2 gap-3"
                                     >
-                                        <div className="absolute top-2 right-2">
+                                        <span className="absolute left-4 top-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Tab {index + 1}</span>
+                                        <div className="absolute top-3 right-3">
                                             <RiDeleteBinLine
                                                 onClick={() => fifthSectionRemove(index)}
                                                 className="cursor-pointer text-red-600"
@@ -1312,22 +941,6 @@ const SustainabilityPage = () => {
                                                         {...register(`fifthSection.items.${index}.title_ar`)}
                                                     />
                                                 </div>
-                                            </div>
-                                            <div className="flex flex-col gap-2">
-                                                <Label className="font-bold">Icon</Label>
-                                                <Controller
-                                                    name={`fifthSection.items.${index}.icon`}
-                                                    control={control}
-                                                    render={({ field }) => (
-                                                        <ImageUploader isLogo value={field.value} onChange={field.onChange} />
-                                                    )}
-                                                />
-                                                <Label className="font-bold">Icon Alt Tag</Label>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Alt Tag"
-                                                    {...register(`fifthSection.items.${index}.iconAlt_ar`)}
-                                                />
                                             </div>
                                             <div className="flex flex-col gap-2">
                                                 <Label className="font-bold">Description</Label>
