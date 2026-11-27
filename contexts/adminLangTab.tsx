@@ -54,6 +54,8 @@ type AdminLangTabValue = {
     // after a failed submit: open English (Arabic fields are optional, so errors are always on English or shared
     // fields) and scroll to the first error message
     showErrors: () => void;
+    // turn the tabs on from a page itself (see useAdminLangTabFor)
+    setOptIn: (on: boolean) => void;
 };
 
 const AdminLangTabContext = createContext<AdminLangTabValue>({
@@ -61,11 +63,15 @@ const AdminLangTabContext = createContext<AdminLangTabValue>({
     lang: "en",
     setLang: () => {},
     showErrors: () => {},
+    setOptIn: () => {},
 });
 
 export const AdminLangTabProvider = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname() || "";
-    const enabled = LANG_TAB_PAGES.includes(pathname) || LANG_TAB_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+    // a page can also switch the tabs on for part of itself (e.g. only one of its own tabs): useAdminLangTabFor
+    const [optIn, setOptIn] = useState(false);
+    const enabled =
+        optIn || LANG_TAB_PAGES.includes(pathname) || LANG_TAB_PREFIXES.some((prefix) => pathname.startsWith(prefix));
     const [lang, setLangState] = useState<AdminLang>("en");
 
     // on load and on every page change, open the tab named in the URL (English when there is none)
@@ -97,8 +103,20 @@ export const AdminLangTabProvider = ({ children }: { children: React.ReactNode }
     }, [setLang]);
 
     return (
-        <AdminLangTabContext.Provider value={{ enabled, lang, setLang, showErrors }}>{children}</AdminLangTabContext.Provider>
+        <AdminLangTabContext.Provider value={{ enabled, lang, setLang, showErrors, setOptIn }}>{children}</AdminLangTabContext.Provider>
     );
 };
 
 export const useAdminLangTab = () => useContext(AdminLangTabContext);
+
+// For a page whose English / Arabic editor is only part of it (e.g. the News page's "Page" tab): the tabs are on
+// while `active` is true, and off again when it turns false or the page is left.
+export const useAdminLangTabFor = (active: boolean) => {
+    const context = useContext(AdminLangTabContext);
+    const { setOptIn } = context;
+    useEffect(() => {
+        setOptIn(active);
+        return () => setOptIn(false);
+    }, [active, setOptIn]);
+    return context;
+};
